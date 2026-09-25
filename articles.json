@@ -1,0 +1,673 @@
+{
+  "articles": [
+    {
+      "slug": "plage",
+      "folder": "tourisme/",
+      "titleAr": "شاطئ القصر الصغير",
+      "titleFr": "Plage de Ksar Sghir",
+      "titleEn": "Ksar Sghir Beach",
+      "titleEs": "Playa de Ksar Sghir",
+      "metaAr": "شاطئ رملي هادئ يطل على مضيق جبل طارق. مياه صافية، محروس بالوقاية المدنية، مجاني ومناسب للعائلات.",
+      "metaFr": "Plage de sable calme sur le détroit de Gibraltar. Eaux claires, surveillée, gratuite et familiale.",
+      "metaEn": "Calm sandy beach overlooking the Strait of Gibraltar. Clear waters, supervised, free and family-friendly.",
+      "metaEs": "Playa de arena tranquila frente al estrecho de Gibraltar. Aguas claras, vigilada, gratuita y familiar.",
+      "category": "🏖️ شاطئ",
+      "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHQolv6RmyUqkJCdSImtvNinU325jN_uTkEdP2K3Zn1y1zSmnlHdtGk7rMCKJFh5MGbspcJ_5pHzLRCriLKIq3DmTI0Pl10-1NCfQLSHrPuheemplMGTpTmmPLjHuia3FA0XTRpXU1NAow2H93nBBEVegH8tT5Y_zbrCmKwvWOHI040KHDdzidEpbgnOI/s400/3385.jpg",
+      "video": "",
+      "date": "2026",
+      "featured": true,
+      "lat": 35.6897,
+      "lng": -5.5597,
+      "distance_from_center": 0,
+      "services": {
+        "douchettes": true,
+        "toilettes": true,
+        "waqaya": true,
+        "restaurants": true,
+        "commerces": true
+      },
+      "transport": "حافلة I3/I12 من محطة القطار بطنجة",
+      "related": [
+        {
+          "slug": "port-peche",
+          "dist": "0.5 كم"
+        },
+        {
+          "slug": "site-archeologique",
+          "dist": "0.3 كم"
+        },
+        {
+          "slug": "zahara-hatba",
+          "dist": "3 كم"
+        },
+        {
+          "slug": "dalia",
+          "dist": "8 كم"
+        }
+      ]
+    },
+    {
+      "slug": "belyounech",
+      "folder": "tourisme/",
+      "titleAr": "قرية بليونش وجبل موسى",
+      "titleFr": "Village Belyounech & Mont Moussa",
+      "titleEn": "Belyounech Village & Mount Moussa",
+      "titleEs": "Pueblo Belyounech & Monte Moussa",
+      "metaAr": "قرية ساحلية بكر تحت جبل موسى — أفضل موقع غوص في شمال إفريقيا، جزيرة ليلى، وبانوراما قارتين.",
+      "metaFr": "Village côtier vierge sous le mont Moussa — meilleur site de plongée en Afrique du Nord, île de Leïla.",
+      "metaEn": "Pristine coastal village beneath Mount Moussa — best diving site in North Africa, Leila Island, two-continent views.",
+      "metaEs": "Pueblo costero virgen bajo el monte Moussa — mejor sitio de buceo del Norte de África, isla de Leila.",
+      "category": "🌿 قرية طبيعية",
+      "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhFmhzsrwSBvqo-M94qSxyDkEHJ2rWQFftXbCnmwsrHz1iOmvHdcJcafzhKjkWNS9WZHtF9U_HkYoBWtSkPL9PSSgLLiSA5aNIbg_EoX5x9QJLEwrIEAlKkkdvLJNs5Z4qs3VZ6Tmsz2ZJcb2NWJaIIUbsY2Mvn33Ih7nxfsyPmCPtzF-2N9ylZ84PshcI/s1200/8593.jpg",
+      "video": "",
+      "date": "2026",
+      "featured": true,
+      "lat": 35.9167,
+      "lng": -5.3667,
+      "distance_from_center": 50,
+      "services": {
+        "douchettes": false,
+        "toilettes": false,
+        "waqaya": false,
+        "restaurants": false,
+        "commerces": false
+      },
+      "transport": "سيارة أجرة من الفنيدق",
+      "related": [
+        {
+          "slug": "oued-marsa",
+          "dist": "10 كم"
+        },
+        {
+          "slug": "tanger-med",
+          "dist": "40 كم"
+        }
+      ]
+    },
+    {
+      "slug": "dalia",
+      "folder": "tourisme/",
+      "titleAr": "شاطئ الدالية",
+      "titleFr": "Plage Dalia",
+      "titleEn": "Dalia Beach",
+      "titleEs": "Playa Dalia",
+      "metaAr": "مياه كريستالية وإطلالة مباشرة على ميناء طنجة المتوسط والساحل الإسباني. شاطئ هادئ بالقرب من القصر الصغير.",
+      "metaFr": "Eaux cristallines avec vue directe sur Tanger Med et la côte espagnole. Plage tranquille près de Ksar Sghir.",
+      "metaEn": "Crystal clear waters with direct view of Tanger Med port and the Spanish coast. Quiet beach near Ksar Sghir.",
+      "metaEs": "Aguas cristalinas con vista directa al puerto Tanger Med y la costa española.",
+      "category": "🏖️ شاطئ",
+      "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyF6zy_A4LJ2L-xiH04Zd6XJEDMXIaOmyzWtN3vaFdByi2ysaLnHUcv4jYzuv5UqLPoM44_VLDfwr4MWEGATxl4QX7J7Ad0Z9bLL6kqB5lHnCQOf3EaC_snAy2TJCCt14okvSQDDPb0XvpNRZ6Gmhq6VIIHpESdyZ3P2uaZaSIm7PfxqtSHWL4-TUFwdU/s400/8510.jpg",
+      "video": "",
+      "date": "2026",
+      "featured": false,
+      "lat": 35.72,
+      "lng": -5.49,
+      "distance_from_center": 8,
+      "services": {
+        "douchettes": false,
+        "toilettes": false,
+        "waqaya": false,
+        "restaurants": false,
+        "commerces": false
+      },
+      "transport": "حافلة I3/I12 من طنجة",
+      "related": [
+        {
+          "slug": "tanger-med",
+          "dist": "3 كم"
+        },
+        {
+          "slug": "oued-alian",
+          "dist": "5 كم"
+        },
+        {
+          "slug": "plage",
+          "dist": "8 كم"
+        },
+        {
+          "slug": "dahdaha",
+          "dist": "2 كم"
+        }
+      ]
+    },
+    {
+      "slug": "oued-marsa",
+      "folder": "tourisme/",
+      "titleAr": "واد المرسى",
+      "titleFr": "Oued El Marsa",
+      "titleEn": "Oued El Marsa",
+      "titleEs": "Oued El Marsa",
+      "metaAr": "جوهرة طبيعية بكر بين الجبال والبحر. وادٍ يصب في المضيق، طبيعة خلابة ومياه صافية بعيداً عن الضجيج.",
+      "metaFr": "Joyau naturel vierge entre montagnes et mer. Un oued qui se jette dans le détroit, nature sauvage.",
+      "metaEn": "Pristine natural gem between mountains and sea. A stream flowing into the strait, wild nature and clear waters.",
+      "metaEs": "Joya natural virgen entre montañas y mar. Un río que desemboca en el estrecho.",
+      "category": "🌿 طبيعة",
+      "image": "",
+      "video": "",
+      "date": "2026",
+      "featured": false,
+      "lat": 35.85,
+      "lng": -5.42,
+      "distance_from_center": 30,
+      "services": {
+        "douchettes": false,
+        "toilettes": false,
+        "waqaya": false,
+        "restaurants": false,
+        "commerces": false
+      },
+      "transport": "سيارة خاصة أو أجرة",
+      "related": [
+        {
+          "slug": "belyounech",
+          "dist": "10 كم"
+        },
+        {
+          "slug": "tanger-med",
+          "dist": "20 كم"
+        }
+      ]
+    },
+    {
+      "slug": "site-archeologique",
+      "folder": "tourisme/",
+      "titleAr": "الموقع الأثري للقصر الصغير",
+      "titleFr": "Site archéologique de Ksar Sghir",
+      "titleEn": "Ksar Sghir Archaeological Site",
+      "titleEs": "Sitio arqueológico de Ksar Sghir",
+      "metaAr": "القلعة المرينية الدائرية النادرة من القرن الرابع عشر. موقع أثري مجاني في قلب القصر الصغير.",
+      "metaFr": "La rare forteresse mérinide circulaire du XIVe siècle. Site archéologique gratuit au cœur de Ksar Sghir.",
+      "metaEn": "The rare 14th century circular Marinid fortress. Free archaeological site in the heart of Ksar Sghir.",
+      "metaEs": "La rara fortaleza marinida circular del siglo XIV. Sitio arqueológico gratuito en el corazón de Ksar Sghir.",
+      "category": "🏛️ تاريخ",
+      "image": "",
+      "video": "",
+      "date": "2026",
+      "featured": false,
+      "lat": 35.69,
+      "lng": -5.558,
+      "distance_from_center": 0.3,
+      "services": {
+        "douchettes": false,
+        "toilettes": false,
+        "waqaya": false,
+        "restaurants": false,
+        "commerces": false
+      },
+      "transport": "مشياً من المركز",
+      "related": [
+        {
+          "slug": "plage",
+          "dist": "0.3 كم"
+        },
+        {
+          "slug": "port-peche",
+          "dist": "0.3 كم"
+        },
+        {
+          "slug": "port-diki",
+          "dist": "1 كم"
+        }
+      ]
+    },
+    {
+      "slug": "port-peche",
+      "folder": "tourisme/",
+      "titleAr": "ميناء الصيد التقليدي",
+      "titleFr": "Port de pêche traditionnel",
+      "titleEn": "Traditional Fishing Port",
+      "titleEs": "Puerto pesquero tradicional",
+      "metaAr": "قلب القصر الصغير النابض. قوارب ملونة، دلالة الأسماك اليومية، وأسماك مضيق جبل طارق الطازجة.",
+      "metaFr": "Le cœur battant de Ksar Sghir. Bateaux colorés, criée quotidienne et poissons frais du détroit.",
+      "metaEn": "The beating heart of Ksar Sghir. Colorful boats, daily fish auction and fresh fish from the strait.",
+      "metaEs": "El corazón latiente de Ksar Sghir. Barcos coloridos, subasta diaria y pescado fresco del estrecho.",
+      "category": "⚓ ميناء",
+      "image": "",
+      "video": "",
+      "date": "2026",
+      "featured": false,
+      "lat": 35.6895,
+      "lng": -5.559,
+      "distance_from_center": 0.5,
+      "services": {
+        "douchettes": false,
+        "toilettes": false,
+        "waqaya": false,
+        "restaurants": true,
+        "commerces": true
+      },
+      "transport": "مشياً من المركز",
+      "related": [
+        {
+          "slug": "plage",
+          "dist": "0.5 كم"
+        },
+        {
+          "slug": "site-archeologique",
+          "dist": "0.3 كم"
+        },
+        {
+          "slug": "port-diki",
+          "dist": "0.5 كم"
+        }
+      ]
+    },
+    {
+      "slug": "tanger-med",
+      "folder": "tourisme/",
+      "titleAr": "ميناء طنجة المتوسط",
+      "titleFr": "Port Tanger Med",
+      "titleEn": "Tanger Med Port",
+      "titleEs": "Puerto Tanger Med",
+      "metaAr": "أكبر ميناء في إفريقيا على مسافة كيلومترات من القصر الصغير. مشهد السفن العملاقة لا يُنسى.",
+      "metaFr": "Le plus grand port d'Afrique à quelques kilomètres de Ksar Sghir. Les géants des mers à portée de vue.",
+      "metaEn": "Africa's largest port just a few kilometers from Ksar Sghir. Unforgettable sight of giant ships.",
+      "metaEs": "El mayor puerto de África a pocos kilómetros de Ksar Sghir.",
+      "category": "🚢 ميناء دولي",
+      "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjETG-3niCoeG0AcNV2SdGpI3ApVHoLYV-F2d3OgpqvSrI4lMF32QLj_dKeEOkOcOnwJ6OO0BjAuem3ss-jk0CJUadghleD4OeVXyI2I84F31shW3_X6Ul3t6L1g7DBx3KXvpl0kBphfDFYqr2bryoUeYT1IAM_brbGgptbLLR6XVi58b7NjsMX5cvVrFY/s400/4353.jpg",
+      "video": "",
+      "date": "2026",
+      "featured": true,
+      "lat": 35.71,
+      "lng": -5.495,
+      "distance_from_center": 5,
+      "services": {
+        "douchettes": false,
+        "toilettes": false,
+        "waqaya": false,
+        "restaurants": false,
+        "commerces": false
+      },
+      "transport": "حافلة I3/I12 أو سيارة خاصة",
+      "related": [
+        {
+          "slug": "dalia",
+          "dist": "3 كم"
+        },
+        {
+          "slug": "dahdaha",
+          "dist": "5 كم"
+        },
+        {
+          "slug": "plage",
+          "dist": "5 كم"
+        }
+      ]
+    },
+    {
+      "slug": "sidi-kankouch-1",
+      "folder": "tourisme/",
+      "titleAr": "شاطئ سيدي قنقوش 1",
+      "titleFr": "Plage Sidi Kankouch 1",
+      "titleEn": "Sidi Kankouch 1 Beach",
+      "titleEs": "Playa Sidi Kankouch 1",
+      "metaAr": "شاطئ نظيف قريب من طنجة. مرافق أساسية كاملة، محروس بالوقاية المدنية، مطاعم ومتاجر.",
+      "metaFr": "Plage propre proche de Tanger. Équipements complets, surveillée, restaurants et commerces.",
+      "metaEn": "Clean beach close to Tangier. Full facilities, supervised, restaurants and shops.",
+      "metaEs": "Playa limpia cerca de Tánger. Instalaciones completas, vigilada, restaurantes y comercios.",
+      "category": "🏖️ شاطئ",
+      "image": "",
+      "video": "",
+      "date": "2026",
+      "featured": false,
+      "lat": 35.75,
+      "lng": -5.42,
+      "distance_from_center": 25,
+      "services": {
+        "douchettes": true,
+        "toilettes": true,
+        "waqaya": true,
+        "restaurants": true,
+        "commerces": true
+      },
+      "transport": "حافلة I3/I12 من محطة القطار طنجة",
+      "related": [
+        {
+          "slug": "sidi-kankouch-2",
+          "dist": "5 كم"
+        },
+        {
+          "slug": "zrara",
+          "dist": "10 كم"
+        }
+      ]
+    },
+    {
+      "slug": "sidi-kankouch-2",
+      "folder": "tourisme/",
+      "titleAr": "شاطئ سيدي قنقوش 2",
+      "titleFr": "Plage Sidi Kankouch 2",
+      "titleEn": "Sidi Kankouch 2 Beach",
+      "titleEs": "Playa Sidi Kankouch 2",
+      "metaAr": "شاطئ عالي بامتياز. 20 كم من القصر الصغير. مرافق أساسية، محروس، الأفضل وسط الأسبوع.",
+      "metaFr": "Plage excellente. 20 km de Ksar Sghir. Équipements, surveillée, idéale en semaine.",
+      "metaEn": "Excellent beach. 20 km from Ksar Sghir. Facilities, supervised, best on weekdays.",
+      "metaEs": "Playa excelente. 20 km de Ksar Sghir. Instalaciones, vigilada, mejor entre semana.",
+      "category": "🏖️ شاطئ",
+      "image": "",
+      "video": "",
+      "date": "2026",
+      "featured": false,
+      "lat": 35.76,
+      "lng": -5.44,
+      "distance_from_center": 20,
+      "services": {
+        "douchettes": true,
+        "toilettes": true,
+        "waqaya": true,
+        "restaurants": false,
+        "commerces": false
+      },
+      "transport": "حافلة I3/I12 أو سيارة أجرة",
+      "related": [
+        {
+          "slug": "sidi-kankouch-1",
+          "dist": "5 كم"
+        },
+        {
+          "slug": "zrara",
+          "dist": "5 كم"
+        },
+        {
+          "slug": "oued-alian",
+          "dist": "8 كم"
+        }
+      ]
+    },
+    {
+      "slug": "zrara",
+      "folder": "tourisme/",
+      "titleAr": "شاطئ زرارع 1 و 2",
+      "titleFr": "Plage Zrara 1 & 2",
+      "titleEn": "Zrara Beach 1 & 2",
+      "titleEs": "Playa Zrara 1 y 2",
+      "metaAr": "شاطئ عائلي بامتياز. 15 كم من طنجة بمنحدر. محروس. بَرَارِك موسمية. صيد بالقصبة.",
+      "metaFr": "Plage familiale par excellence. 15 km de Tanger avec descente escarpée. Surveillée.",
+      "metaEn": "Family beach par excellence. 15 km from Tangier with steep descent. Supervised.",
+      "metaEs": "Playa familiar por excelencia. 15 km de Tánger con bajada empinada. Vigilada.",
+      "category": "🏖️ شاطئ عائلي",
+      "image": "",
+      "video": "",
+      "date": "2026",
+      "featured": false,
+      "lat": 35.77,
+      "lng": -5.46,
+      "distance_from_center": 15,
+      "services": {
+        "douchettes": false,
+        "toilettes": false,
+        "waqaya": true,
+        "restaurants": false,
+        "commerces": false
+      },
+      "transport": "حافلة I3/I12 + منحدر للنزول",
+      "related": [
+        {
+          "slug": "sidi-kankouch-2",
+          "dist": "5 كم"
+        },
+        {
+          "slug": "oued-alian",
+          "dist": "8 كم"
+        },
+        {
+          "slug": "sidi-kankouch-1",
+          "dist": "10 كم"
+        }
+      ]
+    },
+    {
+      "slug": "oued-alian",
+      "folder": "tourisme/",
+      "titleAr": "شاطئ واد اليان",
+      "titleFr": "Plage Oued Alian",
+      "titleEn": "Oued Alian Beach",
+      "titleEs": "Playa Oued Alian",
+      "metaAr": "شاطئ كبير هادئ بين القصر الصغير وطنجة. خدمات محدودة. محروس. مثالي للعائلات.",
+      "metaFr": "Grande plage calme entre Ksar Sghir et Tanger. Services limités. Surveillée. Idéale pour familles.",
+      "metaEn": "Large calm beach between Ksar Sghir and Tangier. Limited services. Supervised. Ideal for families.",
+      "metaEs": "Gran playa tranquila entre Ksar Sghir y Tánger. Servicios limitados. Vigilada.",
+      "category": "🏖️ شاطئ",
+      "image": "",
+      "video": "",
+      "date": "2026",
+      "featured": false,
+      "lat": 35.73,
+      "lng": -5.5,
+      "distance_from_center": 12,
+      "services": {
+        "douchettes": false,
+        "toilettes": false,
+        "waqaya": true,
+        "restaurants": false,
+        "commerces": false
+      },
+      "transport": "حافلة I3/I12",
+      "related": [
+        {
+          "slug": "dalia",
+          "dist": "5 كم"
+        },
+        {
+          "slug": "zrara",
+          "dist": "8 كم"
+        },
+        {
+          "slug": "plage",
+          "dist": "12 كم"
+        }
+      ]
+    },
+    {
+      "slug": "dahdaha",
+      "folder": "tourisme/",
+      "titleAr": "شاطئ الدهاداه",
+      "titleFr": "Plage Dahdaha",
+      "titleEn": "Dahdaha Beach",
+      "titleEs": "Playa Dahdaha",
+      "metaAr": "شاطئ عائلي بين الجبال. 10 كم من القصر الصغير. بعيد عن الضجيج. بَرَارِك موسمية. صيد بالقصبة.",
+      "metaFr": "Plage familiale entre les montagnes. 10 km de Ksar Sghir. Loin du bruit.",
+      "metaEn": "Family beach between mountains. 10 km from Ksar Sghir. Away from noise.",
+      "metaEs": "Playa familiar entre montañas. 10 km de Ksar Sghir. Lejos del ruido.",
+      "category": "🏖️ شاطئ جبلي",
+      "image": "",
+      "video": "",
+      "date": "2026",
+      "featured": false,
+      "lat": 35.67,
+      "lng": -5.49,
+      "distance_from_center": 10,
+      "services": {
+        "douchettes": false,
+        "toilettes": false,
+        "waqaya": true,
+        "restaurants": false,
+        "commerces": false
+      },
+      "transport": "سيارة خاصة أو أجرة",
+      "related": [
+        {
+          "slug": "ferdiwa",
+          "dist": "3 كم"
+        },
+        {
+          "slug": "dalia",
+          "dist": "2 كم"
+        },
+        {
+          "slug": "tanger-med",
+          "dist": "5 كم"
+        }
+      ]
+    },
+    {
+      "slug": "ferdiwa",
+      "folder": "tourisme/",
+      "titleAr": "شاطئ فرديوة",
+      "titleFr": "Plage Ferdiwa",
+      "titleEn": "Ferdiwa Beach",
+      "titleEs": "Playa Ferdiwa",
+      "metaAr": "شاطئ عائلي هادئ بين الجبال. 7 كم من القصر الصغير. بكر وهادئ. صيد بالقصبة ومراكب.",
+      "metaFr": "Plage familiale calme entre les montagnes. 7 km de Ksar Sghir. Sauvage et tranquille.",
+      "metaEn": "Calm family beach between mountains. 7 km from Ksar Sghir. Wild and peaceful.",
+      "metaEs": "Playa familiar tranquila entre montañas. 7 km de Ksar Sghir.",
+      "category": "🏖️ شاطئ جبلي",
+      "image": "",
+      "video": "",
+      "date": "2026",
+      "featured": false,
+      "lat": 35.675,
+      "lng": -5.51,
+      "distance_from_center": 7,
+      "services": {
+        "douchettes": false,
+        "toilettes": false,
+        "waqaya": true,
+        "restaurants": false,
+        "commerces": false
+      },
+      "transport": "سيارة خاصة أو أجرة",
+      "related": [
+        {
+          "slug": "ghojin-srama",
+          "dist": "1 كم"
+        },
+        {
+          "slug": "zahara-hatba",
+          "dist": "4 كم"
+        },
+        {
+          "slug": "dahdaha",
+          "dist": "3 كم"
+        }
+      ]
+    },
+    {
+      "slug": "ghojin-srama",
+      "folder": "tourisme/",
+      "titleAr": "شاطئ غوجين / سرامة",
+      "titleFr": "Plage Ghojin / Srama",
+      "titleEn": "Ghojin / Srama Beach",
+      "titleEs": "Playa Ghojin / Srama",
+      "metaAr": "شاطئ عائلي هادئ بين الجبال. 6 كم من القصر الصغير. يعرف بإسمين: غوجين وسرامة.",
+      "metaFr": "Plage familiale calme entre les montagnes. 6 km de Ksar Sghir. Connue sous deux noms.",
+      "metaEn": "Calm family beach between mountains. 6 km from Ksar Sghir. Known by two names.",
+      "metaEs": "Playa familiar tranquila entre montañas. 6 km de Ksar Sghir. Conocida por dos nombres.",
+      "category": "🏖️ شاطئ جبلي",
+      "image": "",
+      "video": "",
+      "date": "2026",
+      "featured": false,
+      "lat": 35.678,
+      "lng": -5.52,
+      "distance_from_center": 6,
+      "services": {
+        "douchettes": false,
+        "toilettes": false,
+        "waqaya": true,
+        "restaurants": false,
+        "commerces": false
+      },
+      "transport": "سيارة خاصة أو أجرة",
+      "related": [
+        {
+          "slug": "ferdiwa",
+          "dist": "1 كم"
+        },
+        {
+          "slug": "zahara-hatba",
+          "dist": "3 كم"
+        },
+        {
+          "slug": "plage",
+          "dist": "6 كم"
+        }
+      ]
+    },
+    {
+      "slug": "zahara-hatba",
+      "folder": "tourisme/",
+      "titleAr": "شاطئ الزهارة / الحطبة",
+      "titleFr": "Plage Zahara / Hatba",
+      "titleEn": "Zahara / Hatba Beach",
+      "titleEs": "Playa Zahara / Hatba",
+      "metaAr": "شاطئ عائلي قريب. 3 كم فقط من القصر الصغير. هادئ وبين الجبال. بَرَارِك موسمية.",
+      "metaFr": "Plage familiale proche. 3 km de Ksar Sghir. Calme entre les montagnes.",
+      "metaEn": "Close family beach. Only 3 km from Ksar Sghir. Calm and between mountains.",
+      "metaEs": "Playa familiar cercana. Solo 3 km de Ksar Sghir. Tranquila entre montañas.",
+      "category": "🏖️ شاطئ",
+      "image": "",
+      "video": "",
+      "date": "2026",
+      "featured": false,
+      "lat": 35.682,
+      "lng": -5.535,
+      "distance_from_center": 3,
+      "services": {
+        "douchettes": false,
+        "toilettes": false,
+        "waqaya": true,
+        "restaurants": false,
+        "commerces": false
+      },
+      "transport": "سيارة خاصة أو أجرة — 3 كم فقط",
+      "related": [
+        {
+          "slug": "plage",
+          "dist": "3 كم"
+        },
+        {
+          "slug": "ghojin-srama",
+          "dist": "3 كم"
+        },
+        {
+          "slug": "port-diki",
+          "dist": "2 كم"
+        }
+      ]
+    },
+    {
+      "slug": "port-diki",
+      "folder": "tourisme/",
+      "titleAr": "ميناء الديكي",
+      "titleFr": "Port Diki",
+      "titleEn": "Port Diki",
+      "titleEs": "Puerto Diki",
+      "metaAr": "ميناء صيد تقليدي فريد — مراكب الصيد تستقر مباشرة على الرمال. تراث أصيل وأسماك طازجة.",
+      "metaFr": "Port de pêche traditionnel unique — les bateaux reposent directement sur le sable.",
+      "metaEn": "Unique traditional fishing port — fishing boats rest directly on the sand.",
+      "metaEs": "Puerto pesquero tradicional único — los barcos descansan directamente sobre la arena.",
+      "category": "⚓ ميناء",
+      "image": "",
+      "video": "",
+      "date": "2026",
+      "featured": false,
+      "lat": 35.687,
+      "lng": -5.55,
+      "distance_from_center": 1,
+      "services": {
+        "douchettes": false,
+        "toilettes": false,
+        "waqaya": false,
+        "restaurants": false,
+        "commerces": false
+      },
+      "transport": "مشياً من المركز",
+      "related": [
+        {
+          "slug": "plage",
+          "dist": "1 كم"
+        },
+        {
+          "slug": "zahara-hatba",
+          "dist": "2 كم"
+        },
+        {
+          "slug": "port-peche",
+          "dist": "0.5 كم"
+        }
+      ]
+    }
+  ],
+  "updated": "2026"
+}
