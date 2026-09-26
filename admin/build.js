@@ -103,6 +103,47 @@
     return String(html || '').replace(/(src|href)="(assets\/[^"]+)"/g, function (m, a, p) { return a + '="' + rel(file, p) + '"'; });
   }
 
+  /* ---------- theme (editable from the dashboard) ---------- */
+  var FONTS = { 'Tajawal': 'Tajawal:wght@400;500;700;800', 'Cairo': 'Cairo:wght@400;600;700;800', 'Almarai': 'Almarai:wght@400;700;800',
+    'IBM Plex Sans Arabic': 'IBM+Plex+Sans+Arabic:wght@400;500;700', 'Noto Kufi Arabic': 'Noto+Kufi+Arabic:wght@400;600;800', 'Readex Pro': 'Readex+Pro:wght@400;500;700' };
+  var DISPLAY = { 'Fraunces': 'Fraunces:opsz,wght@9..144,600;9..144,700', 'Playfair Display': 'Playfair+Display:wght@600;700', 'DM Serif Display': 'DM+Serif+Display', 'none': '' };
+  function th(site) { return site.theme || {}; }
+  function darken(hex, k) {
+    var m = /^#?([0-9a-f]{6})$/i.exec(hex || ''); if (!m) return hex;
+    var n = parseInt(m[1], 16), r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+    function c(v) { return ('0' + Math.round(v * (1 - k)).toString(16)).slice(-2); }
+    return '#' + c(r) + c(g) + c(b);
+  }
+  function fontLink(site) {
+    var T = th(site), f = T.font && FONTS[T.font] ? T.font : 'Tajawal', d = T.display || 'Fraunces';
+    var fam = [FONTS[f]]; if (DISPLAY[d]) fam.push(DISPLAY[d]);
+    return '<link href="https://fonts.googleapis.com/css2?' + fam.map(function (x) { return 'family=' + x; }).join('&') + '&display=swap" rel="stylesheet">';
+  }
+  function themeCss(site) {
+    var T = th(site), out = [], root = [];
+    if (T.primary) { root.push('--sea:' + T.primary, '--sea-deep:' + darken(T.primary, .32)); }
+    if (T.accent) root.push('--amber:' + T.accent);
+    if (T.font && FONTS[T.font]) root.push("--font:'" + T.font + "',system-ui,Arial,sans-serif");
+    if (T.display) root.push('--display:' + (T.display === 'none' ? 'var(--font)' : "'" + T.display + "',Georgia,serif"));
+    var R = { small: ['6px', '10px', '4px'], large: ['30px', '20px', '12px'] }[T.radius];
+    if (R) root.push('--r-lg:' + R[0], '--r:' + R[1], '--r-sm:' + R[2]);
+    if (root.length) out.push(':root{' + root.join(';') + '}');
+    if (T.primary) out.push(':root[data-theme="dark"]{--sea:' + T.primary + ';--sea-deep:' + T.primary + '}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--sea:' + T.primary + ';--sea-deep:' + T.primary + '}}');
+    if (T.ink) out.push('.hero,:root:not([data-theme="dark"]) .stats{background-color:' + T.ink + '}');
+    if (T.customCss) out.push(String(T.customCss).replace(/<\/style/gi, ''));
+    return out.length ? '<style>' + out.join('\n') + '</style>\n' : '';
+  }
+  function iconLinks(site, file) {
+    var ic = site.favicon || site.logo;
+    if (!ic) return '<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E🌊%3C/text%3E%3C/svg%3E">\n';
+    var h = esc(asset(file, ic));
+    return '<link rel="icon" href="' + h + '">\n<link rel="apple-touch-icon" href="' + h + '">\n';
+  }
+  function brandMark(site, file) {
+    return site.logo ? '<img class="brand-logo" src="' + esc(asset(file, site.logo)) + '" alt="" width="40" height="40">' : '<span class="brand-mark" aria-hidden="true">' + brandSvg() + '</span>';
+  }
+  function show(site, key) { var h = site.homeSections || {}; return h[key] !== false; }
+
   /* ---------- shared layout ---------- */
   function langLinks(site, file, lang, alternates) {
     return LANGS.map(function (l) {
@@ -135,7 +176,8 @@
     var img = o.image ? (isAbs(o.image) ? o.image : absUrl(site, o.image)) : (site.hero && site.hero.image ? (isAbs(site.hero.image) ? site.hero.image : absUrl(site, site.hero.image)) : '');
     var ga = site.analytics ? '<script async src="https://www.googletagmanager.com/gtag/js?id=' + esc(site.analytics) + '"></script>' +
       '<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","' + esc(site.analytics) + '");</script>' : '';
-    return '<!DOCTYPE html>\n<html lang="' + lang + '" dir="' + (lang === 'ar' ? 'rtl' : 'ltr') + '">\n<head>\n' +
+    var mode = th(site).mode;
+    return '<!DOCTYPE html>\n<html lang="' + lang + '" dir="' + (lang === 'ar' ? 'rtl' : 'ltr') + '"' + (mode === 'dark' || mode === 'light' ? ' data-theme="' + mode + '"' : '') + '>\n<head>\n' +
       '<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n' +
       '<title>' + esc(o.title) + '</title>\n' +
       '<meta name="description" content="' + esc(o.description) + '">\n' +
@@ -151,10 +193,10 @@
       '<meta name="twitter:card" content="summary_large_image">\n' +
       (site.verification && site.verification.google ? '<meta name="google-site-verification" content="' + esc(site.verification.google) + '">\n' : '') +
       '<meta name="theme-color" content="#0b1e2d">\n' +
-      '<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E🌊%3C/text%3E%3C/svg%3E">\n' +
+      iconLinks(site, file) +
       '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
-      '<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">\n' +
-      '<link rel="stylesheet" href="' + rel(file, 'assets/style.css') + '?v=' + (site.version || 1) + '">\n' +
+      fontLink(site) + '\n' +
+      '<link rel="stylesheet" href="' + rel(file, 'assets/style.css') + '?v=' + (site.version || 1) + '">\n' + themeCss(site) +
       '<script>try{var th=localStorage.getItem("ks-theme");if(th)document.documentElement.dataset.theme=th;}catch(e){}</script>\n' +
       (o.schema ? '<script type="application/ld+json">' + JSON.stringify(o.schema).replace(/</g, '\\u003c') + '</script>\n' : '') +
       ga + '</head>\n';
@@ -165,7 +207,7 @@
     return '<body class="lang-' + lang + (o.bodyClass ? ' ' + o.bodyClass : '') + '">\n' +
       '<a class="skip" href="#main">' + (lang === 'ar' ? 'انتقل إلى المحتوى' : lang === 'fr' ? 'Aller au contenu' : lang === 'es' ? 'Ir al contenido' : 'Skip to content') + '</a>\n' +
       '<header class="top"><div class="wrap top-in">' +
-      '<a class="brand" href="' + rel(file, prefix(lang)) + '"><span class="brand-mark" aria-hidden="true">' + brandSvg() + '</span>' +
+      '<a class="brand" href="' + rel(file, prefix(lang)) + '">' + brandMark(site, file) +
       '<span class="brand-txt"><b>' + esc(t(site.name, lang)) + '</b><small>' + esc(lang === 'ar' ? 'Ksar Sghir' : 'القصر الصغير') + '</small></span></a>' +
       '<nav class="nav" id="nav" aria-label="' + esc(UI[lang].menu) + '">' + navHtml(site, file, lang, o.current) + '</nav>' +
       '<div class="tools"><div class="langs" role="group" aria-label="' + UI[lang].lang + '">' + langLinks(site, file, lang, o.alternates) + '</div>' +
@@ -185,7 +227,7 @@
       return '<a href="' + esc(s.url) + '" rel="noopener" target="_blank">' + esc(s.name) + '</a>';
     }).join('');
     return '<footer class="foot"><div class="wrap">' +
-      '<div class="f-grid"><div class="f-about"><a class="brand" href="' + rel(file, prefix(lang)) + '"><span class="brand-mark" aria-hidden="true">' + brandSvg() + '</span><span class="brand-txt"><b>' + esc(t(site.name, lang)) + '</b></span></a>' +
+      '<div class="f-grid"><div class="f-about"><a class="brand" href="' + rel(file, prefix(lang)) + '">' + brandMark(site, file) + '<span class="brand-txt"><b>' + esc(t(site.name, lang)) + '</b></span></a>' +
       '<p>' + esc(t(site.tagline, lang)) + '</p>' + (social ? '<div class="social" aria-label="' + esc(UI[lang].follow) + '">' + social + '</div>' : '') + '</div>' + cols + '</div>' +
       '<p class="copy">© ' + new Date().getFullYear() + ' ' + esc(t(site.name, lang)) + ' · ' + esc(site.owner || '') + ' · ' + esc(UI[lang].rights) + '</p>' +
       '</div></footer>\n<script src="' + rel(file, 'assets/site.js') + '?v=' + (site.version || 1) + '" defer></script>\n</body>\n</html>\n';
@@ -218,6 +260,68 @@
     return '<aside class="ad" aria-label="' + esc(UI[lang].ad) + '"><span>' + esc(UI[lang].ad) + '</span>' + html + '</aside>';
   }
 
+
+  /* ---------- homepage extra sections ---------- */
+  var LIVE_UI = {
+    ar: { title: 'القصر الصغير الآن', weather: 'الطقس', sea: 'حالة البحر', prayer: 'مواقيت الصلاة', waves: 'الموج', water: 'حرارة الماء', wind: 'الرياح', humidity: 'الرطوبة', period: 'فترة الموج', next: 'الصلاة القادمة', approx: 'مواقيت تقريبية حسب موقع القصر الصغير', unavailable: 'غير متاح حالياً', more: 'التفاصيل',
+      prayers: { Fajr: 'الفجر', Sunrise: 'الشروق', Dhuhr: 'الظهر', Asr: 'العصر', Maghrib: 'المغرب', Isha: 'العشاء' }, seaStates: ['هادئ', 'خفيف', 'متوسط', 'هائج'],
+      codes: { clear: 'صافٍ', partly: 'غائم جزئياً', cloudy: 'غائم', fog: 'ضباب', drizzle: 'رذاذ', rain: 'ممطر', snow: 'ثلج', showers: 'زخات مطر', storm: 'عاصفة رعدية' } },
+    fr: { title: 'Ksar Sghir en direct', weather: 'Météo', sea: 'État de la mer', prayer: 'Horaires de prière', waves: 'Vagues', water: 'Eau', wind: 'Vent', humidity: 'Humidité', period: 'Période', next: 'Prochaine prière', approx: 'Horaires approximatifs pour Ksar Sghir', unavailable: 'Indisponible pour le moment', more: 'Détails',
+      prayers: { Fajr: 'Fajr', Sunrise: 'Chourouk', Dhuhr: 'Dohr', Asr: 'Asr', Maghrib: 'Maghrib', Isha: 'Icha' }, seaStates: ['Calme', 'Peu agitée', 'Agitée', 'Forte'],
+      codes: { clear: 'Ensoleillé', partly: 'Partiellement nuageux', cloudy: 'Nuageux', fog: 'Brouillard', drizzle: 'Bruine', rain: 'Pluie', snow: 'Neige', showers: 'Averses', storm: 'Orage' } },
+    en: { title: 'Ksar Sghir right now', weather: 'Weather', sea: 'Sea conditions', prayer: 'Prayer times', waves: 'Waves', water: 'Water', wind: 'Wind', humidity: 'Humidity', period: 'Period', next: 'Next prayer', approx: 'Approximate times for Ksar Sghir', unavailable: 'Not available right now', more: 'Details',
+      prayers: { Fajr: 'Fajr', Sunrise: 'Sunrise', Dhuhr: 'Dhuhr', Asr: 'Asr', Maghrib: 'Maghrib', Isha: 'Isha' }, seaStates: ['Calm', 'Slight', 'Moderate', 'Rough'],
+      codes: { clear: 'Clear', partly: 'Partly cloudy', cloudy: 'Cloudy', fog: 'Fog', drizzle: 'Drizzle', rain: 'Rain', snow: 'Snow', showers: 'Showers', storm: 'Thunderstorm' } },
+    es: { title: 'Alcazarseguer ahora', weather: 'Tiempo', sea: 'Estado del mar', prayer: 'Horarios de oración', waves: 'Olas', water: 'Agua', wind: 'Viento', humidity: 'Humedad', period: 'Periodo', next: 'Próxima oración', approx: 'Horarios aproximados para Alcazarseguer', unavailable: 'No disponible ahora', more: 'Detalles',
+      prayers: { Fajr: 'Fajr', Sunrise: 'Amanecer', Dhuhr: 'Dhuhr', Asr: 'Asr', Maghrib: 'Maghrib', Isha: 'Isha' }, seaStates: ['Calma', 'Marejadilla', 'Marejada', 'Fuerte'],
+      codes: { clear: 'Despejado', partly: 'Parcialmente nublado', cloudy: 'Nublado', fog: 'Niebla', drizzle: 'Llovizna', rain: 'Lluvia', snow: 'Nieve', showers: 'Chubascos', storm: 'Tormenta' } }
+  };
+  function liveSection(site, file, lang) {
+    var w = site.live || {}, L = LIVE_UI[lang];
+    var parts = [];
+    var link = function (key) { var u = w[key + 'Url']; return u ? '<a class="live-more" href="' + esc(linkHref(site, file, lang, { url: u })) + '">' + esc(L.more) + '</a>' : ''; };
+    if (w.weather !== false) parts.push('<div class="live-card" data-live="weather"><div class="live-h"><h3>' + esc(L.weather) + '</h3>' + link('weather') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
+    if (w.sea !== false) parts.push('<div class="live-card" data-live="sea"><div class="live-h"><h3>' + esc(L.sea) + '</h3>' + link('sea') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
+    if (w.prayer !== false) parts.push('<div class="live-card" data-live="prayer"><div class="live-h"><h3>' + esc(L.prayer) + '</h3>' + link('prayer') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
+    if (!parts.length) return '';
+    var cfg = { lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, seaLat: w.seaLat || 35.87, seaLng: w.seaLng || -5.55, method: w.method || 21, tune: w.tune || '', ui: L };
+    return '<section class="wrap block live" aria-labelledby="live-t"><h2 class="block-title" id="live-t">' + esc(L.title) + '</h2><div class="live-grid">' + parts.join('') + '</div>' +
+      '<script type="application/json" id="ks-live">' + JSON.stringify(cfg).replace(/</g, '\\u003c') + '</script></section>';
+  }
+  function servicesSection(site, file, lang) {
+    var list = site.services || []; if (!list.length) return '';
+    var S = site.servicesBlock || {};
+    return '<section class="wrap block"><h2 class="block-title">' + esc(t(S.title, lang) || { ar: 'خدماتنا', fr: 'Nos services', en: 'Our services', es: 'Nuestros servicios' }[lang]) + '</h2><div class="svc-grid">' +
+      list.map(function (x) {
+        var ext = isAbs(x.url);
+        return '<a class="svc" href="' + esc(linkHref(site, file, lang, x)) + '"' + (ext ? ' rel="noopener"' : '') + '><span class="svc-i" aria-hidden="true">' + esc(x.icon || '') + '</span><b>' + esc(t(x.title, lang)) + '</b><span>' + esc(t(x.text, lang)) + '</span></a>';
+      }).join('') + '</div></section>';
+  }
+  function gallerySection(site, file, lang) {
+    var g = site.homeGallery || {}, imgs = (g.images || []).filter(function (i) { return i && i.src; });
+    if (!imgs.length) return '';
+    var more = g.url ? '<a class="btn btn-ghost" href="' + esc(linkHref(site, file, lang, { url: g.url, i18n: g.i18n })) + '"' + (isAbs(g.url) ? ' rel="noopener"' : '') + '>' + esc(t(g.cta, lang) || { ar: 'عرض كل الصور', fr: 'Voir toutes les photos', en: 'See all photos', es: 'Ver todas las fotos' }[lang]) + '</a>' : '';
+    return '<section class="wrap block gal-home"><div class="block-head"><div><h2 class="block-title">' + esc(t(g.title, lang) || UI[lang].gallery) + '</h2>' +
+      (t(g.subtitle, lang) ? '<p class="muted-p">' + esc(t(g.subtitle, lang)) + '</p>' : '') + '</div>' + more + '</div>' +
+      '<div class="gal-row">' + imgs.slice(0, 6).map(function (i) {
+        var alt = t(i.alt, lang) || t(site.name, lang);
+        return '<figure><img src="' + esc(asset(file, i.src)) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async"></figure>';
+      }).join('') + '</div></section>';
+  }
+  function ratingSection(site, file, lang) {
+    var r = site.rating || {}; if (r.enabled === false) return '';
+    var T = { ar: ['قيّم الموقع', 'رأيك كيعاونا نحسنو الدليل.', 'شكراً على التقييم!', 'شارك رأيك على Google', 'شارك رأيك على Facebook', 'نجمة', 'نجوم'],
+      fr: ['Notez le site', 'Votre avis nous aide à améliorer ce guide.', 'Merci pour votre note !', 'Laisser un avis sur Google', 'Laisser un avis sur Facebook', 'étoile', 'étoiles'],
+      en: ['Rate this site', 'Your feedback helps us improve this guide.', 'Thanks for your rating!', 'Leave a review on Google', 'Leave a review on Facebook', 'star', 'stars'],
+      es: ['Valora el sitio', 'Tu opinión nos ayuda a mejorar esta guía.', '¡Gracias por tu valoración!', 'Deja una reseña en Google', 'Deja una reseña en Facebook', 'estrella', 'estrellas'] }[lang];
+    var btns = (r.google ? '<a class="btn" href="' + esc(r.google) + '" target="_blank" rel="noopener">' + esc(T[3]) + '</a>' : '') +
+      (r.facebook ? '<a class="btn btn-ghost" href="' + esc(r.facebook) + '" target="_blank" rel="noopener">' + esc(T[4]) + '</a>' : '');
+    var stars = ''; for (var i = 1; i <= 5; i++) stars += '<button type="button" data-star="' + i + '" aria-label="' + i + ' ' + (i === 1 ? T[5] : T[6]) + '">★</button>';
+    return '<section class="rate"><div class="wrap rate-in"><h2 class="block-title">' + esc(t(r.title, lang) || T[0]) + '</h2><p>' + esc(t(r.text, lang) || T[1]) + '</p>' +
+      '<div class="stars" role="group" aria-label="' + esc(T[0]) + '" data-rating>' + stars + '</div>' +
+      '<p class="rate-thanks" hidden>' + esc(T[2]) + '</p>' + (btns ? '<div class="rate-btns">' + btns + '</div>' : '') + '</div></section>';
+  }
+
   /* ---------- pages ---------- */
   function homePage(site, articles, lang) {
     var file = prefix(lang) + 'index.html', dir = prefix(lang);
@@ -244,15 +348,19 @@
       '<p class="hero-sub">' + esc(t(h.subtitle, lang)) + '</p>' +
       '<a class="btn" href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(t(h.cta, lang) || UI[lang].explore) + '</a>' +
       '</div><svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40c160-30 320-30 480 0s320 30 480 0 320-30 480 0v40H0z"/></svg></section>' +
+      (show(site, 'live') ? liveSection(site, file, lang) : '') +
       adSlot(site, 'top', lang) +
-      (t(site.intro, lang) ? '<section class="wrap intro prose">' + t(site.intro, lang) + '</section>' : '') +
-      (feat ? '<section class="wrap block"><h2 class="block-title">' + esc(UI[lang].featured) + '</h2>' + card(site, file, feat, lang, true) + '</section>' : '') +
-      (rest.length ? '<section class="wrap block"><div class="block-head"><h2 class="block-title">' + esc(UI[lang].latest) + '</h2><a href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(UI[lang].allTourism) + '</a></div>' +
+      (show(site, 'intro') && t(site.intro, lang) ? '<section class="wrap intro prose">' + t(site.intro, lang) + '</section>' : '') +
+      (show(site, 'featured') && feat ? '<section class="wrap block"><h2 class="block-title">' + esc(UI[lang].featured) + '</h2>' + card(site, file, feat, lang, true) + '</section>' : '') +
+      (show(site, 'latest') && rest.length ? '<section class="wrap block"><div class="block-head"><h2 class="block-title">' + esc(UI[lang].latest) + '</h2><a href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(UI[lang].allTourism) + '</a></div>' +
         '<div class="grid">' + rest.map(function (a) { return card(site, file, a, lang); }).join('') + '</div></section>' : '') +
-      (cats.length ? '<section class="wrap block"><div class="chips">' + cats.map(function (c) {
+      (show(site, 'gallery') ? gallerySection(site, file, lang) : '') +
+      (show(site, 'services') ? servicesSection(site, file, lang) : '') +
+      (show(site, 'categories') && cats.length ? '<section class="wrap block"><div class="chips">' + cats.map(function (c) {
         return '<a class="chip" href="' + rel(file, prefix(lang) + 'tourisme/') + '#' + esc(c.id) + '">' + esc((c.icon || '') + ' ' + t(c.name, lang)) + '</a>';
       }).join('') + '</div></section>' : '') +
-      (stats ? '<section class="stats"><div class="wrap stats-in">' + stats + '</div></section>' : '') +
+      (show(site, 'stats') && stats ? '<section class="stats"><div class="wrap stats-in">' + stats + '</div></section>' : '') +
+      (show(site, 'rating') ? ratingSection(site, file, lang) : '') +
       '</main>\n' + footer(site, o);
   }
 
@@ -415,6 +523,6 @@
   }
 
   var api = { LANGS: LANGS, UI: UI, buildAll: buildAll, articlePage: articlePage, homePage: homePage, tourismPage: tourismPage,
-    seoCheck: seoCheck, articleDir: articleDir, articleFile: articleFile, hasLang: hasLang, strip: strip, esc: esc, catLabel: catLabel };
+    seoCheck: seoCheck, FONTS: FONTS, DISPLAY: DISPLAY, articleDir: articleDir, articleFile: articleFile, hasLang: hasLang, strip: strip, esc: esc, catLabel: catLabel };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.KSBuild = api;
 })(this);
