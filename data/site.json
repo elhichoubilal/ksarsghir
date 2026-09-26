@@ -1,5 +1,5 @@
 {
- "version": "muiv4q2p",
+ "version": "muivyl57",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -492,5 +492,10 @@
   "social": true
  },
  "theme": {},
- "homeSections": {}
+ "homeSections": {},
+ "homeVideo": {
+  "url": "",
+  "title": {},
+  "text": {}
+ }
 }
