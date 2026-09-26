@@ -310,5 +310,150 @@
   "about/",
   "contact/",
   "advertise/"
- ]
+ ],
+ "live": {
+  "weather": true,
+  "sea": true,
+  "prayer": true,
+  "lat": 35.8426,
+  "lng": -5.5596,
+  "seaLat": 35.87,
+  "seaLng": -5.55,
+  "method": 21,
+  "tune": "",
+  "weatherUrl": "meteo/",
+  "seaUrl": "meteo/",
+  "prayerUrl": "salat/"
+ },
+ "homeGallery": {
+  "title": {
+   "ar": "معرض الصور",
+   "fr": "Galerie photos",
+   "en": "Photo gallery",
+   "es": "Galería de fotos"
+  },
+  "subtitle": {
+   "ar": "لقطات من عدسة بلال الهيشو",
+   "fr": "Photos de Bilal El Hichou",
+   "en": "Photos by Bilal El Hichou",
+   "es": "Fotos de Bilal El Hichou"
+  },
+  "cta": {
+   "ar": "عرض كل الصور",
+   "fr": "Voir toutes les photos",
+   "en": "See all photos",
+   "es": "Ver todas las fotos"
+  },
+  "url": "https://gallery.ksarsghir.com",
+  "images": [
+   {
+    "src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjETG-3niCoeG0AcNV2SdGpI3ApVHoLYV-F2d3OgpqvSrI4lMF32QLj_dKeEOkOcOnwJ6OO0BjAuem3ss-jk0CJUadghleD4OeVXyI2I84F31shW3_X6Ul3t6L1g7DBx3KXvpl0kBphfDFYqr2bryoUeYT1IAM_brbGgptbLLR6XVi58b7NjsMX5cvVrFY/s1200/4353.jpg",
+    "alt": {
+     "ar": "ميناء طنجة المتوسط",
+     "fr": "Port Tanger Med",
+     "en": "Tanger Med port",
+     "es": "Puerto Tánger Med"
+    }
+   },
+   {
+    "src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyF6zy_A4LJ2L-xiH04Zd6XJEDMXIaOmyzWtN3vaFdByi2ysaLnHUcv4jYzuv5UqLPoM44_VLDfwr4MWEGATxl4QX7J7Ad0Z9bLL6kqB5lHnCQOf3EaC_snAy2TJCCt14okvSQDDPb0XvpNRZ6Gmhq6VIIHpESdyZ3P2uaZaSIm7PfxqtSHWL4-TUFwdU/s1200/8510.jpg",
+    "alt": {
+     "ar": "غروب الشمس على شاطئ القصر الصغير",
+     "fr": "Coucher de soleil à Ksar Sghir",
+     "en": "Sunset over Ksar Sghir beach",
+     "es": "Atardecer en Alcazarseguer"
+    }
+   },
+   {
+    "src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHQolv6RmyUqkJCdSImtvNinU325jN_uTkEdP2K3Zn1y1zSmnlHdtGk7rMCKJFh5MGbspcJ_5pHzLRCriLKIq3DmTI0Pl10-1NCfQLSHrPuheemplMGTpTmmPLjHuia3FA0XTRpXU1NAow2H93nBBEVegH8tT5Y_zbrCmKwvWOHI040KHDdzidEpbgnOI/s1200/3385.jpg",
+    "alt": {
+     "ar": "شاطئ القصر الصغير",
+     "fr": "Plage de Ksar Sghir",
+     "en": "Ksar Sghir beach",
+     "es": "Playa de Alcazarseguer"
+    }
+   }
+  ]
+ },
+ "servicesBlock": {
+  "title": {
+   "ar": "خدماتنا",
+   "fr": "Nos services",
+   "en": "Our services",
+   "es": "Nuestros servicios"
+  }
+ },
+ "services": [
+  {
+   "icon": "🌤️",
+   "title": {
+    "ar": "الطقس والبحر",
+    "fr": "Météo et mer",
+    "en": "Weather & sea",
+    "es": "Tiempo y mar"
+   },
+   "text": {
+    "ar": "نشرة جوية 7 أيام + حالة البحر",
+    "fr": "Prévisions 7 jours + état de la mer",
+    "en": "7-day forecast + sea conditions",
+    "es": "Previsión 7 días + estado del mar"
+   },
+   "url": "meteo/"
+  },
+  {
+   "icon": "🕌",
+   "title": {
+    "ar": "مواقيت الصلاة",
+    "fr": "Horaires de prière",
+    "en": "Prayer times",
+    "es": "Horarios de oración"
+   },
+   "text": {
+    "ar": "أوقات الأذان يومياً + اتجاه القبلة",
+    "fr": "Horaires quotidiens + direction de la Qibla",
+    "en": "Daily times + Qibla direction",
+    "es": "Horarios diarios + dirección de la Qibla"
+   },
+   "url": "salat/"
+  },
+  {
+   "icon": "🖼️",
+   "title": {
+    "ar": "متجر الصور",
+    "fr": "Boutique photos",
+    "en": "Photo shop",
+    "es": "Tienda de fotos"
+   },
+   "text": {
+    "ar": "اقتن صوراً احترافية للقصر الصغير",
+    "fr": "Photos professionnelles de Ksar Sghir",
+    "en": "Professional photos of Ksar Sghir",
+    "es": "Fotos profesionales de Alcazarseguer"
+   },
+   "url": "https://store.ksarsghir.com"
+  },
+  {
+   "icon": "📢",
+   "title": {
+    "ar": "أعلن معنا",
+    "fr": "Publicité",
+    "en": "Advertise",
+    "es": "Publicidad"
+   },
+   "text": {
+    "ar": "وصل إلى 77K متابع في المنطقة",
+    "fr": "Touchez 77K abonnés dans la région",
+    "en": "Reach 77K followers in the region",
+    "es": "Llega a 77K seguidores en la región"
+   },
+   "url": "advertise/"
+  }
+ ],
+ "rating": {
+  "enabled": true,
+  "google": "",
+  "facebook": "https://www.facebook.com/ksarsghircity/reviews",
+  "title": {},
+  "text": {}
+ }
 }
