@@ -112,4 +112,12 @@
     });
     rate.addEventListener('mouseleave', function () { paint(saved); });
   }
+
+  /* ---------- ticker speed ---------- */
+  document.querySelectorAll('.ticker').forEach(function (tk) {
+    var set = tk.querySelector('.tk-set'), move = tk.querySelector('.tk-move'); if (!set || !move) return;
+    var pps = { slow: 35, normal: 60, fast: 100 }[tk.dataset.speed] || 60;
+    var fit = function () { move.style.setProperty('--dur', Math.max(8, set.offsetWidth / pps) + 's'); };
+    fit(); window.addEventListener('resize', fit);
+  });
 })();

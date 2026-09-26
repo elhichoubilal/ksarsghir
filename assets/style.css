@@ -215,10 +215,23 @@ h1,h2,h3{line-height:1.25;margin:0}
 .brand-logo{width:40px;height:40px;object-fit:contain;border-radius:10px}
 
 /* featured card: fixed image ratio, no empty space */
-.card-big a{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:stretch}
-.card-big .card-img{aspect-ratio:16/10;min-height:0;height:100%}
-.card-big .card-img img{height:100%}
-@media (max-width:760px){.card-big .card-img{aspect-ratio:16/10;height:auto}}
+@media (min-width:761px){
+  .card-big a{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);align-items:stretch}
+  .card-big .card-img{aspect-ratio:16/10;min-height:0;height:100%}
+  .card-big .card-img img{height:100%}
+}
+@media (max-width:760px){
+  .card-big a{display:flex;flex-direction:column}
+  .card-big .card-img{aspect-ratio:16/10;min-height:0;height:auto}
+  .card-big .card-body{padding:18px 20px 22px}
+  .card-big .card-title{font-size:24px}
+  .card-big p{font-size:16px}
+}
+/* "see all" links next to section titles look like buttons */
+.block-head>a{display:inline-flex;align-items:center;white-space:nowrap;text-decoration:none;font-weight:700;font-size:15px;
+  color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:8px 18px;background:var(--surface)}
+.block-head>a:hover{border-color:var(--sea);background:var(--sea-soft)}
+@media (max-width:600px){.block-head{flex-wrap:wrap}.block-head>a{font-size:14px;padding:7px 14px}}
 
 /* live: weather, sea, prayer */
 .live-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
@@ -276,3 +289,36 @@ h1,h2,h3{line-height:1.25;margin:0}
 .rate-thanks{font-weight:800;color:var(--ink)!important}
 .rate-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .rate-btns .btn{align-self:center}
+
+/* top bar: ticker + social icons */
+.topbar{background:var(--ink);color:var(--bg);font-size:14px;position:relative;z-index:51}
+:root[data-theme="dark"] .topbar{background:#06111b;color:var(--ink)}
+.topbar-in{display:flex;align-items:center;gap:14px;min-height:38px}
+.top-soc{display:flex;gap:2px;margin-inline-start:auto;flex-shrink:0}
+.top-soc .soc{color:inherit;opacity:.85;width:32px;height:32px}
+.top-soc .soc:hover{opacity:1;background:rgba(255,255,255,.12)}
+.soc{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:50%;text-decoration:none;color:var(--ink-2)}
+.ticker{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.tk-label{flex-shrink:0;background:var(--amber);color:#1b1206;font-weight:800;font-size:13px;padding:3px 12px;border-radius:999px}
+.tk-track{overflow:hidden;flex:1;min-width:0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.tk-move{display:flex;width:max-content;animation:tk-ltr var(--dur,40s) linear infinite}
+[dir="rtl"] .tk-move{animation-name:tk-rtl}
+.ticker:hover .tk-move,.ticker:focus-within .tk-move{animation-play-state:paused}
+.tk-set{display:flex;align-items:center;white-space:nowrap}
+.tk-item a{color:inherit;text-decoration:none}
+.tk-item a:hover{text-decoration:underline}
+.tk-sep{opacity:.5;padding-inline:18px}
+@keyframes tk-ltr{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes tk-rtl{from{transform:translateX(0)}to{transform:translateX(50%)}}
+@media (prefers-reduced-motion:reduce){.tk-move{animation:none!important}.tk-track{overflow-x:auto}.tk-set+.tk-set{display:none}}
+@media (max-width:600px){.topbar .top-soc{display:none}.topbar:not(.has-ticker){display:none}}
+
+/* footer social icons */
+.social{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.social>span{font-weight:800;font-size:14px;color:var(--ink)}
+.foot-soc{display:flex;gap:6px;flex-wrap:wrap}
+.foot-soc .soc{background:var(--bg);border:1px solid var(--line)}
+.foot-soc .soc:hover{color:#fff;border-color:transparent}
+.soc-facebook:hover{background:#1877f2!important}.soc-instagram:hover{background:#d62976!important}.soc-whatsapp:hover{background:#1f9e55!important}
+.soc-youtube:hover{background:#e62117!important}.soc-tiktok:hover,.soc-x:hover{background:#111!important}.soc-telegram:hover{background:#229ed9!important}
+.soc-email:hover,.soc-link:hover{background:var(--sea-deep)!important}

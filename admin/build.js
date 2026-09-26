@@ -144,6 +144,60 @@
   }
   function show(site, key) { var h = site.homeSections || {}; return h[key] !== false; }
 
+
+  /* ---------- social icons + top bar + ticker ---------- */
+  var SOCIAL_SVG = {
+    facebook: '<path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V8.8c0-.5.3-.8.5-.8z"/>',
+    instagram: '<path d="M12 7.3A4.7 4.7 0 1 0 12 16.7 4.7 4.7 0 0 0 12 7.3zm0 7.7a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm4.9-7.9a1.1 1.1 0 1 1-2.2 0 1.1 1.1 0 0 1 2.2 0zM12 3.6c2.7 0 3 0 4.1.1 2.7.1 4 1.4 4.1 4.1.1 1.1.1 1.4.1 4.2s0 3-.1 4.1c-.1 2.7-1.4 4-4.1 4.1-1.1.1-1.4.1-4.1.1s-3 0-4.1-.1c-2.7-.1-4-1.4-4.1-4.1-.1-1.1-.1-1.4-.1-4.1s0-3 .1-4.2c.1-2.7 1.4-4 4.1-4.1 1.1-.1 1.4-.1 4.1-.1zM12 2c-2.7 0-3.1 0-4.2.1C4.2 2.2 2.2 4.2 2.1 7.8 2 8.9 2 9.3 2 12s0 3.1.1 4.2c.2 3.6 2.2 5.6 5.7 5.7 1.1.1 1.5.1 4.2.1s3.1 0 4.2-.1c3.6-.2 5.6-2.2 5.7-5.7.1-1.1.1-1.5.1-4.2s0-3.1-.1-4.2c-.2-3.6-2.2-5.6-5.7-5.7C15.1 2 14.7 2 12 2z"/>',
+    whatsapp: '<path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/>',
+    youtube: '<path d="M22 8.2a3 3 0 0 0-2.1-2.1C18 5.6 12 5.6 12 5.6s-6 0-7.9.5A3 3 0 0 0 2 8.2 31 31 0 0 0 1.6 12 31 31 0 0 0 2 15.8a3 3 0 0 0 2.1 2.1c1.9.5 7.9.5 7.9.5s6 0 7.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .4-3.8 31 31 0 0 0-.4-3.8zM10 15V9l5.2 3z"/>',
+    tiktok: '<path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.3v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.5a6 6 0 1 0 5.1 5.9V9.1a7.6 7.6 0 0 0 4.5 1.4V7.2a4.4 4.4 0 0 1-3.4-1.4z"/>',
+    x: '<path d="M17.8 3h3.1l-6.8 7.7 8 10.3h-6.2l-4.9-6.3L5.4 21H2.3l7.3-8.3L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z"/>',
+    telegram: '<path d="M21.9 4.3 18.7 19.4c-.2 1-.9 1.3-1.7.8l-4.8-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.9 8.9-8c.4-.3-.1-.5-.6-.2L6.6 13.2 1.9 11.7c-1-.3-1-1 .2-1.5L20.6 3c.9-.3 1.6.2 1.3 1.3z"/>',
+    email: '<path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 2.4V17h16V7.4l-8 5.3zM5.2 7 12 11.5 18.8 7z"/>',
+    link: '<path d="M10.6 13.4a1 1 0 0 1 0-1.4l3.5-3.5a1 1 0 1 1 1.4 1.4L12 13.4a1 1 0 0 1-1.4 0zM8.5 19a4.5 4.5 0 0 1-3.2-7.7l2.1-2.1a1 1 0 1 1 1.4 1.4l-2.1 2.1a2.5 2.5 0 0 0 3.5 3.5l2.1-2.1a1 1 0 1 1 1.4 1.4l-2.1 2.1A4.5 4.5 0 0 1 8.5 19zm8.5-4.8a1 1 0 0 1-.7-1.7l2.1-2.1a2.5 2.5 0 0 0-3.5-3.5l-2.1 2.1a1 1 0 0 1-1.4-1.4l2.1-2.1a4.5 4.5 0 0 1 6.4 6.4l-2.2 2.1a1 1 0 0 1-.7.2z"/>'
+  };
+  function socialType(u) {
+    u = String(u || '').toLowerCase();
+    if (/facebook\.com|fb\.com|fb\.me/.test(u)) return 'facebook';
+    if (/instagram\.com/.test(u)) return 'instagram';
+    if (/wa\.me|whatsapp/.test(u)) return 'whatsapp';
+    if (/youtube\.com|youtu\.be/.test(u)) return 'youtube';
+    if (/tiktok\.com/.test(u)) return 'tiktok';
+    if (/(^|\/\/|\.)(x|twitter)\.com/.test(u)) return 'x';
+    if (/t\.me|telegram/.test(u)) return 'telegram';
+    if (/^mailto:/.test(u)) return 'email';
+    return 'link';
+  }
+  function socialIcons(site, cls) {
+    var list = (site.social || []).filter(function (x) { return x && x.url; });
+    if (!list.length) return '';
+    return '<div class="' + cls + '">' + list.map(function (x) {
+      var ty = x.icon || socialType(x.url);
+      return '<a class="soc soc-' + ty + '" href="' + esc(x.url) + '" target="_blank" rel="noopener" aria-label="' + esc(x.name || ty) + '" title="' + esc(x.name || ty) + '">' +
+        '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor">' + (SOCIAL_SVG[ty] || SOCIAL_SVG.link) + '</svg></a>';
+    }).join('') + '</div>';
+  }
+  function ticker(site, file, lang) {
+    var k = site.ticker || {};
+    if (!k.enabled) return '';
+    var items = (k.items || []).filter(function (i) { return t(i.text, lang); });
+    if (!items.length) return '';
+    var one = items.map(function (i) {
+      var txt = esc(t(i.text, lang));
+      return '<span class="tk-item">' + (i.url ? '<a href="' + esc(linkHref(site, file, lang, i)) + '"' + (isAbs(i.url) ? ' rel="noopener"' : '') + '>' + txt + '</a>' : txt) + '</span>';
+    }).join('<span class="tk-sep" aria-hidden="true">•</span>');
+    var label = t(k.label, lang);
+    return '<div class="ticker" data-speed="' + esc(k.speed || 'normal') + '">' + (label ? '<span class="tk-label">' + esc(label) + '</span>' : '') +
+      '<div class="tk-track"><div class="tk-move"><div class="tk-set">' + one + '<span class="tk-sep" aria-hidden="true">•</span></div><div class="tk-set" aria-hidden="true">' + one + '<span class="tk-sep">•</span></div></div></div></div>';
+  }
+  function topbar(site, file, lang) {
+    var tb = site.topbar || {};
+    var tk = ticker(site, file, lang), so = tb.social !== false ? socialIcons(site, 'top-soc') : '';
+    if (!tk && !so) return '';
+    return '<div class="topbar' + (tk ? ' has-ticker' : '') + '"><div class="wrap topbar-in">' + (tk || '<span></span>') + so + '</div></div>\n';
+  }
+
   /* ---------- shared layout ---------- */
   function langLinks(site, file, lang, alternates) {
     return LANGS.map(function (l) {
@@ -206,7 +260,7 @@
     var lang = o.lang, file = o.file;
     return '<body class="lang-' + lang + (o.bodyClass ? ' ' + o.bodyClass : '') + '">\n' +
       '<a class="skip" href="#main">' + (lang === 'ar' ? 'انتقل إلى المحتوى' : lang === 'fr' ? 'Aller au contenu' : lang === 'es' ? 'Ir al contenido' : 'Skip to content') + '</a>\n' +
-      '<header class="top"><div class="wrap top-in">' +
+      topbar(site, file, lang) + '<header class="top"><div class="wrap top-in">' +
       '<a class="brand" href="' + rel(file, prefix(lang)) + '">' + brandMark(site, file) +
       '<span class="brand-txt"><b>' + esc(t(site.name, lang)) + '</b><small>' + esc(lang === 'ar' ? 'Ksar Sghir' : 'القصر الصغير') + '</small></span></a>' +
       '<nav class="nav" id="nav" aria-label="' + esc(UI[lang].menu) + '">' + navHtml(site, file, lang, o.current) + '</nav>' +
@@ -223,12 +277,10 @@
         return '<li><a href="' + esc(linkHref(site, file, lang, l)) + '">' + esc(t(l.label, lang)) + '</a></li>';
       }).join('') + '</ul></div>';
     }).join('');
-    var social = (site.social || []).map(function (s) {
-      return '<a href="' + esc(s.url) + '" rel="noopener" target="_blank">' + esc(s.name) + '</a>';
-    }).join('');
+    var social = socialIcons(site, 'foot-soc');
     return '<footer class="foot"><div class="wrap">' +
       '<div class="f-grid"><div class="f-about"><a class="brand" href="' + rel(file, prefix(lang)) + '">' + brandMark(site, file) + '<span class="brand-txt"><b>' + esc(t(site.name, lang)) + '</b></span></a>' +
-      '<p>' + esc(t(site.tagline, lang)) + '</p>' + (social ? '<div class="social" aria-label="' + esc(UI[lang].follow) + '">' + social + '</div>' : '') + '</div>' + cols + '</div>' +
+      '<p>' + esc(t(site.tagline, lang)) + '</p>' + (social ? '<div class="social" aria-label="' + esc(UI[lang].follow) + '"><span>' + esc(UI[lang].follow) + '</span>' + social + '</div>' : '') + '</div>' + cols + '</div>' +
       '<p class="copy">© ' + new Date().getFullYear() + ' ' + esc(t(site.name, lang)) + ' · ' + esc(site.owner || '') + ' · ' + esc(UI[lang].rights) + '</p>' +
       '</div></footer>\n<script src="' + rel(file, 'assets/site.js') + '?v=' + (site.version || 1) + '" defer></script>\n</body>\n</html>\n';
   }
@@ -523,6 +575,6 @@
   }
 
   var api = { LANGS: LANGS, UI: UI, buildAll: buildAll, articlePage: articlePage, homePage: homePage, tourismPage: tourismPage,
-    seoCheck: seoCheck, FONTS: FONTS, DISPLAY: DISPLAY, articleDir: articleDir, articleFile: articleFile, hasLang: hasLang, strip: strip, esc: esc, catLabel: catLabel };
+    socialType: socialType, SOCIAL_SVG: SOCIAL_SVG, seoCheck: seoCheck, FONTS: FONTS, DISPLAY: DISPLAY, articleDir: articleDir, articleFile: articleFile, hasLang: hasLang, strip: strip, esc: esc, catLabel: catLabel };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.KSBuild = api;
 })(this);
