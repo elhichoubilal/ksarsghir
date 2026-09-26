@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>لوحة التحكم — القصر الصغير</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0b1e2d;--ink2:#3d5163;--ink3:#7b8c9a;--sea:#00b4d8;--seaD:#0077a8;--seaS:#e3f5fa;--amber:#f2a541;
+  --bg:#f3f6f8;--card:#fff;--line:#dde5eb;--ok:#15803d;--okS:#dcfce7;--bad:#b91c1c;--badS:#fee2e2;--warnS:#fef3c7;--r:12px}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:'Tajawal',system-ui,Arial,sans-serif;font-size:15px;color:var(--ink);background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--seaD)}
+:focus-visible{outline:3px solid var(--amber);outline-offset:1px}
+[hidden]{display:none!important}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:700;text-decoration:none;color:var(--ink);white-space:nowrap}
+.btn:hover{border-color:var(--sea)}
+.btn-p{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn-p:hover{background:#12324a}
+.btn-a{background:var(--amber);border-color:var(--amber);color:#1b1206}
+.btn-d{color:var(--bad);border-color:#f3c4c4}
+.btn-s{padding:5px 10px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:wait}
+label{display:block;font-weight:700;font-size:13px;color:var(--ink2);margin:12px 0 5px}
+.hint{font-weight:400;color:var(--ink3);font-size:12px}
+input[type=text],input[type=url],input[type=password],input[type=date],select,textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 11px}
+input:focus,select:focus,textarea:focus{border-color:var(--sea);outline:none;box-shadow:0 0 0 3px var(--seaS)}
+textarea{min-height:90px;resize:vertical;line-height:1.6}
+.ltr{direction:ltr;text-align:left}
+.code{unicode-bidi:plaintext;font-family:ui-monospace,Consolas,monospace;font-size:13px;direction:ltr;text-align:left;min-height:420px;white-space:pre;tab-size:2}
+.count{float:inline-end;font-weight:400;font-size:12px;color:var(--ink3)}
+.count.bad{color:var(--bad)}
+
+/* login */
+#login{min-height:100%;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 70% 20%,#0f3b57,#0b1e2d 60%)}
+.login-box{width:min(100%,420px);background:#fff;border-radius:20px;padding:30px}
+.login-box h1{margin:0 0 4px;font-size:24px}
+.login-box p{margin:0 0 10px;color:var(--ink3)}
+.login-box .btn-p{width:100%;justify-content:center;margin-top:18px;padding:12px}
+.err{background:var(--badS);color:var(--bad);border-radius:8px;padding:10px 12px;margin-top:12px;font-size:14px}
+
+/* app */
+#app{display:grid;grid-template-columns:230px 1fr;min-height:100%}
+.side{background:var(--ink);color:#cfe0ea;padding:20px 12px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:4px}
+.side .logo{color:#fff;font-weight:800;font-size:18px;padding:4px 12px 18px}
+.side .logo small{display:block;font-weight:400;font-size:12px;color:#7fa3b8;direction:ltr;text-align:right}
+.side button{all:unset;cursor:pointer;padding:10px 12px;border-radius:10px;display:flex;gap:10px;align-items:center}
+.side button:hover{background:#12324a}
+.side button[aria-current="page"]{background:var(--sea);color:#04212e;font-weight:800}
+.side .spacer{flex:1}
+.side a{color:#cfe0ea;padding:10px 12px;text-decoration:none;border-radius:10px}
+.side a:hover{background:#12324a}
+main{padding:24px clamp(14px,3vw,36px) 120px;min-width:0}
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.head h1{margin:0;font-size:26px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:16px}
+.card h2{margin:0 0 6px;font-size:17px}
+.muted{color:var(--ink3)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:1100px){.cols{grid-template-columns:1fr}}
+@media (max-width:780px){#app{grid-template-columns:1fr}.side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;padding:8px}.side .logo,.side .spacer{display:none}.side button,.side a{padding:8px 10px;font-size:14px}.two{grid-template-columns:1fr}}
+
+/* list */
+.search{max-width:320px}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px}
+.thumb{width:72px;height:50px;border-radius:8px;background:var(--seaS) center/cover;display:grid;place-items:center;font-size:20px}
+.item h3{margin:0;font-size:16px}
+.item .sub{font-size:13px;color:var(--ink3);display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:2px}
+.dots{display:inline-flex;gap:4px;direction:ltr}
+.dot{font-size:11px;font-weight:800;padding:1px 6px;border-radius:6px;background:var(--badS);color:var(--bad)}
+.dot.on{background:var(--okS);color:var(--ok)}
+.pill{font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--warnS);color:#92400e}
+.score{font-weight:800}
+.score.g{color:var(--ok)}.score.m{color:#b45309}.score.b{color:var(--bad)}
+@media (max-width:620px){.item{grid-template-columns:56px 1fr}.item .acts{grid-column:1/-1}.thumb{width:56px}}
+
+/* tabs */
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:-4px -4px 12px;padding:0 4px;overflow-x:auto}
+.tabs button{all:unset;cursor:pointer;padding:10px 14px;border-bottom:3px solid transparent;font-weight:700;color:var(--ink3);white-space:nowrap}
+.tabs button[aria-selected="true"]{color:var(--ink);border-color:var(--sea)}
+.tabs .ok{color:var(--ok)}.tabs .no{color:var(--bad)}
+.toolbar{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.toolbar .btn{font-size:12px;padding:4px 10px}
+
+/* images */
+.imgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.img{position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.img img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--seaS)}
+.img .bar{display:flex;gap:4px;padding:6px;flex-wrap:wrap}
+.img .bar .btn{font-size:11px;padding:3px 8px}
+.img .name{font-size:11px;color:var(--ink3);padding:0 6px 6px;direction:ltr;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cover-prev{width:100%;aspect-ratio:16/9;border-radius:10px;background:var(--seaS) center/cover;display:grid;place-items:center;color:var(--ink3);border:1px dashed var(--line)}
+.drop{border:2px dashed var(--line);border-radius:10px;padding:14px;text-align:center;color:var(--ink3);cursor:pointer}
+.drop.over{border-color:var(--sea);background:var(--seaS)}
+
+/* seo */
+.seo-score{font-size:30px;font-weight:800}
+.checks{list-style:none;padding:0;margin:8px 0 0;font-size:13px}
+.checks li{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--line)}
+.checks li:last-child{border:0}
+.gpreview{border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;background:#fff}
+.gpreview .u{font-size:12px;color:#1e6b33;direction:ltr;text-align:left}
+.gpreview .t{color:#1a0dab;font-size:17px;line-height:1.3;margin:2px 0}
+.gpreview .d{font-size:13px;color:#4d5156}
+
+/* repeatable rows */
+.rep{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;background:#fbfdfe}
+.rep .rep-h{display:flex;gap:6px;justify-content:space-between;align-items:center}
+.l4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.l4 .lab{font-size:11px;color:var(--ink3);font-weight:800;margin-bottom:2px}
+@media (max-width:900px){.l4{grid-template-columns:1fr 1fr}}
+
+/* publish bar + toast + modal */
+.pubbar{position:fixed;bottom:0;inset-inline:0;z-index:30;background:#fff;border-top:1px solid var(--line);padding:10px 20px;display:flex;gap:10px;align-items:center;justify-content:flex-end;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+@media (min-width:781px){.pubbar{inset-inline-start:230px}}
+.pubbar .status{margin-inline-end:auto;color:var(--ink3);font-size:14px}
+.toast{position:fixed;top:16px;inset-inline-start:50%;transform:translateX(50%);z-index:100;background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:90vw}
+[dir=ltr] .toast{transform:translateX(-50%)}
+.toast.bad{background:var(--bad)}
+.modal{position:fixed;inset:0;z-index:80;background:rgba(5,15,25,.6);display:grid;grid-template-rows:auto 1fr;padding:16px}
+.modal .mh{display:flex;gap:8px;align-items:center;background:#fff;padding:10px 14px;border-radius:12px 12px 0 0;flex-wrap:wrap}
+.modal iframe{width:100%;height:100%;border:0;background:#fff;border-radius:0 0 12px 12px;justify-self:center;transition:max-width .2s}
+.progress{height:4px;background:var(--seaS);border-radius:4px;overflow:hidden;width:120px}
+.progress i{display:block;height:100%;width:40%;background:var(--sea);animation:pr 1s infinite linear}
+@keyframes pr{from{transform:translateX(250%)}to{transform:translateX(-100%)}}
+.empty{text-align:center;padding:40px 20px;color:var(--ink3)}
+</style>
+</head>
+<body>
+
+<section id="login">
+  <form class="login-box" id="login-form" autocomplete="off">
+    <h1>لوحة التحكم</h1>
+    <p>القصر الصغير — ksarsghir.com</p>
+    <label for="f-repo">الريبو <span class="hint">(حساب/اسم)</span></label>
+    <input type="text" id="f-repo" class="ltr" value="elhichoubilal/ksarsghir" required>
+    <label for="f-branch">الفرع</label>
+    <input type="text" id="f-branch" class="ltr" value="main" required>
+    <label for="f-token">GitHub Token</label>
+    <input type="password" id="f-token" class="ltr" placeholder="ghp_… أو github_pat_…" required>
+    <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="f-remember"> تذكرني فهاد الجهاز</label>
+    <button class="btn btn-p" type="submit">دخول</button>
+    <div class="err" id="login-err" hidden></div>
+    <p class="hint" style="margin-top:14px">الـ Token كيتخزن غير فهاد المتصفح، وما كيترفع لأي مكان.</p>
+  </form>
+</section>
+
+<div id="app" hidden>
+  <nav class="side" aria-label="الأقسام">
+    <div class="logo">القصر الصغير<small id="side-repo"></small></div>
+    <button data-view="articles">📝 المواضيع</button>
+    <button data-view="home">🏠 الصفحة الرئيسية</button>
+    <button data-view="links">🔗 القائمة والروابط</button>
+    <button data-view="images">🖼️ الصور</button>
+    <button data-view="settings">⚙️ الإعدادات</button>
+    <div class="spacer"></div>
+    <a id="site-link" href="#" target="_blank" rel="noopener">↗ عرض الموقع</a>
+    <button id="logout">🚪 خروج</button>
+  </nav>
+  <main id="view" tabindex="-1"></main>
+  <div class="pubbar" id="pubbar">
+    <span class="status" id="status">جاهز</span>
+    <button class="btn btn-a" id="publish-btn" type="button">🚀 نشر التغييرات</button>
+  </div>
+</div>
+<input type="file" id="file-pick" accept="image/*" multiple hidden>
+
+<script src="build.js"></script>
+<script>
+(function(){
+'use strict';
+var B = window.KSBuild, LANGS = B.LANGS;
+var LN = {ar:'العربية',fr:'Français',en:'English',es:'Español'};
+var S = {repo:'',branch:'main',token:'',site:null,articles:[],manifest:{files:[]},css:'',dirty:false,imgCache:{},view:'articles',editing:null,editLang:'ar',homeLang:'ar'};
+var $ = function(s,r){return (r||document).querySelector(s);};
+var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));};
+function esc(s){return B.esc(s);}
+function clone(o){return JSON.parse(JSON.stringify(o));}
+function toast(msg,bad){var t=document.createElement('div');t.className='toast'+(bad?' bad':'');t.setAttribute('role','status');t.textContent=msg;document.body.appendChild(t);setTimeout(function(){t.remove();},bad?6000:3000);}
+function setStatus(html){$('#status').innerHTML=html;}
+function markDirty(){S.dirty=true;setStatus('⚠️ عندك تغييرات ما تنشراتش');}
+window.addEventListener('beforeunload',function(e){if(S.dirty){e.preventDefault();e.returnValue='';}});
+
+/* ---------- GitHub API ---------- */
+function gh(path,o){
+  o=o||{};
+  var h={'Authorization':'Bearer '+S.token,'Accept':o.accept||'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
+  if(o.body)h['Content-Type']='application/json';
+  return fetch('https://api.github.com/repos/'+S.repo+path,{method:o.method||'GET',headers:h,body:o.body?JSON.stringify(o.body):undefined,cache:'no-store'})
+    .then(function(r){
+      if(r.status===404&&o.allow404)return null;
+      if(!r.ok)return r.json().catch(function(){return{};}).then(function(j){
+        var m=j.message||'';
+        if(r.status===401)m='الـ Token غالط ولا سالا (401)';
+        else if(r.status===403)m='ما عندكش الصلاحية (403). تأكد أن الـ Token فيه صلاحية repo / Contents: write. '+m;
+        else if(r.status===404)m='ما لقيناش: '+path+' (404)';
+        throw new Error(m||('HTTP '+r.status));});
+      if(o.raw)return r.text();
+      return r.status===204?null:r.json();
+    });
+}
+function encPath(p){return p.split('/').map(encodeURIComponent).join('/');}
+function readFile(p){return gh('/contents/'+encPath(p)+'?ref='+encodeURIComponent(S.branch),{accept:'application/vnd.github.raw+json',raw:true,allow404:true});}
+function rawUrl(p){return 'https://raw.githubusercontent.com/'+S.repo+'/'+S.branch+'/'+encPath(p);}
+function pagesUrl(){var p=S.repo.split('/');return 'https://'+p[0].toLowerCase()+'.github.io/'+p[1]+'/';}
+function imgSrc(p){if(!p)return '';if(/^(https?:|data:)/.test(p))return p;return S.imgCache[p]||rawUrl(p);}
+
+async function commit(files,deletes,message){
+  var ref=await gh('/git/ref/heads/'+S.branch);
+  var head=ref.object.sha;
+  var c=await gh('/git/commits/'+head);
+  var tree=[];
+  Object.keys(files).forEach(function(p){tree.push({path:p,mode:'100644',type:'blob',content:files[p]});});
+  if(deletes&&deletes.length){
+    var existing=await gh('/git/trees/'+c.tree.sha+'?recursive=1');
+    var have={};(existing.tree||[]).forEach(function(e){have[e.path]=1;});
+    deletes.forEach(function(p){if(have[p])tree.push({path:p,mode:'100644',type:'blob',sha:null});});
+  }
+  var nt=await gh('/git/trees',{method:'POST',body:{base_tree:c.tree.sha,tree:tree}});
+  var nc=await gh('/git/commits',{method:'POST',body:{message:message,tree:nt.sha,parents:[head]}});
+  await gh('/git/refs/heads/'+S.branch,{method:'PATCH',body:{sha:nc.sha}});
+  return nc.sha;
+}
+
+/* ---------- login ---------- */
+function tryAuto(){
+  var saved=null;
+  try{saved=JSON.parse(localStorage.getItem('ks-admin')||sessionStorage.getItem('ks-admin')||'null');}catch(e){}
+  if(saved&&saved.token){S.repo=saved.repo;S.branch=saved.branch||'main';S.token=saved.token;start();}
+}
+$('#login-form').addEventListener('submit',function(e){
+  e.preventDefault();
+  S.repo=$('#f-repo').value.trim().replace(/^https:\/\/github.com\//,'').replace(/\/$/,'');
+  S.branch=$('#f-branch').value.trim()||'main';
+  S.token=$('#f-token').value.trim();
+  var data=JSON.stringify({repo:S.repo,branch:S.branch,token:S.token});
+  try{($('#f-remember').checked?localStorage:sessionStorage).setItem('ks-admin',data);}catch(err){}
+  start();
+});
+$('#logout').addEventListener('click',function(){
+  if(S.dirty&&!confirm('عندك تغييرات ما تنشراتش. تخرج؟'))return;
+  try{localStorage.removeItem('ks-admin');sessionStorage.removeItem('ks-admin');}catch(e){}
+  S.dirty=false;location.reload();
+});
+
+async function start(){
+  var err=$('#login-err');err.hidden=true;
+  var btn=$('#login-form .btn-p');btn.disabled=true;btn.textContent='كنتحقق…';
+  try{
+    await gh('');
+    var r=await Promise.all([readFile('data/site.json'),readFile('data/articles.json'),readFile('data/manifest.json'),readFile('assets/style.css')]);
+    if(!r[0]||!r[1])throw new Error('ما لقيناش data/site.json ولا data/articles.json فالريبو. ارفع ملفات الموقع أولاً.');
+    S.site=JSON.parse(r[0]);S.articles=JSON.parse(r[1]).articles||[];
+    S.manifest=r[2]?JSON.parse(r[2]):{files:[]};S.css=r[3]||'';
+    $('#login').hidden=true;$('#app').hidden=false;
+    $('#side-repo').textContent=S.repo;
+    $('#site-link').href=pagesUrl();
+    go('articles');
+  }catch(e){
+    err.textContent='❌ '+e.message;err.hidden=false;$('#login').hidden=false;$('#app').hidden=true;
+    try{localStorage.removeItem('ks-admin');sessionStorage.removeItem('ks-admin');}catch(x){}
+  }finally{btn.disabled=false;btn.textContent='دخول';}
+}
+
+/* ---------- navigation ---------- */
+$$('.side [data-view]').forEach(function(b){b.addEventListener('click',function(){go(b.dataset.view);});});
+function go(v,arg){
+  S.view=v;
+  var ov=$('#view'),nv=ov.cloneNode(false);ov.replaceWith(nv);
+  $$('.side [data-view]').forEach(function(b){b.toggleAttribute('aria-current',b.dataset.view===v||(v==='edit'&&b.dataset.view==='articles'));if(b.hasAttribute('aria-current'))b.setAttribute('aria-current','page');});
+  var views={articles:viewArticles,edit:viewEdit,home:viewHome,links:viewLinks,images:viewImages,settings:viewSettings};
+  views[v](arg);
+  window.scrollTo(0,0);
+}
+
+/* ---------- helpers for forms ---------- */
+function field(label,html,hint){return '<label>'+label+(hint?' <span class="hint">'+hint+'</span>':'')+'</label>'+html;}
+function l4(obj,key,multiline){
+  obj=obj||{};
+  return '<div class="l4">'+LANGS.map(function(l){
+    var v=esc(obj[l]||'');
+    return '<div><div class="lab">'+l.toUpperCase()+'</div>'+(multiline?'<textarea data-k="'+key+'" data-l="'+l+'" dir="'+(l==='ar'?'rtl':'ltr')+'">'+v+'</textarea>':'<input type="text" data-k="'+key+'" data-l="'+l+'" dir="'+(l==='ar'?'rtl':'ltr')+'" value="'+v+'">')+'</div>';
+  }).join('')+'</div>';
+}
+function readL4(root,key){var o={};$$('[data-k="'+key+'"]',root).forEach(function(i){o[i.dataset.l]=i.value.trim();});return o;}
+function slugify(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60);}
+function today(){return new Date().toISOString().slice(0,10);}
+function avgScore(a){var s=0,n=0;LANGS.forEach(function(l){if(B.hasLang(a,l)){s+=B.seoCheck(S.site,a,l).score;n++;}});return n?Math.round(s/n):0;}
+function scoreCls(s){return s>=80?'g':s>=55?'m':'b';}
+function catOptions(sel){return (S.site.categories||[]).map(function(c){return '<option value="'+esc(c.id)+'"'+(c.id===sel?' selected':'')+'>'+esc((c.icon||'')+' '+(c.name.ar||c.id))+'</option>';}).join('');}
+
+/* ---------- clean pasted HTML ---------- */
+function cleanContent(html){
+  html=String(html||'');
+  var m=html.match(/<body[^>]*>([\s\S]*)<\/body>/i);if(m)html=m[1];
+  html=html.replace(/<(script|style|noscript)[\s\S]*?<\/\1>/gi,'').replace(/<(link|meta|title|base)[^>]*>/gi,'')
+    .replace(/<h1([^>]*)>/gi,'<h2$1>').replace(/<\/h1>/gi,'</h2>').replace(/\son\w+="[^"]*"/gi,'').replace(/javascript:/gi,'');
+  return html.trim();
+}
+
+/* ---------- image upload ---------- */
+function compress(file){
+  return new Promise(function(res,rej){
+    if(!/^image\//.test(file.type))return rej(new Error('هادا ماشي ملف صورة'));
+    if(file.type==='image/gif'||file.type==='image/svg+xml'){var fr=new FileReader();fr.onload=function(){res({data:fr.result,ext:file.type==='image/gif'?'gif':'svg'});};fr.readAsDataURL(file);return;}
+    var img=new Image(),url=URL.createObjectURL(file);
+    img.onload=function(){
+      var max=1600,w=img.naturalWidth,h=img.naturalHeight;
+      if(w>max){h=Math.round(h*max/w);w=max;}
+      var c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+      URL.revokeObjectURL(url);
+      var d=c.toDataURL('image/webp',0.82),ext='webp';
+      if(d.indexOf('data:image/webp')!==0){d=c.toDataURL('image/jpeg',0.85);ext='jpg';}
+      res({data:d,ext:ext});
+    };
+    img.onerror=function(){rej(new Error('ما قدرناش نقراو الصورة'));};
+    img.src=url;
+  });
+}
+async function uploadImage(file,prefix){
+  var r=await compress(file);
+  var base=slugify(prefix||file.name.replace(/\.[^.]+$/,''))||'img';
+  var path='assets/img/'+base+'-'+Date.now().toString(36)+'.'+r.ext;
+  await gh('/contents/'+encPath(path),{method:'PUT',body:{message:'🖼️ رفع صورة: '+path,content:r.data.split(',')[1],branch:S.branch}});
+  S.imgCache[path]=r.data;
+  return path;
+}
+function pickImages(multi,prefix){
+  return new Promise(function(res){
+    var inp=$('#file-pick');inp.multiple=!!multi;inp.value='';
+    inp.onchange=async function(){
+      var files=Array.prototype.slice.call(inp.files||[]),out=[];
+      for(var i=0;i<files.length;i++){
+        setStatus('<span class="progress"><i></i></span> كنرفع الصورة '+(i+1)+' / '+files.length+'…');
+        try{out.push(await uploadImage(files[i],prefix));}catch(e){toast('❌ '+e.message,true);}
+      }
+      setStatus(S.dirty?'⚠️ عندك تغييرات ما تنشراتش':'جاهز');
+      if(out.length)toast('✅ ترفعات '+out.length+' صورة');
+      res(out);
+    };
+    inp.click();
+  });
+}
+
+/* ================= VIEWS ================= */
+
+/* ---- articles list ---- */
+function viewArticles(){
+  var v=$('#view');
+  v.innerHTML='<div class="head"><h1>المواضيع <span class="muted" style="font-size:16px">('+S.articles.length+')</span></h1>'+
+    '<div class="row"><input type="text" class="search" id="q" placeholder="بحث…" aria-label="بحث"><button class="btn btn-p" id="new-art">+ موضوع جديد</button></div></div>'+
+    '<div class="list" id="list"></div>';
+  function render(){
+    var q=($('#q').value||'').toLowerCase();
+    var list=S.articles.filter(function(a){return !q||JSON.stringify([a.slug,a.i18n.ar&&a.i18n.ar.title,a.i18n.fr&&a.i18n.fr.title]).toLowerCase().indexOf(q)>=0;});
+    if(!list.length){$('#list').innerHTML='<div class="empty">ما كاين حتى موضوع. ضغط على "+ موضوع جديد" باش تبدا.</div>';return;}
+    $('#list').innerHTML=list.map(function(a){
+      var sc=avgScore(a),x=a.i18n.ar||{};
+      return '<div class="item"><div class="thumb" style="background-image:url(\''+esc(imgSrc(a.cover))+'\')">'+(a.cover?'':'🖼️')+'</div>'+
+        '<div><h3>'+esc(x.title||a.slug)+'</h3><div class="sub"><span>'+esc(B.catLabel(S.site,a.category,'ar'))+'</span>'+
+        '<span class="dots">'+LANGS.map(function(l){return '<span class="dot'+(B.hasLang(a,l)?' on':'')+'" title="'+LN[l]+'">'+l.toUpperCase()+'</span>';}).join('')+'</span>'+
+        '<span>SEO: <b class="score '+scoreCls(sc)+'">'+sc+'%</b></span>'+(a.draft?'<span class="pill">مسودة</span>':'')+(S.site.featured===a.slug?'<span class="pill" style="background:var(--seaS);color:var(--seaD)">⭐ مميز</span>':'')+
+        '<span class="ltr">/'+esc(B.articleDir(a,'ar'))+'</span></div></div>'+
+        '<div class="row acts"><button class="btn btn-s" data-edit="'+esc(a.slug)+'">✏️ تعديل</button>'+
+        (a.draft?'':'<a class="btn btn-s" target="_blank" rel="noopener" href="'+esc(pagesUrl()+B.articleDir(a,'ar'))+'">↗</a>')+
+        '<button class="btn btn-s btn-d" data-del="'+esc(a.slug)+'">🗑️</button></div></div>';
+    }).join('');
+  }
+  render();
+  $('#q').addEventListener('input',render);
+  $('#new-art').addEventListener('click',function(){go('edit',null);});
+  $('#list').addEventListener('click',async function(e){
+    var ed=e.target.closest('[data-edit]'),dl=e.target.closest('[data-del]');
+    if(ed)go('edit',ed.dataset.edit);
+    if(dl){
+      var a=S.articles.filter(function(x){return x.slug===dl.dataset.del;})[0];
+      if(!confirm('حذف "'+((a.i18n.ar&&a.i18n.ar.title)||a.slug)+'" من الموقع بجميع اللغات؟'))return;
+      S.articles=S.articles.filter(function(x){return x!==a;});
+      await publish('🗑️ حذف الموضوع: '+a.slug);
+      render();
+    }
+  });
+}
+
+/* ---- article editor ---- */
+function blankArticle(){
+  var i18n={};LANGS.forEach(function(l){i18n[l]={title:'',seoTitle:'',description:'',keyword:'',alt:'',content:''};});
+  return {slug:'',section:'tourisme',category:(S.site.categories[0]||{}).id||'',cover:'',gallery:[],map:'',lat:null,lng:null,date:today(),updated:today(),draft:false,featured:false,related:[],i18n:i18n,_new:true};
+}
+function viewEdit(slug){
+  var orig=slug?S.articles.filter(function(a){return a.slug===slug;})[0]:null;
+  var a=orig?clone(orig):blankArticle();
+  S.editing=a;S.editLang='ar';
+  var v=$('#view');
+  v.innerHTML='<div class="head"><h1>'+(orig?'تعديل الموضوع':'موضوع جديد')+'</h1><div class="row"><button class="btn" id="back">→ رجوع للمواضيع</button><button class="btn" id="preview">👁️ معاينة</button><button class="btn btn-a" id="save">🚀 حفظ ونشر</button></div></div>'+
+  '<div class="cols"><div>'+
+    '<div class="card"><div class="tabs" role="tablist" id="ltabs"></div><div id="lang-pane"></div></div>'+
+  '</div><div>'+
+    '<div class="card"><h2>🔎 SEO <span class="muted" id="seo-lang"></span></h2><div class="seo-score" id="seo-score"></div><div class="gpreview" id="gprev"></div><ul class="checks" id="checks"></ul></div>'+
+    '<div class="card"><h2>الإعدادات</h2>'+
+      field('الرابط (slug)','<input type="text" id="e-slug" class="ltr" value="'+esc(a.slug)+'" placeholder="ferdiwa">','حروف لاتينية صغيرة، أرقام و -')+
+      '<div class="muted ltr" style="font-size:12px;margin-top:4px" id="e-url"></div>'+
+      field('القسم','<select id="e-section"><option value="tourisme"'+(a.section!=='page'?' selected':'')+'>السياحة (/tourisme/…)</option><option value="page"'+(a.section==='page'?' selected':'')+'>صفحة عادية (/…)</option></select>')+
+      field('التصنيف','<select id="e-cat">'+catOptions(a.category)+'</select>')+
+      field('تاريخ النشر','<input type="date" id="e-date" value="'+esc(a.date||today())+'">')+
+      '<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="e-feat"'+(S.site.featured===a.slug&&a.slug?' checked':'')+'> ⭐ موضوع مميز فالصفحة الرئيسية</label>'+
+      '<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="e-draft"'+(a.draft?' checked':'')+'> مسودة (ما يبانش فالموقع)</label>'+
+    '</div>'+
+    '<div class="card"><h2>🖼️ الصورة الرئيسية</h2><div class="cover-prev" id="cover-prev"></div>'+
+      '<div class="row" style="margin-top:8px"><button class="btn btn-s" id="cover-up">⬆️ رفع صورة</button><button class="btn btn-s" id="cover-lib">📁 من المكتبة</button><button class="btn btn-s btn-d" id="cover-rm">حذف</button></div>'+
+      field('أو رابط صورة','<input type="url" id="e-cover" class="ltr" value="'+esc(a.cover)+'" placeholder="https://…">')+
+    '</div>'+
+    '<div class="card"><h2>📸 معرض الصور</h2><div class="imgs" id="gal"></div><div class="row" style="margin-top:8px"><button class="btn btn-s" id="gal-up">⬆️ رفع صور</button><button class="btn btn-s" id="gal-lib">📁 من المكتبة</button></div></div>'+
+    '<div class="card"><h2>🗺️ الخريطة</h2>'+field('رابط Google Maps (Embed)','<input type="url" id="e-map" class="ltr" value="'+esc(a.map)+'" placeholder="https://www.google.com/maps/embed?pb=…">','من Google Maps: مشاركة ← تضمين خريطة ← انسخ الرابط اللي فـ src')+
+      '<div class="two">'+field('خط العرض','<input type="text" id="e-lat" class="ltr" value="'+esc(a.lat==null?'':a.lat)+'" placeholder="35.84">')+field('خط الطول','<input type="text" id="e-lng" class="ltr" value="'+esc(a.lng==null?'':a.lng)+'" placeholder="-5.56">')+'</div>'+
+      '<p class="hint">الإحداثيات كتستعمل لـ Google وباش نختارو المواضيع القريبة أوتوماتيكياً.</p></div>'+
+    '<div class="card"><h2>🔗 مواضيع قريبة</h2><p class="hint">اختيارية. إلا خليتيها خاوية، كتختار أوتوماتيكياً (نفس التصنيف والأقرب).</p><div id="rel"></div></div>'+
+  '</div></div>';
+
+  function tabs(){
+    $('#ltabs').innerHTML=LANGS.map(function(l){var ok=B.hasLang(a,l);return '<button role="tab" data-l="'+l+'" aria-selected="'+(l===S.editLang)+'">'+LN[l]+' <span class="'+(ok?'ok':'no')+'">'+(ok?'✓':'•')+'</span></button>';}).join('');
+  }
+  function pane(){
+    var l=S.editLang,x=a.i18n[l],dir=l==='ar'?'rtl':'ltr';
+    $('#lang-pane').innerHTML=
+      field('العنوان (H1)','<input type="text" id="p-title" dir="'+dir+'" value="'+esc(x.title)+'">')+
+      field('الكلمة الرئيسية','<input type="text" id="p-kw" dir="'+dir+'" value="'+esc(x.keyword)+'" placeholder="'+({ar:'شاطئ فرديوة القصر الصغير',fr:'Plage Ferdiwa Ksar Sghir',en:'Ferdiwa Beach Ksar Sghir',es:'Playa Ferdiwa Alcazarseguer'})[l]+'">','الكلمة اللي بغيتي تطلع بيها فـ Google بهاد اللغة')+
+      field('عنوان SEO <span class="count" id="c-seo"></span>','<input type="text" id="p-seo" dir="'+dir+'" value="'+esc(x.seoTitle)+'">','خليه خاوي باش يتصاوب أوتوماتيكياً')+
+      field('الوصف (meta description) <span class="count" id="c-desc"></span>','<textarea id="p-desc" dir="'+dir+'" style="min-height:70px">'+esc(x.description)+'</textarea>')+
+      field('وصف الصورة الرئيسية (alt)','<input type="text" id="p-alt" dir="'+dir+'" value="'+esc(x.alt)+'">')+
+      '<label>المحتوى (HTML) <span class="hint">الصق الـ HTML ديال الموضوع هنا. العنوان H1 كيتزاد أوتوماتيكياً، ابدا بـ H2.</span></label>'+
+      '<div class="toolbar">'+
+        '<button class="btn" data-ins="h2">عنوان H2</button><button class="btn" data-ins="p">فقرة</button><button class="btn" data-ins="features">مميزات</button>'+
+        '<button class="btn" data-ins="seasons">مواسم</button><button class="btn" data-ins="info">معلومات</button><button class="btn" data-ins="tips">نصائح</button>'+
+        '<button class="btn" data-ins="highlight">ملاحظة</button><button class="btn" data-ins="warn">تنبيه</button><button class="btn" data-ins="img">🖼️ صورة</button>'+
+        (l!=='ar'?'<button class="btn" data-copy-ar>📋 نسخ البنية من العربية</button>':'')+
+      '</div>'+
+      '<textarea id="p-content" class="code" spellcheck="false">'+esc(x.content)+'</textarea>';
+    $('#p-content').dir='ltr';
+    ['p-title','p-kw','p-seo','p-desc','p-alt','p-content'].forEach(function(id){$('#'+id).addEventListener('input',syncLang);});
+    $('#p-content').addEventListener('paste',function(){setTimeout(function(){var t=$('#p-content');var c=cleanContent(t.value);if(c!==t.value){t.value=c;syncLang();}},0);});
+    $$('[data-ins]',$('#lang-pane')).forEach(function(b){b.addEventListener('click',function(){insertSnippet(b.dataset.ins);});});
+    var cp=$('[data-copy-ar]');if(cp)cp.addEventListener('click',function(){
+      if($('#p-content').value.trim()&&!confirm('غادي يتبدل المحتوى الحالي بنسخة من العربية (باش تترجمها). نكملو؟'))return;
+      $('#p-content').value=a.i18n.ar.content;syncLang();toast('تنسخ المحتوى العربي. ترجم النصوص وخلي البنية.');
+    });
+    counters();
+  }
+  function counters(){
+    var l=S.editLang,sc=B.seoCheck(S.site,a,l);
+    var s=$('#c-seo'),d=$('#c-desc'),dl=(a.i18n[l].description||'').length;
+    if(s){s.textContent=sc.title.length+' / 60';s.classList.toggle('bad',sc.title.length>62);}
+    if(d){d.textContent=dl+' / 160';d.classList.toggle('bad',dl>160||(dl>0&&dl<70));}
+    $('#p-seo')&&($('#p-seo').placeholder=sc.title);
+  }
+  function syncLang(){
+    var x=a.i18n[S.editLang];
+    x.title=$('#p-title').value;x.keyword=$('#p-kw').value;x.seoTitle=$('#p-seo').value;
+    x.description=$('#p-desc').value;x.alt=$('#p-alt').value;x.content=$('#p-content').value;
+    if(!orig&&!slugTouched&&(S.editLang==='fr'||S.editLang==='en')&&x.title){$('#e-slug').value=slugify(x.title);syncMeta();}
+    seo();tabsOk();counters();
+  }
+  function tabsOk(){$$('#ltabs button').forEach(function(b){var ok=B.hasLang(a,b.dataset.l);var s=b.querySelector('span');s.className=ok?'ok':'no';s.textContent=ok?'✓':'•';});}
+  function seo(){
+    var l=S.editLang,r=B.seoCheck(S.site,a,l),x=a.i18n[l];
+    $('#seo-lang').textContent='('+LN[l]+')';
+    $('#seo-score').innerHTML='<span class="score '+scoreCls(r.score)+'">'+r.score+'%</span>';
+    $('#gprev').innerHTML='<div class="u">'+esc((S.site.baseUrl||'').replace(/^https?:\/\//,'')+'/'+B.articleDir(a,l))+'</div><div class="t" dir="'+(l==='ar'?'rtl':'ltr')+'">'+esc(r.title.slice(0,62)+(r.title.length>62?'…':''))+'</div><div class="d" dir="'+(l==='ar'?'rtl':'ltr')+'">'+esc((x.description||'').slice(0,160))+'</div>';
+    $('#checks').innerHTML=r.checks.map(function(c){return '<li><span>'+(c.ok?'✅':c.warn?'🟡':'❌')+'</span><span>'+esc(c.label)+'</span></li>';}).join('');
+  }
+  function insertSnippet(kind){
+    var t=$('#p-content'),s='';
+    var S2={
+      h2:'<h2>عنوان القسم</h2>\n',p:'<p>نص الفقرة…</p>\n',
+      features:'<div class="features">\n<div class="feature"><div class="feature-icon">🌊</div><div class="feature-title">عنوان</div><div class="feature-text">وصف قصير</div></div>\n<div class="feature"><div class="feature-icon">📸</div><div class="feature-title">عنوان</div><div class="feature-text">وصف قصير</div></div>\n</div>\n',
+      seasons:'<div class="seasons">\n<div class="season"><div class="season-icon">🌸</div><div class="season-name">الربيع</div><div class="season-desc">مارس — ماي</div><span class="badge badge-best">⭐ مثالي</span></div>\n<div class="season"><div class="season-icon">☀️</div><div class="season-name">الصيف</div><div class="season-desc">يونيو — غشت</div><span class="badge badge-good">✅ ممتاز</span></div>\n<div class="season"><div class="season-icon">🍂</div><div class="season-name">الخريف</div><div class="season-desc">شتنبر — نونبر</div><span class="badge badge-good">⭐ جيد</span></div>\n<div class="season"><div class="season-icon">🌧️</div><div class="season-name">الشتاء</div><div class="season-desc">دجنبر — فبراير</div><span class="badge badge-ok">⚠️ هادئ</span></div>\n</div>\n',
+      info:'<div class="info-grid">\n<div class="info-item"><div class="info-icon">📍</div><div><div class="info-label">الموقع</div><div class="info-val">…</div></div></div>\n<div class="info-item"><div class="info-icon">🚗</div><div><div class="info-label">الوصول</div><div class="info-val">…</div></div></div>\n</div>\n',
+      tips:'<ul class="tips">\n<li><span>💡</span><span>نصيحة…</span></li>\n<li><span>💡</span><span>نصيحة…</span></li>\n</ul>\n',
+      highlight:'<div class="highlight">📍 ملاحظة مهمة…</div>\n',warn:'<div class="warn">⚠️ تنبيه…</div>\n'
+    };
+    if(kind==='img'){
+      pickImages(false,a.slug||'img').then(function(p){if(!p.length)return;
+        var alt=a.i18n[S.editLang].alt||a.i18n[S.editLang].title||'';
+        put('<figure><img src="'+p[0]+'" alt="'+esc(alt)+'" loading="lazy"><figcaption>'+esc(alt)+'</figcaption></figure>\n');});
+      return;
+    }
+    put(S2[kind]);
+    function put(snip){var st=t.selectionStart,en=t.selectionEnd;t.value=t.value.slice(0,st)+snip+t.value.slice(en);t.selectionStart=t.selectionEnd=st+snip.length;t.focus();syncLang();}
+  }
+
+  var slugTouched=!!orig;
+  function syncMeta(){
+    a.slug=$('#e-slug').value.trim();a.section=$('#e-section').value;a.category=$('#e-cat').value;a.date=$('#e-date').value||today();
+    a.draft=$('#e-draft').checked;a.cover=$('#e-cover').value.trim();a.map=$('#e-map').value.trim();
+    var la=parseFloat($('#e-lat').value),ln=parseFloat($('#e-lng').value);a.lat=isNaN(la)?null:la;a.lng=isNaN(ln)?null:ln;
+    $('#e-url').textContent=a.slug?'/'+B.articleDir(a,'ar'):'';
+    $('#cover-prev').style.backgroundImage=a.cover?'url("'+imgSrc(a.cover)+'")':'';
+    $('#cover-prev').textContent=a.cover?'':'ما كاينش صورة';
+    seo();
+  }
+  function gallery(){
+    $('#gal').innerHTML=(a.gallery||[]).map(function(g,i){
+      return '<div class="img"><img src="'+esc(imgSrc(g.src))+'" alt=""><div class="bar"><button class="btn" data-gc="'+i+'">⭐ رئيسية</button><button class="btn btn-d" data-gd="'+i+'">✕</button></div></div>';
+    }).join('')||'<p class="hint">ما كاين حتى صورة فالمعرض.</p>';
+  }
+  function related(){
+    var others=S.articles.filter(function(x){return x.slug!==a.slug&&x.section!=='page';});
+    $('#rel').innerHTML=others.map(function(x){return '<label style="display:flex;gap:8px;font-weight:500;margin:4px 0"><input type="checkbox" value="'+esc(x.slug)+'"'+((a.related||[]).indexOf(x.slug)>=0?' checked':'')+'> '+esc((x.i18n.ar&&x.i18n.ar.title)||x.slug)+'</label>';}).join('');
+  }
+
+  tabs();pane();syncMeta();gallery();related();seo();
+  $('#ltabs').addEventListener('click',function(e){var b=e.target.closest('[data-l]');if(!b)return;S.editLang=b.dataset.l;tabs();pane();seo();});
+  ['e-slug','e-section','e-cat','e-date','e-draft','e-cover','e-map','e-lat','e-lng'].forEach(function(id){$('#'+id).addEventListener('input',function(){if(id==='e-slug')slugTouched=true;syncMeta();});$('#'+id).addEventListener('change',syncMeta);});
+  $('#e-slug').addEventListener('blur',function(){$('#e-slug').value=slugify($('#e-slug').value);syncMeta();});
+  $('#cover-up').addEventListener('click',function(){pickImages(false,a.slug||'cover').then(function(p){if(p.length){$('#e-cover').value=p[0];syncMeta();}});});
+  $('#cover-lib').addEventListener('click',function(){chooseFromLibrary(false).then(function(p){if(p.length){$('#e-cover').value=p[0];syncMeta();}});});
+  $('#cover-rm').addEventListener('click',function(){$('#e-cover').value='';syncMeta();});
+  $('#gal-up').addEventListener('click',function(){pickImages(true,a.slug||'gal').then(function(p){p.forEach(function(x){a.gallery.push({src:x});});gallery();});});
+  $('#gal-lib').addEventListener('click',function(){chooseFromLibrary(true).then(function(p){p.forEach(function(x){a.gallery.push({src:x});});gallery();});});
+  $('#gal').addEventListener('click',function(e){
+    var c=e.target.closest('[data-gc]'),d=e.target.closest('[data-gd]');
+    if(c){$('#e-cover').value=a.gallery[+c.dataset.gc].src;syncMeta();toast('تبدلات الصورة الرئيسية');}
+    if(d){a.gallery.splice(+d.dataset.gd,1);gallery();}
+  });
+  $('#rel').addEventListener('change',function(){a.related=$$('#rel input:checked').map(function(i){return i.value;});});
+  $('#back').addEventListener('click',function(){if(changed()&&!confirm('التغييرات ديال هاد الموضوع ما تحفظاتش. ترجع؟'))return;go('articles');});
+  $('#preview').addEventListener('click',function(){syncMeta();preview(a,S.editLang);});
+  $('#save').addEventListener('click',async function(){
+    syncMeta();
+    a.slug=slugify(a.slug);
+    if(!a.slug)return toast('❌ خاص الرابط (slug)',true);
+    if(S.articles.some(function(x){return x.slug===a.slug&&x!==orig&&(x.section||'tourisme')===(a.section||'tourisme');}))return toast('❌ هاد الرابط مستعمل فموضوع آخر',true);
+    if(!B.hasLang(a,'ar'))return toast('❌ خاص على الأقل العنوان والمحتوى بالعربية',true);
+    var missing=LANGS.filter(function(l){return !B.hasLang(a,l);});
+    if(missing.length&&!confirm('هاد اللغات ناقصين وما غاديش تتصاوب ليهم صفحة: '+missing.map(function(l){return LN[l];}).join('، ')+'\nنكملو النشر؟'))return;
+    LANGS.forEach(function(l){a.i18n[l].content=cleanContent(a.i18n[l].content);});
+    a.updated=today();
+    if($('#e-feat').checked)S.site.featured=a.slug;else if(S.site.featured===(orig&&orig.slug))S.site.featured='';
+    var clean=clone(a);delete clean._new;
+    if(orig){var i=S.articles.indexOf(orig);S.articles[i]=clean;}else S.articles.unshift(clean);
+    var ok=await publish((orig?'✏️ تعديل':'✨ موضوع جديد')+': '+a.slug);
+    if(ok)go('edit',a.slug);
+  });
+  function changed(){syncMeta();var b=clone(a);delete b._new;return JSON.stringify(b)!==JSON.stringify(orig||(function(){var x=blankArticle();delete x._new;x.date=a.date;x.updated=a.updated;return x;})());}
+}
+
+/* ---- preview ---- */
+function preview(a,lang){
+  if(!B.hasLang(a,lang)){toast('زيد العنوان والمحتوى بهاد اللغة باش تشوف المعاينة',true);return;}
+  var arts=S.articles.filter(function(x){return x.slug!==a.slug;}).concat([a]);
+  var html=B.articlePage(S.site,arts,a,lang);
+  var base=rawUrl(B.articleDir(a,lang));
+  html=html.replace(/<link rel="stylesheet"[^>]*>/,'<style>'+S.css+'</style>').replace(/<script src="[^"]*site\.js[^"]*"[^>]*><\/script>/,'')
+    .replace('<head>','<head><base href="'+base+'" target="_blank">');
+  Object.keys(S.imgCache).forEach(function(p){html=html.split('="'+'../'.repeat(B.articleDir(a,lang).split('/').length-1)+p+'"').join('="'+S.imgCache[p]+'"');});
+  var m=document.createElement('div');m.className='modal';
+  m.innerHTML='<div class="mh"><b>معاينة — '+LN[lang]+'</b><span class="muted" style="font-size:13px">الروابط ما كتخدمش فالمعاينة</span><span style="flex:1"></span>'+
+    '<button class="btn btn-s" data-w="100%">🖥️</button><button class="btn btn-s" data-w="400px">📱</button><button class="btn btn-s btn-p" data-close>إغلاق</button></div><iframe title="معاينة"></iframe>';
+  document.body.appendChild(m);
+  m.querySelector('iframe').srcdoc=html;
+  m.addEventListener('click',function(e){
+    if(e.target.closest('[data-close]')||e.target===m)m.remove();
+    var w=e.target.closest('[data-w]');if(w)m.querySelector('iframe').style.maxWidth=w.dataset.w;
+  });
+  document.addEventListener('keydown',function k(e){if(e.key==='Escape'){m.remove();document.removeEventListener('keydown',k);}});
+}
+
+/* ---- image library ---- */
+async function listImages(){
+  var r=await gh('/contents/assets/img?ref='+encodeURIComponent(S.branch),{allow404:true});
+  return (r||[]).filter(function(f){return f.type==='file'&&/\.(webp|jpe?g|png|gif|svg|avif)$/i.test(f.name);}).sort(function(x,y){return y.name.localeCompare(x.name);});
+}
+function chooseFromLibrary(multi){
+  return new Promise(async function(res){
+    var m=document.createElement('div');m.className='modal';
+    m.innerHTML='<div class="mh"><b>مكتبة الصور</b><span style="flex:1"></span>'+(multi?'<button class="btn btn-s btn-p" data-ok>إضافة المختارة</button>':'')+'<button class="btn btn-s" data-close>إغلاق</button></div><div style="background:#fff;padding:14px;overflow:auto;border-radius:0 0 12px 12px"><div class="imgs" id="lib">كنحمل…</div></div>';
+    document.body.appendChild(m);
+    var sel=[];
+    try{
+      var files=await listImages();
+      m.querySelector('#lib').innerHTML=files.length?files.map(function(f){return '<button class="img" style="all:unset;cursor:pointer;display:block;border:2px solid var(--line);border-radius:10px;overflow:hidden" data-p="'+esc(f.path)+'"><img src="'+esc(imgSrc(f.path))+'" alt="" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block"></button>';}).join(''):'<p class="hint">المكتبة خاوية. رفع الصور من قسم "الصور".</p>';
+    }catch(e){m.querySelector('#lib').textContent='❌ '+e.message;}
+    m.addEventListener('click',function(e){
+      var p=e.target.closest('[data-p]');
+      if(p){if(!multi){m.remove();return res([p.dataset.p]);}var i=sel.indexOf(p.dataset.p);if(i>=0){sel.splice(i,1);p.style.borderColor='';}else{sel.push(p.dataset.p);p.style.borderColor='var(--sea)';}}
+      if(e.target.closest('[data-ok]')){m.remove();res(sel);}
+      if(e.target.closest('[data-close]')||e.target===m){m.remove();res([]);}
+    });
+  });
+}
+async function viewImages(){
+  var v=$('#view');
+  v.innerHTML='<div class="head"><h1>الصور</h1><button class="btn btn-p" id="up">⬆️ رفع صور</button></div>'+
+    '<div class="card"><div class="drop" id="drop">اسحب الصور هنا ولا ضغط على "رفع صور". كتصغر أوتوماتيكياً (أقصى عرض 1600px، WebP) باش يبقى الموقع سريع.</div></div>'+
+    '<div class="card"><div class="imgs" id="imgs">كنحمل…</div></div>';
+  async function load(){
+    try{
+      var files=await listImages();
+      $('#imgs').innerHTML=files.length?files.map(function(f){return '<div class="img"><img src="'+esc(imgSrc(f.path))+'" alt="" loading="lazy"><div class="name">'+esc(f.name)+' · '+Math.round(f.size/1024)+'KB</div><div class="bar"><button class="btn" data-cp="'+esc(f.path)+'">نسخ المسار</button><button class="btn btn-d" data-rm="'+esc(f.path)+'" data-sha="'+esc(f.sha)+'">حذف</button></div></div>';}).join(''):'<p class="empty">ما كاين حتى صورة.</p>';
+    }catch(e){$('#imgs').textContent='❌ '+e.message;}
+  }
+  load();
+  $('#up').addEventListener('click',function(){pickImages(true).then(load);});
+  var d=$('#drop');
+  d.addEventListener('click',function(){pickImages(true).then(load);});
+  d.addEventListener('dragover',function(e){e.preventDefault();d.classList.add('over');});
+  d.addEventListener('dragleave',function(){d.classList.remove('over');});
+  d.addEventListener('drop',async function(e){e.preventDefault();d.classList.remove('over');
+    var fs=Array.prototype.slice.call(e.dataTransfer.files||[]);
+    for(var i=0;i<fs.length;i++){setStatus('<span class="progress"><i></i></span> كنرفع '+(i+1)+' / '+fs.length+'…');try{await uploadImage(fs[i]);}catch(x){toast('❌ '+x.message,true);}}
+    setStatus('جاهز');load();});
+  $('#imgs').addEventListener('click',async function(e){
+    var c=e.target.closest('[data-cp]'),r=e.target.closest('[data-rm]');
+    if(c){try{await navigator.clipboard.writeText(c.dataset.cp);toast('تنسخ: '+c.dataset.cp);}catch(x){prompt('المسار:',c.dataset.cp);}}
+    if(r){
+      var used=JSON.stringify([S.site,S.articles]).indexOf(r.dataset.rm)>=0;
+      if(!confirm((used?'⚠️ هاد الصورة مستعملة فالموقع! ':'')+'حذف الصورة نهائياً؟'))return;
+      try{await gh('/contents/'+encPath(r.dataset.rm),{method:'DELETE',body:{message:'🗑️ حذف صورة',sha:r.dataset.sha,branch:S.branch}});toast('تحذفات');load();}catch(x){toast('❌ '+x.message,true);}
+    }
+  });
+}
+
+/* ---- home ---- */
+function viewHome(){
+  var s=S.site,h=s.hero||(s.hero={});
+  var v=$('#view');
+  v.innerHTML='<div class="head"><h1>الصفحة الرئيسية</h1><a class="btn" target="_blank" rel="noopener" href="'+pagesUrl()+'">↗ عرض</a></div>'+
+    '<div class="card"><h2>الصورة الكبيرة (Hero)</h2><div class="cover-prev" id="h-prev" style="max-width:520px"></div>'+
+      '<div class="row" style="margin-top:8px"><button class="btn btn-s" id="h-up">⬆️ رفع صورة</button><button class="btn btn-s" id="h-lib">📁 من المكتبة</button></div>'+
+      field('أو رابط','<input type="url" id="h-img" class="ltr" value="'+esc(h.image||'')+'">')+
+      field('العنوان الكبير',l4(h.title,'h-title'))+field('النص تحت العنوان',l4(h.subtitle,'h-sub',true))+field('نص الزر',l4(h.cta,'h-cta'))+'</div>'+
+    '<div class="card"><h2>🔎 SEO ديال الصفحة الرئيسية</h2><p class="hint">هادي هي اللي كتبان فـ Google ملي كيقلب شي واحد على "القصر الصغير" ولا "Ksar Sghir". حط الاسم فالعنوان بكل لغة.</p>'+
+      field('عنوان SEO',l4(h.seoTitle,'h-seo'))+field('الوصف (meta description)',l4(h.description,'h-desc',true))+'</div>'+
+    '<div class="card"><h2>نص التعريف (مهم للـ SEO)</h2><p class="hint">نص قصير (HTML) كيبان تحت الصورة. دخل فيه أسماء المنطقة بشكل طبيعي: القصر الصغير، Ksar Sghir، Ksar es-Seghir، Alcazarseguer.</p>'+
+      '<div class="tabs" id="it"></div><textarea class="code" id="intro" style="min-height:200px"></textarea></div>'+
+    '<div class="card"><h2>⭐ الموضوع المميز</h2><select id="feat"><option value="">— الأحدث أوتوماتيكياً —</option>'+S.articles.filter(function(a){return a.section!=='page';}).map(function(a){return '<option value="'+esc(a.slug)+'"'+(s.featured===a.slug?' selected':'')+'>'+esc(a.i18n.ar.title||a.slug)+'</option>';}).join('')+'</select></div>'+
+    '<div class="card"><h2>📊 الأرقام</h2><div id="stats"></div><button class="btn btn-s" id="add-stat">+ زيد رقم</button></div>';
+  function prev(){var p=$('#h-img').value.trim();$('#h-prev').style.backgroundImage=p?'url("'+imgSrc(p)+'")':'';$('#h-prev').textContent=p?'':'ما كاينش صورة';}
+  prev();
+  var il='ar';s.intro=s.intro||{};
+  function itabs(){$('#it').innerHTML=LANGS.map(function(l){return '<button data-l="'+l+'" aria-selected="'+(l===il)+'">'+LN[l]+'</button>';}).join('');$('#intro').value=s.intro[il]||'';}
+  itabs();
+  $('#it').addEventListener('click',function(e){var b=e.target.closest('[data-l]');if(!b)return;il=b.dataset.l;itabs();});
+  $('#intro').addEventListener('input',function(){s.intro[il]=$('#intro').value;markDirty();});
+  function stats(){
+    s.stats=s.stats||[];
+    $('#stats').innerHTML=s.stats.map(function(st,i){return '<div class="rep" data-i="'+i+'"><div class="rep-h"><input type="text" data-sv style="max-width:140px" value="'+esc(st.value)+'" placeholder="77K"><button class="btn btn-s btn-d" data-sd="'+i+'">✕</button></div>'+l4(st.label,'st-'+i)+'</div>';}).join('');
+  }
+  stats();
+  $('#stats').addEventListener('input',function(e){var r=e.target.closest('.rep');if(!r)return;var i=+r.dataset.i;s.stats[i].value=$('[data-sv]',r).value;s.stats[i].label=readL4(r,'st-'+i);markDirty();});
+  $('#stats').addEventListener('click',function(e){var d=e.target.closest('[data-sd]');if(d){s.stats.splice(+d.dataset.sd,1);stats();markDirty();}});
+  $('#add-stat').addEventListener('click',function(){s.stats.push({value:'',label:{}});stats();markDirty();});
+  v.addEventListener('input',function(e){
+    if(e.target.closest('#stats')||e.target.id==='intro')return;
+    h.image=$('#h-img').value.trim();h.title=readL4(v,'h-title');h.subtitle=readL4(v,'h-sub');h.cta=readL4(v,'h-cta');h.seoTitle=readL4(v,'h-seo');h.description=readL4(v,'h-desc');
+    prev();markDirty();
+  });
+  $('#feat').addEventListener('change',function(){s.featured=$('#feat').value;markDirty();});
+  $('#h-up').addEventListener('click',function(){pickImages(false,'hero').then(function(p){if(p.length){$('#h-img').value=p[0];h.image=p[0];prev();markDirty();}});});
+  $('#h-lib').addEventListener('click',function(){chooseFromLibrary(false).then(function(p){if(p.length){$('#h-img').value=p[0];h.image=p[0];prev();markDirty();}});});
+}
+
+/* ---- links ---- */
+function linkRow(l,key,i){
+  return '<div class="rep" data-key="'+key+'" data-i="'+i+'"><div class="rep-h" style="gap:8px"><input type="text" class="ltr" data-u value="'+esc(l.url||'')+'" placeholder="tourisme/ أو https://…">'+
+    '<label style="margin:0;display:flex;gap:6px;align-items:center;font-weight:500;white-space:nowrap" title="زيد /fr/ /en/ /es/ للرابط أوتوماتيكياً"><input type="checkbox" data-i18n'+(l.i18n?' checked':'')+'> حسب اللغة</label>'+
+    '<button class="btn btn-s" data-up>↑</button><button class="btn btn-s" data-dn>↓</button><button class="btn btn-s btn-d" data-rm>✕</button></div>'+l4(l.label,'lbl')+'</div>';
+}
+function viewLinks(){
+  var s=S.site;s.menu=s.menu||[];s.footer=s.footer||[];s.social=s.social||[];
+  var v=$('#view');
+  function render(){
+    v.innerHTML='<div class="head"><h1>القائمة والروابط</h1></div>'+
+      '<div class="card"><h2>القائمة الرئيسية (فوق)</h2><p class="hint">الرابط الداخلي كيتكتب بلا / فالبداية (مثلاً: <span class="ltr">tourisme/</span>). "حسب اللغة" كتخلي الرابط يمشي للنسخة الفرنسية/الإنجليزية/الإسبانية أوتوماتيكياً. الرئيسية = رابط خاوي.</p>'+
+        '<div data-list="menu">'+s.menu.map(function(l,i){return linkRow(l,'menu',i);}).join('')+'</div><button class="btn btn-s" data-add="menu">+ زيد رابط</button></div>'+
+      s.footer.map(function(col,ci){return '<div class="card"><div class="rep-h"><h2>عمود فالأسفل '+(ci+1)+'</h2><button class="btn btn-s btn-d" data-rmcol="'+ci+'">حذف العمود</button></div>'+field('عنوان العمود','<div data-coltitle="'+ci+'">'+l4(col.title,'ct')+'</div>')+
+        '<div data-list="footer-'+ci+'" style="margin-top:10px">'+(col.links||[]).map(function(l,i){return linkRow(l,'footer-'+ci,i);}).join('')+'</div><button class="btn btn-s" data-add="footer-'+ci+'">+ زيد رابط</button></div>';}).join('')+
+      '<div class="card"><button class="btn btn-s" id="add-col">+ زيد عمود فالأسفل</button></div>'+
+      '<div class="card"><h2>السوشيال ميديا</h2><div id="soc">'+s.social.map(function(x,i){return '<div class="rep two" data-si="'+i+'"><input type="text" data-sn value="'+esc(x.name)+'" placeholder="Facebook"><div class="row" style="flex-wrap:nowrap"><input type="url" class="ltr" data-su value="'+esc(x.url)+'" placeholder="https://…"><button class="btn btn-s btn-d" data-srm="'+i+'">✕</button></div></div>';}).join('')+'</div><button class="btn btn-s" id="add-soc">+ زيد حساب</button></div>';
+  }
+  function listFor(key){if(key==='menu')return s.menu;return s.footer[+key.split('-')[1]].links;}
+  render();
+  v.oninput=function(e){
+    var r=e.target.closest('.rep[data-key]');
+    if(r){var l=listFor(r.dataset.key)[+r.dataset.i];l.url=$('[data-u]',r).value.trim();l.i18n=$('[data-i18n]',r).checked;l.label=readL4(r,'lbl');}
+    var ct=e.target.closest('[data-coltitle]');if(ct)s.footer[+ct.dataset.coltitle].title=readL4(ct,'ct');
+    var so=e.target.closest('[data-si]');if(so){var x=s.social[+so.dataset.si];x.name=$('[data-sn]',so).value;x.url=$('[data-su]',so).value.trim();}
+    markDirty();
+  };
+  v.onchange=v.oninput;
+  v.onclick=function(e){
+    var b=e.target.closest('button');if(!b)return;
+    var r=b.closest('.rep[data-key]');
+    if(r){var list=listFor(r.dataset.key),i=+r.dataset.i;
+      if(b.hasAttribute('data-rm'))list.splice(i,1);
+      else if(b.hasAttribute('data-up')&&i>0)list.splice(i-1,0,list.splice(i,1)[0]);
+      else if(b.hasAttribute('data-dn')&&i<list.length-1)list.splice(i+1,0,list.splice(i,1)[0]);
+      else return;
+      render();markDirty();return;}
+    if(b.dataset.add){listFor(b.dataset.add).push({url:'',label:{},i18n:false});render();markDirty();}
+    if(b.dataset.rmcol!=null&&confirm('حذف العمود؟')){s.footer.splice(+b.dataset.rmcol,1);render();markDirty();}
+    if(b.id==='add-col'){s.footer.push({title:{},links:[]});render();markDirty();}
+    if(b.id==='add-soc'){s.social.push({name:'',url:''});render();markDirty();}
+    if(b.dataset.srm!=null){s.social.splice(+b.dataset.srm,1);render();markDirty();}
+  };
+}
+
+/* ---- settings ---- */
+function viewSettings(){
+  var s=S.site;s.ads=s.ads||{};s.verification=s.verification||{};s.categories=s.categories||[];
+  var v=$('#view');
+  function render(){
+    v.innerHTML='<div class="head"><h1>الإعدادات</h1></div>'+
+    '<div class="card"><h2>الموقع</h2>'+field('اسم الموقع',l4(s.name,'s-name'))+field('الشعار (tagline)',l4(s.tagline,'s-tag'))+
+      '<div class="two">'+field('الدومين الأساسي','<input type="url" id="s-base" class="ltr" value="'+esc(s.baseUrl||'')+'">','كيستعمل فـ canonical والـ sitemap. خليه https://www.ksarsghir.com')+field('صاحب الموقع','<input type="text" id="s-owner" value="'+esc(s.owner||'')+'">')+'</div></div>'+
+    '<div class="card"><h2>التصنيفات</h2><div id="cats">'+s.categories.map(function(c,i){return '<div class="rep" data-ci="'+i+'"><div class="rep-h" style="gap:8px"><input type="text" data-cid class="ltr" value="'+esc(c.id)+'" placeholder="beach" style="max-width:160px"><input type="text" data-cic value="'+esc(c.icon||'')+'" placeholder="🏖️" style="max-width:70px"><button class="btn btn-s btn-d" data-crm="'+i+'">✕</button></div>'+l4(c.name,'cn')+'</div>';}).join('')+'</div><button class="btn btn-s" id="add-cat">+ زيد تصنيف</button></div>'+
+    '<div class="card"><h2>📢 الإعلانات</h2><p class="hint">الصق كود الإعلان (AdSense ولا HTML ديال معلن). خليه خاوي باش ما يبانش.</p>'+field('فوق المحتوى','<textarea class="code" id="ad-top" style="min-height:90px">'+esc(s.ads.top||'')+'</textarea>')+field('تحت المحتوى','<textarea class="code" id="ad-bottom" style="min-height:90px">'+esc(s.ads.bottom||'')+'</textarea>')+'</div>'+
+    '<div class="card"><h2>Google</h2><div class="two">'+field('Google Search Console (verification)','<input type="text" id="s-gsc" class="ltr" value="'+esc(s.verification.google||'')+'" placeholder="الكود فقط، بلا meta">','من Search Console ← طريقة "HTML tag"')+field('Google Analytics','<input type="text" id="s-ga" class="ltr" value="'+esc(s.analytics||'')+'" placeholder="G-XXXXXXX">')+'</div></div>'+
+    '<div class="card"><h2>🔄 إعادة بناء الموقع</h2><p class="hint">كتعاود تصاوب جميع الصفحات. استعملها إلا تبدل شي حاجة فالتصميم ولا بغيتي تتأكد أن كلشي محدّث.</p><button class="btn" id="rebuild">🔄 إعادة بناء ونشر كامل</button></div>';
+  }
+  render();
+  v.oninput=function(e){
+    s.name=readL4(v,'s-name');s.tagline=readL4(v,'s-tag');s.baseUrl=$('#s-base').value.trim().replace(/\/$/,'');s.owner=$('#s-owner').value;
+    s.ads.top=$('#ad-top').value;s.ads.bottom=$('#ad-bottom').value;s.verification.google=$('#s-gsc').value.trim().replace(/.*content="([^"]+)".*/,'$1');s.analytics=$('#s-ga').value.trim();
+    var c=e.target.closest('[data-ci]');if(c){var x=s.categories[+c.dataset.ci];x.id=slugify($('[data-cid]',c).value)||x.id;x.icon=$('[data-cic]',c).value;x.name=readL4(c,'cn');}
+    markDirty();
+  };
+  v.onclick=async function(e){
+    var b=e.target.closest('button');if(!b)return;
+    if(b.id==='add-cat'){s.categories.push({id:'cat'+(s.categories.length+1),icon:'📍',name:{}});render();markDirty();}
+    if(b.dataset.crm!=null){var id=s.categories[+b.dataset.crm].id;if(S.articles.some(function(a){return a.category===id;}))return toast('❌ هاد التصنيف مستعمل فشي مواضيع',true);s.categories.splice(+b.dataset.crm,1);render();markDirty();}
+    if(b.id==='rebuild'){s.version=(s.version||1)+1;await publish('🔄 إعادة بناء الموقع');}
+  };
+}
+
+/* ---------- publish ---------- */
+var publishing=false;
+async function publish(message){
+  if(publishing)return false;
+  publishing=true;var btn=$('#publish-btn');btn.disabled=true;
+  setStatus('<span class="progress"><i></i></span> كنبني الصفحات…');
+  try{
+    var files=B.buildAll(S.site,S.articles);
+    var list=Object.keys(files).sort();
+    var deletes=(S.manifest.files||[]).filter(function(p){return !files[p];});
+    files['data/site.json']=JSON.stringify(S.site,null,1);
+    files['data/articles.json']=JSON.stringify({articles:S.articles},null,1);
+    files['data/manifest.json']=JSON.stringify({files:list},null,1);
+    setStatus('<span class="progress"><i></i></span> كنرفع '+Object.keys(files).length+' ملف لـ GitHub…');
+    var sha=await commit(files,deletes,message||'📝 تحديث الموقع');
+    S.manifest={files:list};S.dirty=false;
+    toast('✅ تنشر! غادي يبان فالموقع خلال دقيقة تقريباً.');
+    watchDeploy(sha);
+    return true;
+  }catch(e){
+    setStatus('❌ ما تنشرش');toast('❌ '+e.message,true);return false;
+  }finally{publishing=false;btn.disabled=false;}
+}
+async function watchDeploy(sha){
+  var t0=Date.now();
+  setStatus('<span class="progress"><i></i></span> GitHub Pages كيحدّث الموقع…');
+  while(Date.now()-t0<240000){
+    await new Promise(function(r){setTimeout(r,6000);});
+    try{
+      var b=await gh('/pages/builds/latest');
+      if(b&&b.commit===sha&&b.status==='built'){setStatus('✅ الموقع محدّث · <a href="'+pagesUrl()+'" target="_blank" rel="noopener">عرض</a>');return;}
+      if(b&&b.commit===sha&&b.status==='errored'){setStatus('❌ GitHub Pages ما قدرش يبني الموقع');return;}
+    }catch(e){break;}
+  }
+  setStatus('✅ تنشر · التحديث كياخد حتى دقيقتين');
+}
+$('#publish-btn').addEventListener('click',function(){
+  if(S.view==='edit'){$('#save').click();return;}
+  publish('📝 تحديث الموقع');
+});
+
+tryAuto();
+})();
+</script>
+</body>
+</html>

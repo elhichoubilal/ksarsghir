@@ -1,0 +1,314 @@
+{
+ "version": 1,
+ "baseUrl": "https://www.ksarsghir.com",
+ "owner": "Bilal El Hichou",
+ "name": {
+  "ar": "القصر الصغير",
+  "fr": "Ksar Sghir",
+  "en": "Ksar Sghir",
+  "es": "Alcazarseguer"
+ },
+ "tagline": {
+  "ar": "دليلك السياحي لشمال المغرب على مضيق جبل طارق",
+  "fr": "Le guide touristique du nord du Maroc, sur le détroit de Gibraltar",
+  "en": "Your travel guide to northern Morocco on the Strait of Gibraltar",
+  "es": "Tu guía turística del norte de Marruecos, en el estrecho de Gibraltar"
+ },
+ "hero": {
+  "image": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyF6zy_A4LJ2L-xiH04Zd6XJEDMXIaOmyzWtN3vaFdByi2ysaLnHUcv4jYzuv5UqLPoM44_VLDfwr4MWEGATxl4QX7J7Ad0Z9bLL6kqB5lHnCQOf3EaC_snAy2TJCCt14okvSQDDPb0XvpNRZ6Gmhq6VIIHpESdyZ3P2uaZaSIm7PfxqtSHWL4-TUFwdU/s1600/8510.jpg",
+  "title": {
+   "ar": "القصر الصغير",
+   "fr": "Ksar Sghir",
+   "en": "Ksar Sghir",
+   "es": "Alcazarseguer"
+  },
+  "subtitle": {
+   "ar": "شواطئ، موانئ وتاريخ على الضفة الجنوبية لمضيق جبل طارق، بعدسة بلال الهيشو.",
+   "fr": "Plages, ports et histoire sur la rive sud du détroit de Gibraltar, par l’objectif de Bilal El Hichou.",
+   "en": "Beaches, ports and history on the southern shore of the Strait of Gibraltar, through the lens of Bilal El Hichou.",
+   "es": "Playas, puertos e historia en la orilla sur del estrecho de Gibraltar, con la mirada de Bilal El Hichou."
+  },
+  "cta": {
+   "ar": "اكتشف الوجهات",
+   "fr": "Découvrir les destinations",
+   "en": "Explore destinations",
+   "es": "Descubrir destinos"
+  },
+  "seoTitle": {
+   "ar": "القصر الصغير — دليل سياحي: شواطئ، موانئ وتاريخ | Ksar Sghir",
+   "fr": "Ksar Sghir (Ksar es-Seghir) — Guide touristique, plages et histoire | Maroc",
+   "en": "Ksar Sghir, Morocco — Travel guide to beaches, ports and history",
+   "es": "Alcazarseguer (Ksar Sghir) — Guía turística: playas e historia | Marruecos"
+  },
+  "description": {
+   "ar": "دليل القصر الصغير السياحي: أجمل الشواطئ، ميناء طنجة المتوسط، بليونش والموقع الأثري، بأربع لغات. صور ومعلومات عملية من ابن المنطقة.",
+   "fr": "Guide de Ksar Sghir (Ksar es-Seghir) : plus belles plages, Tanger Med, Belyounech et site archéologique. Infos pratiques et photos d’un habitant.",
+   "en": "Ksar Sghir travel guide: the best beaches, Tanger Med port, Belyounech and the archaeological site, with photos and practical tips from a local.",
+   "es": "Guía de Alcazarseguer (Ksar Sghir): las mejores playas, Tánger Med, Belyounech y el yacimiento arqueológico. Fotos y consejos de un local."
+  }
+ },
+ "intro": {
+  "ar": "<h2>مرحباً بك في القصر الصغير</h2><p><strong>القصر الصغير</strong> مدينة ساحلية صغيرة في إقليم الفحص أنجرة، على بعد حوالي 35 كيلومتراً شرق طنجة، مطلة مباشرة على مضيق جبل طارق. من شاطئها ترى الساحل الإسباني في الأيام الصافية، وحولها شواطئ هادئة مثل الدالية وواد اليان وسيدي قنقوش، إضافة إلى ميناء طنجة المتوسط وقرية بليونش تحت جبل موسى.</p><p>في هذا الدليل نجمع لك كل ما تحتاجه لزيارة القصر الصغير: وصف كل شاطئ وميناء وموقع تاريخي، أفضل وقت للزيارة، الخدمات المتوفرة، ونصائح من ابن المنطقة.</p>",
+  "fr": "<h2>Bienvenue à Ksar Sghir</h2><p><strong>Ksar Sghir</strong> (aussi écrit Ksar es-Seghir ou Ksar Seghir) est une petite ville côtière de la province de Fahs-Anjra, à environ 35 km à l’est de Tanger, face au détroit de Gibraltar. Par temps clair, on voit la côte espagnole depuis sa plage. Autour : des plages calmes comme Dalia, Oued Alian ou Sidi Kankouch, le port de Tanger Med et le village de Belyounech au pied du Jebel Moussa.</p><p>Ce guide réunit tout ce qu’il faut savoir pour visiter Ksar Sghir : chaque plage, port et site historique, la meilleure période, les services sur place et les conseils d’un habitant.</p>",
+  "en": "<h2>Welcome to Ksar Sghir</h2><p><strong>Ksar Sghir</strong> (also spelled Ksar es-Seghir or Ksar Seghir) is a small coastal town in Fahs-Anjra province, about 35 km east of Tangier, right on the Strait of Gibraltar. On clear days you can see the Spanish coast from its beach. Nearby are quiet beaches such as Dalia, Oued Alian and Sidi Kankouch, the Tanger Med port and the village of Belyounech below Jebel Musa.</p><p>This guide covers everything you need to visit Ksar Sghir, Morocco: every beach, port and historic site, the best time to go, local services and tips from someone who lives here.</p>",
+  "es": "<h2>Bienvenido a Alcazarseguer</h2><p><strong>Alcazarseguer</strong> (Ksar Sghir o Ksar es-Seghir) es un pequeño pueblo costero de la provincia de Fahs-Anjra, a unos 35 km al este de Tánger, frente al estrecho de Gibraltar. En días despejados se ve la costa española desde su playa. Alrededor hay playas tranquilas como Dalia, Oued Alian o Sidi Kankouch, el puerto de Tánger Med y el pueblo de Belyounech, al pie del Yebel Musa.</p><p>Esta guía reúne todo lo necesario para visitar Alcazarseguer: cada playa, puerto y lugar histórico, la mejor época, los servicios disponibles y los consejos de un vecino.</p>"
+ },
+ "featured": "plage",
+ "categories": [
+  {
+   "id": "beach",
+   "icon": "🏖️",
+   "name": {
+    "ar": "شواطئ",
+    "fr": "Plages",
+    "en": "Beaches",
+    "es": "Playas"
+   }
+  },
+  {
+   "id": "port",
+   "icon": "⚓",
+   "name": {
+    "ar": "موانئ",
+    "fr": "Ports",
+    "en": "Ports",
+    "es": "Puertos"
+   }
+  },
+  {
+   "id": "nature",
+   "icon": "🌿",
+   "name": {
+    "ar": "طبيعة",
+    "fr": "Nature",
+    "en": "Nature",
+    "es": "Naturaleza"
+   }
+  },
+  {
+   "id": "history",
+   "icon": "🏛️",
+   "name": {
+    "ar": "تاريخ وآثار",
+    "fr": "Histoire",
+    "en": "History",
+    "es": "Historia"
+   }
+  }
+ ],
+ "stats": [
+  {
+   "value": "77K",
+   "label": {
+    "ar": "متابع على Facebook",
+    "fr": "abonnés Facebook",
+    "en": "Facebook followers",
+    "es": "seguidores en Facebook"
+   }
+  },
+  {
+   "value": "16+",
+   "label": {
+    "ar": "وجهة سياحية",
+    "fr": "destinations",
+    "en": "destinations",
+    "es": "destinos"
+   }
+  },
+  {
+   "value": "4",
+   "label": {
+    "ar": "لغات",
+    "fr": "langues",
+    "en": "languages",
+    "es": "idiomas"
+   }
+  }
+ ],
+ "menu": [
+  {
+   "label": {
+    "ar": "الرئيسية",
+    "fr": "Accueil",
+    "en": "Home",
+    "es": "Inicio"
+   },
+   "url": "",
+   "i18n": true
+  },
+  {
+   "label": {
+    "ar": "السياحة",
+    "fr": "Tourisme",
+    "en": "Tourism",
+    "es": "Turismo"
+   },
+   "url": "tourisme/",
+   "i18n": true
+  },
+  {
+   "label": {
+    "ar": "المعرض",
+    "fr": "Galerie",
+    "en": "Gallery",
+    "es": "Galería"
+   },
+   "url": "https://gallery.ksarsghir.com"
+  },
+  {
+   "label": {
+    "ar": "الطقس",
+    "fr": "Météo",
+    "en": "Weather",
+    "es": "Tiempo"
+   },
+   "url": "meteo/"
+  },
+  {
+   "label": {
+    "ar": "الصلاة",
+    "fr": "Prière",
+    "en": "Prayer",
+    "es": "Oración"
+   },
+   "url": "salat/"
+  },
+  {
+   "label": {
+    "ar": "أعلن معنا",
+    "fr": "Publicité",
+    "en": "Advertise",
+    "es": "Publicidad"
+   },
+   "url": "advertise/"
+  }
+ ],
+ "footer": [
+  {
+   "title": {
+    "ar": "السياحة",
+    "fr": "Tourisme",
+    "en": "Tourism",
+    "es": "Turismo"
+   },
+   "links": [
+    {
+     "label": {
+      "ar": "شاطئ القصر الصغير",
+      "fr": "Plage Ksar Sghir",
+      "en": "Ksar Sghir Beach",
+      "es": "Playa Ksar Sghir"
+     },
+     "url": "tourisme/plage/",
+     "i18n": true
+    },
+    {
+     "label": {
+      "ar": "شاطئ الدالية",
+      "fr": "Plage Dalia",
+      "en": "Dalia Beach",
+      "es": "Playa Dalia"
+     },
+     "url": "tourisme/dalia/",
+     "i18n": true
+    },
+    {
+     "label": {
+      "ar": "قرية بليونش",
+      "fr": "Belyounech",
+      "en": "Belyounech",
+      "es": "Belyounech"
+     },
+     "url": "tourisme/belyounech/",
+     "i18n": true
+    },
+    {
+     "label": {
+      "ar": "كل الوجهات",
+      "fr": "Toutes les destinations",
+      "en": "All destinations",
+      "es": "Todos los destinos"
+     },
+     "url": "tourisme/",
+     "i18n": true
+    }
+   ]
+  },
+  {
+   "title": {
+    "ar": "الموقع",
+    "fr": "Le site",
+    "en": "About",
+    "es": "El sitio"
+   },
+   "links": [
+    {
+     "label": {
+      "ar": "من أنا",
+      "fr": "À propos",
+      "en": "About",
+      "es": "Sobre mí"
+     },
+     "url": "about/"
+    },
+    {
+     "label": {
+      "ar": "اتصل بنا",
+      "fr": "Contact",
+      "en": "Contact",
+      "es": "Contacto"
+     },
+     "url": "contact/"
+    },
+    {
+     "label": {
+      "ar": "الخصوصية",
+      "fr": "Confidentialité",
+      "en": "Privacy",
+      "es": "Privacidad"
+     },
+     "url": "privacy/"
+    },
+    {
+     "label": {
+      "ar": "الشروط",
+      "fr": "Conditions",
+      "en": "Terms",
+      "es": "Condiciones"
+     },
+     "url": "terms/"
+    }
+   ]
+  }
+ ],
+ "social": [
+  {
+   "name": "Facebook — ksarsghircity",
+   "url": "https://www.facebook.com/ksarsghircity"
+  },
+  {
+   "name": "Facebook — Ksar Sghir Lens",
+   "url": "https://www.facebook.com/KsarSghirLens"
+  },
+  {
+   "name": "WhatsApp",
+   "url": "https://wa.me/212708053745"
+  }
+ ],
+ "tourismPage": {},
+ "ads": {
+  "top": "",
+  "bottom": ""
+ },
+ "verification": {
+  "google": ""
+ },
+ "analytics": "",
+ "extraUrls": [
+  "meteo/",
+  "salat/",
+  "about/",
+  "contact/",
+  "advertise/"
+ ]
+}
