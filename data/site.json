@@ -1,5 +1,5 @@
 {
- "version": 1,
+ "version": "muiv4q2p",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -455,5 +455,42 @@
   "facebook": "https://www.facebook.com/ksarsghircity/reviews",
   "title": {},
   "text": {}
- }
+ },
+ "ticker": {
+  "enabled": true,
+  "speed": "normal",
+  "label": {
+   "ar": "جديد",
+   "fr": "Nouveau",
+   "en": "New",
+   "es": "Nuevo"
+  },
+  "items": [
+   {
+    "text": {
+     "ar": "مرحباً بكم فالدليل السياحي للقصر الصغير، بأربع لغات",
+     "fr": "Bienvenue sur le guide touristique de Ksar Sghir, en quatre langues",
+     "en": "Welcome to the Ksar Sghir travel guide, in four languages",
+     "es": "Bienvenidos a la guía turística de Alcazarseguer, en cuatro idiomas"
+    },
+    "url": "",
+    "i18n": false
+   },
+   {
+    "text": {
+     "ar": "اكتشف 16 وجهة سياحية: شواطئ، موانئ وتاريخ",
+     "fr": "Découvrez 16 destinations : plages, ports et histoire",
+     "en": "Discover 16 destinations: beaches, ports and history",
+     "es": "Descubre 16 destinos: playas, puertos e historia"
+    },
+    "url": "tourisme/",
+    "i18n": true
+   }
+  ]
+ },
+ "topbar": {
+  "social": true
+ },
+ "theme": {},
+ "homeSections": {}
 }
