@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>القصر الصغير — بوابة الشمال المغربي | Ksar Sghir</title>
+<meta name="description" content="القصر الصغير — دليلك الشامل لاكتشاف أجمل وجهات شمال المغرب: شواطئ، موانئ، تاريخ، طقس وأوقات الصلاة."/>
+<meta name="keywords" content="القصر الصغير, ksar sghir, سياحة شمال المغرب, شاطئ, بليونش, طنجة المتوسط"/>
+<meta name="robots" content="index, follow"/>
+<meta property="og:title" content="القصر الصغير — بوابة الشمال المغربي"/>
+<meta property="og:description" content="اكتشف أجمل وجهات شمال المغرب — شواطئ، موانئ، تاريخ وطبيعة بكر"/>
+<meta property="og:image" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyF6zy_A4LJ2L-xiH04Zd6XJEDMXIaOmyzWtN3vaFdByi2ysaLnHUcv4jYzuv5UqLPoM44_VLDfwr4MWEGATxl4QX7J7Ad0Z9bLL6kqB5lHnCQOf3EaC_snAy2TJCCt14okvSQDDPb0XvpNRZ6Gmhq6VIIHpESdyZ3P2uaZaSIm7PfxqtSHWL4-TUFwdU/s2252/8510.jpg"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://www.ksarsghir.com"/>
+<link rel="canonical" href="https://www.ksarsghir.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+/* ===== CSS VARIABLES ===== */
+:root {
+  --bg:#0a0f1a;--bg2:#16213e;--bg3:#1a2a40;--bg4:#0d1b2a;
+  --accent:#00b4d8;--accent2:#0096c7;--accent-glow:rgba(0,180,216,0.15);
+  --text:#e2e8f0;--text2:#94a3b8;--text3:#475569;
+  --border:rgba(0,180,216,0.15);--border2:rgba(255,255,255,0.06);
+  --green:#34d399;--gold:#c29b62;--red:#f87171;
+  --shadow:0 4px 24px rgba(0,0,0,0.4);
+  --radius:14px;--radius2:10px;
+}
+[data-theme="light"] {
+  --bg:#f0f4f8;--bg2:#ffffff;--bg3:#e8edf5;--bg4:#dde3ed;
+  --text:#1a1a2e;--text2:#444;--text3:#888;
+  --border:rgba(0,150,180,0.2);--border2:rgba(0,0,0,0.08);
+  --shadow:0 4px 24px rgba(0,0,0,0.1);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Tajawal',sans-serif; background:var(--bg); color:var(--text); line-height:1.7; transition:background .3s,color .3s; }
+a { color:var(--accent); text-decoration:none; }
+img { max-width:100%; }
+::-webkit-scrollbar { width:4px; } ::-webkit-scrollbar-track { background:var(--bg2); } ::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+/* ===== NOTIFICATION BAR ===== */
+#notif-bar { background:linear-gradient(90deg,var(--accent2),var(--accent)); padding:8px 20px; text-align:center; font-size:12px; color:#fff; font-weight:600; display:flex; align-items:center; justify-content:center; gap:10px; position:relative; }
+#notif-bar a { color:#fff; text-decoration:underline; }
+#notif-close { position:absolute; left:16px; background:transparent; border:none; color:#fff; font-size:16px; cursor:pointer; line-height:1; opacity:.7; }
+#notif-close:hover { opacity:1; }
+
+/* ===== NAV ===== */
+nav { background:var(--bg2); border-bottom:2px solid var(--accent); padding:0 20px; height:56px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:200; box-shadow:var(--shadow); transition:background .3s; }
+.nav-logo { display:flex; align-items:center; gap:8px; }
+.nav-logo-icon { font-size:22px; }
+.nav-logo-text { font-size:16px; font-weight:900; color:var(--accent); }
+.nav-logo-sub { font-size:8px; color:var(--text3); letter-spacing:2px; }
+.nav-links { display:flex; gap:2px; }
+.nav-links a { font-size:11px; color:var(--text2); padding:6px 10px; border-radius:8px; transition:all .2s; white-space:nowrap; }
+.nav-links a:hover,.nav-links a.active { background:var(--accent-glow); color:var(--accent); }
+.nav-right { display:flex; align-items:center; gap:6px; }
+.lang-sw { display:flex; gap:2px; background:var(--bg3); border-radius:20px; padding:3px; }
+.lb { background:transparent; border:none; color:var(--text2); padding:3px 8px; border-radius:16px; cursor:pointer; font-size:10px; font-weight:700; font-family:'Tajawal',sans-serif; transition:all .2s; }
+.lb.on { background:var(--accent); color:#fff; box-shadow:0 2px 8px rgba(0,180,216,0.3); }
+.theme-btn { background:var(--bg3); border:1px solid var(--border); color:var(--text2); width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:15px; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+.theme-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+/* ===== HERO ===== */
+.hero { background:linear-gradient(135deg,#060c14 0%,#0d1b2a 50%,#1a3a5c 100%); padding:70px 20px 50px; text-align:center; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(0,180,216,0.1),transparent 70%); pointer-events:none; }
+.hero-waves { position:absolute; bottom:0; left:0; right:0; height:60px; overflow:hidden; }
+.hero-waves svg { position:absolute; bottom:0; width:100%; }
+.hero-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(0,180,216,0.1); border:1px solid rgba(0,180,216,0.3); color:var(--accent); font-size:11px; padding:5px 16px; border-radius:20px; margin-bottom:18px; letter-spacing:1px; }
+.hero-title { font-size:clamp(28px,5vw,54px); font-weight:900; color:#fff; line-height:1.2; margin-bottom:14px; }
+.hero-title span { color:var(--accent); }
+.hero-sub { font-size:14px; color:var(--text2); max-width:540px; margin:0 auto 28px; line-height:1.8; }
+.hero-btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:30px; }
+.btn-hero { padding:11px 26px; border-radius:25px; font-size:13px; font-weight:700; cursor:pointer; transition:all .2s; display:inline-flex; align-items:center; gap:6px; font-family:'Tajawal',sans-serif; }
+.btn-primary { background:var(--accent); color:#fff; border:none; }
+.btn-primary:hover { background:var(--accent2); transform:translateY(-1px); box-shadow:0 4px 16px rgba(0,180,216,0.3); }
+.btn-outline { background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.3); }
+.btn-outline:hover { border-color:var(--accent); color:var(--accent); }
+
+/* ===== WEATHER + PRAYER WIDGET ===== */
+.info-widget { max-width:900px; margin:0 auto; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; backdrop-filter:blur(10px); }
+.info-widget-tabs { display:flex; border-bottom:1px solid var(--border); }
+.iw-tab { flex:1; padding:10px; text-align:center; font-size:11px; font-weight:700; color:var(--text2); cursor:pointer; border:none; background:transparent; font-family:'Tajawal',sans-serif; transition:all .2s; border-bottom:2px solid transparent; }
+.iw-tab.active { color:var(--accent); border-bottom-color:var(--accent); background:rgba(0,180,216,0.04); }
+.iw-panel { display:none; padding:16px; }
+.iw-panel.active { display:block; }
+
+/* WEATHER PANEL */
+.weather-today { display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center; margin-bottom:14px; padding-bottom:14px; border-bottom:1px solid var(--border); }
+.weather-icon-big { font-size:44px; line-height:1; }
+.weather-temp-big { font-size:38px; font-weight:900; color:var(--accent); line-height:1; }
+.weather-desc-big { font-size:12px; color:var(--text2); margin-top:3px; }
+.weather-details { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.weather-detail { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text2); }
+.weather-7days { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; }
+.day-card { background:rgba(0,180,216,0.04); border:1px solid var(--border); border-radius:8px; padding:8px 4px; text-align:center; }
+.day-name { font-size:9px; color:var(--text3); margin-bottom:4px; }
+.day-icon { font-size:18px; margin-bottom:3px; }
+.day-temp { font-size:11px; font-weight:700; color:var(--accent); }
+.day-min { font-size:9px; color:var(--text3); }
+.sun-row { display:flex; gap:10px; margin-top:12px; }
+.sun-item { flex:1; background:rgba(255,183,3,0.06); border:1px solid rgba(255,183,3,0.15); border-radius:8px; padding:10px; text-align:center; }
+.sun-icon { font-size:20px; margin-bottom:4px; }
+.sun-label { font-size:9px; color:var(--text3); }
+.sun-time { font-size:14px; font-weight:700; color:#ffb703; }
+.sea-row { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:12px; }
+.sea-item { background:rgba(0,180,216,0.05); border:1px solid var(--border); border-radius:8px; padding:10px; text-align:center; }
+.sea-icon { font-size:20px; margin-bottom:4px; }
+.sea-label { font-size:9px; color:var(--text3); }
+.sea-val { font-size:13px; font-weight:700; color:var(--accent); }
+
+/* PRAYER PANEL */
+.prayer-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+.prayer-item { background:rgba(0,180,216,0.04); border:1px solid var(--border); border-radius:10px; padding:12px 8px; text-align:center; transition:all .3s; }
+.prayer-item.next { background:rgba(0,180,216,0.12); border-color:var(--accent); }
+.prayer-icon { font-size:20px; margin-bottom:6px; }
+.prayer-name { font-size:11px; color:var(--text2); margin-bottom:4px; }
+.prayer-time { font-size:14px; font-weight:700; color:var(--accent); }
+.prayer-item.next .prayer-name { color:var(--accent); font-weight:700; }
+.next-badge { display:inline-block; background:var(--accent); color:#fff; font-size:8px; font-weight:700; padding:1px 6px; border-radius:6px; margin-top:4px; }
+.hijri-date { text-align:center; font-size:11px; color:var(--text3); margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+
+/* ===== SECTIONS ===== */
+.section { max-width:1140px; margin:0 auto; padding:50px 20px; }
+.section-hdr { text-align:center; margin-bottom:28px; }
+.section-label { display:inline-block; background:var(--accent-glow); border:1px solid var(--border); color:var(--accent); font-size:10px; padding:4px 14px; border-radius:20px; margin-bottom:10px; letter-spacing:1px; font-weight:700; }
+.section-title { font-size:clamp(20px,3vw,28px); font-weight:900; margin-bottom:6px; }
+.section-sub { font-size:13px; color:var(--text3); }
+
+/* ===== AD BANNER ===== */
+.ad-zone { background:var(--bg2); border:1px dashed rgba(0,180,216,0.2); border-radius:var(--radius2); padding:14px; text-align:center; margin:16px 0; min-height:60px; display:flex; align-items:center; justify-content:center; }
+.ad-zone-label { font-size:9px; color:var(--text3); display:block; margin-bottom:4px; }
+.ad-zone:empty::before { content:'إعلان • 728×90'; font-size:11px; color:var(--text3); }
+
+/* ===== FEATURED ARTICLE ===== */
+.featured-wrap { margin-bottom:20px; }
+.featured-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; display:grid; grid-template-columns:1.4fr 1fr; transition:all .3s; }
+.featured-card:hover { border-color:var(--accent); box-shadow:0 8px 30px rgba(0,180,216,0.1); }
+.featured-img { height:260px; overflow:hidden; background:var(--bg3); display:flex; align-items:center; justify-content:center; font-size:48px; }
+.featured-img img { width:100%; height:100%; object-fit:cover; transition:transform .4s; }
+.featured-card:hover .featured-img img { transform:scale(1.04); }
+.featured-body { padding:28px; display:flex; flex-direction:column; justify-content:center; gap:12px; }
+.featured-badge { display:inline-flex; align-items:center; gap:5px; background:rgba(194,155,98,0.15); border:1px solid rgba(194,155,98,0.3); color:var(--gold); font-size:10px; font-weight:700; padding:3px 12px; border-radius:20px; width:fit-content; }
+.featured-title { font-size:20px; font-weight:900; color:var(--text); line-height:1.35; }
+.featured-desc { font-size:13px; color:var(--text2); line-height:1.7; }
+.featured-foot { display:flex; align-items:center; gap:12px; }
+.featured-link { display:inline-flex; align-items:center; gap:6px; background:var(--accent); color:#fff; padding:9px 20px; border-radius:20px; font-size:12px; font-weight:700; transition:all .2s; }
+.featured-link:hover { background:var(--accent2); }
+.featured-date { font-size:11px; color:var(--text3); }
+
+/* ===== ARTICLES GRID ===== */
+.articles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:20px; }
+.art-card { background:var(--bg2); border:1px solid var(--border2); border-radius:var(--radius); overflow:hidden; transition:all .3s; display:flex; flex-direction:column; }
+.art-card:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,180,216,0.1); }
+.art-card-img { height:160px; overflow:hidden; background:var(--bg3); display:flex; align-items:center; justify-content:center; font-size:36px; flex-shrink:0; }
+.art-card-img img { width:100%; height:100%; object-fit:cover; transition:transform .4s; }
+.art-card:hover .art-card-img img { transform:scale(1.05); }
+.art-card-body { padding:14px; flex:1; display:flex; flex-direction:column; gap:8px; }
+.art-cat-badge { display:inline-block; background:var(--accent-glow); border:1px solid var(--border); color:var(--accent); font-size:9px; font-weight:700; padding:2px 8px; border-radius:8px; width:fit-content; }
+.art-card-title { font-size:14px; font-weight:700; color:var(--text); line-height:1.4; flex:1; }
+.art-card-foot { display:flex; align-items:center; justify-content:space-between; font-size:10px; color:var(--text3); margin-top:auto; }
+.art-read { color:var(--accent); font-weight:600; font-size:11px; }
+
+/* LOADING */
+.loading-articles { text-align:center; padding:50px; color:var(--text3); }
+.spinner { width:32px; height:32px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin .8s linear infinite; margin:0 auto 12px; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ===== TOURISM GRID ===== */
+.tourism-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.tourism-card { background:var(--bg2); border:1px solid var(--border2); border-radius:var(--radius); padding:20px; transition:all .3s; display:block; color:inherit; }
+.tourism-card:hover { border-color:var(--accent); transform:translateY(-3px); box-shadow:0 6px 20px rgba(0,180,216,0.1); }
+.tourism-type { font-size:9px; letter-spacing:2px; color:var(--accent); text-transform:uppercase; margin-bottom:8px; font-weight:700; }
+.tourism-name { font-size:15px; font-weight:700; margin-bottom:6px; color:var(--text); }
+.tourism-desc { font-size:12px; color:var(--text3); margin-bottom:12px; line-height:1.6; }
+.tourism-tags { display:flex; gap:5px; flex-wrap:wrap; }
+.t-tag { background:var(--accent-glow); border:1px solid var(--border); color:var(--accent); font-size:9px; padding:2px 8px; border-radius:6px; }
+
+/* ===== MAP SECTION ===== */
+.map-wrap { background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+.map-header { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+.map-frame { width:100%; height:320px; border:none; filter:invert(0.9) hue-rotate(180deg); }
+[data-theme="light"] .map-frame { filter:none; }
+
+/* ===== STATS ===== */
+.stats-bar { background:linear-gradient(135deg,#0d1b2a,#1a3a5c); padding:30px 20px; }
+.stats-inner { max-width:900px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border-radius:var(--radius); overflow:hidden; }
+.stat-item { background:rgba(13,27,42,0.9); padding:22px 12px; text-align:center; }
+[data-theme="light"] .stat-item { background:rgba(240,244,248,0.9); }
+.stat-num { font-size:28px; font-weight:900; color:var(--accent); }
+.stat-lbl { font-size:10px; color:var(--text3); margin-top:4px; }
+
+/* ===== GALLERY ===== */
+.gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.gallery-item { border-radius:var(--radius2); overflow:hidden; aspect-ratio:4/3; background:var(--bg3); }
+.gallery-item img { width:100%; height:100%; object-fit:cover; transition:transform .4s; }
+.gallery-item:hover img { transform:scale(1.06); }
+
+/* ===== SERVICES ===== */
+.services-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.service-card { background:var(--bg2); border:1px solid var(--border2); border-radius:var(--radius); padding:22px 16px; text-align:center; transition:all .3s; display:block; color:inherit; }
+.service-card:hover { border-color:var(--accent); transform:translateY(-3px); }
+.service-icon { font-size:32px; margin-bottom:10px; }
+.service-name { font-size:13px; font-weight:700; margin-bottom:5px; }
+.service-desc { font-size:11px; color:var(--text3); line-height:1.6; }
+
+/* ===== DIVIDER ===== */
+.section-divider { border:none; border-top:1px solid var(--border2); margin:0; }
+
+/* ===== FLOATING BUTTONS ===== */
+#wa-float { position:fixed; bottom:24px; left:24px; z-index:999; background:#25d366; color:#fff; width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 4px 20px rgba(37,211,102,0.4); transition:all .3s; text-decoration:none; }
+#wa-float:hover { transform:scale(1.1); box-shadow:0 6px 28px rgba(37,211,102,0.5); }
+#wa-float .wa-tooltip { position:absolute; left:60px; background:#25d366; color:#fff; font-size:11px; font-weight:700; padding:5px 12px; border-radius:20px; white-space:nowrap; opacity:0; transform:translateX(-10px); transition:all .3s; pointer-events:none; font-family:'Tajawal',sans-serif; }
+#wa-float:hover .wa-tooltip { opacity:1; transform:translateX(0); }
+[dir="rtl"] #wa-float { left:auto; right:24px; }
+[dir="rtl"] #wa-float .wa-tooltip { left:auto; right:60px; transform:translateX(10px); }
+[dir="rtl"] #wa-float:hover .wa-tooltip { transform:translateX(0); }
+
+#back-top { position:fixed; bottom:88px; left:24px; z-index:999; background:var(--bg2); border:1px solid var(--border); color:var(--accent); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; cursor:pointer; transition:all .3s; opacity:0; pointer-events:none; box-shadow:var(--shadow); }
+#back-top.show { opacity:1; pointer-events:all; }
+#back-top:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+[dir="rtl"] #back-top { left:auto; right:24px; }
+
+/* ===== FOOTER ===== */
+footer { background:#060c14; border-top:1px solid var(--bg2); padding:40px 20px 20px; }
+[data-theme="light"] footer { background:#1a1a2e; }
+.footer-inner { max-width:1140px; margin:0 auto; }
+.footer-top { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:30px; margin-bottom:30px; }
+.footer-brand-name { font-size:20px; font-weight:900; color:var(--accent); margin-bottom:8px; }
+.footer-brand-desc { font-size:12px; color:var(--text3); line-height:1.7; margin-bottom:14px; }
+.footer-social { display:flex; gap:6px; flex-wrap:wrap; }
+.footer-social a { background:rgba(0,180,216,0.1); border:1px solid var(--border); color:var(--text2); font-size:10px; padding:5px 10px; border-radius:16px; transition:all .2s; }
+.footer-social a:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+.footer-col-title { font-size:11px; font-weight:700; color:var(--accent); margin-bottom:12px; padding-bottom:6px; border-bottom:1px solid var(--border); letter-spacing:1px; }
+.footer-links { list-style:none; }
+.footer-links li { margin-bottom:7px; }
+.footer-links a { font-size:12px; color:var(--text3); transition:color .2s; }
+.footer-links a:hover { color:var(--accent); }
+.footer-bottom { border-top:1px solid rgba(255,255,255,0.05); padding-top:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+.footer-copy { font-size:11px; color:var(--text3); }
+.footer-bl { display:flex; gap:14px; }
+.footer-bl a { font-size:11px; color:var(--text3); }
+.footer-bl a:hover { color:var(--accent); }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:1024px){ .articles-grid{grid-template-columns:repeat(2,1fr);} .tourism-grid{grid-template-columns:repeat(2,1fr);} .footer-top{grid-template-columns:1fr 1fr;} }
+@media(max-width:768px){ .nav-links{display:none;} .featured-card{grid-template-columns:1fr;} .featured-img{height:200px;} .articles-grid{grid-template-columns:1fr;} .weather-7days{grid-template-columns:repeat(4,1fr);} .prayer-grid{grid-template-columns:repeat(3,1fr);} .services-grid{grid-template-columns:1fr 1fr;} .stats-inner{grid-template-columns:1fr 1fr;} }
+@media(max-width:480px){ .weather-7days{grid-template-columns:repeat(3,1fr);} .prayer-grid{grid-template-columns:1fr 1fr;} .tourism-grid{grid-template-columns:1fr;} .gallery-grid{grid-template-columns:1fr 1fr;} .footer-top{grid-template-columns:1fr;} .stats-inner{grid-template-columns:1fr 1fr;} }
+</style>
+</head>
+<body>
+
+<!-- NOTIFICATION BAR -->
+<div id="notif-bar">
+  <span id="notif-text">🌊 مرحباً بكم في القصر الصغير — بوابة الشمال المغربي</span>
+  <button id="notif-close" onclick="document.getElementById('notif-bar').style.display='none'">✕</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="/">
+    <span class="nav-logo-icon">🏖️</span>
+    <div>
+      <div class="nav-logo-text" id="nav-logo-text">القصر الصغير</div>
+      <div class="nav-logo-sub">KSAR SGHIR · MAROC</div>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="/" class="active" id="nl-home">🏠 الرئيسية</a>
+    <a href="/tourisme/" id="nl-tour">🗺️ السياحة</a>
+    <a href="https://gallery.ksarsghir.com" id="nl-gal">📸 المعرض</a>
+    <a href="https://meteo.ksarsghir.com" id="nl-meteo">🌤️ الطقس</a>
+    <a href="https://salat.ksarsghir.com" id="nl-salat">🕌 الصلاة</a>
+    <a href="https://store.ksarsghir.com" id="nl-store">🛒 المتجر</a>
+    <a href="/advertise.html" id="nl-ads">📢 إعلن معنا</a>
+  </div>
+  <div class="nav-right">
+    <div class="lang-sw">
+      <button class="lb on" onclick="setL('ar')">AR</button>
+      <button class="lb" onclick="setL('fr')">FR</button>
+      <button class="lb" onclick="setL('en')">EN</button>
+      <button class="lb" onclick="setL('es')">ES</button>
+    </div>
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">🌙</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge" id="hero-badge">🌊 شمال المغرب • NORTH MOROCCO</div>
+  <h1 class="hero-title" id="hero-title">القصر الصغير<br/><span id="hero-title2">بوابة مضيق جبل طارق</span></h1>
+  <p class="hero-sub" id="hero-sub">اكتشف أجمل وجهات شمال المغرب — شواطئ، موانئ، تاريخ وطبيعة بكر بعدسة بلال الهيشو</p>
+  <div class="hero-btns">
+    <a class="btn-hero btn-primary" href="/tourisme/" id="hero-btn1">🗺️ استكشف المنطقة</a>
+    <a class="btn-hero btn-outline" href="https://gallery.ksarsghir.com" id="hero-btn2">📸 معرض الصور</a>
+  </div>
+  <!-- WEATHER + PRAYER WIDGET -->
+  <div class="info-widget">
+    <div class="info-widget-tabs">
+      <button class="iw-tab active" onclick="switchTab('weather',this)" id="tab-weather">🌤️ <span id="tw-label">الطقس والبحر</span></button>
+      <button class="iw-tab" onclick="switchTab('prayer',this)" id="tab-prayer">🕌 <span id="tp-label">أوقات الصلاة</span></button>
+    </div>
+    <!-- WEATHER PANEL -->
+    <div class="iw-panel active" id="panel-weather">
+      <div class="weather-today">
+        <div class="weather-icon-big" id="w-icon">⏳</div>
+        <div>
+          <div class="weather-temp-big" id="w-temp">--°C</div>
+          <div class="weather-desc-big" id="w-desc">القصر الصغير</div>
+        </div>
+        <div class="weather-details">
+          <div class="weather-detail">💧 <span id="w-humidity">--%</span></div>
+          <div class="weather-detail">💨 <span id="w-wind">-- km/h</span></div>
+          <div class="weather-detail">👁️ <span id="w-vis">-- km</span></div>
+          <div class="weather-detail">🌡️ <span id="w-feels">--°C</span></div>
+        </div>
+      </div>
+      <!-- 7 DAYS -->
+      <div class="weather-7days" id="w-7days">
+        <div class="day-card" style="opacity:.4"><div class="day-name">---</div><div class="day-icon">⏳</div><div class="day-temp">--°</div></div>
+      </div>
+      <!-- SUNRISE / SUNSET + SEA -->
+      <div class="sun-row">
+        <div class="sun-item"><div class="sun-icon">🌅</div><div class="sun-label" id="sunrise-lbl">الشروق</div><div class="sun-time" id="w-sunrise">--:--</div></div>
+        <div class="sun-item"><div class="sun-icon">🌇</div><div class="sun-label" id="sunset-lbl">الغروب</div><div class="sun-time" id="w-sunset">--:--</div></div>
+        <div class="sun-item"><div class="sun-icon">🌊</div><div class="sun-label" id="sea-state-lbl">حالة البحر</div><div class="sun-time" id="w-sea" style="font-size:12px;">--</div></div>
+        <div class="sun-item"><div class="sun-icon">🌬️</div><div class="sun-label" id="sea-wind-lbl">رياح البحر</div><div class="sun-time" id="w-sea-wind" style="font-size:12px;">-- kn</div></div>
+      </div>
+    </div>
+    <!-- PRAYER PANEL -->
+    <div class="iw-panel" id="panel-prayer">
+      <div class="prayer-grid" id="prayer-grid">
+        <div class="prayer-item"><div class="prayer-icon">🌙</div><div class="prayer-name" id="pn-fajr">الفجر</div><div class="prayer-time" id="pt-fajr">--:--</div></div>
+        <div class="prayer-item"><div class="prayer-icon">🌤️</div><div class="prayer-name" id="pn-dhuhr">الظهر</div><div class="prayer-time" id="pt-dhuhr">--:--</div></div>
+        <div class="prayer-item"><div class="prayer-icon">☀️</div><div class="prayer-name" id="pn-asr">العصر</div><div class="prayer-time" id="pt-asr">--:--</div></div>
+        <div class="prayer-item"><div class="prayer-icon">🌆</div><div class="prayer-name" id="pn-maghrib">المغرب</div><div class="prayer-time" id="pt-maghrib">--:--</div></div>
+        <div class="prayer-item"><div class="prayer-icon">🌃</div><div class="prayer-name" id="pn-isha">العشاء</div><div class="prayer-time" id="pt-isha">--:--</div></div>
+      </div>
+      <div class="hijri-date" id="hijri-date">جاري تحميل التاريخ الهجري...</div>
+    </div>
+  </div>
+</div>
+
+<!-- AD BANNER TOP -->
+<div class="section" style="padding-top:24px;padding-bottom:0;">
+  <div class="ad-zone" id="ad-top"><span class="ad-zone-label" id="ad-lbl">إعلان</span><div id="ad-top-content"></div></div>
+</div>
+
+<!-- ARTICLES SECTION -->
+<div class="section" id="section-articles">
+  <div class="section-hdr">
+    <div class="section-label" id="art-sec-label">✍️ أحدث المواضيع</div>
+    <h2 class="section-title" id="art-sec-title">مواضيع سياحية جديدة</h2>
+    <p class="section-sub" id="art-sec-sub">اكتشف كل ما يميز القصر الصغير — مقالات متجددة بـ 4 لغات</p>
+  </div>
+  <div id="featured-wrap" class="featured-wrap"></div>
+  <div id="articles-grid" class="articles-grid"></div>
+  <div id="articles-loading" class="loading-articles"><div class="spinner"></div><br/><span id="loading-txt">جاري تحميل المواضيع...</span></div>
+  <div style="text-align:center;margin-top:20px;">
+    <a href="/tourisme/" class="btn-hero btn-primary" id="see-all-btn">🗺️ كل المواضيع السياحية</a>
+  </div>
+</div>
+
+<!-- AD MIDDLE -->
+<div class="section" style="padding-top:10px;padding-bottom:10px;">
+  <div class="ad-zone" id="ad-mid"><span class="ad-zone-label" id="ad-lbl2">إعلان</span><div id="ad-mid-content"></div></div>
+</div>
+
+<!-- TOURISM SECTION -->
+<hr class="section-divider"/>
+<div class="section" id="section-tourism">
+  <div class="section-hdr">
+    <div class="section-label" id="tour-label">🗺️ الدليل السياحي</div>
+    <h2 class="section-title" id="tour-title">أبرز المواقع السياحية</h2>
+    <p class="section-sub" id="tour-sub">اكتشف أجمل الوجهات في القصر الصغير وضواحيها</p>
+  </div>
+  <div class="tourism-grid" id="tourism-grid">
+    <a href="/tourisme/plage/" class="tourism-card"><div class="tourism-type" id="tc1t">شاطئ</div><div class="tourism-name" id="tc1n">شاطئ القصر الصغير</div><div class="tourism-desc" id="tc1d">شاطئ رملي هادئ يطل على مضيق جبل طارق</div><div class="tourism-tags"><span class="t-tag">🆓</span><span class="t-tag">🏊</span></div></a>
+    <a href="/tourisme/belyounech/" class="tourism-card"><div class="tourism-type" id="tc2t">قرية</div><div class="tourism-name" id="tc2n">قرية بليونش</div><div class="tourism-desc" id="tc2d">قرية ساحلية بكر تحت جبل موسى</div><div class="tourism-tags"><span class="t-tag">🤿</span><span class="t-tag">🏔️</span></div></a>
+    <a href="/tourisme/port-peche/" class="tourism-card"><div class="tourism-type" id="tc3t">ميناء</div><div class="tourism-name" id="tc3n">ميناء الصيد التقليدي</div><div class="tourism-desc" id="tc3d">قوارب الصيادين وأسماك المضيق الطازجة</div><div class="tourism-tags"><span class="t-tag">🐟</span><span class="t-tag">📸</span></div></a>
+    <a href="/tourisme/tanger-med/" class="tourism-card"><div class="tourism-type" id="tc4t">ميناء دولي</div><div class="tourism-name" id="tc4n">ميناء طنجة المتوسط</div><div class="tourism-desc" id="tc4d">أكبر ميناء في إفريقيا — على بعد أميال</div><div class="tourism-tags"><span class="t-tag">🚢</span><span class="t-tag">📸</span></div></a>
+    <a href="/tourisme/dalia/" class="tourism-card"><div class="tourism-type" id="tc5t">شاطئ</div><div class="tourism-name" id="tc5n">شاطئ الدالية</div><div class="tourism-desc" id="tc5d">مياه كريستالية وإطلالة على إسبانيا</div><div class="tourism-tags"><span class="t-tag">🆓</span><span class="t-tag">⛵</span></div></a>
+    <a href="/tourisme/site-archeologique/" class="tourism-card"><div class="tourism-type" id="tc6t">تاريخ</div><div class="tourism-name" id="tc6n">الموقع الأثري</div><div class="tourism-desc" id="tc6d">حصن مريني دائري — تراث عريق على المضيق</div><div class="tourism-tags"><span class="t-tag">🆓</span><span class="t-tag">🏛️</span></div></a>
+  </div>
+  <div style="text-align:center;margin-top:20px;">
+    <a href="/tourisme/" class="btn-hero btn-outline" id="tour-more-btn">عرض الدليل الكامل ←</a>
+  </div>
+</div>
+
+<!-- MAP SECTION -->
+<hr class="section-divider"/>
+<div class="section" id="section-map">
+  <div class="section-hdr">
+    <div class="section-label" id="map-label">🗺️ الخريطة</div>
+    <h2 class="section-title" id="map-title">اكتشف على الخريطة</h2>
+    <p class="section-sub" id="map-sub">كل المواقع السياحية في القصر الصغير في مكان واحد</p>
+  </div>
+  <div class="map-wrap">
+    <div class="map-header">
+      <span style="font-size:13px;font-weight:700;" id="map-hdr">📍 القصر الصغير — Ksar Sghir</span>
+      <a href="https://maps.google.com/?q=Ksar+Sghir,Morocco" target="_blank" class="btn-hero btn-primary" style="padding:6px 14px;font-size:11px;" id="map-open-btn">فتح في خرائط Google ←</a>
+    </div>
+    <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24994.21!2d-5.559!3d35.689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd0c9b6b6b6b6b6b%3A0x1!2sKsar+Sghir%2C+Morocco!5e0!3m2!1sfr!2sma!4v1" loading="lazy" allowfullscreen></iframe>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-num">77K</div><div class="stat-lbl" id="st1">متابع فيسبوك</div></div>
+    <div class="stat-item"><div class="stat-num">141+</div><div class="stat-lbl" id="st2">صورة احترافية</div></div>
+    <div class="stat-item"><div class="stat-num" id="st3-num">16+</div><div class="stat-lbl" id="st3">موضوع سياحي</div></div>
+    <div class="stat-item"><div class="stat-num">4</div><div class="stat-lbl" id="st4">لغات</div></div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="section" id="section-gallery">
+  <div class="section-hdr">
+    <div class="section-label">📸</div>
+    <h2 class="section-title" id="gal-title">معرض الصور</h2>
+    <p class="section-sub" id="gal-sub">لقطات احترافية من عدسة بلال الهيشو — Ksar Sghir Lens</p>
+  </div>
+  <div class="gallery-grid">
+    <a href="https://gallery.ksarsghir.com" class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyF6zy_A4LJ2L-xiH04Zd6XJEDMXIaOmyzWtN3vaFdByi2ysaLnHUcv4jYzuv5UqLPoM44_VLDfwr4MWEGATxl4QX7J7Ad0Z9bLL6kqB5lHnCQOf3EaC_snAy2TJCCt14okvSQDDPb0XvpNRZ6Gmhq6VIIHpESdyZ3P2uaZaSIm7PfxqtSHWL4-TUFwdU/s400/8510.jpg" alt="القصر الصغير" loading="lazy"/></a>
+    <a href="https://gallery.ksarsghir.com" class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHQolv6RmyUqkJCdSImtvNinU325jN_uTkEdP2K3Zn1y1zSmnlHdtGk7rMCKJFh5MGbspcJ_5pHzLRCriLKIq3DmTI0Pl10-1NCfQLSHrPuheemplMGTpTmmPLjHuia3FA0XTRpXU1NAow2H93nBBEVegH8tT5Y_zbrCmKwvWOHI040KHDdzidEpbgnOI/s400/3385.jpg" alt="شاطئ القصر الصغير" loading="lazy"/></a>
+    <a href="https://gallery.ksarsghir.com" class="gallery-item"><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjETG-3niCoeG0AcNV2SdGpI3ApVHoLYV-F2d3OgpqvSrI4lMF32QLj_dKeEOkOcOnwJ6OO0BjAuem3ss-jk0CJUadghleD4OeVXyI2I84F31shW3_X6Ul3t6L1g7DBx3KXvpl0kBphfDFYqr2bryoUeYT1IAM_brbGgptbLLR6XVi58b7NjsMX5cvVrFY/s400/4353.jpg" alt="طنجة المتوسط" loading="lazy"/></a>
+  </div>
+  <div style="text-align:center;margin-top:16px;">
+    <a href="https://gallery.ksarsghir.com" class="btn-hero btn-outline" id="gal-btn">عرض كل الصور ←</a>
+  </div>
+</div>
+
+<!-- AD BOTTOM -->
+<div class="section" style="padding-top:10px;padding-bottom:10px;">
+  <div class="ad-zone" id="ad-bottom"><span class="ad-zone-label" id="ad-lbl3">إعلان</span><div id="ad-bottom-content"></div></div>
+</div>
+
+<!-- SERVICES -->
+<div style="background:var(--bg2);padding:40px 20px;" id="section-services">
+  <div class="section" style="padding:0 20px;">
+    <div class="section-hdr">
+      <div class="section-label" id="srv-label">🛠️ الخدمات</div>
+      <h2 class="section-title" id="srv-title">خدماتنا</h2>
+    </div>
+    <div class="services-grid">
+      <a href="https://meteo.ksarsghir.com" class="service-card"><div class="service-icon">🌤️</div><div class="service-name" id="srv1n">الطقس والبحر</div><div class="service-desc" id="srv1d">نشرة جوية 7 أيام + حالة البحر</div></a>
+      <a href="https://salat.ksarsghir.com" class="service-card"><div class="service-icon">🕌</div><div class="service-name" id="srv2n">مواقيت الصلاة</div><div class="service-desc" id="srv2d">أوقات الأذان يومياً + اتجاه القبلة</div></a>
+      <a href="https://store.ksarsghir.com" class="service-card"><div class="service-icon">🖼️</div><div class="service-name" id="srv3n">متجر الصور</div><div class="service-desc" id="srv3d">اقتن صور احترافية للقصر الصغير</div></a>
+      <a href="/advertise.html" class="service-card"><div class="service-icon">📢</div><div class="service-name" id="srv4n">إعلن معنا</div><div class="service-desc" id="srv4d">وصل إلى 77K متابع في المنطقة</div></a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">🏖️ <span id="f-brand">القصر الصغير</span></div>
+        <p class="footer-brand-desc" id="f-desc">بوابتك الرقمية لاكتشاف أجمل وجهات شمال المغرب — سياحة، صور، طقس ومعلومات محلية بـ 4 لغات.</p>
+        <div class="footer-social">
+          <a href="https://www.facebook.com/ksarsghircity" target="_blank">📘 21K</a>
+          <a href="https://www.facebook.com/KsarSghirLens" target="_blank">📸 56K</a>
+          <a href="https://wa.me/212708053745" target="_blank">💬 WhatsApp</a>
+        </div>
+      </div>
+      <div><div class="footer-col-title" id="fc1">🗺️ السياحة</div><ul class="footer-links"><li><a href="/tourisme/plage/" id="fl1">شاطئ القصر الصغير</a></li><li><a href="/tourisme/belyounech/" id="fl2">قرية بليونش</a></li><li><a href="/tourisme/port-peche/" id="fl3">ميناء الصيد</a></li><li><a href="/tourisme/tanger-med/" id="fl4">طنجة المتوسط</a></li><li><a href="/tourisme/dalia/" id="fl5">شاطئ الدالية</a></li></ul></div>
+      <div><div class="footer-col-title" id="fc2">🔗 المواقع</div><ul class="footer-links"><li><a href="https://gallery.ksarsghir.com" id="fl6">معرض الصور</a></li><li><a href="https://store.ksarsghir.com" id="fl7">المتجر</a></li><li><a href="https://meteo.ksarsghir.com" id="fl8">الطقس</a></li><li><a href="https://salat.ksarsghir.com" id="fl9">الصلاة</a></li></ul></div>
+      <div><div class="footer-col-title" id="fc3">📄 معلومات</div><ul class="footer-links"><li><a href="/about.html" id="fl10">من أنا</a></li><li><a href="/advertise.html" id="fl11">إعلن معنا</a></li><li><a href="/privacy.html" id="fl12">الخصوصية</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy" id="f-copy">© 2026 Ksar Sghir · Bilal El Hichou — All rights reserved</div>
+      <div class="footer-bl"><a href="/privacy.html" id="fl13">الخصوصية</a><a href="/about.html" id="fl14">من أنا</a><a href="https://wa.me/212708053745" id="fl15">اتصل بنا</a></div>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<a id="wa-float" href="https://wa.me/212708053745" target="_blank">💬<span class="wa-tooltip" id="wa-tip">تواصل معنا</span></a>
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆️</button>
+
+<script>
+// ===== CONFIG (loaded from GitHub) =====
+var REPO = 'bilal8910/ksarsghir.com';
+var ARTICLES_URL = 'https://raw.githubusercontent.com/'+REPO+'/main/articles.json';
+var CONFIG_URL = 'https://raw.githubusercontent.com/'+REPO+'/main/site-config.json';
+var ADS_URL = 'https://raw.githubusercontent.com/'+REPO+'/main/ads-config.json';
+
+// ===== STATE =====
+var currentLang = 'ar';
+var articlesData = [];
+
+// ===== TRANSLATIONS =====
+var T = {
+ar:{dir:'rtl',
+  'nav-logo-text':'القصر الصغير',
+  'nl-home':'🏠 الرئيسية','nl-tour':'🗺️ السياحة','nl-gal':'📸 المعرض','nl-meteo':'🌤️ الطقس','nl-salat':'🕌 الصلاة','nl-store':'🛒 المتجر','nl-ads':'📢 إعلن معنا',
+  'hero-badge':'🌊 شمال المغرب • NORTH MOROCCO',
+  'hero-title':'القصر الصغير','hero-title2':'بوابة مضيق جبل طارق',
+  'hero-sub':'اكتشف أجمل وجهات شمال المغرب — شواطئ، موانئ، تاريخ وطبيعة بكر بعدسة بلال الهيشو',
+  'hero-btn1':'🗺️ استكشف المنطقة','hero-btn2':'📸 معرض الصور',
+  'tw-label':'الطقس والبحر','tp-label':'أوقات الصلاة',
+  'sunrise-lbl':'الشروق','sunset-lbl':'الغروب','sea-state-lbl':'حالة البحر','sea-wind-lbl':'رياح البحر',
+  'pn-fajr':'الفجر','pn-dhuhr':'الظهر','pn-asr':'العصر','pn-maghrib':'المغرب','pn-isha':'العشاء',
+  'art-sec-label':'✍️ أحدث المواضيع','art-sec-title':'مواضيع سياحية جديدة',
+  'art-sec-sub':'اكتشف كل ما يميز القصر الصغير — مقالات متجددة بـ 4 لغات',
+  'see-all-btn':'🗺️ كل المواضيع السياحية','loading-txt':'جاري تحميل المواضيع...',
+  'featured-badge-txt':'⭐ موضوع مميز','featured-read':'اقرأ المزيد ←','art-read-txt':'اقرأ ←',
+  'tour-label':'🗺️ الدليل السياحي','tour-title':'أبرز المواقع السياحية',
+  'tour-sub':'اكتشف أجمل الوجهات في القصر الصغير وضواحيها','tour-more-btn':'عرض الدليل الكامل ←',
+  'map-label':'🗺️ الخريطة','map-title':'اكتشف على الخريطة',
+  'map-sub':'كل المواقع السياحية في القصر الصغير في مكان واحد',
+  'map-hdr':'📍 القصر الصغير — Ksar Sghir','map-open-btn':'فتح في خرائط Google ←',
+  'st1':'متابع فيسبوك','st2':'صورة احترافية','st3':'موضوع سياحي','st4':'لغات',
+  'gal-title':'معرض الصور','gal-sub':'لقطات احترافية من عدسة بلال الهيشو','gal-btn':'عرض كل الصور ←',
+  'srv-label':'🛠️ الخدمات','srv-title':'خدماتنا',
+  'srv1n':'الطقس والبحر','srv1d':'نشرة جوية 7 أيام + حالة البحر',
+  'srv2n':'مواقيت الصلاة','srv2d':'أوقات الأذان يومياً + اتجاه القبلة',
+  'srv3n':'متجر الصور','srv3d':'اقتن صور احترافية للقصر الصغير',
+  'srv4n':'إعلن معنا','srv4d':'وصل إلى 77K متابع في المنطقة',
+  'tc1t':'شاطئ','tc1n':'شاطئ القصر الصغير','tc1d':'شاطئ رملي هادئ يطل على مضيق جبل طارق',
+  'tc2t':'قرية','tc2n':'قرية بليونش','tc2d':'قرية ساحلية بكر تحت جبل موسى',
+  'tc3t':'ميناء','tc3n':'ميناء الصيد التقليدي','tc3d':'قوارب الصيادين وأسماك المضيق الطازجة',
+  'tc4t':'ميناء دولي','tc4n':'ميناء طنجة المتوسط','tc4d':'أكبر ميناء في إفريقيا',
+  'tc5t':'شاطئ','tc5n':'شاطئ الدالية','tc5d':'مياه كريستالية وإطلالة على إسبانيا',
+  'tc6t':'تاريخ','tc6n':'الموقع الأثري','tc6d':'حصن مريني دائري — تراث عريق على المضيق',
+  'f-brand':'القصر الصغير','f-desc':'بوابتك الرقمية لاكتشاف أجمل وجهات شمال المغرب — سياحة، صور، طقس بـ 4 لغات.',
+  'fc1':'🗺️ السياحة','fc2':'🔗 المواقع','fc3':'📄 معلومات',
+  'fl1':'شاطئ القصر الصغير','fl2':'قرية بليونش','fl3':'ميناء الصيد','fl4':'طنجة المتوسط','fl5':'شاطئ الدالية',
+  'fl6':'معرض الصور','fl7':'المتجر','fl8':'الطقس','fl9':'الصلاة',
+  'fl10':'من أنا','fl11':'إعلن معنا','fl12':'الخصوصية','fl13':'الخصوصية','fl14':'من أنا','fl15':'اتصل بنا',
+  'wa-tip':'تواصل معنا','f-copy':'© 2026 Ksar Sghir · Bilal El Hichou — All rights reserved',
+  'ad-lbl':'إعلان','ad-lbl2':'إعلان','ad-lbl3':'إعلان',
+  artTitle:function(a){return a.titleAr||a.titleFr||'';},
+  artMeta:function(a){return (a.metaAr||'').substring(0,90);},
+  artRead:'اقرأ ←'
+},
+fr:{dir:'ltr',
+  'nav-logo-text':'Ksar Sghir',
+  'nl-home':'🏠 Accueil','nl-tour':'🗺️ Tourisme','nl-gal':'📸 Galerie','nl-meteo':'🌤️ Météo','nl-salat':'🕌 Prière','nl-store':'🛒 Boutique','nl-ads':'📢 Annonces',
+  'hero-badge':'🌊 NORD MAROC • NORTH MOROCCO',
+  'hero-title':'Ksar Sghir','hero-title2':'Porte du Détroit de Gibraltar',
+  'hero-sub':'Découvrez les plus belles destinations du nord du Maroc — plages, ports, histoire et nature vierge',
+  'hero-btn1':'🗺️ Explorer la région','hero-btn2':'📸 Galerie photos',
+  'tw-label':'Météo & Mer','tp-label':'Horaires de prière',
+  'sunrise-lbl':'Lever du soleil','sunset-lbl':'Coucher du soleil','sea-state-lbl':'État de la mer','sea-wind-lbl':'Vents maritimes',
+  'pn-fajr':'Fajr','pn-dhuhr':'Dhuhr','pn-asr':'Asr','pn-maghrib':'Maghrib','pn-isha':'Isha',
+  'art-sec-label':'✍️ Derniers articles','art-sec-title':'Nouveaux articles touristiques',
+  'art-sec-sub':'Découvrez tout ce qui fait la particularité de Ksar Sghir — articles en 4 langues',
+  'see-all-btn':'🗺️ Tous les articles','loading-txt':'Chargement des articles...',
+  'featured-badge-txt':'⭐ Article à la une','featured-read':'Lire la suite →','art-read-txt':'Lire →',
+  'tour-label':'🗺️ Guide touristique','tour-title':'Sites touristiques incontournables',
+  'tour-sub':'Découvrez les plus belles destinations de Ksar Sghir','tour-more-btn':'Voir le guide complet →',
+  'map-label':'🗺️ Carte','map-title':'Découvrir sur la carte',
+  'map-sub':'Tous les sites touristiques de Ksar Sghir en un seul endroit',
+  'map-hdr':'📍 Ksar Sghir — Maroc','map-open-btn':'Ouvrir dans Google Maps →',
+  'st1':'Abonnés Facebook','st2':'Photos professionnelles','st3':'Articles touristiques','st4':'Langues',
+  'gal-title':'Galerie photos','gal-sub':'Photos professionnelles par Bilal El Hichou','gal-btn':'Voir toutes les photos →',
+  'srv-label':'🛠️ Services','srv-title':'Nos services',
+  'srv1n':'Météo & Mer','srv1d':'Prévisions 7 jours + état de la mer',
+  'srv2n':'Horaires de prière','srv2d':'Heures de prière + direction de la Qibla',
+  'srv3n':'Boutique photos','srv3d':'Acquérez des photos professionnelles de Ksar Sghir',
+  'srv4n':'Annoncez','srv4d':'Atteignez 77K abonnés dans la région',
+  'tc1t':'Plage','tc1n':'Plage de Ksar Sghir','tc1d':'Plage de sable calme sur le détroit de Gibraltar',
+  'tc2t':'Village','tc2n':'Village de Belyounech','tc2d':'Village côtier vierge sous le mont Moussa',
+  'tc3t':'Port','tc3n':'Port de pêche traditionnel','tc3d':'Bateaux de pêcheurs et poissons frais du détroit',
+  'tc4t':'Port international','tc4n':'Tanger Med','tc4d':'Le plus grand port d\'Afrique',
+  'tc5t':'Plage','tc5n':'Plage Dalia','tc5d':'Eaux cristallines avec vue sur l\'Espagne',
+  'tc6t':'Histoire','tc6n':'Site archéologique','tc6d':'Forteresse mérinide circulaire — patrimoine millénaire',
+  'f-brand':'Ksar Sghir','f-desc':'Votre portail numérique pour découvrir le nord du Maroc — tourisme, photos, météo en 4 langues.',
+  'fc1':'🗺️ Tourisme','fc2':'🔗 Sites','fc3':'📄 Infos',
+  'fl1':'Plage de Ksar Sghir','fl2':'Village Belyounech','fl3':'Port de pêche','fl4':'Tanger Med','fl5':'Plage Dalia',
+  'fl6':'Galerie photos','fl7':'Boutique','fl8':'Météo','fl9':'Prière',
+  'fl10':'À propos','fl11':'Annoncez','fl12':'Confidentialité','fl13':'Confidentialité','fl14':'À propos','fl15':'Contactez-nous',
+  'wa-tip':'Contactez-nous','f-copy':'© 2026 Ksar Sghir · Bilal El Hichou — Tous droits réservés',
+  'ad-lbl':'Publicité','ad-lbl2':'Publicité','ad-lbl3':'Publicité',
+  artTitle:function(a){return a.titleFr||a.titleAr||'';},
+  artMeta:function(a){return (a.metaFr||a.metaAr||'').substring(0,90);},
+  artRead:'Lire →'
+},
+en:{dir:'ltr',
+  'nav-logo-text':'Ksar Sghir',
+  'nl-home':'🏠 Home','nl-tour':'🗺️ Tourism','nl-gal':'📸 Gallery','nl-meteo':'🌤️ Weather','nl-salat':'🕌 Prayer','nl-store':'🛒 Store','nl-ads':'📢 Advertise',
+  'hero-badge':'🌊 NORTHERN MOROCCO • NORD MAROC',
+  'hero-title':'Ksar Sghir','hero-title2':'Gateway to the Strait of Gibraltar',
+  'hero-sub':'Discover the most beautiful destinations in northern Morocco — beaches, ports, history and pristine nature',
+  'hero-btn1':'🗺️ Explore the region','hero-btn2':'📸 Photo gallery',
+  'tw-label':'Weather & Sea','tp-label':'Prayer times',
+  'sunrise-lbl':'Sunrise','sunset-lbl':'Sunset','sea-state-lbl':'Sea condition','sea-wind-lbl':'Sea winds',
+  'pn-fajr':'Fajr','pn-dhuhr':'Dhuhr','pn-asr':'Asr','pn-maghrib':'Maghrib','pn-isha':'Isha',
+  'art-sec-label':'✍️ Latest articles','art-sec-title':'New tourism articles',
+  'art-sec-sub':'Discover everything that makes Ksar Sghir special — articles in 4 languages',
+  'see-all-btn':'🗺️ All tourism articles','loading-txt':'Loading articles...',
+  'featured-badge-txt':'⭐ Featured article','featured-read':'Read more →','art-read-txt':'Read →',
+  'tour-label':'🗺️ Travel Guide','tour-title':'Top tourist attractions',
+  'tour-sub':'Discover the most beautiful destinations in Ksar Sghir','tour-more-btn':'View full guide →',
+  'map-label':'🗺️ Map','map-title':'Discover on the map',
+  'map-sub':'All tourist sites in Ksar Sghir in one place',
+  'map-hdr':'📍 Ksar Sghir — Morocco','map-open-btn':'Open in Google Maps →',
+  'st1':'Facebook followers','st2':'Professional photos','st3':'Tourism articles','st4':'Languages',
+  'gal-title':'Photo Gallery','gal-sub':'Professional photos by Bilal El Hichou','gal-btn':'View all photos →',
+  'srv-label':'🛠️ Services','srv-title':'Our services',
+  'srv1n':'Weather & Sea','srv1d':'7-day forecast + sea conditions',
+  'srv2n':'Prayer times','srv2d':'Daily prayer times + Qibla direction',
+  'srv3n':'Photo store','srv3d':'Acquire professional photos of Ksar Sghir',
+  'srv4n':'Advertise','srv4d':'Reach 77K followers in the region',
+  'tc1t':'Beach','tc1n':'Ksar Sghir Beach','tc1d':'Calm sandy beach overlooking the Strait of Gibraltar',
+  'tc2t':'Village','tc2n':'Belyounech village','tc2d':'Pristine coastal village beneath Mount Moussa',
+  'tc3t':'Port','tc3n':'Traditional fishing port','tc3d':'Fishermen\'s boats and fresh fish from the strait',
+  'tc4t':'International port','tc4n':'Tanger Med','tc4d':'Africa\'s largest port — just miles away',
+  'tc5t':'Beach','tc5n':'Dalia Beach','tc5d':'Crystal clear waters with views of Spain',
+  'tc6t':'History','tc6n':'Archaeological site','tc6d':'Circular Marinid fortress — ancient heritage',
+  'f-brand':'Ksar Sghir','f-desc':'Your digital gateway to discover northern Morocco — tourism, photos, weather in 4 languages.',
+  'fc1':'🗺️ Tourism','fc2':'🔗 Sites','fc3':'📄 Info',
+  'fl1':'Ksar Sghir Beach','fl2':'Belyounech village','fl3':'Fishing port','fl4':'Tanger Med','fl5':'Dalia Beach',
+  'fl6':'Photo gallery','fl7':'Store','fl8':'Weather','fl9':'Prayer',
+  'fl10':'About me','fl11':'Advertise','fl12':'Privacy','fl13':'Privacy','fl14':'About','fl15':'Contact us',
+  'wa-tip':'Contact us','f-copy':'© 2026 Ksar Sghir · Bilal El Hichou — All rights reserved',
+  'ad-lbl':'Advertisement','ad-lbl2':'Advertisement','ad-lbl3':'Advertisement',
+  artTitle:function(a){return a.titleEn||a.titleAr||'';},
+  artMeta:function(a){return (a.metaEn||a.metaAr||'').substring(0,90);},
+  artRead:'Read →'
+},
+es:{dir:'ltr',
+  'nav-logo-text':'Ksar Sghir',
+  'nl-home':'🏠 Inicio','nl-tour':'🗺️ Turismo','nl-gal':'📸 Galería','nl-meteo':'🌤️ Clima','nl-salat':'🕌 Oración','nl-store':'🛒 Tienda','nl-ads':'📢 Anúnciate',
+  'hero-badge':'🌊 NORTE DE MARRUECOS • NORTH MOROCCO',
+  'hero-title':'Ksar Sghir','hero-title2':'Puerta del Estrecho de Gibraltar',
+  'hero-sub':'Descubre los destinos más hermosos del norte de Marruecos — playas, puertos, historia y naturaleza virgen',
+  'hero-btn1':'🗺️ Explorar la región','hero-btn2':'📸 Galería de fotos',
+  'tw-label':'Clima & Mar','tp-label':'Horarios de oración',
+  'sunrise-lbl':'Amanecer','sunset-lbl':'Puesta de sol','sea-state-lbl':'Estado del mar','sea-wind-lbl':'Vientos marinos',
+  'pn-fajr':'Fajr','pn-dhuhr':'Dhuhr','pn-asr':'Asr','pn-maghrib':'Maghrib','pn-isha':'Isha',
+  'art-sec-label':'✍️ Últimos artículos','art-sec-title':'Nuevos artículos turísticos',
+  'art-sec-sub':'Descubre todo lo que hace especial a Ksar Sghir — artículos en 4 idiomas',
+  'see-all-btn':'🗺️ Todos los artículos','loading-txt':'Cargando artículos...',
+  'featured-badge-txt':'⭐ Artículo destacado','featured-read':'Leer más →','art-read-txt':'Leer →',
+  'tour-label':'🗺️ Guía turística','tour-title':'Principales atracciones turísticas',
+  'tour-sub':'Descubre los destinos más hermosos de Ksar Sghir','tour-more-btn':'Ver guía completa →',
+  'map-label':'🗺️ Mapa','map-title':'Descubrir en el mapa',
+  'map-sub':'Todos los sitios turísticos de Ksar Sghir en un solo lugar',
+  'map-hdr':'📍 Ksar Sghir — Marruecos','map-open-btn':'Abrir en Google Maps →',
+  'st1':'Seguidores Facebook','st2':'Fotos profesionales','st3':'Artículos turísticos','st4':'Idiomas',
+  'gal-title':'Galería de fotos','gal-sub':'Fotos profesionales por Bilal El Hichou','gal-btn':'Ver todas las fotos →',
+  'srv-label':'🛠️ Servicios','srv-title':'Nuestros servicios',
+  'srv1n':'Clima & Mar','srv1d':'Previsión 7 días + estado del mar',
+  'srv2n':'Horarios de oración','srv2d':'Horas de oración + dirección de la Qibla',
+  'srv3n':'Tienda de fotos','srv3d':'Adquiere fotos profesionales de Ksar Sghir',
+  'srv4n':'Anúnciate','srv4d':'Llega a 77K seguidores en la región',
+  'tc1t':'Playa','tc1n':'Playa de Ksar Sghir','tc1d':'Playa de arena tranquila frente al estrecho de Gibraltar',
+  'tc2t':'Pueblo','tc2n':'Pueblo de Belyounech','tc2d':'Pueblo costero virgen bajo el monte Moussa',
+  'tc3t':'Puerto','tc3n':'Puerto pesquero tradicional','tc3d':'Barcos de pescadores y pescado fresco del estrecho',
+  'tc4t':'Puerto internacional','tc4n':'Tanger Med','tc4d':'El mayor puerto de África — a pocos kilómetros',
+  'tc5t':'Playa','tc5n':'Playa Dalia','tc5d':'Aguas cristalinas con vistas a España',
+  'tc6t':'Historia','tc6n':'Sitio arqueológico','tc6d':'Fortaleza marinida circular — patrimonio milenario',
+  'f-brand':'Ksar Sghir','f-desc':'Tu portal digital para descubrir el norte de Marruecos — turismo, fotos, clima en 4 idiomas.',
+  'fc1':'🗺️ Turismo','fc2':'🔗 Sitios','fc3':'📄 Info',
+  'fl1':'Playa de Ksar Sghir','fl2':'Pueblo Belyounech','fl3':'Puerto pesquero','fl4':'Tanger Med','fl5':'Playa Dalia',
+  'fl6':'Galería de fotos','fl7':'Tienda','fl8':'Clima','fl9':'Oración',
+  'fl10':'Sobre mí','fl11':'Anúnciate','fl12':'Privacidad','fl13':'Privacidad','fl14':'Sobre','fl15':'Contáctanos',
+  'wa-tip':'Contáctanos','f-copy':'© 2026 Ksar Sghir · Bilal El Hichou — Todos los derechos reservados',
+  'ad-lbl':'Publicidad','ad-lbl2':'Publicidad','ad-lbl3':'Publicidad',
+  artTitle:function(a){return a.titleEs||a.titleAr||'';},
+  artMeta:function(a){return (a.metaEs||a.metaAr||'').substring(0,90);},
+  artRead:'Leer →'
+}
+};
+
+// ===== LANGUAGE =====
+function setL(lang) {
+  var t = T[lang]; if (!t) return;
+  currentLang = lang;
+  document.documentElement.setAttribute('dir', t.dir);
+  document.body.setAttribute('dir', t.dir);
+  document.documentElement.setAttribute('lang', lang === 'ar' ? 'ar' : lang === 'fr' ? 'fr' : lang === 'es' ? 'es' : 'en');
+  Object.keys(t).forEach(function(id) {
+    if (typeof t[id] === 'function') return;
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = t[id];
+  });
+  document.querySelectorAll('.lb').forEach(function(b) {
+    b.classList.remove('on');
+    var oc = b.getAttribute('onclick') || '';
+    if (oc.indexOf("'" + lang + "'") > -1) b.classList.add('on');
+  });
+  // Re-render articles with new language
+  if (articlesData.length) renderArticles(articlesData);
+  try { localStorage.setItem('ks_lang', lang); } catch(e) {}
+}
+
+// ===== THEME =====
+function toggleTheme() {
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var newTheme = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  document.getElementById('theme-btn').textContent = isDark ? '🌙' : '☀️';
+  try { localStorage.setItem('ks_theme', newTheme); } catch(e) {}
+}
+
+// ===== WIDGET TABS =====
+function switchTab(name, btn) {
+  document.querySelectorAll('.iw-tab').forEach(function(b) { b.classList.remove('active'); });
+  document.querySelectorAll('.iw-panel').forEach(function(p) { p.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+}
+
+// ===== WEATHER =====
+var weatherIcons = {Clear:'☀️',Clouds:'⛅',Rain:'🌧️',Drizzle:'🌦️',Thunderstorm:'⛈️',Snow:'❄️',Mist:'🌫️',Fog:'🌫️',Haze:'🌫️'};
+var dayNames = {ar:['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],fr:['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],es:['Dom','Lun','Mar','Mié','Jue','Vie','Sáb']};
+var seaStates = {ar:['هادئ جداً','هادئ','معتدل','خشن','عاصف'],fr:['Très calme','Calme','Modéré','Agité','Tempétueux'],en:['Very calm','Calm','Moderate','Rough','Stormy'],es:['Muy calmado','Calmado','Moderado','Agitado','Tempestuoso']};
+
+async function loadWeather() {
+  try {
+    var r = await fetch('https://api.openweathermap.org/data/2.5/weather?lat=35.6897&lon=-5.5597&appid=bd5e378503939ddaee76f12ad7a97608&units=metric&lang=ar');
+    var d = await r.json();
+    document.getElementById('w-icon').textContent = weatherIcons[d.weather[0].main] || '🌤️';
+    document.getElementById('w-temp').textContent = Math.round(d.main.temp) + '°C';
+    document.getElementById('w-desc').textContent = d.weather[0].description;
+    document.getElementById('w-humidity').textContent = d.main.humidity + '%';
+    document.getElementById('w-wind').textContent = Math.round(d.wind.speed * 3.6) + ' km/h';
+    document.getElementById('w-vis').textContent = Math.round((d.visibility || 10000) / 1000) + ' km';
+    document.getElementById('w-feels').textContent = Math.round(d.main.feels_like) + '°C';
+    // Sunrise/Sunset
+    var sunrise = new Date(d.sys.sunrise * 1000);
+    var sunset = new Date(d.sys.sunset * 1000);
+    document.getElementById('w-sunrise').textContent = sunrise.toLocaleTimeString('ar-MA', {hour:'2-digit',minute:'2-digit'});
+    document.getElementById('w-sunset').textContent = sunset.toLocaleTimeString('ar-MA', {hour:'2-digit',minute:'2-digit'});
+    // Sea estimate from wind
+    var ws = d.wind.speed;
+    var seaIdx = ws < 1 ? 0 : ws < 3 ? 1 : ws < 7 ? 2 : ws < 12 ? 3 : 4;
+    document.getElementById('w-sea').textContent = seaStates[currentLang][seaIdx];
+    document.getElementById('w-sea-wind').textContent = Math.round(ws * 1.94) + ' kn';
+  } catch(e) { console.log('weather err',e); }
+}
+
+async function loadForecast() {
+  try {
+    var r = await fetch('https://api.openweathermap.org/data/2.5/forecast?lat=35.6897&lon=-5.5597&appid=bd5e378503939ddaee76f12ad7a97608&units=metric&cnt=7');
+    var d = await r.json();
+    var days = {};
+    d.list.forEach(function(item) {
+      var date = new Date(item.dt * 1000);
+      var key = date.toDateString();
+      if (!days[key]) days[key] = { date: date, temps: [], icon: item.weather[0].main };
+      days[key].temps.push(item.main.temp);
+    });
+    var html = '';
+    Object.values(days).slice(0, 7).forEach(function(day) {
+      var dayN = dayNames[currentLang][day.date.getDay()];
+      var max = Math.round(Math.max.apply(null, day.temps));
+      var min = Math.round(Math.min.apply(null, day.temps));
+      html += '<div class="day-card"><div class="day-name">' + dayN + '</div><div class="day-icon">' + (weatherIcons[day.icon] || '🌤️') + '</div><div class="day-temp">' + max + '°</div><div class="day-min">' + min + '°</div></div>';
+    });
+    document.getElementById('w-7days').innerHTML = html || '<div style="color:var(--text3);font-size:11px;padding:10px;">--</div>';
+  } catch(e) {}
+}
+
+// ===== PRAYER =====
+async function loadPrayer() {
+  try {
+    var today = new Date();
+    var dd = today.getDate(), mm = today.getMonth() + 1, yyyy = today.getFullYear();
+    var r = await fetch('https://api.aladhan.com/v1/timings/' + dd + '-' + mm + '-' + yyyy + '?latitude=35.6897&longitude=-5.5597&method=21');
+    var d = await r.json();
+    var t = d.data.timings;
+    var prayers = [['fajr',t.Fajr],['dhuhr',t.Dhuhr],['asr',t.Asr],['maghrib',t.Maghrib],['isha',t.Isha]];
+    var now = today.getHours() * 60 + today.getMinutes();
+    var nextIdx = -1;
+    prayers.forEach(function(p, i) {
+      var parts = p[1].split(':');
+      var mins = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+      document.getElementById('pt-' + p[0]).textContent = p[1];
+      if (nextIdx === -1 && mins > now) nextIdx = i;
+    });
+    // Highlight next prayer
+    document.querySelectorAll('.prayer-item').forEach(function(el, i) {
+      el.classList.toggle('next', i === nextIdx);
+      var badge = el.querySelector('.next-badge');
+      if (badge) badge.remove();
+      if (i === nextIdx) {
+        var b = document.createElement('div');
+        b.className = 'next-badge';
+        b.textContent = currentLang === 'ar' ? 'التالية' : currentLang === 'fr' ? 'Suivante' : 'Next';
+        el.appendChild(b);
+      }
+    });
+    // Hijri date
+    var hijri = d.data.date.hijri;
+    document.getElementById('hijri-date').textContent = hijri.day + ' ' + hijri.month.ar + ' ' + hijri.year + ' هـ';
+  } catch(e) {}
+}
+
+// ===== ARTICLES =====
+async function loadArticles() {
+  try {
+    var r = await fetch(ARTICLES_URL + '?t=' + Date.now());
+    if (!r.ok) throw new Error('no articles.json');
+    var data = await r.json();
+    articlesData = data.articles || [];
+    document.getElementById('st3-num').textContent = articlesData.length + '+';
+    renderArticles(articlesData);
+  } catch(e) {
+    document.getElementById('articles-loading').style.display = 'none';
+  }
+}
+
+function renderArticles(articles) {
+  var t = T[currentLang];
+  document.getElementById('articles-loading').style.display = 'none';
+  if (!articles.length) return;
+
+  // Featured (first)
+  var f = articles[0];
+  var fTitle = t.artTitle(f);
+  var fMeta = t.artMeta(f);
+  var fUrl = '/' + f.folder + f.slug + '/';
+  document.getElementById('featured-wrap').innerHTML =
+    '<a href="' + fUrl + '" style="text-decoration:none;color:inherit;">' +
+    '<div class="featured-card">' +
+      '<div class="featured-img">' + (f.image ? '<img src="' + f.image + '" alt="' + fTitle + '" loading="lazy" onerror="this.parentElement.textContent=\'🗺️\'"/>' : '🗺️') + '</div>' +
+      '<div class="featured-body">' +
+        '<span class="featured-badge" id="featured-badge-txt">' + (t['featured-badge-txt'] || '⭐ موضوع مميز') + '</span>' +
+        '<div class="featured-title">' + fTitle + '</div>' +
+        '<div class="featured-desc">' + fMeta + '</div>' +
+        '<div class="featured-foot"><span class="featured-link">' + (t['featured-read'] || 'اقرأ المزيد ←') + '</span><span class="featured-date">📅 ' + f.date + '</span></div>' +
+      '</div>' +
+    '</div></a>';
+
+  // Grid (rest)
+  var rest = articles.slice(1, 7);
+  if (rest.length) {
+    document.getElementById('articles-grid').innerHTML = rest.map(function(a) {
+      var aTitle = t.artTitle(a);
+      var aMeta = t.artMeta(a);
+      var aUrl = '/' + a.folder + a.slug + '/';
+      return '<a href="' + aUrl + '" style="text-decoration:none;color:inherit;">' +
+        '<div class="art-card">' +
+          '<div class="art-card-img">' + (a.image ? '<img src="' + a.image + '" alt="' + aTitle + '" loading="lazy" onerror="this.parentElement.textContent=\'🗺️\'"/>' : '🗺️') + '</div>' +
+          '<div class="art-card-body">' +
+            '<span class="art-cat-badge">' + (a.category || '🗺️') + '</span>' +
+            '<div class="art-card-title">' + aTitle + '</div>' +
+            '<div class="art-card-foot"><span>📅 ' + a.date + '</span><span class="art-read">' + (t.artRead || 'اقرأ ←') + '</span></div>' +
+          '</div>' +
+        '</div></a>';
+    }).join('');
+  }
+}
+
+// ===== ADS =====
+async function loadAds() {
+  try {
+    var r = await fetch(ADS_URL + '?t=' + Date.now());
+    if (!r.ok) return;
+    var cfg = await r.json();
+    if (cfg.adHeader) document.getElementById('ad-top-content').innerHTML = cfg.adHeader;
+    if (cfg.adBetween) document.getElementById('ad-mid-content').innerHTML = cfg.adBetween;
+    if (cfg.adBottom) document.getElementById('ad-bottom-content').innerHTML = cfg.adBottom;
+    // Hide empty zones
+    ['ad-top','ad-mid','ad-bottom'].forEach(function(id) {
+      var z = document.getElementById(id);
+      var content = z.querySelector('[id$="-content"]');
+      if (content && !content.innerHTML.trim()) z.style.display = 'none';
+    });
+  } catch(e) {}
+}
+
+// ===== SITE CONFIG =====
+async function loadConfig() {
+  try {
+    var r = await fetch(CONFIG_URL + '?t=' + Date.now());
+    if (!r.ok) return;
+    var cfg = await r.json();
+    if (cfg.notifText) document.getElementById('notif-text').innerHTML = cfg.notifText;
+    if (cfg.notifHide) document.getElementById('notif-bar').style.display = 'none';
+    if (cfg.waPhone) document.getElementById('wa-float').href = 'https://wa.me/' + cfg.waPhone;
+    // Section visibility
+    var sections = ['articles','tourism','map','gallery','services'];
+    sections.forEach(function(s) {
+      if (cfg['hide_' + s]) {
+        var el = document.getElementById('section-' + s);
+        if (el) el.style.display = 'none';
+      }
+    });
+  } catch(e) {}
+}
+
+// ===== BACK TO TOP =====
+window.addEventListener('scroll', function() {
+  var btn = document.getElementById('back-top');
+  if (window.scrollY > 300) btn.classList.add('show');
+  else btn.classList.remove('show');
+});
+
+// ===== INIT =====
+(function() {
+  // Theme
+  var savedTheme = 'dark';
+  try { savedTheme = localStorage.getItem('ks_theme') || 'dark'; } catch(e) {}
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  document.getElementById('theme-btn').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+
+  // Language
+  var savedLang = 'ar';
+  try { savedLang = localStorage.getItem('ks_lang') || 'ar'; } catch(e) {}
+  setL(savedLang);
+
+  // Load data
+  loadWeather();
+  loadForecast();
+  loadPrayer();
+  loadArticles();
+  loadAds();
+  loadConfig();
+})();
+</script>
+</body>
+</html>
