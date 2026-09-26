@@ -120,4 +120,17 @@
     var fit = function () { move.style.setProperty('--dur', Math.max(8, set.offsetWidth / pps) + 's'); };
     fit(); window.addEventListener('resize', fit);
   });
+
+  /* ---------- YouTube: load the player only when clicked ---------- */
+  document.querySelectorAll('.yt').forEach(function (box) {
+    box.addEventListener('click', function () {
+      if (box.querySelector('iframe')) return;
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + box.dataset.yt + '?autoplay=1&rel=0';
+      f.title = box.dataset.title || 'YouTube';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      f.allowFullscreen = true;
+      box.innerHTML = ''; box.appendChild(f);
+    });
+  });
 })();

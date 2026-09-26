@@ -322,3 +322,16 @@ h1,h2,h3{line-height:1.25;margin:0}
 .soc-facebook:hover{background:#1877f2!important}.soc-instagram:hover{background:#d62976!important}.soc-whatsapp:hover{background:#1f9e55!important}
 .soc-youtube:hover{background:#e62117!important}.soc-tiktok:hover,.soc-x:hover{background:#111!important}.soc-telegram:hover{background:#229ed9!important}
 .soc-email:hover,.soc-link:hover{background:var(--sea-deep)!important}
+
+/* YouTube (click to load) */
+.yt{position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;background:#000;cursor:pointer}
+.yt img{width:100%;height:100%;object-fit:cover;opacity:.92;transition:opacity .2s}
+.yt:hover img{opacity:1}
+.yt-play{position:absolute;inset:0;margin:auto;width:78px;height:56px;border:0;background:none;cursor:pointer;padding:0;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))}
+.yt-play:focus-visible{outline:3px solid var(--amber)}
+.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video{margin-top:44px}
+.video h2{font-size:22px;font-weight:800;margin-bottom:14px}
+.hv-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:32px;align-items:center}
+.hv-txt p{color:var(--ink-2);margin:0;font-size:18px}
+@media (max-width:860px){.hv-grid{grid-template-columns:1fr;gap:16px}}

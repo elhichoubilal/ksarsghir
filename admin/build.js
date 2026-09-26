@@ -198,6 +198,28 @@
     return '<div class="topbar' + (tk ? ' has-ticker' : '') + '"><div class="wrap topbar-in">' + (tk || '<span></span>') + so + '</div></div>\n';
   }
 
+  /* ---------- YouTube (loads only when clicked) ---------- */
+  function ytId(u) {
+    u = String(u || '').trim();
+    var m = u.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    if (m) return m[1];
+    return /^[A-Za-z0-9_-]{11}$/.test(u) ? u : '';
+  }
+  function ytBlock(url, title, lang) {
+    var id = ytId(url); if (!id) return '';
+    var play = { ar: 'تشغيل الفيديو', fr: 'Lire la vidéo', en: 'Play video', es: 'Reproducir vídeo' }[lang] || 'Play';
+    return '<div class="yt" data-yt="' + id + '" data-title="' + esc(title) + '">' +
+      '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="' + esc(title) + '" loading="lazy" decoding="async" width="480" height="360">' +
+      '<button type="button" class="yt-play" aria-label="' + esc(play + ': ' + title) + '"><svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true"><path d="M66.5 7.7a8.5 8.5 0 0 0-6-6C55.2.3 34 .3 34 .3s-21.2 0-26.5 1.4a8.5 8.5 0 0 0-6 6A89 89 0 0 0 .1 24a89 89 0 0 0 1.4 16.3 8.5 8.5 0 0 0 6 6C12.8 47.7 34 47.7 34 47.7s21.2 0 26.5-1.4a8.5 8.5 0 0 0 6-6A89 89 0 0 0 67.9 24a89 89 0 0 0-1.4-16.3z" fill="#f00"/><path d="M45 24 27 14v20z" fill="#fff"/></svg></button>' +
+      '<noscript><a href="https://www.youtube.com/watch?v=' + id + '">YouTube</a></noscript></div>';
+  }
+  function homeVideo(site, lang) {
+    var v = site.homeVideo || {}; if (!v.url || !ytId(v.url)) return '';
+    var title = t(v.title, lang) || t(site.name, lang);
+    return '<section class="wrap block hv"><div class="hv-grid"><div class="hv-txt"><h2 class="block-title">' + esc(title) + '</h2>' +
+      (t(v.text, lang) ? '<p>' + esc(t(v.text, lang)) + '</p>' : '') + '</div>' + ytBlock(v.url, title, lang) + '</div></section>';
+  }
+
   /* ---------- shared layout ---------- */
   function langLinks(site, file, lang, alternates) {
     return LANGS.map(function (l) {
@@ -403,6 +425,7 @@
       (show(site, 'live') ? liveSection(site, file, lang) : '') +
       adSlot(site, 'top', lang) +
       (show(site, 'intro') && t(site.intro, lang) ? '<section class="wrap intro prose">' + t(site.intro, lang) + '</section>' : '') +
+      (show(site, 'video') ? homeVideo(site, lang) : '') +
       (show(site, 'featured') && feat ? '<section class="wrap block"><h2 class="block-title">' + esc(UI[lang].featured) + '</h2>' + card(site, file, feat, lang, true) + '</section>' : '') +
       (show(site, 'latest') && rest.length ? '<section class="wrap block"><div class="block-head"><h2 class="block-title">' + esc(UI[lang].latest) + '</h2><a href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(UI[lang].allTourism) + '</a></div>' +
         '<div class="grid">' + rest.map(function (a) { return card(site, file, a, lang); }).join('') + '</div></section>' : '') +
@@ -490,6 +513,7 @@
         body.toc.map(function (i) { return '<li><a href="#' + esc(i.id) + '">' + esc(i.text) + '</a></li>'; }).join('') + '</ol></nav>' : '') +
       adSlot(site, 'top', lang) +
       '<div class="prose">' + body.html + '</div>' +
+      (a.video && ytId(a.video) ? '<section class="video"><h2>' + esc({ ar: 'فيديو', fr: 'Vidéo', en: 'Video', es: 'Vídeo' }[lang]) + '</h2>' + ytBlock(a.video, x.title, lang) + '</section>' : '') +
       (gallery.length ? '<section class="gallery"><h2>' + esc(UI[lang].gallery) + '</h2><div class="gal">' + gallery.map(function (g) {
         var alt = (g.alt && t(g.alt, lang)) || x.title;
         return '<a href="' + esc(asset(file, g.src)) + '" target="_blank" rel="noopener"><img src="' + esc(asset(file, g.src)) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async"></a>';
@@ -575,6 +599,6 @@
   }
 
   var api = { LANGS: LANGS, UI: UI, buildAll: buildAll, articlePage: articlePage, homePage: homePage, tourismPage: tourismPage,
-    socialType: socialType, SOCIAL_SVG: SOCIAL_SVG, seoCheck: seoCheck, FONTS: FONTS, DISPLAY: DISPLAY, articleDir: articleDir, articleFile: articleFile, hasLang: hasLang, strip: strip, esc: esc, catLabel: catLabel };
+    ytId: ytId, socialType: socialType, SOCIAL_SVG: SOCIAL_SVG, seoCheck: seoCheck, FONTS: FONTS, DISPLAY: DISPLAY, articleDir: articleDir, articleFile: articleFile, hasLang: hasLang, strip: strip, esc: esc, catLabel: catLabel };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.KSBuild = api;
 })(this);

@@ -396,7 +396,7 @@ function viewArticles(){
 /* ---- article editor ---- */
 function blankArticle(){
   var i18n={};LANGS.forEach(function(l){i18n[l]={title:'',seoTitle:'',description:'',keyword:'',alt:'',content:''};});
-  return {slug:'',section:'tourisme',category:(S.site.categories[0]||{}).id||'',cover:'',gallery:[],map:'',lat:null,lng:null,date:today(),updated:today(),draft:false,featured:false,related:[],i18n:i18n,_new:true};
+  return {slug:'',section:'tourisme',category:(S.site.categories[0]||{}).id||'',cover:'',gallery:[],video:'',map:'',lat:null,lng:null,date:today(),updated:today(),draft:false,featured:false,related:[],i18n:i18n,_new:true};
 }
 function viewEdit(slug){
   var orig=slug?S.articles.filter(function(a){return a.slug===slug;})[0]:null;
@@ -422,6 +422,8 @@ function viewEdit(slug){
       field('أو رابط صورة','<input type="url" id="e-cover" class="ltr" value="'+esc(a.cover)+'" placeholder="https://…">')+
     '</div>'+
     '<div class="card"><h2>📸 معرض الصور</h2><div class="imgs" id="gal"></div><div class="row" style="margin-top:8px"><button class="btn btn-s" id="gal-up">⬆️ رفع صور</button><button class="btn btn-s" id="gal-lib">📁 من المكتبة</button></div></div>'+
+    '<div class="card"><h2>🎬 فيديو YouTube</h2>'+field('رابط الفيديو','<input type="url" id="e-video" class="ltr" value="'+esc(a.video||'')+'" placeholder="https://www.youtube.com/watch?v=…">','الصق الرابط العادي من YouTube (ولا youtu.be ولا Shorts)')+
+      '<div id="v-prev" style="margin-top:8px"></div><button class="btn btn-s btn-d" id="v-rm" style="margin-top:8px">حذف الفيديو</button></div>'+
     '<div class="card"><h2>🗺️ الخريطة</h2>'+field('رابط Google Maps (Embed)','<input type="url" id="e-map" class="ltr" value="'+esc(a.map)+'" placeholder="https://www.google.com/maps/embed?pb=…">','من Google Maps: مشاركة ← تضمين خريطة ← انسخ الرابط اللي فـ src')+
       '<div class="two">'+field('خط العرض','<input type="text" id="e-lat" class="ltr" value="'+esc(a.lat==null?'':a.lat)+'" placeholder="35.84">')+field('خط الطول','<input type="text" id="e-lng" class="ltr" value="'+esc(a.lng==null?'':a.lng)+'" placeholder="-5.56">')+'</div>'+
       '<p class="hint">الإحداثيات كتستعمل لـ Google وباش نختارو المواضيع القريبة أوتوماتيكياً.</p></div>'+
@@ -502,13 +504,14 @@ function viewEdit(slug){
   var slugTouched=!!orig;
   function syncMeta(){
     a.slug=$('#e-slug').value.trim();a.section=$('#e-section').value;a.category=$('#e-cat').value;a.date=$('#e-date').value||today();
-    a.draft=$('#e-draft').checked;a.cover=$('#e-cover').value.trim();a.map=$('#e-map').value.trim();
+    a.draft=$('#e-draft').checked;a.cover=$('#e-cover').value.trim();a.map=$('#e-map').value.trim();a.video=$('#e-video').value.trim();vprev(a.video);
     var la=parseFloat($('#e-lat').value),ln=parseFloat($('#e-lng').value);a.lat=isNaN(la)?null:la;a.lng=isNaN(ln)?null:ln;
     $('#e-url').textContent=a.slug?'/'+B.articleDir(a,'ar'):'';
     $('#cover-prev').style.backgroundImage=a.cover?'url("'+imgSrc(a.cover)+'")':'';
     $('#cover-prev').textContent=a.cover?'':'ما كاينش صورة';
     seo();
   }
+  function vprev(u){var id=B.ytId(u),el=$('#v-prev');if(!el)return;el.innerHTML=u?(id?'<img src="https://i.ytimg.com/vi/'+id+'/hqdefault.jpg" alt="" style="width:100%;border-radius:10px;aspect-ratio:16/9;object-fit:cover"><p class="hint">✅ الفيديو غادي يبان تحت المحتوى، وما كيتحملش حتى يضغط عليه الزائر.</p>':'<p class="hint" style="color:var(--bad)">❌ هاد الرابط ماشي فيديو YouTube صحيح</p>'):'';}
   function gallery(){
     $('#gal').innerHTML=(a.gallery||[]).map(function(g,i){
       return '<div class="img"><img src="'+esc(imgSrc(g.src))+'" alt=""><div class="bar"><button class="btn" data-gc="'+i+'">⭐ رئيسية</button><button class="btn btn-d" data-gd="'+i+'">✕</button></div></div>';
@@ -521,11 +524,12 @@ function viewEdit(slug){
 
   tabs();pane();syncMeta();gallery();related();seo();
   $('#ltabs').addEventListener('click',function(e){var b=e.target.closest('[data-l]');if(!b)return;S.editLang=b.dataset.l;tabs();pane();seo();});
-  ['e-slug','e-section','e-cat','e-date','e-draft','e-cover','e-map','e-lat','e-lng'].forEach(function(id){$('#'+id).addEventListener('input',function(){if(id==='e-slug')slugTouched=true;syncMeta();});$('#'+id).addEventListener('change',syncMeta);});
+  ['e-slug','e-section','e-cat','e-date','e-draft','e-cover','e-map','e-lat','e-lng','e-video'].forEach(function(id){$('#'+id).addEventListener('input',function(){if(id==='e-slug')slugTouched=true;syncMeta();});$('#'+id).addEventListener('change',syncMeta);});
   $('#e-slug').addEventListener('blur',function(){$('#e-slug').value=slugify($('#e-slug').value);syncMeta();});
   $('#cover-up').addEventListener('click',function(){pickImages(false,a.slug||'cover').then(function(p){if(p.length){$('#e-cover').value=p[0];syncMeta();}});});
   $('#cover-lib').addEventListener('click',function(){chooseFromLibrary(false).then(function(p){if(p.length){$('#e-cover').value=p[0];syncMeta();}});});
   $('#cover-rm').addEventListener('click',function(){$('#e-cover').value='';syncMeta();});
+  $('#v-rm').addEventListener('click',function(){$('#e-video').value='';syncMeta();});
   $('#gal-up').addEventListener('click',function(){pickImages(true,a.slug||'gal').then(function(p){p.forEach(function(x){a.gallery.push({src:x});});gallery();});});
   $('#gal-lib').addEventListener('click',function(){chooseFromLibrary(true).then(function(p){p.forEach(function(x){a.gallery.push({src:x});});gallery();});});
   $('#gal').addEventListener('click',function(e){
@@ -683,7 +687,7 @@ async function viewImages(){
 /* ---- home ---- */
 function viewHome(){
   var s=S.site,h=s.hero||(s.hero={});
-  var L={tk:s.ticker||(s.ticker={enabled:false,speed:'normal',label:{},items:[]}),live:s.live||(s.live={}),gal:s.homeGallery||(s.homeGallery={images:[]}),rate:s.rating||(s.rating={})};
+  var L={hv:s.homeVideo||(s.homeVideo={url:'',title:{},text:{}}),tk:s.ticker||(s.ticker={enabled:false,speed:'normal',label:{},items:[]}),live:s.live||(s.live={}),gal:s.homeGallery||(s.homeGallery={images:[]}),rate:s.rating||(s.rating={})};
   s.services=s.services||[];L.gal.images=L.gal.images||[];
   var v=$('#view');
   v.innerHTML='<div class="head"><h1>الصفحة الرئيسية</h1><a class="btn" target="_blank" rel="noopener" href="'+pagesUrl()+'">↗ عرض</a></div>'+
@@ -696,6 +700,10 @@ function viewHome(){
     '<div class="card"><h2>نص التعريف (مهم للـ SEO)</h2><p class="hint">نص قصير (HTML) كيبان تحت الصورة. دخل فيه أسماء المنطقة بشكل طبيعي: القصر الصغير، Ksar Sghir، Ksar es-Seghir، Alcazarseguer.</p>'+
       '<div class="tabs" id="it"></div><textarea class="code" id="intro" style="min-height:200px"></textarea></div>'+
     '<div class="card"><h2>⭐ الموضوع المميز</h2><select id="feat"><option value="">— الأحدث أوتوماتيكياً —</option>'+S.articles.filter(function(a){return a.section!=='page';}).map(function(a){return '<option value="'+esc(a.slug)+'"'+(s.featured===a.slug?' selected':'')+'>'+esc(a.i18n.ar.title||a.slug)+'</option>';}).join('')+'</select></div>'+
+    '<div class="card" id="x-hv"><h2>🎬 فيديو تعريفي فالرئيسية</h2><p class="hint">كيبان تحت نص التعريف. خلي الرابط خاوي (ولا ضغط "حذف") باش يتخبى القسم.</p>'+
+      field('رابط YouTube','<input type="url" class="ltr" id="hv-url" value="'+esc(L.hv.url||'')+'" placeholder="https://www.youtube.com/watch?v=…">')+
+      '<div id="hv-prev" style="max-width:420px;margin-top:8px"></div>'+field('العنوان',l4(L.hv.title,'hv-title'),'خاوي = اسم الموقع')+field('نص قصير',l4(L.hv.text,'hv-text',true))+
+      '<button class="btn btn-s btn-d" id="hv-rm">حذف الفيديو</button></div>'+
     '<div class="card" id="x-tk"><h2>📢 الشريط المتحرك</h2><p class="hint">شريط أخبار فوق الموقع (فجميع الصفحات). كيتوقف ملي الزائر يحط عليه الماوس. استعملو للأخبار، العروض، ولا التنبيهات (مثلاً: حالة البحر، الأنشطة، الإعلانات).</p>'+
       '<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="tk-on"'+(L.tk.enabled?' checked':'')+'> تشغيل الشريط</label>'+
       '<div class="two">'+field('الكلمة فالبداية',l4(L.tk.label,'tk-label'),'مثلاً: جديد، عاجل')+field('السرعة','<select id="tk-speed"><option value="slow"'+(L.tk.speed==='slow'?' selected':'')+'>بطيئة</option><option value="normal"'+(!L.tk.speed||L.tk.speed==='normal'?' selected':'')+'>متوسطة</option><option value="fast"'+(L.tk.speed==='fast'?' selected':'')+'>سريعة</option></select>')+'</div>'+
@@ -731,6 +739,11 @@ function viewHome(){
   $('#stats').addEventListener('input',function(e){var r=e.target.closest('.rep');if(!r)return;var i=+r.dataset.i;s.stats[i].value=$('[data-sv]',r).value;s.stats[i].label=readL4(r,'st-'+i);markDirty();});
   $('#stats').addEventListener('click',function(e){var d=e.target.closest('[data-sd]');if(d){s.stats.splice(+d.dataset.sd,1);stats();markDirty();}});
   $('#add-stat').addEventListener('click',function(){s.stats.push({value:'',label:{}});stats();markDirty();});
+  // home video
+  function hvprev(){var id=B.ytId(L.hv.url);$('#hv-prev').innerHTML=L.hv.url?(id?'<img src="https://i.ytimg.com/vi/'+id+'/hqdefault.jpg" alt="" style="width:100%;border-radius:10px;aspect-ratio:16/9;object-fit:cover">':'<p class="hint" style="color:var(--bad)">❌ هاد الرابط ماشي فيديو YouTube صحيح</p>'):'';}
+  hvprev();
+  $('#x-hv').addEventListener('input',function(e){L.hv.url=$('#hv-url').value.trim();L.hv.title=readL4($('#x-hv'),'hv-title');L.hv.text=readL4($('#x-hv'),'hv-text');hvprev();markDirty();e.stopPropagation();});
+  $('#hv-rm').addEventListener('click',function(){$('#hv-url').value='';L.hv.url='';hvprev();markDirty();});
   // ticker
   L.tk.items=L.tk.items||[];
   function tkItems(){$('#tk-items').innerHTML=L.tk.items.map(function(x,i){return '<div class="rep" data-ti="'+i+'"><div class="rep-h" style="gap:8px"><input type="text" class="ltr" data-tu value="'+esc(x.url||'')+'" placeholder="رابط (اختياري): tourisme/plage/ أو https://…"><label style="margin:0;display:flex;gap:6px;align-items:center;font-weight:500;white-space:nowrap"><input type="checkbox" data-ti18n'+(x.i18n?' checked':'')+'> حسب اللغة</label><button class="btn btn-s" data-tup="'+i+'">↑</button><button class="btn btn-s btn-d" data-tx="'+i+'">✕</button></div>'+l4(x.text,'tk-t')+'</div>';}).join('')||'<p class="hint">ما كاين حتى خبر.</p>';}
@@ -827,7 +840,7 @@ function viewDesign(){
       field('الزوايا','<select id="c-radius"><option value="small"'+(T.radius==='small'?' selected':'')+'>حادة</option><option value=""'+(!T.radius?' selected':'')+'>متوسطة</option><option value="large"'+(T.radius==='large'?' selected':'')+'>دائرية</option></select>')+
     '</div></div>'+
     '<div class="card"><h2>🏠 أقسام الصفحة الرئيسية</h2><p class="hint">خبي ولا بيّن الأقسام.</p>'+
-      [['live','الطقس والبحر والصلاة'],['intro','نص التعريف'],['featured','الموضوع المميز'],['latest','أحدث المواضيع'],['gallery','معرض الصور'],['services','الخدمات'],['categories','التصنيفات'],['stats','الأرقام'],['rating','تقييم الموقع']].map(function(x){
+      [['live','الطقس والبحر والصلاة'],['intro','نص التعريف'],['video','الفيديو التعريفي'],['featured','الموضوع المميز'],['latest','أحدث المواضيع'],['gallery','معرض الصور'],['services','الخدمات'],['categories','التصنيفات'],['stats','الأرقام'],['rating','تقييم الموقع']].map(function(x){
         return '<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" data-sec="'+x[0]+'"'+(H[x[0]]!==false?' checked':'')+'> '+x[1]+'</label>';}).join('')+'</div>'+
     '<div class="card"><h2>🧩 CSS إضافي <span class="hint">(متقدم)</span></h2><p class="hint">كود CSS صغير كيتزاد فوق التصميم فجميع الصفحات. مثال: <span class="ltr">.hero h1{font-size:80px}</span></p><textarea class="code" id="c-css" style="min-height:140px">'+esc(T.customCss||'')+'</textarea></div>'+
     '<div class="card"><h2>📄 ملف التصميم الكامل <span class="hint">(متقدم جداً)</span></h2><p class="hint">تعديل مباشر لـ <span class="ltr">assets/style.css</span>. أي غلطة هنا كتأثر على الموقع كامل، استعمل "CSS إضافي" إلا ما كنتيش متأكد.</p><button class="btn btn-s" id="full-css">فتح المحرر</button><div id="full-wrap" hidden><textarea class="code" id="full" style="min-height:500px"></textarea></div></div>';
