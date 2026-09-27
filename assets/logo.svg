@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ksar Sghir">
+  <defs><clipPath id="c"><circle cx="32" cy="32" r="30"/></clipPath></defs>
+  <circle cx="32" cy="32" r="30" fill="#0b1e2d"/>
+  <g clip-path="url(#c)">
+    <circle cx="44" cy="19" r="7.5" fill="#f2a541"/>
+    <path d="M17 45V30.5h4.5v3h3.5v-3h4v3h3v-3h4v3h3.5v-3H44V45z" fill="#efe6d6"/>
+    <path d="M28.5 45v-6.5a3.5 3.5 0 0 1 7 0V45z" fill="#0b1e2d"/>
+    <path d="M0 44c6-4 12-4 18 0s12 4 18 0 12-4 18 0 8 3 10 2v20H0z" fill="#00b4d8"/>
+    <path d="M0 52c6-4 12-4 18 0s12 4 18 0 12-4 18 0 8 3 10 2v12H0z" fill="#0077a8"/>
+  </g>
+  <circle cx="32" cy="32" r="30" fill="none" stroke="#f2a541" stroke-width="2"/>
+</svg>

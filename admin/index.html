@@ -159,7 +159,8 @@ main{padding:24px clamp(14px,3vw,36px) 120px;min-width:0}
     <button data-view="home">🏠 الصفحة الرئيسية</button>
     <button data-view="design">🎨 التصميم</button>
     <button data-view="links">🔗 القائمة والروابط</button>
-    <button data-view="images">🖼️ الصور</button>
+    <button data-view="gallery">📷 المعرض</button>
+    <button data-view="images">🗂️ مكتبة الصور</button>
     <button data-view="settings">⚙️ الإعدادات</button>
     <div class="spacer"></div>
     <a id="site-link" href="#" target="_blank" rel="noopener">↗ عرض الموقع</a>
@@ -256,13 +257,15 @@ async function start(){
   var btn=$('#login-form .btn-p');btn.disabled=true;btn.textContent='كنتحقق…';
   try{
     await gh('');
-    var r=await Promise.all([readFile('data/site.json'),readFile('data/articles.json'),readFile('data/manifest.json'),readFile('assets/style.css')]);
+    var r=await Promise.all([readFile('data/site.json'),readFile('data/articles.json'),readFile('data/manifest.json'),readFile('assets/style.css'),readFile('data/gallery.json')]);
     if(!r[0]||!r[1])throw new Error('ما لقيناش data/site.json ولا data/articles.json فالريبو. ارفع ملفات الموقع أولاً.');
     S.site=JSON.parse(r[0]);S.articles=JSON.parse(r[1]).articles||[];
     var DEF={"live": {"weather": true, "sea": true, "prayer": true, "lat": 35.8426, "lng": -5.5596, "seaLat": 35.87, "seaLng": -5.55, "method": 21, "tune": "", "weatherUrl": "meteo/", "seaUrl": "meteo/", "prayerUrl": "salat/"}, "homeGallery": {"title": {"ar": "معرض الصور", "fr": "Galerie photos", "en": "Photo gallery", "es": "Galería de fotos"}, "subtitle": {"ar": "لقطات من عدسة بلال الهيشو", "fr": "Photos de Bilal El Hichou", "en": "Photos by Bilal El Hichou", "es": "Fotos de Bilal El Hichou"}, "cta": {"ar": "عرض كل الصور", "fr": "Voir toutes les photos", "en": "See all photos", "es": "Ver todas las fotos"}, "url": "https://gallery.ksarsghir.com", "images": [{"src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjETG-3niCoeG0AcNV2SdGpI3ApVHoLYV-F2d3OgpqvSrI4lMF32QLj_dKeEOkOcOnwJ6OO0BjAuem3ss-jk0CJUadghleD4OeVXyI2I84F31shW3_X6Ul3t6L1g7DBx3KXvpl0kBphfDFYqr2bryoUeYT1IAM_brbGgptbLLR6XVi58b7NjsMX5cvVrFY/s1200/4353.jpg", "alt": {"ar": "ميناء طنجة المتوسط", "fr": "Port Tanger Med", "en": "Tanger Med port", "es": "Puerto Tánger Med"}}, {"src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyF6zy_A4LJ2L-xiH04Zd6XJEDMXIaOmyzWtN3vaFdByi2ysaLnHUcv4jYzuv5UqLPoM44_VLDfwr4MWEGATxl4QX7J7Ad0Z9bLL6kqB5lHnCQOf3EaC_snAy2TJCCt14okvSQDDPb0XvpNRZ6Gmhq6VIIHpESdyZ3P2uaZaSIm7PfxqtSHWL4-TUFwdU/s1200/8510.jpg", "alt": {"ar": "غروب الشمس على شاطئ القصر الصغير", "fr": "Coucher de soleil à Ksar Sghir", "en": "Sunset over Ksar Sghir beach", "es": "Atardecer en Alcazarseguer"}}, {"src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHQolv6RmyUqkJCdSImtvNinU325jN_uTkEdP2K3Zn1y1zSmnlHdtGk7rMCKJFh5MGbspcJ_5pHzLRCriLKIq3DmTI0Pl10-1NCfQLSHrPuheemplMGTpTmmPLjHuia3FA0XTRpXU1NAow2H93nBBEVegH8tT5Y_zbrCmKwvWOHI040KHDdzidEpbgnOI/s1200/3385.jpg", "alt": {"ar": "شاطئ القصر الصغير", "fr": "Plage de Ksar Sghir", "en": "Ksar Sghir beach", "es": "Playa de Alcazarseguer"}}]}, "servicesBlock": {"title": {"ar": "خدماتنا", "fr": "Nos services", "en": "Our services", "es": "Nuestros servicios"}}, "services": [{"icon": "🌤️", "title": {"ar": "الطقس والبحر", "fr": "Météo et mer", "en": "Weather & sea", "es": "Tiempo y mar"}, "text": {"ar": "نشرة جوية 7 أيام + حالة البحر", "fr": "Prévisions 7 jours + état de la mer", "en": "7-day forecast + sea conditions", "es": "Previsión 7 días + estado del mar"}, "url": "meteo/"}, {"icon": "🕌", "title": {"ar": "مواقيت الصلاة", "fr": "Horaires de prière", "en": "Prayer times", "es": "Horarios de oración"}, "text": {"ar": "أوقات الأذان يومياً + اتجاه القبلة", "fr": "Horaires quotidiens + direction de la Qibla", "en": "Daily times + Qibla direction", "es": "Horarios diarios + dirección de la Qibla"}, "url": "salat/"}, {"icon": "🖼️", "title": {"ar": "متجر الصور", "fr": "Boutique photos", "en": "Photo shop", "es": "Tienda de fotos"}, "text": {"ar": "اقتن صوراً احترافية للقصر الصغير", "fr": "Photos professionnelles de Ksar Sghir", "en": "Professional photos of Ksar Sghir", "es": "Fotos profesionales de Alcazarseguer"}, "url": "https://store.ksarsghir.com"}, {"icon": "📢", "title": {"ar": "أعلن معنا", "fr": "Publicité", "en": "Advertise", "es": "Publicidad"}, "text": {"ar": "وصل إلى 77K متابع في المنطقة", "fr": "Touchez 77K abonnés dans la région", "en": "Reach 77K followers in the region", "es": "Llega a 77K seguidores en la región"}, "url": "advertise/"}], "rating": {"enabled": true, "google": "", "facebook": "https://www.facebook.com/ksarsghircity/reviews", "title": {}, "text": {}}, "ticker": {"enabled": true, "speed": "normal", "label": {"ar": "جديد", "fr": "Nouveau", "en": "New", "es": "Nuevo"}, "items": [{"text": {"ar": "مرحباً بكم فالدليل السياحي للقصر الصغير، بأربع لغات", "fr": "Bienvenue sur le guide touristique de Ksar Sghir, en quatre langues", "en": "Welcome to the Ksar Sghir travel guide, in four languages", "es": "Bienvenidos a la guía turística de Alcazarseguer, en cuatro idiomas"}, "url": "", "i18n": false}, {"text": {"ar": "اكتشف 16 وجهة سياحية: شواطئ، موانئ وتاريخ", "fr": "Découvrez 16 destinations : plages, ports et histoire", "en": "Discover 16 destinations: beaches, ports and history", "es": "Descubre 16 destinos: playas, puertos e historia"}, "url": "tourisme/", "i18n": true}]}, "topbar": {"social": true}};
     var added=[];Object.keys(DEF).forEach(function(k){if(S.site[k]==null){S.site[k]=DEF[k];added.push(k);}});
     if(added.length)setTimeout(function(){markDirty();toast('✨ تزادو أقسام جداد للصفحة الرئيسية. ضغط "نشر التغييرات" باش يبانو.');},500);
     S.manifest=r[2]?JSON.parse(r[2]):{files:[]};S.css=r[3]||'';
+    S.gallery=r[4]?JSON.parse(r[4]):{title:{},intro:{},categories:[],photos:[]};
+    migrate();
     $('#login').hidden=true;$('#app').hidden=false;
     $('#side-repo').textContent=S.repo;
     $('#site-link').href=pagesUrl();
@@ -273,13 +276,28 @@ async function start(){
   }finally{btn.disabled=false;btn.textContent='دخول';}
 }
 
+/* ---------- one-time upgrades of saved settings ---------- */
+function migrate(){
+  var s=S.site;s.migrations=s.migrations||[];
+  if(s.migrations.indexOf('v7')>=0)return;
+  var fix=function(it){if(!it||!it.url)return;
+    if(/gallery\.ksarsghir\.com/.test(it.url)){it.url='gallery/';it.i18n=true;}
+    if(/^(meteo|salat)\/$/.test(it.url))it.i18n=true;};
+  (s.menu||[]).forEach(fix);(s.services||[]).forEach(fix);(s.footer||[]).forEach(function(c){(c.links||[]).forEach(fix);});
+  if(s.homeGallery){fix(s.homeGallery);}
+  s.extraUrls=(s.extraUrls||[]).filter(function(u){return u!=='meteo/'&&u!=='salat/';});
+  if(s.favicon&&/assets\/img\/favicon-/.test(s.favicon))s.favicon='';
+  s.migrations.push('v7');
+  setTimeout(function(){markDirty();toast('✨ تحدثو الروابط (المعرض، الطقس، الصلاة) والأيقونة. ضغط "نشر التغييرات".');},900);
+}
+
 /* ---------- navigation ---------- */
 $$('.side [data-view]').forEach(function(b){b.addEventListener('click',function(){go(b.dataset.view);});});
 function go(v,arg){
   S.view=v;
   var ov=$('#view'),nv=ov.cloneNode(false);ov.replaceWith(nv);
   $$('.side [data-view]').forEach(function(b){b.toggleAttribute('aria-current',b.dataset.view===v||(v==='edit'&&b.dataset.view==='articles'));if(b.hasAttribute('aria-current'))b.setAttribute('aria-current','page');});
-  var views={articles:viewArticles,edit:viewEdit,home:viewHome,design:viewDesign,links:viewLinks,images:viewImages,settings:viewSettings};
+  var views={gallery:viewGallery,articles:viewArticles,edit:viewEdit,home:viewHome,design:viewDesign,links:viewLinks,images:viewImages,settings:viewSettings};
   views[v](arg);
   window.scrollTo(0,0);
 }
@@ -310,18 +328,20 @@ function cleanContent(html){
 }
 
 /* ---------- image upload ---------- */
-function compress(file){
+function compress(file,opt){
+  opt=opt||{};
   return new Promise(function(res,rej){
     if(!/^image\//.test(file.type))return rej(new Error('هادا ماشي ملف صورة'));
     if(file.type==='image/gif'||file.type==='image/svg+xml'){var fr=new FileReader();fr.onload=function(){res({data:fr.result,ext:file.type==='image/gif'?'gif':'svg'});};fr.readAsDataURL(file);return;}
     var img=new Image(),url=URL.createObjectURL(file);
     img.onload=function(){
-      var max=1600,w=img.naturalWidth,h=img.naturalHeight;
-      if(w>max){h=Math.round(h*max/w);w=max;}
-      var c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+      var max=opt.icon?512:1600,w=img.naturalWidth,h=img.naturalHeight,c=document.createElement('canvas'),g=c.getContext('2d');
+      if(opt.icon){var sz=Math.min(w,h);c.width=c.height=Math.min(512,sz);g.drawImage(img,(w-sz)/2,(h-sz)/2,sz,sz,0,0,c.width,c.height);}
+      else{if(w>max){h=Math.round(h*max/w);w=max;}c.width=w;c.height=h;g.drawImage(img,0,0,w,h);}
       URL.revokeObjectURL(url);
-      var d=c.toDataURL('image/webp',0.82),ext='webp';
-      if(d.indexOf('data:image/webp')!==0){d=c.toDataURL('image/jpeg',0.85);ext='jpg';}
+      var d,ext;
+      if(opt.icon){d=c.toDataURL('image/png');ext='png';}
+      else{d=c.toDataURL('image/webp',0.82);ext='webp';if(d.indexOf('data:image/webp')!==0){d=c.toDataURL('image/jpeg',0.85);ext='jpg';}}
       res({data:d,ext:ext});
     };
     img.onerror=function(){rej(new Error('ما قدرناش نقراو الصورة'));};
@@ -329,7 +349,7 @@ function compress(file){
   });
 }
 async function uploadImage(file,prefix){
-  var r=await compress(file);
+  var r=await compress(file,{icon:prefix==='logo'||prefix==='favicon'});
   var base=slugify(prefix||file.name.replace(/\.[^.]+$/,''))||'img';
   var path='assets/img/'+base+'-'+Date.now().toString(36)+'.'+r.ext;
   await gh('/contents/'+encPath(path),{method:'PUT',body:{message:'🖼️ رفع صورة: '+path,content:r.data.split(',')[1],branch:S.branch}});
@@ -445,7 +465,7 @@ function viewEdit(slug){
       '<div class="toolbar">'+
         '<button class="btn" data-ins="h2">عنوان H2</button><button class="btn" data-ins="p">فقرة</button><button class="btn" data-ins="features">مميزات</button>'+
         '<button class="btn" data-ins="seasons">مواسم</button><button class="btn" data-ins="info">معلومات</button><button class="btn" data-ins="tips">نصائح</button>'+
-        '<button class="btn" data-ins="highlight">ملاحظة</button><button class="btn" data-ins="warn">تنبيه</button><button class="btn" data-ins="img">🖼️ صورة</button>'+
+        '<button class="btn" data-ins="highlight">ملاحظة</button><button class="btn" data-ins="warn">تنبيه</button><button class="btn" data-ins="img">🖼️ صور (واحدة ولا بزاف)</button><button class="btn" data-ins="imglib">📁 صور من المكتبة</button>'+
         (l!=='ar'?'<button class="btn" data-copy-ar>📋 نسخ البنية من العربية</button>':'')+
       '</div>'+
       '<textarea id="p-content" class="code" spellcheck="false">'+esc(x.content)+'</textarea>';
@@ -491,10 +511,12 @@ function viewEdit(slug){
       tips:'<ul class="tips">\n<li><span>💡</span><span>نصيحة…</span></li>\n<li><span>💡</span><span>نصيحة…</span></li>\n</ul>\n',
       highlight:'<div class="highlight">📍 ملاحظة مهمة…</div>\n',warn:'<div class="warn">⚠️ تنبيه…</div>\n'
     };
-    if(kind==='img'){
-      pickImages(false,a.slug||'img').then(function(p){if(!p.length)return;
+    if(kind==='img'||kind==='imglib'){
+      (kind==='img'?pickImages(true,a.slug||'img'):chooseFromLibrary(true)).then(function(p){if(!p.length)return;
         var alt=a.i18n[S.editLang].alt||a.i18n[S.editLang].title||'';
-        put('<figure><img src="'+p[0]+'" alt="'+esc(alt)+'" loading="lazy"><figcaption>'+esc(alt)+'</figcaption></figure>\n');});
+        var fig=function(src,i){return '<figure><img src="'+src+'" alt="'+esc(alt+(p.length>1?' '+(i+1):''))+'" loading="lazy"><figcaption>'+(S.editLang==='ar'?'وصف الصورة':'Légende')+'</figcaption></figure>';};
+        put(p.length===1?fig(p[0],0)+'\n':'<div class="photos">\n'+p.map(fig).join('\n')+'\n</div>\n');
+        toast('تزادو '+p.length+' صور. بدل "وصف الصورة" بوصف قصير.');});
       return;
     }
     put(S2[kind]);
@@ -684,6 +706,46 @@ async function viewImages(){
   });
 }
 
+
+/* ---- gallery page manager ---- */
+function viewGallery(){
+  var g=S.gallery;g.categories=g.categories||[];g.photos=g.photos||[];
+  var v=$('#view'),filter='',open=-1;
+  function catSel(val,attr){return '<select '+attr+'>'+g.categories.map(function(c){return '<option value="'+esc(c.id)+'"'+(c.id===val?' selected':'')+'>'+esc(c.name.ar||c.id)+'</option>';}).join('')+'</select>';}
+  function render(){
+    var list=g.photos.map(function(p,i){return {p:p,i:i};}).filter(function(x){return !filter||x.p.cat===filter;});
+    v.innerHTML='<div class="head"><h1>المعرض <span class="muted" style="font-size:16px">('+g.photos.length+' صورة)</span></h1><div class="row"><a class="btn" target="_blank" rel="noopener" href="'+pagesUrl()+'gallery/">↗ عرض</a></div></div>'+
+      '<div class="card"><h2>العنوان والتعريف</h2>'+field('العنوان',l4(g.title,'g-t'))+field('نص التعريف',l4(g.intro,'g-i',true))+'</div>'+
+      '<div class="card"><h2>التصنيفات</h2><div id="gcats">'+g.categories.map(function(c,i){return '<div class="rep" data-gc="'+i+'"><div class="rep-h" style="gap:8px"><input type="text" class="ltr" data-gcid value="'+esc(c.id)+'" style="max-width:160px"><span class="hint">'+g.photos.filter(function(p){return p.cat===c.id;}).length+' صورة</span><button class="btn btn-s btn-d" data-gcx="'+i+'">✕</button></div>'+l4(c.name,'gcn')+'</div>';}).join('')+'</div><button class="btn btn-s" id="gc-add">+ زيد تصنيف</button></div>'+
+      '<div class="card"><h2>الصور</h2><div class="row" style="margin-bottom:12px"><label style="margin:0">زيد فـ</label><span id="up-cat">'+catSel(g._upcat||(g.categories[0]||{}).id,'id="g-upcat"')+'</span><button class="btn btn-s btn-p" id="g-up">⬆️ رفع صور</button><button class="btn btn-s" id="g-lib">📁 من المكتبة</button><span style="flex:1"></span>'+
+        '<select id="g-filter"><option value="">كل التصنيفات</option>'+g.categories.map(function(c){return '<option value="'+esc(c.id)+'"'+(c.id===filter?' selected':'')+'>'+esc(c.name.ar||c.id)+'</option>';}).join('')+'</select></div>'+
+        '<p class="hint">ضغط "✏️ وصف" تحت الصورة باش تكتب وصف قصير. الوصف كيبان ملي تتحل الصورة كبيرة، وكيعاون فـ Google Images.</p>'+
+        '<div class="imgs" id="gp">'+list.map(function(x){var p=x.p,has=!!(p.caption&&(p.caption.ar||p.caption.fr));return '<div class="img" data-pi="'+x.i+'"><img src="'+esc(imgSrc(B.sized(p.src,400)))+'" alt="" loading="lazy">'+
+          '<div class="bar">'+catSel(p.cat,'data-pcat style="font-size:11px;padding:3px"')+'</div><div class="bar"><button class="btn'+(has?' btn-p':'')+'" data-pe="'+x.i+'">✏️ وصف</button><button class="btn" data-pu="'+x.i+'">←</button><button class="btn btn-d" data-px="'+x.i+'">✕</button></div>'+
+          (open===x.i?'<div style="padding:6px">'+field('وصف قصير (كيبان تحت الصورة)',l4(p.caption,'pc'))+field('نص بديل alt (اختياري)',l4(p.alt,'pa'))+'</div>':'')+'</div>';}).join('')+'</div></div>';
+  }
+  render();
+  v.oninput=function(e){
+    g.title=readL4(v,'g-t');g.intro=readL4(v,'g-i');
+    var c=e.target.closest('[data-gc]');if(c){var x=g.categories[+c.dataset.gc],old=x.id;x.id=slugify($('[data-gcid]',c).value)||old;x.name=readL4(c,'gcn');if(old!==x.id)g.photos.forEach(function(p){if(p.cat===old)p.cat=x.id;});}
+    var pi=e.target.closest('[data-pi]');if(pi){var p=g.photos[+pi.dataset.pi];if(e.target.hasAttribute('data-pcat'))p.cat=e.target.value;if(e.target.dataset.k==='pc')p.caption=readL4(pi,'pc');if(e.target.dataset.k==='pa')p.alt=readL4(pi,'pa');}
+    if(e.target.id==='g-upcat')g._upcat=e.target.value;
+    markDirty();
+  };
+  v.onchange=function(e){if(e.target.id==='g-filter'){filter=e.target.value;render();return;}v.oninput(e);};
+  v.onclick=function(e){
+    var b=e.target.closest('button');if(!b)return;
+    var cat=($('#g-upcat')||{}).value||'';
+    if(b.id==='g-up')pickImages(true,'gallery').then(function(p){p.forEach(function(x){g.photos.unshift({src:x,cat:cat,alt:{},caption:{}});});if(p.length){render();markDirty();}});
+    if(b.id==='g-lib')chooseFromLibrary(true).then(function(p){p.forEach(function(x){g.photos.unshift({src:x,cat:cat,alt:{},caption:{}});});if(p.length){render();markDirty();}});
+    if(b.id==='gc-add'){g.categories.push({id:'cat'+(g.categories.length+1),name:{}});render();markDirty();}
+    if(b.dataset.gcx!=null){var id=g.categories[+b.dataset.gcx].id;if(g.photos.some(function(p){return p.cat===id;}))return toast('❌ نقل الصور لتصنيف آخر قبل ما تحذف هاد التصنيف',true);g.categories.splice(+b.dataset.gcx,1);render();markDirty();}
+    if(b.dataset.pe!=null){open=open===+b.dataset.pe?-1:+b.dataset.pe;render();}
+    if(b.dataset.pu!=null){var i=+b.dataset.pu;if(i>0){g.photos.splice(i-1,0,g.photos.splice(i,1)[0]);render();markDirty();}}
+    if(b.dataset.px!=null&&confirm('حذف الصورة من المعرض؟ (ما كتتحذفش من المكتبة)')){g.photos.splice(+b.dataset.px,1);open=-1;render();markDirty();}
+  };
+}
+
 /* ---- home ---- */
 function viewHome(){
   var s=S.site,h=s.hero||(s.hero={});
@@ -691,9 +753,10 @@ function viewHome(){
   s.services=s.services||[];L.gal.images=L.gal.images||[];
   var v=$('#view');
   v.innerHTML='<div class="head"><h1>الصفحة الرئيسية</h1><a class="btn" target="_blank" rel="noopener" href="'+pagesUrl()+'">↗ عرض</a></div>'+
-    '<div class="card"><h2>الصورة الكبيرة (Hero)</h2><div class="cover-prev" id="h-prev" style="max-width:520px"></div>'+
-      '<div class="row" style="margin-top:8px"><button class="btn btn-s" id="h-up">⬆️ رفع صورة</button><button class="btn btn-s" id="h-lib">📁 من المكتبة</button></div>'+
-      field('أو رابط','<input type="url" id="h-img" class="ltr" value="'+esc(h.image||'')+'">')+
+    '<div class="card"><h2>الصورة الكبيرة (Hero)</h2><p class="hint">إلا زدتي أكثر من صورة، كيتبدلو بوحدهم كل 5 ثواني (معرض متحرك). الأولى هي اللي كتبان فالمشاركة فـ Facebook.</p>'+
+      '<div class="imgs" id="h-imgs"></div>'+
+      '<div class="row" style="margin-top:8px"><button class="btn btn-s" id="h-up">⬆️ رفع صور</button><button class="btn btn-s" id="h-lib">📁 من المكتبة</button></div>'+
+      '<input type="hidden" id="h-img" value="'+esc(h.image||'')+'"><div id="h-prev" hidden></div>'+
       field('العنوان الكبير',l4(h.title,'h-title'))+field('النص تحت العنوان',l4(h.subtitle,'h-sub',true))+field('نص الزر',l4(h.cta,'h-cta'))+'</div>'+
     '<div class="card"><h2>🔎 SEO ديال الصفحة الرئيسية</h2><p class="hint">هادي هي اللي كتبان فـ Google ملي كيقلب شي واحد على "القصر الصغير" ولا "Ksar Sghir". حط الاسم فالعنوان بكل لغة.</p>'+
       field('عنوان SEO',l4(h.seoTitle,'h-seo'))+field('الوصف (meta description)',l4(h.description,'h-desc',true))+'</div>'+
@@ -714,6 +777,7 @@ function viewHome(){
       '<div class="two">'+field('خط العرض / الطول (المدينة)','<div class="row" style="flex-wrap:nowrap"><input type="text" class="ltr" data-lk="lat" value="'+esc(L.live.lat)+'"><input type="text" class="ltr" data-lk="lng" value="'+esc(L.live.lng)+'"></div>')+
       field('نقطة البحر (عرض / طول)','<div class="row" style="flex-wrap:nowrap"><input type="text" class="ltr" data-lk="seaLat" value="'+esc(L.live.seaLat)+'"><input type="text" class="ltr" data-lk="seaLng" value="'+esc(L.live.seaLng)+'"></div>','خاصها تكون فالبحر، ماشي فاليابسة')+'</div>'+
       field('تعديل المواقيت بالدقائق','<input type="text" class="ltr" data-lk="tune" value="'+esc(L.live.tune||'')+'" placeholder="0,0,0,0,0,0,0,0,0">','الترتيب: إمساك، فجر، شروق، ظهر، عصر، مغرب، غروب، عشاء، منتصف الليل. مثلاً باش تزيد 5 دقائق للمغرب: 0,0,0,0,0,5,0,0,0')+
+      field('تعديل التاريخ الهجري','<select data-lk="hijriAdj"><option value="-1"'+(L.live.hijriAdj==-1?' selected':'')+'>ناقص نهار (-1)</option><option value=""'+(!L.live.hijriAdj?' selected':'')+'>بلا تعديل</option><option value="1"'+(L.live.hijriAdj==1?' selected':'')+'>زايد نهار (+1)</option></select>','باش يطابق التاريخ الرسمي ديال وزارة الأوقاف (رؤية الهلال)')+
       '<div class="two">'+field('رابط "التفاصيل" للطقس','<input type="text" class="ltr" data-lk="weatherUrl" value="'+esc(L.live.weatherUrl||'')+'">')+field('رابط "التفاصيل" للصلاة','<input type="text" class="ltr" data-lk="prayerUrl" value="'+esc(L.live.prayerUrl||'')+'">')+'</div></div>'+
     '<div class="card" id="x-gal"><h2>📸 معرض الصور فالرئيسية</h2>'+field('العنوان',l4(L.gal.title,'g-title'))+field('النص الصغير',l4(L.gal.subtitle,'g-sub'))+field('نص الزر',l4(L.gal.cta,'g-cta'))+
       field('رابط الزر','<input type="text" class="ltr" id="g-url" value="'+esc(L.gal.url||'')+'">')+
@@ -724,8 +788,15 @@ function viewHome(){
       field('رابط التقييم فـ Google','<input type="url" class="ltr" id="r-google" value="'+esc(L.rate.google||'')+'" placeholder="https://g.page/r/…/review">','من Google Business Profile ← "اطلب تعليقات" ← انسخ الرابط')+
       field('رابط التقييم فـ Facebook','<input type="url" class="ltr" id="r-fb" value="'+esc(L.rate.facebook||'')+'">')+
       field('العنوان',l4(L.rate.title,'r-title'))+field('النص',l4(L.rate.text,'r-text'))+'</div>';
-  function prev(){var p=$('#h-img').value.trim();$('#h-prev').style.backgroundImage=p?'url("'+imgSrc(p)+'")':'';$('#h-prev').textContent=p?'':'ما كاينش صورة';}
+  h.images=(h.images&&h.images.length)?h.images:(h.image?[h.image]:[]);
+  function prev(){
+    h.image=h.images[0]||'';$('#h-img').value=h.image;
+    $('#h-imgs').innerHTML=h.images.map(function(src,i){return '<div class="img"><img src="'+esc(imgSrc(src))+'" alt=""><div class="bar">'+(i?'<button class="btn" data-hl="'+i+'">←</button>':'<span class="hint">الأولى</span>')+'<button class="btn btn-d" data-hx="'+i+'">✕</button></div></div>';}).join('')||'<p class="hint">ما كاينش صورة.</p>';
+  }
   prev();
+  $('#h-imgs').addEventListener('click',function(e){var x=e.target.closest('[data-hx]'),l=e.target.closest('[data-hl]');
+    if(x){h.images.splice(+x.dataset.hx,1);prev();markDirty();}
+    if(l){var i=+l.dataset.hl;h.images.splice(i-1,0,h.images.splice(i,1)[0]);prev();markDirty();}});
   var il='ar';s.intro=s.intro||{};
   function itabs(){$('#it').innerHTML=LANGS.map(function(l){return '<button data-l="'+l+'" aria-selected="'+(l===il)+'">'+LN[l]+'</button>';}).join('');$('#intro').value=s.intro[il]||'';}
   itabs();
@@ -761,7 +832,7 @@ function viewHome(){
   // live
   $('#x-live').addEventListener('input',function(e){
     $$('[data-lv]').forEach(function(c){L.live[c.dataset.lv]=c.checked;});
-    $$('[data-lk]').forEach(function(i){var k=i.dataset.lk,val=i.value.trim();L.live[k]=/lat|lng|Lat|Lng/.test(k)?(isNaN(parseFloat(val))?L.live[k]:parseFloat(val)):val;});
+    $$('[data-lk]').forEach(function(i){var k=i.dataset.lk,val=i.value.trim();L.live[k]=k==='hijriAdj'?(+val||0):/lat|lng|Lat|Lng/.test(k)?(isNaN(parseFloat(val))?L.live[k]:parseFloat(val)):val;});
     markDirty();e.stopPropagation();
   });
   $('#x-live').addEventListener('change',function(e){$('#x-live').dispatchEvent(new Event('input'));});
@@ -792,12 +863,12 @@ function viewHome(){
   $('#x-rate').addEventListener('change',function(){$('#x-rate').dispatchEvent(new Event('input'));});
   v.addEventListener('input',function(e){
     if(e.target.closest('#stats')||e.target.id==='intro')return;
-    h.image=$('#h-img').value.trim();h.title=readL4(v,'h-title');h.subtitle=readL4(v,'h-sub');h.cta=readL4(v,'h-cta');h.seoTitle=readL4(v,'h-seo');h.description=readL4(v,'h-desc');
+    h.title=readL4(v,'h-title');h.subtitle=readL4(v,'h-sub');h.cta=readL4(v,'h-cta');h.seoTitle=readL4(v,'h-seo');h.description=readL4(v,'h-desc');
     prev();markDirty();
   });
   $('#feat').addEventListener('change',function(){s.featured=$('#feat').value;markDirty();});
-  $('#h-up').addEventListener('click',function(){pickImages(false,'hero').then(function(p){if(p.length){$('#h-img').value=p[0];h.image=p[0];prev();markDirty();}});});
-  $('#h-lib').addEventListener('click',function(){chooseFromLibrary(false).then(function(p){if(p.length){$('#h-img').value=p[0];h.image=p[0];prev();markDirty();}});});
+  $('#h-up').addEventListener('click',function(){pickImages(true,'hero').then(function(p){if(p.length){h.images=h.images.concat(p);prev();markDirty();}});});
+  $('#h-lib').addEventListener('click',function(){chooseFromLibrary(true).then(function(p){if(p.length){h.images=h.images.concat(p);prev();markDirty();}});});
 }
 
 /* ---- preview any generated page ---- */
@@ -952,11 +1023,12 @@ async function publish(message){
   setStatus('<span class="progress"><i></i></span> كنبني الصفحات…');
   try{
     S.site.version=Date.now().toString(36);
-    var files=B.buildAll(S.site,S.articles);
+    var files=B.buildAll(S.site,S.articles,S.gallery);
     var list=Object.keys(files).sort();
     var deletes=(S.manifest.files||[]).filter(function(p){return !files[p];});
     if(S.cssDirty){files['assets/style.css']=S.css;}
     files['data/site.json']=JSON.stringify(S.site,null,1);
+    files['data/gallery.json']=JSON.stringify(S.gallery,null,1);
     files['data/articles.json']=JSON.stringify({articles:S.articles},null,1);
     files['data/manifest.json']=JSON.stringify({files:list},null,1);
     setStatus('<span class="progress"><i></i></span> كنرفع '+Object.keys(files).length+' ملف لـ GitHub…');
