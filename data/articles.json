@@ -424,9 +424,9 @@
    "category": "beach",
    "cover": "assets/img/ferdiwa-muk6m32t.webp",
    "gallery": [],
-   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.51!3d35.675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
-   "lat": 35.675,
-   "lng": -5.51,
+   "map": "",
+   "lat": 35.83229,
+   "lng": -5.61608,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -466,7 +466,8 @@
      "content": "<h2 id=\"s1\"> 📍 Playa Ferdiwa — Magia salvaje</h2><p>La <strong>Playa Ferdiwa</strong> está entre las más tranquilas y auténticas, a 7 km al sureste. El acceso pasa por un camino rural estrecho entre granjas tradicionales — viaje a la vida rural marroquí auténtica antes de llegar a una playa salvaje con aguas excepcionalmente puras.</p><h2 id=\"s2\"> 🌿 Lo que distingue a Ferdiwa</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🌿</div><div class=\"feature-title\">Naturaleza virgen real</div><div class=\"feature-text\">Ferdiwa no tocada por el desarrollo urbano.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Aguas excepcionalmente puras</div><div class=\"feature-text\">La distancia da al agua una pureza visual rara.</div></div><div class=\"feature\"><div class=\"feature-icon\">🤫</div><div class=\"feature-title\">Silencio y calma verdaderos</div><div class=\"feature-text\">Sin música fuerte ni multitudes — para quienes buscan descanso real.</div></div><div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Fotos raras</div><div class=\"feature-text\">La naturaleza virgen ofrece imágenes imposibles en playas abarrotadas.</div></div><div class=\"feature\"><div class=\"feature-icon\">🐦</div><div class=\"feature-title\">Sonidos de la naturaleza</div><div class=\"feature-text\">Canto de pájaros, sonido de olas y viento — antídoto al estrés moderno.</div></div><div class=\"feature\"><div class=\"feature-icon\">🚴</div><div class=\"feature-title\">Para aventureros</div><div class=\"feature-text\">La carretera de montaña es ideal para ciclismo de montaña y senderismo.</div></div></div><h2 id=\"s3\"> 🏪 Servicios</h2><div class=\"warn\">⚠️ Playa completamente salvaje — sin duchas, restaurantes ni comercios. Traiga absolutamente todo.</div><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Ferdiwa Beach Ksar Sghir\" en Google Maps. Distancia: 7 km.</div>"
     }
    },
-   "video": ""
+   "video": "",
+   "geoChecked": true
   },
   {
    "slug": "dahdaha",
