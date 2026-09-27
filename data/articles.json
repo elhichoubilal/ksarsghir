@@ -159,9 +159,9 @@
    "category": "port",
    "cover": "assets/img/tanger-med-muk681ck.webp",
    "gallery": [],
-   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.495!3d35.71!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
-   "lat": 35.71,
-   "lng": -5.495,
+   "map": "",
+   "lat": 35.87176,
+   "lng": -5.52673,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -201,7 +201,8 @@
      "content": "<h2 id=\"s1\">📍 Presentación</h2>\n<p><strong>Puerto Tanger Med</strong> — El mayor puerto de África a pocos kilómetros de Ksar Sghir.</p><p>Ubicado a 5 km del centro de Ksar Sghir en la costa del estrecho de Gibraltar en el norte de Marruecos.</p>\n<h2 id=\"s2\">🎯 Actividades disponibles</h2>\n<div class=\"info-grid\"><div class=\"info-item\"><div class=\"info-icon\">🏊</div><div><div class=\"info-label\">Actividad</div><div class=\"info-val\">Natación en aguas tranquilas</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🐟</div><div><div class=\"info-label\">Actividad</div><div class=\"info-val\">Pesca con caña</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🍳</div><div><div class=\"info-label\">Actividad</div><div class=\"info-val\">Tajín con pescado fresco</div></div></div><div class=\"info-item\"><div class=\"info-icon\">📸</div><div><div class=\"info-label\">Actividad</div><div class=\"info-val\">Fotografía de naturaleza</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🚶</div><div><div class=\"info-label\">Actividad</div><div class=\"info-val\">Paseo por la playa</div></div></div><div class=\"info-item\"><div class=\"info-icon\">👨‍👩‍👧</div><div><div class=\"info-label\">Actividad</div><div class=\"info-val\">Salida familiar</div></div></div></div>\n<div class=\"highlight\">🍲 <strong>La experiencia del tajín junto al mar:</strong> Pesca con caña y luego prepara un tajín marroquí auténtico al aire libre.</div>\n<h2 id=\"s3\">📅 Mejores épocas</h2>\n<div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div>\n<h2 id=\"s4\">🚌 Cómo llegar</h2>\n<ul class='tips'><li><span>🚌</span><div><strong>Autobús:</strong> حافلة I3/I12 أو سيارة خاصة</div></li><li><span>🚕</span><div><strong>Taxi:</strong> Desde el centro de Ksar Sghir o la estación de tren de Tánger.</div></li><li><span>🚗</span><div><strong>Coche:</strong> Carretera nacional N16 entre Tánger y Ksar Sghir.</div></li></ul>"
     }
    },
-   "video": ""
+   "video": "",
+   "geoChecked": true
   },
   {
    "slug": "site-archeologique",
