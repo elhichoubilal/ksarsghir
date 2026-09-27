@@ -363,9 +363,9 @@
    "category": "beach",
    "cover": "assets/img/ghojin-srama-muk6iyas.webp",
    "gallery": [],
-   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.52!3d35.678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
-   "lat": 35.678,
-   "lng": -5.52,
+   "map": "",
+   "lat": 35.83005,
+   "lng": -5.60323,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -405,7 +405,8 @@
      "content": "<h2 id=\"s1\"> 📍 Playa Ghojin / Srama — Dos nombres, un solo lugar</h2><p><strong>Ghojin / Srama</strong> — playa de montaña a 6 km conocida por dos nombres: \"Ghojin\" por la montaña adyacente y \"Srama\" por el caserío cercano. El acceso pasa entre las casas del caserío y los olivos.</p><h2 id=\"s2\"> 🌊 Características</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Olas suaves</div><div class=\"feature-text\">El entorno montañoso reduce las olas — ideal para familias con niños.</div></div><div class=\"feature\"><div class=\"feature-icon\">💎</div><div class=\"feature-title\">Aguas cristalinas</div><div class=\"feature-text\">Distancia de la contaminación — agua tan clara que se ve el fondo.</div></div><div class=\"feature\"><div class=\"feature-icon\">🏡</div><div class=\"feature-title\">Calidez local</div><div class=\"feature-text\">Los habitantes son acogedores — hospitalidad auténtica, no turismo frío.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌿</div><div class=\"feature-title\">Vegetación densa</div><div class=\"feature-text\">Plantas silvestres y árboles que dan sombra natural y aromas raros.</div></div><div class=\"feature\"><div class=\"feature-icon\">🧭</div><div class=\"feature-title\">Cerca de Ksar Sghir</div><div class=\"feature-text\">Solo 6 km — día de playa asequible para todos.</div></div></div><h2 id=\"s3\"> 🏪 Servicios</h2><div class=\"warn\">⚠️ Playa semi-salvaje — Protección Civil estacional. Sin duchas ni restaurantes. Traiga sus provisiones.</div><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Ghojin Srama Beach Ksar Sghir\" en Google Maps. Distancia: 6 km.</div>"
     }
    },
-   "video": ""
+   "video": "",
+   "geoChecked": true
   },
   {
    "slug": "ferdiwa",
