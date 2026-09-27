@@ -342,18 +342,38 @@ function compress(file,opt){
       var d,ext;
       if(opt.icon){d=c.toDataURL('image/png');ext='png';}
       else{d=c.toDataURL('image/webp',0.82);ext='webp';if(d.indexOf('data:image/webp')!==0){d=c.toDataURL('image/jpeg',0.85);ext='jpg';}}
-      res({data:d,ext:ext});
+      var small=null;
+      if(!opt.icon){small=smallCanvas(c);}
+      res({data:d,ext:ext,small:small});
     };
     img.onerror=function(){rej(new Error('ما قدرناش نقراو الصورة'));};
     img.src=url;
   });
 }
+function smallCanvas(src){
+  var w=src.width,h=src.height,sw=Math.min(640,w),sh=Math.round(h*sw/w);
+  var c=document.createElement('canvas');c.width=sw;c.height=sh;c.getContext('2d').drawImage(src,0,0,sw,sh);
+  var d=c.toDataURL('image/webp',0.78);if(d.indexOf('data:image/webp')!==0)d=c.toDataURL('image/jpeg',0.8);
+  return d;
+}
+async function commitBlobs(entries,message){
+  var ref=await gh('/git/ref/heads/'+S.branch),head=ref.object.sha,c=await gh('/git/commits/'+head),tree=[];
+  for(var i=0;i<entries.length;i++){
+    var b=await gh('/git/blobs',{method:'POST',body:{content:entries[i].b64,encoding:'base64'}});
+    tree.push({path:entries[i].path,mode:'100644',type:'blob',sha:b.sha});
+  }
+  var nt=await gh('/git/trees',{method:'POST',body:{base_tree:c.tree.sha,tree:tree}});
+  var nc=await gh('/git/commits',{method:'POST',body:{message:message,tree:nt.sha,parents:[head]}});
+  await gh('/git/refs/heads/'+S.branch,{method:'PATCH',body:{sha:nc.sha}});
+}
 async function uploadImage(file,prefix){
   var r=await compress(file,{icon:prefix==='logo'||prefix==='favicon'});
   var base=slugify(prefix||file.name.replace(/\.[^.]+$/,''))||'img';
   var path='assets/img/'+base+'-'+Date.now().toString(36)+'.'+r.ext;
-  await gh('/contents/'+encPath(path),{method:'PUT',body:{message:'🖼️ رفع صورة: '+path,content:r.data.split(',')[1],branch:S.branch}});
-  S.imgCache[path]=r.data;
+  var entries=[{path:path,b64:r.data.split(',')[1]}];
+  if(r.small)entries.push({path:B.smallOf(path),b64:r.small.split(',')[1]});
+  await commitBlobs(entries,'🖼️ رفع صورة: '+path);
+  S.imgCache[path]=r.data;if(r.small)S.imgCache[B.smallOf(path)]=r.small;
   return path;
 }
 function pickImages(multi,prefix){
@@ -652,9 +672,9 @@ function preview(a,lang){
 }
 
 /* ---- image library ---- */
-async function listImages(){
+async function listImages(all){
   var r=await gh('/contents/assets/img?ref='+encodeURIComponent(S.branch),{allow404:true});
-  return (r||[]).filter(function(f){return f.type==='file'&&/\.(webp|jpe?g|png|gif|svg|avif)$/i.test(f.name);}).sort(function(x,y){return y.name.localeCompare(x.name);});
+  return (r||[]).filter(function(f){return f.type==='file'&&/\.(webp|jpe?g|png|gif|svg|avif)$/i.test(f.name)&&(all||!/-sm\.webp$/.test(f.name));}).sort(function(x,y){return y.name.localeCompare(x.name);});
 }
 function chooseFromLibrary(multi){
   return new Promise(async function(res){
@@ -674,9 +694,39 @@ function chooseFromLibrary(multi){
     });
   });
 }
+/* make 640px copies of images uploaded before this feature */
+async function optimizeImages(){
+  var box=$('#opt-box'),btn=$('#opt');box.hidden=false;btn.disabled=true;
+  var say=function(h){box.innerHTML='<h2>⚡ تخفيف الصور</h2><p>'+h+'</p>';};
+  try{
+    say('<span class="progress"><i></i></span> كنقلب على الصور…');
+    var all=await listImages(true),have={};all.forEach(function(f){have[f.path]=1;});
+    var todo=all.filter(function(f){return !/-sm\.webp$/.test(f.path)&&/\.(webp|jpe?g|png)$/i.test(f.path)&&!have[B.smallOf(f.path)];});
+    if(!todo.length){say('✅ جميع الصور عندها نسخة صغيرة. ما كاين والو باش يتخفف.');btn.disabled=false;return;}
+    var entries=[],before=0,after=0;
+    for(var i=0;i<todo.length;i++){
+      say('<span class="progress"><i></i></span> كنصغر الصورة '+(i+1)+' / '+todo.length+'…');
+      try{
+        var resp=await fetch('https://api.github.com/repos/'+S.repo+'/contents/'+encPath(todo[i].path)+'?ref='+encodeURIComponent(S.branch),{headers:{'Authorization':'Bearer '+S.token,'Accept':'application/vnd.github.raw'},cache:'no-store'});
+        if(!resp.ok)throw new Error(resp.status);
+        var blob=await resp.blob(),bmp=await createImageBitmap(blob);
+        var c=document.createElement('canvas');c.width=bmp.width;c.height=bmp.height;c.getContext('2d').drawImage(bmp,0,0);
+        var d=smallCanvas(c);before+=todo[i].size;after+=Math.round(d.length*0.75);
+        entries.push({path:B.smallOf(todo[i].path),b64:d.split(',')[1]});
+      }catch(e){console.warn('skip',todo[i].path,e);}
+    }
+    if(!entries.length)throw new Error('ما قدرناش نصغرو حتى صورة');
+    say('<span class="progress"><i></i></span> كنرفع '+entries.length+' نسخة صغيرة…');
+    await commitBlobs(entries,'⚡ نسخ صغيرة للصور ('+entries.length+')');
+    say('✅ تصاوبو '+entries.length+' نسخ صغيرة. الصور فالبطاقات والمعرض غادي تنقص من <b>'+Math.round(before/1024)+'KB</b> لـ <b>'+Math.round(after/1024)+'KB</b> تقريباً. دابا كنعاود نبني الموقع…');
+    await publish('⚡ استعمال النسخ الصغيرة للصور');
+  }catch(e){say('❌ '+esc(e.message));}
+  btn.disabled=false;
+}
 async function viewImages(){
   var v=$('#view');
-  v.innerHTML='<div class="head"><h1>الصور</h1><button class="btn btn-p" id="up">⬆️ رفع صور</button></div>'+
+  v.innerHTML='<div class="head"><h1>مكتبة الصور</h1><div class="row"><button class="btn" id="opt">⚡ تخفيف الصور</button><button class="btn btn-p" id="up">⬆️ رفع صور</button></div></div>'+
+    '<div class="card" id="opt-box" hidden></div>'+
     '<div class="card"><div class="drop" id="drop">اسحب الصور هنا ولا ضغط على "رفع صور". كتصغر أوتوماتيكياً (أقصى عرض 1600px، WebP) باش يبقى الموقع سريع.</div></div>'+
     '<div class="card"><div class="imgs" id="imgs">كنحمل…</div></div>';
   async function load(){
@@ -687,6 +737,7 @@ async function viewImages(){
   }
   load();
   $('#up').addEventListener('click',function(){pickImages(true).then(load);});
+  $('#opt').addEventListener('click',optimizeImages);
   var d=$('#drop');
   d.addEventListener('click',function(){pickImages(true).then(load);});
   d.addEventListener('dragover',function(e){e.preventDefault();d.classList.add('over');});
@@ -701,7 +752,10 @@ async function viewImages(){
     if(r){
       var used=JSON.stringify([S.site,S.articles]).indexOf(r.dataset.rm)>=0;
       if(!confirm((used?'⚠️ هاد الصورة مستعملة فالموقع! ':'')+'حذف الصورة نهائياً؟'))return;
-      try{await gh('/contents/'+encPath(r.dataset.rm),{method:'DELETE',body:{message:'🗑️ حذف صورة',sha:r.dataset.sha,branch:S.branch}});toast('تحذفات');load();}catch(x){toast('❌ '+x.message,true);}
+      try{await gh('/contents/'+encPath(r.dataset.rm),{method:'DELETE',body:{message:'🗑️ حذف صورة',sha:r.dataset.sha,branch:S.branch}});
+        var all=await listImages(true),sm=all.filter(function(f){return f.path===B.smallOf(r.dataset.rm);})[0];
+        if(sm)await gh('/contents/'+encPath(sm.path),{method:'DELETE',body:{message:'🗑️ حذف النسخة الصغيرة',sha:sm.sha,branch:S.branch}});
+        toast('تحذفات');load();}catch(x){toast('❌ '+x.message,true);}
     }
   });
 }
@@ -1024,7 +1078,10 @@ async function publish(message){
   setStatus('<span class="progress"><i></i></span> كنبني الصفحات…');
   try{
     S.site.version=Date.now().toString(36);
+    try{var lst=await listImages(true);var names={};lst.forEach(function(f){names[f.path]=1;});
+      S.site._thumbs=lst.filter(function(f){return !/-sm\.webp$/.test(f.path)&&names[B.smallOf(f.path)];}).map(function(f){return f.path;});}catch(e){S.site._thumbs=[];}
     var files=B.buildAll(S.site,S.articles,S.gallery);
+    delete S.site._thumbs;
     var list=Object.keys(files).sort();
     var deletes=(S.manifest.files||[]).filter(function(p){return !files[p];});
     if(S.cssDirty){files['assets/style.css']=S.css;}

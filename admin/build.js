@@ -200,7 +200,14 @@
   }
 
   /* ---------- images ---------- */
-  function sized(src, w) { return /blogger\.googleusercontent\.com/.test(src || '') ? String(src).replace(/\/(s\d+|w\d+-h\d+[^/]*)\//, '/s' + w + '/') : src; }
+  /* small copies: Blogger resizes on its side; uploaded images get a "-sm" copy (640px) listed in site._thumbs */
+  var THUMBS = {};
+  function smallOf(src) { return String(src).replace(/\.(webp|jpe?g|png)$/i, '-sm.webp'); }
+  function sized(src, w) {
+    if (/blogger\.googleusercontent\.com/.test(src || '')) return String(src).replace(/\/(s\d+|w\d+-h\d+[^/]*)\//, '/s' + w + '/');
+    if (w <= 900 && src && THUMBS[String(src).replace(/^\//, '')]) return smallOf(src);
+    return src;
+  }
   function heroImages(site) {
     var h = site.hero || {}, list = (h.images || []).filter(Boolean);
     if (!list.length && h.image) list = [h.image];
@@ -327,7 +334,7 @@
 
   function card(site, file, a, lang, big) {
     var x = a.i18n[lang];
-    var img = a.cover ? '<img src="' + esc(asset(file, a.cover)) + '" alt="' + esc(x.alt || x.title) + '" loading="lazy" decoding="async" width="800" height="500">'
+    var img = a.cover ? '<img src="' + esc(asset(file, big ? sized(a.cover, 1200) : sized(a.cover, 640))) + '" alt="' + esc(x.alt || x.title) + '" loading="lazy" decoding="async" width="800" height="500">'
       : '<span class="ph" aria-hidden="true">' + brandSvg() + '</span>';
     return '<article class="card' + (big ? ' card-big' : '') + '" data-cat="' + esc(a.category) + '">' +
       '<a href="' + esc(rel(file, articleDir(a, lang))) + '"><div class="card-img ph-bg">' + img + '</div>' +
@@ -692,6 +699,7 @@
   /* Build every generated file. Returns { "path": "content" } */
   function buildAll(site, articles, gallery) {
     var files = {};
+    THUMBS = {}; (site._thumbs || []).forEach(function (p) { THUMBS[p] = 1; });
     LANGS.forEach(function (lang) {
       files[prefix(lang) + 'index.html'] = homePage(site, articles, lang);
       if (gallery && (gallery.photos || []).length) files[prefix(lang) + 'gallery/index.html'] = galleryPage(site, gallery, lang);
@@ -739,6 +747,6 @@
   }
 
   var api = { LANGS: LANGS, UI: UI, buildAll: buildAll, articlePage: articlePage, homePage: homePage, tourismPage: tourismPage,
-    ytId: ytId, socialType: socialType, SOCIAL_SVG: SOCIAL_SVG, galleryPage: galleryPage, weatherPage: weatherPage, prayerPage: prayerPage, sized: sized, seoCheck: seoCheck, FONTS: FONTS, DISPLAY: DISPLAY, articleDir: articleDir, articleFile: articleFile, hasLang: hasLang, strip: strip, esc: esc, catLabel: catLabel };
+    ytId: ytId, socialType: socialType, SOCIAL_SVG: SOCIAL_SVG, galleryPage: galleryPage, weatherPage: weatherPage, prayerPage: prayerPage, sized: sized, smallOf: smallOf, setThumbs: function (l) { THUMBS = {}; (l || []).forEach(function (p) { THUMBS[p] = 1; }); }, seoCheck: seoCheck, FONTS: FONTS, DISPLAY: DISPLAY, articleDir: articleDir, articleFile: articleFile, hasLang: hasLang, strip: strip, esc: esc, catLabel: catLabel };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.KSBuild = api;
 })(this);
