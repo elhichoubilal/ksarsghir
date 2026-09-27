@@ -367,7 +367,7 @@
     if (w.sea !== false) parts.push('<div class="live-card" data-live="sea"><div class="live-h"><h3>' + esc(L.sea) + '</h3>' + link('sea') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
     if (w.prayer !== false) parts.push('<div class="live-card" data-live="prayer"><div class="live-h"><h3>' + esc(L.prayer) + '</h3>' + link('prayer') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
     if (!parts.length) return '';
-    var cfg = { lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, seaLat: w.seaLat || 35.87, seaLng: w.seaLng || -5.55, method: w.method || 21, tune: w.tune || '', ui: L };
+    var cfg = { off: +w.utcOffset || 0, lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, seaLat: w.seaLat || 35.87, seaLng: w.seaLng || -5.55, method: w.method || 21, tune: w.tune || '', ui: L };
     return '<section class="wrap block live" aria-labelledby="live-t"><h2 class="block-title" id="live-t">' + esc(L.title) + '</h2><div class="live-grid">' + parts.join('') + '</div>' +
       '<script type="application/json" id="ks-live">' + JSON.stringify(cfg).replace(/</g, '\\u003c') + '</script></section>';
   }
@@ -638,7 +638,7 @@
   }
   function weatherPage(site, lang) {
     var U = WUI[lang], w = site.live || {}, L = LIVE_UI[lang];
-    var cfg = { tool: 'weather', lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, seaLat: w.seaLat || 35.87, seaLng: w.seaLng || -5.55, ui: U, codes: L.codes, seaStates: L.seaStates };
+    var cfg = { off: +w.utcOffset || 0, tool: 'weather', lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, seaLat: w.seaLat || 35.87, seaLng: w.seaLng || -5.55, ui: U, codes: L.codes, seaStates: L.seaStates };
     var sec = function (id, title, inner) { return '<section class="wx-sec" id="' + id + '"><h2>' + esc(title) + '</h2>' + inner + '</section>'; };
     return simplePage(site, lang, 'meteo/', {
       h1: U.h1, title: U.h1 + ' | ' + t(site.name, lang), description: U.lead, lead: U.lead, mainClass: 'tool-page',
@@ -674,7 +674,7 @@
   };
   function prayerPage(site, lang) {
     var U = PUI[lang], w = site.live || {}, L = LIVE_UI[lang];
-    var cfg = { tool: 'prayer', lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, method: w.method || 21, tune: w.tune || '', hijriAdj: w.hijriAdj || 0, ui: U, prayers: L.prayers, place: t(site.name, lang) };
+    var cfg = { off: +w.utcOffset || 0, tool: 'prayer', lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, method: w.method || 21, tune: w.tune || '', hijriAdj: w.hijriAdj || 0, ui: U, prayers: L.prayers, place: t(site.name, lang) };
     return simplePage(site, lang, 'salat/', {
       h1: U.h1, title: U.h1 + ' | ' + t(site.name, lang), description: U.lead, lead: U.lead, mainClass: 'tool-page',
       schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: U.h1, description: U.lead },

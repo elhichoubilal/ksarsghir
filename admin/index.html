@@ -777,6 +777,7 @@ function viewHome(){
       '<div class="two">'+field('خط العرض / الطول (المدينة)','<div class="row" style="flex-wrap:nowrap"><input type="text" class="ltr" data-lk="lat" value="'+esc(L.live.lat)+'"><input type="text" class="ltr" data-lk="lng" value="'+esc(L.live.lng)+'"></div>')+
       field('نقطة البحر (عرض / طول)','<div class="row" style="flex-wrap:nowrap"><input type="text" class="ltr" data-lk="seaLat" value="'+esc(L.live.seaLat)+'"><input type="text" class="ltr" data-lk="seaLng" value="'+esc(L.live.seaLng)+'"></div>','خاصها تكون فالبحر، ماشي فاليابسة')+'</div>'+
       field('تعديل المواقيت بالدقائق','<input type="text" class="ltr" data-lk="tune" value="'+esc(L.live.tune||'')+'" placeholder="0,0,0,0,0,0,0,0,0">','الترتيب: إمساك، فجر، شروق، ظهر، عصر، مغرب، غروب، عشاء، منتصف الليل. مثلاً باش تزيد 5 دقائق للمغرب: 0,0,0,0,0,5,0,0,0')+
+      field('فارق التوقيت عن غرينيتش (UTC)','<select data-lk="utcOffset">'+[-1,0,1,2].map(function(o){return '<option value="'+o+'"'+((+L.live.utcOffset||0)===o?' selected':'')+'>'+(o>0?'+':'')+o+(o===0?' (المغرب منذ 20 شتنبر 2026)':'')+'</option>';}).join('')+'</select>','الساعة ديال المغرب كتحسب من التوقيت العالمي، باش تبقى صحيحة حتى إلا كان المتصفح ديال الزائر ما محدثش. إلا تبدل التوقيت الرسمي، بدلها هنا ونشر.')+
       field('تعديل التاريخ الهجري','<select data-lk="hijriAdj"><option value="-1"'+(L.live.hijriAdj==-1?' selected':'')+'>ناقص نهار (-1)</option><option value=""'+(!L.live.hijriAdj?' selected':'')+'>بلا تعديل</option><option value="1"'+(L.live.hijriAdj==1?' selected':'')+'>زايد نهار (+1)</option></select>','باش يطابق التاريخ الرسمي ديال وزارة الأوقاف (رؤية الهلال)')+
       '<div class="two">'+field('رابط "التفاصيل" للطقس','<input type="text" class="ltr" data-lk="weatherUrl" value="'+esc(L.live.weatherUrl||'')+'">')+field('رابط "التفاصيل" للصلاة','<input type="text" class="ltr" data-lk="prayerUrl" value="'+esc(L.live.prayerUrl||'')+'">')+'</div></div>'+
     '<div class="card" id="x-gal"><h2>📸 معرض الصور فالرئيسية</h2>'+field('العنوان',l4(L.gal.title,'g-title'))+field('النص الصغير',l4(L.gal.subtitle,'g-sub'))+field('نص الزر',l4(L.gal.cta,'g-cta'))+
@@ -832,7 +833,7 @@ function viewHome(){
   // live
   $('#x-live').addEventListener('input',function(e){
     $$('[data-lv]').forEach(function(c){L.live[c.dataset.lv]=c.checked;});
-    $$('[data-lk]').forEach(function(i){var k=i.dataset.lk,val=i.value.trim();L.live[k]=k==='hijriAdj'?(+val||0):/lat|lng|Lat|Lng/.test(k)?(isNaN(parseFloat(val))?L.live[k]:parseFloat(val)):val;});
+    $$('[data-lk]').forEach(function(i){var k=i.dataset.lk,val=i.value.trim();L.live[k]=(k==='hijriAdj'||k==='utcOffset')?(+val||0):/lat|lng|Lat|Lng/.test(k)?(isNaN(parseFloat(val))?L.live[k]:parseFloat(val)):val;});
     markDirty();e.stopPropagation();
   });
   $('#x-live').addEventListener('change',function(e){$('#x-live').dispatchEvent(new Event('input'));});

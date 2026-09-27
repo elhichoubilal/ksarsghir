@@ -5,14 +5,34 @@
   if (!cfgEl) return;
   var C = JSON.parse(cfgEl.textContent), U = C.ui, lang = C.lang;
   var loc = lang === 'ar' ? 'ar-MA' : lang;
-  var TZ = 'Africa/Casablanca';
+
+  /* Morocco time from UTC + offset set in the dashboard (browsers may carry outdated time-zone rules) */
+  var OFF = +C.off || 0;
+  var TZN = OFF === 0 ? 'UTC' : 'Etc/GMT' + (OFF > 0 ? '-' : '+') + Math.abs(OFF);
+  var mnow = function () { return new Date(Date.now() + OFF * 36e5); };
+  var dmy = function (d) { return ('0' + d.getUTCDate()).slice(-2) + '-' + ('0' + (d.getUTCMonth() + 1)).slice(-2) + '-' + d.getUTCFullYear(); };
+
+  /* wind: full direction name + local name (Levante / Poniente) */
+  var WN = {
+    ar: { d: ['شمال', 'شمال شرق', 'شرق', 'جنوب شرق', 'جنوب', 'جنوب غرب', 'غرب', 'شمال غرب'], e: 'شرقي', w: 'غربي' },
+    fr: { d: ['Nord', 'Nord-est', 'Est', 'Sud-est', 'Sud', 'Sud-ouest', 'Ouest', 'Nord-ouest'], e: 'Levant', w: 'Ponant' },
+    en: { d: ['North', 'Northeast', 'East', 'Southeast', 'South', 'Southwest', 'West', 'Northwest'], e: 'Levante', w: 'Poniente' },
+    es: { d: ['Norte', 'Noreste', 'Este', 'Sureste', 'Sur', 'Suroeste', 'Oeste', 'Noroeste'], e: 'Levante', w: 'Poniente' }
+  };
+  var windName = function (deg, lg) {
+    if (deg == null || isNaN(deg)) return '';
+    var W = WN[lg] || WN.en, d = ((deg % 360) + 360) % 360, full = W.d[Math.round(d / 45) % 8];
+    var local = d >= 45 && d <= 135 ? W.e : d >= 225 && d <= 315 ? W.w : '';
+    return local ? local + ' · ' + full : full;
+  };
+  var windArrow = function (deg) { return deg == null ? '' : '<span class="wx-arrow" style="display:inline-block;transform:rotate(' + Math.round(deg + 180) + 'deg)" aria-hidden="true">↑</span>'; };
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var slot = function (n) { return $('[data-slot="' + n + '"]'); };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var num = function (v, d) { return v == null || isNaN(v) ? '–' : new Intl.NumberFormat(loc, { maximumFractionDigits: d || 0, minimumFractionDigits: d || 0 }).format(v); };
   var get = function (u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
   var fail = function (n) { var s = slot(n); if (s) s.innerHTML = '<p class="live-note">' + esc(U.error) + '</p>'; };
-  var fmtTime = function (d) { return new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit', timeZone: TZ }).format(d); };
+  var fmtTime = function (d) { return new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit', timeZone: TZN }).format(d); };
   var hhmm = function (iso) { return String(iso).slice(11, 16); };
 
   /* ================= WEATHER ================= */
@@ -23,11 +43,8 @@
       if (c === 45 || c === 48) return ['🌫️', 'fog']; if (c <= 57) return ['🌦️', 'drizzle']; if (c <= 67) return ['🌧️', 'rain'];
       if (c <= 77) return ['❄️', 'snow']; if (c <= 82) return ['🌦️', 'showers']; return ['⛈️', 'storm'];
     };
-    var DIRS = lang === 'ar' ? ['ش', 'ش ش ق', 'ش ق', 'ش ق ق', 'ق', 'ج ق ق', 'ج ق', 'ج ج ق', 'ج', 'ج ج غ', 'ج غ', 'ج غ غ', 'غ', 'ش غ غ', 'ش غ', 'ش ش غ']
-      : lang === 'en' ? ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
-      : ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSO', 'SO', 'OSO', 'O', 'ONO', 'NO', 'NNO'];
-    var dirName = function (d) { return d == null ? '' : DIRS[Math.round((d % 360) / 22.5) % 16]; };
-    var arrow = function (d) { return d == null ? '' : '<span class="wx-arrow" style="transform:rotate(' + Math.round(d + 180) + 'deg)" aria-hidden="true">↑</span>'; };
+    var dirName = function (d) { return windName(d, lang); };
+    var arrow = windArrow;
     var kmh = function (v) { return num(v) + ' ' + (lang === 'ar' ? 'كم/س' : 'km/h'); };
     var dayName = function (iso, long) { return new Intl.DateTimeFormat(loc, { weekday: long ? 'long' : 'short', timeZone: 'UTC' }).format(new Date(iso + 'T12:00:00Z')); };
     var dm = function (iso) { return iso.slice(8, 10) + '/' + iso.slice(5, 7); };
@@ -36,10 +53,10 @@
       '&current=temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,cloud_cover,pressure_msl,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day' +
       '&hourly=temperature_2m,precipitation_probability,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_gusts_10m,wind_direction_10m,is_day' +
       '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,sunrise,sunset,uv_index_max,daylight_duration' +
-      '&timezone=' + encodeURIComponent(TZ) + '&forecast_days=7';
+      '&timezone=' + encodeURIComponent(TZN) + '&forecast_days=7';
     var M = 'https://marine-api.open-meteo.com/v1/marine?latitude=' + C.seaLat + '&longitude=' + C.seaLng +
       '&current=wave_height,wave_period,wave_direction,sea_surface_temperature' +
-      '&hourly=wave_height,sea_level_height_msl&daily=wave_height_max&timezone=' + encodeURIComponent(TZ) + '&forecast_days=3';
+      '&hourly=wave_height,sea_level_height_msl&daily=wave_height_max&timezone=' + encodeURIComponent(TZN) + '&forecast_days=3';
 
     var hourCard = function (h, i) {
       var w = wx(h.weather_code[i], h.is_day[i]);
@@ -60,7 +77,7 @@
       slot('now').innerHTML =
         '<div class="wx-now-main"><span class="wx-big-ico" aria-hidden="true">' + w[0] + '</span><div><div class="wx-big">' + num(c.temperature_2m) + '°</div><div class="wx-desc">' + esc(C.codes[w[1]]) + '</div></div>' +
         '<div class="wx-feels"><b>' + num(c.apparent_temperature) + '°</b><small>' + esc(U.feels) + '</small></div></div>' +
-        '<p class="wx-date">' + new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: TZ }).format(new Date()) + ' · ' + esc(U.updated) + ' ' + hhmm(c.time) + '</p>' +
+        '<p class="wx-date">' + new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: TZN }).format(new Date()) + ' · ' + esc(U.updated) + ' ' + hhmm(c.time) + '</p>' +
         '<div class="wx-facts">' +
         fact('☁️', U.clouds, num(c.cloud_cover) + '%') + fact('☂️', U.rain, num(c.precipitation, 1) + ' mm') +
         fact('💨', U.wind, kmh(c.wind_speed_10m)) + fact('🌬️', U.gusts, kmh(c.wind_gusts_10m)) +
@@ -125,7 +142,8 @@
       } else fail('tide');
 
       /* sun & moon */
-      var mt = moonTimes(new Date(), C.lat, C.lng), il = moonIllum(new Date());
+      var mn = mnow(), mid = new Date(Date.UTC(mn.getUTCFullYear(), mn.getUTCMonth(), mn.getUTCDate()) - OFF * 36e5);
+      var mt = moonTimes(mid, C.lat, C.lng), il = moonIllum(new Date());
       var ph = Math.floor(il.phase * 8 + 0.5) % 8, em = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'][ph];
       var dl = d.daylight_duration ? d.daylight_duration[0] : null;
       slot('sun').innerHTML = '<div class="wx-facts wx-facts-2">' +
@@ -148,17 +166,17 @@
       var b = Math.atan2(Math.sin(dl) * Math.cos(p2), Math.cos(p1) * Math.sin(p2) - Math.sin(p1) * Math.cos(p2) * Math.cos(dl));
       return (b / r + 360) % 360;
     })();
-    var now = new Date(), ds = ('0' + now.getDate()).slice(-2) + '-' + ('0' + (now.getMonth() + 1)).slice(-2) + '-' + now.getFullYear();
+    var now = mnow(), ds = dmy(now);
     var timer = null;
     get('https://api.aladhan.com/v1/timings/' + ds + '?' + base).then(function (r) {
       var T = r.data.timings, hj = r.data.date.hijri;
       var render = function () {
-        var n = new Date(), cur = n.getHours() * 60 + n.getMinutes(), sec = n.getSeconds();
+        var n = mnow(), cur = n.getUTCHours() * 60 + n.getUTCMinutes(), sec = n.getUTCSeconds();
         var next = KEYS.filter(function (k) { return k !== 'Sunrise' && mins(T[k]) > cur; })[0] || 'Fajr';
         var left = (mins(T[next]) - cur + 1440) % 1440 * 60 - sec; if (left < 0) left += 86400;
         var hh = Math.floor(left / 3600), mm = Math.floor(left % 3600 / 60), ss = left % 60;
         slot('today').innerHTML =
-          '<div class="pr-head"><div><p class="pr-hijri">' + esc(hijriTxt(hj)) + '</p><p class="pr-greg">' + new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(n) + ' · ' + esc(C.place) + '</p></div>' +
+          '<div class="pr-head"><div><p class="pr-hijri">' + esc(hijriTxt(hj)) + '</p><p class="pr-greg">' + new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(n) + ' · ' + esc(C.place) + '</p></div>' +
           '<div class="pr-next"><small>' + esc(U.next) + '</small><b>' + esc(C.prayers[next]) + ' ' + t5(T[next]) + '</b><span class="pr-count" dir="ltr">' + hh + ':' + ('0' + mm).slice(-2) + ':' + ('0' + ss).slice(-2) + '</span></div></div>' +
           '<ul class="pr-grid">' + KEYS.map(function (k) { return '<li' + (k === next ? ' class="is-next"' : '') + '><span>' + esc(C.prayers[k]) + '</span><b>' + t5(T[k]) + '</b></li>'; }).join('') + '</ul>' +
           '<p class="pr-qibla">🧭 ' + esc(U.qibla) + ': <b>' + qibla.toFixed(1) + '°</b> ' + esc(U.qiblaTxt) + '</p>';
@@ -166,7 +184,7 @@
       render(); timer = setInterval(render, 1000);
     }).catch(function () { fail('today'); });
 
-    var y = now.getFullYear(), mo = now.getMonth() + 1;
+    var y = now.getUTCFullYear(), mo = now.getUTCMonth() + 1;
     var loadMonth = function () {
       slot('month').innerHTML = '<div class="live-skel"></div>';
       get('https://api.aladhan.com/v1/calendar/' + y + '/' + mo + '?' + base).then(function (r) {
@@ -212,7 +230,7 @@
         return { fraction: (1 + cos(inc)) / 2, phase: 0.5 + 0.5 * inc * (ang < 0 ? -1 : 1) / PI };
       },
       times: function (date, lat, lng) {
-        var t = new Date(date); t.setHours(0, 0, 0, 0);
+        var t = new Date(date);
         var later = function (h) { return new Date(t.valueOf() + h * dayMs / 24); };
         var hc = 0.133 * rad, h0 = pos(t, lat, lng) - hc, h1, h2, rise, set, a, b, xe, ye, dd, roots, x1, x2, dx;
         for (var i = 1; i <= 24; i += 2) {
