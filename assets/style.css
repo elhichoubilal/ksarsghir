@@ -558,3 +558,19 @@ html.js .ph-bg img.is-loaded{opacity:1}
   .pr-hijri{font-size:17px}
   .pr-table table{font-size:13px}.pr-table td,.pr-table th{padding:6px 5px}
 }
+
+/* destinations map */
+.dmap-box{position:relative;height:440px;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);background:var(--sea-soft);margin-top:14px;z-index:0}
+.dmap-load{position:absolute;inset:0;display:grid;place-items:center;color:var(--ink-3)}
+.dmap-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:10px;font-size:14px;color:var(--ink-2)}
+.dmap-legend i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-inline-end:6px;vertical-align:-1px}
+.dpin{width:34px;height:34px;border-radius:50% 50% 50% 4px;transform:rotate(-45deg);display:grid;place-items:center;border:2px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.35)}
+.dpin span{transform:rotate(45deg);font-size:16px;line-height:1}
+.dpop{width:220px;font-family:var(--font);direction:inherit}
+.dpop img{width:100%;height:110px;object-fit:cover;border-radius:8px;display:block;margin-bottom:6px}
+.dpop small{color:#0077a8;font-weight:700}
+.dpop b{display:block;font-size:15px;margin:2px 0 6px;color:#0b1e2d}
+.dpop a{font-weight:800;color:#0077a8;text-decoration:none}
+.leaflet-popup-content{margin:10px}
+[dir="rtl"] .leaflet-popup-content{text-align:right}
+@media (max-width:600px){.dmap-box{height:360px}}

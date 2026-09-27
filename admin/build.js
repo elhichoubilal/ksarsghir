@@ -412,6 +412,28 @@
       '<p class="rate-thanks" hidden>' + esc(T[2]) + '</p>' + (btns ? '<div class="rate-btns">' + btns + '</div>' : '') + '</div></section>';
   }
 
+
+  /* ---------- destinations map (loads Leaflet only when scrolled into view) ---------- */
+  var MUI = { ar: ['خريطة الوجهات', 'كل الشواطئ والمواقع حول القصر الصغير. اضغط على نقطة لتفتح الموضوع.', 'اقرأ الموضوع', 'تحميل الخريطة…'],
+    fr: ['Carte des destinations', 'Toutes les plages et sites autour de Ksar Sghir. Touchez un point pour ouvrir l’article.', 'Lire l’article', 'Chargement de la carte…'],
+    en: ['Destinations map', 'All the beaches and sites around Ksar Sghir. Tap a pin to open the article.', 'Read more', 'Loading map…'],
+    es: ['Mapa de destinos', 'Todas las playas y lugares alrededor de Alcazarseguer. Toca un punto para abrir el artículo.', 'Leer más', 'Cargando mapa…'] };
+  var CAT_COLORS = { beach: '#00b4d8', port: '#0b5f8a', nature: '#2f9e44', history: '#c2410c' };
+  function mapSection(site, articles, file, lang) {
+    var list = tourism(articles, lang).filter(function (a) { return a.lat != null && a.lng != null && !isNaN(a.lat); });
+    if (!list.length) return '';
+    var T = MUI[lang], m = site.map || {};
+    var pts = list.map(function (a) {
+      var c = category(site, a.category);
+      return { t: a.i18n[lang].title, u: rel(file, articleDir(a, lang)), la: +a.lat, ln: +a.lng, i: c.icon || '📍', c: CAT_COLORS[a.category] || '#00b4d8', k: t(c.name, lang), img: a.cover ? asset(file, sized(a.cover, 640)) : '' };
+    });
+    var cats = (site.categories || []).filter(function (c) { return list.some(function (a) { return a.category === c.id; }); });
+    return '<section class="wrap block dmap"><h2 class="block-title">' + esc(t(m.title, lang) || T[0]) + '</h2><p class="muted-p">' + esc(t(m.text, lang) || T[1]) + '</p>' +
+      '<div class="dmap-box" id="dmap" data-read="' + esc(T[2]) + '"><span class="dmap-load">' + esc(T[3]) + '</span></div>' +
+      '<div class="dmap-legend">' + cats.map(function (c) { return '<span><i style="background:' + (CAT_COLORS[c.id] || '#00b4d8') + '"></i>' + esc((c.icon || '') + ' ' + t(c.name, lang)) + '</span>'; }).join('') + '</div>' +
+      '<script type="application/json" id="ks-map">' + JSON.stringify(pts).replace(/</g, '\\u003c') + '</script></section>';
+  }
+
   /* ---------- pages ---------- */
   function homePage(site, articles, lang) {
     var file = prefix(lang) + 'index.html', dir = prefix(lang);
@@ -452,6 +474,7 @@
       (show(site, 'featured') && feat ? '<section class="wrap block"><h2 class="block-title">' + esc(UI[lang].featured) + '</h2>' + card(site, file, feat, lang, true) + '</section>' : '') +
       (show(site, 'latest') && rest.length ? '<section class="wrap block"><div class="block-head"><h2 class="block-title">' + esc(UI[lang].latest) + '</h2><a href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(UI[lang].allTourism) + '</a></div>' +
         '<div class="grid">' + rest.map(function (a) { return card(site, file, a, lang); }).join('') + '</div></section>' : '') +
+      (show(site, 'map') ? mapSection(site, articles, file, lang) : '') +
       (show(site, 'gallery') ? gallerySection(site, file, lang) : '') +
       (show(site, 'services') ? servicesSection(site, file, lang) : '') +
       (show(site, 'categories') && cats.length ? '<section class="wrap block"><div class="chips">' + cats.map(function (c) {
@@ -541,7 +564,7 @@
         var alt = (g.alt && t(g.alt, lang)) || x.title, cap = g.caption && t(g.caption, lang);
         return '<a class="ph-bg" href="' + esc(asset(file, sized(g.src, 2048))) + '" data-lb' + (cap ? ' data-caption="' + esc(cap) + '"' : '') + '><img src="' + esc(asset(file, sized(g.src, 640))) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async"></a>';
       }).join('') + '</div></section>' : '') +
-      (a.map ? '<section class="map"><h2>' + esc(UI[lang].map) + '</h2><div class="map-box"><iframe src="' + esc(a.map) + '" loading="lazy" title="' + esc(x.title) + '" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div></section>' : '') +
+      ((a.map || a.lat != null) ? '<section class="map"><h2>' + esc(UI[lang].map) + '</h2><div class="map-box"><iframe src="' + esc(a.map || ('https://maps.google.com/maps?q=' + a.lat + ',' + a.lng + '&z=15&output=embed')) + '" loading="lazy" title="' + esc(x.title) + '" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div></section>' : '') +
       adSlot(site, 'bottom', lang) +
       '<section class="share"><h2>' + esc(UI[lang].share) + '</h2><div>' +
       '<a class="sh sh-wa" href="https://wa.me/?text=' + encodeURIComponent(x.title + ' ') + shareUrl + '" target="_blank" rel="noopener">WhatsApp</a>' +

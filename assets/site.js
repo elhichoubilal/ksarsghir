@@ -211,4 +211,36 @@
     box.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
     box.addEventListener('touchend', function (e) { if (sx == null) return; var dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) show(idx + ((dx < 0) !== rtl ? 1 : -1)); sx = null; });
   }
+
+  /* ---------- destinations map (Leaflet loaded on demand) ---------- */
+  var mapEl = document.getElementById('dmap'), mapData = document.getElementById('ks-map');
+  if (mapEl && mapData) {
+    var start = function () {
+      var css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css'; document.head.appendChild(css);
+      var js = document.createElement('script'); js.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+      js.onload = function () {
+        var L = window.L, pts = JSON.parse(mapData.textContent), read = mapEl.dataset.read;
+        mapEl.innerHTML = '';
+        var dark = document.documentElement.dataset.theme === 'dark' || (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+        var map = L.map(mapEl, { scrollWheelZoom: false, tap: true });
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/' + (dark ? 'dark_all' : 'voyager') + '/{z}/{x}/{y}{r}.png', {
+          maxZoom: 18, subdomains: 'abcd', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        }).addTo(map);
+        var bounds = [];
+        pts.forEach(function (p) {
+          var icon = L.divIcon({ className: '', html: '<div class="dpin" style="background:' + p.c + '"><span>' + p.i + '</span></div>', iconSize: [34, 34], iconAnchor: [4, 34], popupAnchor: [13, -30] });
+          var esc2 = function (x) { return String(x).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+          L.marker([p.la, p.ln], { icon: icon, title: p.t }).addTo(map).bindPopup('<div class="dpop">' + (p.img ? '<img src="' + esc2(p.img) + '" alt="">' : '') + '<small>' + esc2(p.i + ' ' + p.k) + '</small><b>' + esc2(p.t) + '</b><a href="' + esc2(p.u) + '">' + esc2(read) + ' ←</a></div>');
+          bounds.push([p.la, p.ln]);
+        });
+        if (bounds.length > 1) map.fitBounds(bounds, { padding: [40, 40], maxZoom: 13 }); else map.setView(bounds[0], 13);
+        map.on('focus', function () { map.scrollWheelZoom.enable(); });
+      };
+      document.head.appendChild(js);
+    };
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { io.disconnect(); start(); } }, { rootMargin: '300px' });
+      io.observe(mapEl);
+    } else start();
+  }
 })();
