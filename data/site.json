@@ -1,5 +1,5 @@
 {
- "version": "muk70q7t",
+ "version": "muk8f0ve",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -45,7 +45,10 @@
    "fr": "Guide de Ksar Sghir (Ksar es-Seghir) : plus belles plages, Tanger Med, Belyounech et site archéologique. Infos pratiques et photos d’un habitant.",
    "en": "Ksar Sghir travel guide: the best beaches, Tanger Med port, Belyounech and the archaeological site, with photos and practical tips from a local.",
    "es": "Guía de Alcazarseguer (Ksar Sghir): las mejores playas, Tánger Med, Belyounech y el yacimiento arqueológico. Fotos y consejos de un local."
-  }
+  },
+  "images": [
+   "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyF6zy_A4LJ2L-xiH04Zd6XJEDMXIaOmyzWtN3vaFdByi2ysaLnHUcv4jYzuv5UqLPoM44_VLDfwr4MWEGATxl4QX7J7Ad0Z9bLL6kqB5lHnCQOf3EaC_snAy2TJCCt14okvSQDDPb0XvpNRZ6Gmhq6VIIHpESdyZ3P2uaZaSIm7PfxqtSHWL4-TUFwdU/s1600/8510.jpg"
+  ]
  },
  "intro": {
   "ar": "<h2>مرحباً بك في القصر الصغير</h2><p><strong>القصر الصغير</strong> مدينة ساحلية صغيرة في إقليم الفحص أنجرة، على بعد حوالي 35 كيلومتراً شرق طنجة، مطلة مباشرة على مضيق جبل طارق. من شاطئها ترى الساحل الإسباني في الأيام الصافية، وحولها شواطئ هادئة مثل الدالية وواد اليان وسيدي قنقوش، إضافة إلى ميناء طنجة المتوسط وقرية بليونش تحت جبل موسى.</p><p>في هذا الدليل نجمع لك كل ما تحتاجه لزيارة القصر الصغير: وصف كل شاطئ وميناء وموقع تاريخي، أفضل وقت للزيارة، الخدمات المتوفرة، ونصائح من ابن المنطقة.</p>",
@@ -495,8 +498,28 @@
  "topbar": {
   "social": true
  },
- "theme": {},
- "homeSections": {},
+ "theme": {
+  "primary": "",
+  "accent": "",
+  "ink": "",
+  "mode": "",
+  "font": "",
+  "display": "",
+  "radius": "",
+  "customCss": ".prose p, .intro p, .lead, .card-big p { text-align: justify; text-justify: inter-word; }"
+ },
+ "homeSections": {
+  "live": true,
+  "intro": true,
+  "video": true,
+  "featured": true,
+  "latest": true,
+  "gallery": true,
+  "services": true,
+  "categories": true,
+  "stats": true,
+  "rating": true
+ },
  "homeVideo": {
   "url": "",
   "title": {},
