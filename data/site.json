@@ -1,5 +1,5 @@
 {
- "version": "mujz12qb",
+ "version": "muk1h2ja",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -153,7 +153,8 @@
     "en": "Gallery",
     "es": "Galería"
    },
-   "url": "https://gallery.ksarsghir.com"
+   "url": "gallery/",
+   "i18n": true
   },
   {
    "label": {
@@ -162,7 +163,8 @@
     "en": "Weather",
     "es": "Tiempo"
    },
-   "url": "meteo/"
+   "url": "meteo/",
+   "i18n": true
   },
   {
    "label": {
@@ -171,7 +173,8 @@
     "en": "Prayer",
     "es": "Oración"
    },
-   "url": "salat/"
+   "url": "salat/",
+   "i18n": true
   },
   {
    "label": {
@@ -305,8 +308,6 @@
  },
  "analytics": "",
  "extraUrls": [
-  "meteo/",
-  "salat/",
   "about/",
   "contact/",
   "advertise/"
@@ -344,7 +345,7 @@
    "en": "See all photos",
    "es": "Ver todas las fotos"
   },
-  "url": "https://gallery.ksarsghir.com",
+  "url": "gallery/",
   "images": [
    {
     "src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjETG-3niCoeG0AcNV2SdGpI3ApVHoLYV-F2d3OgpqvSrI4lMF32QLj_dKeEOkOcOnwJ6OO0BjAuem3ss-jk0CJUadghleD4OeVXyI2I84F31shW3_X6Ul3t6L1g7DBx3KXvpl0kBphfDFYqr2bryoUeYT1IAM_brbGgptbLLR6XVi58b7NjsMX5cvVrFY/s1200/4353.jpg",
@@ -373,7 +374,8 @@
      "es": "Playa de Alcazarseguer"
     }
    }
-  ]
+  ],
+  "i18n": true
  },
  "servicesBlock": {
   "title": {
@@ -398,7 +400,8 @@
     "en": "7-day forecast + sea conditions",
     "es": "Previsión 7 días + estado del mar"
    },
-   "url": "meteo/"
+   "url": "meteo/",
+   "i18n": true
   },
   {
    "icon": "🕌",
@@ -414,7 +417,8 @@
     "en": "Daily times + Qibla direction",
     "es": "Horarios diarios + dirección de la Qibla"
    },
-   "url": "salat/"
+   "url": "salat/",
+   "i18n": true
   },
   {
    "icon": "🖼️",
@@ -498,5 +502,8 @@
   "title": {},
   "text": {}
  },
- "favicon": "assets/img/favicon-mujz0z4s.webp"
+ "favicon": "",
+ "migrations": [
+  "v7"
+ ]
 }
