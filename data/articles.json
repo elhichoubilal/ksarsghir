@@ -104,13 +104,13 @@
    "slug": "belyounech",
    "section": "tourisme",
    "category": "nature",
-   "cover": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhFmhzsrwSBvqo-M94qSxyDkEHJ2rWQFftXbCnmwsrHz1iOmvHdcJcafzhKjkWNS9WZHtF9U_HkYoBWtSkPL9PSSgLLiSA5aNIbg_EoX5x9QJLEwrIEAlKkkdvLJNs5Z4qs3VZ6Tmsz2ZJcb2NWJaIIUbsY2Mvn33Ih7nxfsyPmCPtzF-2N9ylZ84PshcI/s800/8593.jpg",
+   "cover": "assets/img/belyounech-muk655s9.webp",
    "gallery": [],
    "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.3667!3d35.9167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
    "lat": 35.9167,
    "lng": -5.3667,
    "date": "2026-09-26",
-   "updated": "2026-09-26",
+   "updated": "2026-09-27",
    "draft": false,
    "featured": false,
    "related": [],
@@ -147,7 +147,8 @@
      "alt": "Belyounech & Monte Moussa",
      "content": "<h2 id=\"s1\">📍 Pueblo Belyounech & Monte Moussa</h2>\n<p>Belyounech — pueblo costero virgen bajo el monte Moussa. Mejor sitio de buceo del Norte de África, isla de Leila y panorama de dos continentes.</p>\n<p>Ce site exceptionnel vous attend à bras ouverts — une expérience inoubliable dans l'une des plus belles régions du nord du Maroc, aux portes du détroit de Gibraltar.</p>\n<h2 id=\"s2\">✨ Caractéristiques principales</h2>\n<div class=\"features\">\n<div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Nature préservée</div><div class=\"feature-text\">Un cadre naturel d'une beauté rare, loin du bruit et de l'agitation des grandes villes touristiques.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Panoramas exceptionnels</div><div class=\"feature-text\">Des vues à couper le souffle sur le détroit, l'Espagne et les montagnes du Rif.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🏊</div><div class=\"feature-title\">Baignade</div><div class=\"feature-text\">Eaux claires et rafraîchissantes du détroit de Gibraltar.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🚶</div><div class=\"feature-title\">Randonnée</div><div class=\"feature-text\">Sentiers naturels entre montagnes et mer pour les amateurs de plein air.</div></div>\n</div>\n<div class=\"seasons\">\n<div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Printemps</div><div class=\"season-desc\">Mars — Mai</div><span class=\"badge badge-best\">⭐ Idéal</span></div>\n<div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Été</div><div class=\"season-desc\">Juin — Août</div><span class=\"badge badge-good\">✅ Bien</span></div>\n<div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Automne</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Très bien</span></div>\n<div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Hiver</div><div class=\"season-desc\">Déc — Fév</div><span class=\"badge badge-ok\">⚠️ Variable</span></div>\n</div>\n<h2 id=\"s6\">💡 Conseils pratiques</h2>\n<p>Apportez votre nourriture et eau. Portez des chaussures confortables. Respectez la nature et ne laissez pas de déchets.</p>\n<h2 id=\"s7\">🚌 Comment y accéder</h2>\n<p>Depuis Ksar Sghir ou Tanger, en voiture personnelle ou en grand taxi. Utilisez Google Maps pour la navigation précise.</p>"
     }
-   }
+   },
+   "video": ""
   },
   {
    "slug": "tanger-med",
