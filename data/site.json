@@ -1,5 +1,5 @@
 {
- "version": "mukbonw8",
+ "version": "mukc7nx6",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -303,6 +303,10 @@
   {
    "name": "WhatsApp",
    "url": "https://wa.me/212708053745"
+  },
+  {
+   "name": "",
+   "url": ""
   }
  ],
  "tourismPage": {},
@@ -380,6 +384,18 @@
      "en": "Ksar Sghir beach",
      "es": "Playa de Alcazarseguer"
     }
+   },
+   {
+    "src": "assets/img/belyounech-muk655s9.webp",
+    "alt": {}
+   },
+   {
+    "src": "assets/img/port-diki-muk6q6yr.webp",
+    "alt": {}
+   },
+   {
+    "src": "assets/img/zrara-muk6usi1.webp",
+    "alt": {}
    }
   ],
   "i18n": true
@@ -495,6 +511,16 @@
      "es": "Descubre 16 destinos: playas, puertos e historia"
     },
     "url": "tourisme/",
+    "i18n": false
+   },
+   {
+    "text": {
+     "ar": "ملاحظة: الموقع حالياً في مرحلة التجريب (الإصدار التجريبي). انتظرونا قريباً في حلة جديدة وبميزات جديدة بإذن الله!",
+     "fr": "Note : Le site est actuellement en version bêta (test). Restez à l'affût, une nouvelle version riche en nouveautés arrive très bientôt inchallah !",
+     "en": "Note: The website is currently in its test phase (Beta version). Stay tuned for a brand-new design and exciting updates coming soon, Insha'Allah!",
+     "es": "Nota: El sitio web se encuentra actualmente en fase de prueba (versión Beta). ¡Permanezcan atentos, muy pronto volveremos con un nuevo diseño y grandes novedades si Dios quiere!"
+    },
+    "url": "",
     "i18n": true
    }
   ]
