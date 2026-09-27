@@ -454,13 +454,13 @@
    "slug": "dahdaha",
    "section": "tourisme",
    "category": "beach",
-   "cover": "",
+   "cover": "assets/img/dahdaha-muk6o1mk.webp",
    "gallery": [],
    "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.49!3d35.67!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
    "lat": 35.67,
    "lng": -5.49,
    "date": "2026-09-26",
-   "updated": "2026-09-26",
+   "updated": "2026-09-27",
    "draft": false,
    "featured": false,
    "related": [],
@@ -497,7 +497,8 @@
      "alt": "Playa Dahdaha",
      "content": "<h2 id=\"s1\"> 📍 Playa Dahdaha — Donde las montañas se encuentran con el mar</h2><p>La <strong>Playa Dahdaha</strong> ocupa una posición geográfica dramática donde cadenas montañosas verdes descienden hacia las aguas del estrecho, a 10 km al este. La dificultad relativa de acceso mantiene una calma natural rara en temporada alta.</p><h2 id=\"s2\"> 🏔️ Lo que distingue a Dahdaha</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🏔️</div><div class=\"feature-title\">Entorno montañoso encantador</div><div class=\"feature-text\">Las montañas verdes crean un cuadro natural incomparable.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Aguas tranquilas y claras</div><div class=\"feature-text\">La bahía protegida ofrece aguas más tranquilas — ideal para niños.</div></div><div class=\"feature\"><div class=\"feature-icon\">🤫</div><div class=\"feature-title\">Tranquilidad excepcional</div><div class=\"feature-text\">El acceso difícil mantiene la calma incluso en pleno julio-agosto.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌅</div><div class=\"feature-title\">Atardecer inolvidable</div><div class=\"feature-text\">Los colores pasan del azul al dorado al naranja — espectáculo cromático raro.</div></div><div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Fotografía excepcional</div><div class=\"feature-text\">Montañas, mar y cielo juntos — cada foto es una obra de arte.</div></div><div class=\"feature\"><div class=\"feature-icon\">🏕️</div><div class=\"feature-title\">Camping en la naturaleza</div><div class=\"feature-text\">Noche entre montañas y mar bajo las estrellas — experiencia incomparable.</div></div></div><h2 id=\"s3\"> 🏪 Servicios</h2><div class=\"warn\">⚠️ Sin duchas ni restaurantes. Protección Civil estacional. Traiga todo. Carretera difícil bajo la lluvia.</div><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Dahdaha Beach Ksar Sghir\" en Google Maps. Distancia: 10 km.</div>"
     }
-   }
+   },
+   "video": ""
   },
   {
    "slug": "port-diki",
