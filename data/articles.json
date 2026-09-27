@@ -504,13 +504,13 @@
    "slug": "port-diki",
    "section": "tourisme",
    "category": "port",
-   "cover": "",
+   "cover": "assets/img/port-diki-muk6q6yr.webp",
    "gallery": [],
    "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.55!3d35.687!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
    "lat": 35.687,
    "lng": -5.55,
    "date": "2026-09-26",
-   "updated": "2026-09-26",
+   "updated": "2026-09-27",
    "draft": false,
    "featured": false,
    "related": [],
@@ -547,7 +547,8 @@
      "alt": "Puerto Diki",
      "content": "<h2 id=\"s1\"> ⚓ Puerto Diki — Donde los barcos duermen sobre la arena</h2><p>El <strong>Puerto Diki</strong>, a 1 km de la playa principal, es uno de los espectáculos marítimos más auténticos. Coloridas barcas de madera descansan directamente sobre la arena sin infraestructura moderna — tradición heredada de generaciones de pescadores.</p><h2 id=\"s2\"> 🏺 Patrimonio marítimo vivo</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🚢</div><div class=\"feature-title\">Barcos sobre la arena</div><div class=\"feature-text\">Escena única — barcas coloridas descansando directamente sobre la arena.</div></div><div class=\"feature\"><div class=\"feature-icon\">🐟</div><div class=\"feature-title\">Pescado del productor</div><div class=\"feature-text\">Comprar directamente al pescador garantiza frescura inencontrable.</div></div><div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Tesoro fotográfico</div><div class=\"feature-text\">Colores vivos, azul del estrecho, arena dorada — mezcla visual irrepetible.</div></div><div class=\"feature\"><div class=\"feature-icon\">🕰️</div><div class=\"feature-title\">Viaje en el tiempo</div><div class=\"feature-text\">Diki te lleva a una época no contaminada por la globalización.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌅</div><div class=\"feature-title\">Amanecer de los pescadores</div><div class=\"feature-text\">Llegar al amanecer para ver el regreso de los pescadores — experiencia humana rara.</div></div><div class=\"feature\"><div class=\"feature-icon\">🤝</div><div class=\"feature-title\">Espacio social vivo</div><div class=\"feature-text\">Pescadores, comerciantes y vecinos — tejido social auténtico en movimiento diario.</div></div></div><div class=\"highlight\">📸 <strong>Para fotógrafos:</strong> Llegue al amanecer para fotografiar las barcas regresando con la luz del alba — fotos inestimables.</div><h2 id=\"s4\"> 🗺️ Acceso</h2><ul class=\"tips\"><li><span>🚶</span><div>A pie: 1 km de la playa principal — 12 minutos por el paseo marítimo.</div></li><li><span>🚕</span><div>Taxi del centro a precio simbólico.</div></li></ul><div class=\"highlight\">📍 <strong>GPS:</strong> 35.6870° N, 5.5500° O.</div>"
     }
-   }
+   },
+   "video": ""
   },
   {
    "slug": "oued-alian",
