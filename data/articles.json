@@ -730,9 +730,9 @@
    "category": "beach",
    "cover": "assets/img/sidi-kankouch-2-muk6y0wm.webp",
    "gallery": [],
-   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.44!3d35.76!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
-   "lat": 35.76,
-   "lng": -5.44,
+   "map": "",
+   "lat": 35.83145,
+   "lng": -5.70169,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -772,7 +772,8 @@
      "content": "<h2 id=\"s1\"> 📍 Playa Sidi Kankouch 2 — El gemelo más tranquilo</h2><p><strong>Sidi Kankouch 2</strong> está a 5 km de su vecino (20 km de Ksar Sghir). Más tranquila y menos concurrida, es la opción inteligente para quienes buscan servicios similares en un ambiente más sereno.</p><h2 id=\"s2\"> 🌊 Características</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🤫</div><div class=\"feature-title\">Más tranquilo</div><div class=\"feature-text\">Menos concurrida — perfecto para quienes buscan relajación real.</div></div><div class=\"feature\"><div class=\"feature-icon\">🛡️</div><div class=\"feature-title\">Vigilancia estacional</div><div class=\"feature-text\">Presencia julio-agosto para seguridad de bañistas.</div></div><div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Más pintoresco</div><div class=\"feature-text\">El entorno con colinas ofrece una belleza visual superior.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Aguas excelentes</div><div class=\"feature-text\">Misma calidad de agua del estrecho con olas moderadas.</div></div></div><h2 id=\"s3\"> 💡 Consejos para elegir</h2><ul class=\"tips\"><li><span>🤔</span><div>¿Quiere restaurantes y todos los servicios? Elija SK1. ¿Prefiere tranquilidad con servicios básicos? SK2.</div></li><li><span>🧭</span><div>Diga claramente al conductor \"Sidi Kankouch 2\" para evitar la parada equivocada.</div></li></ul><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Sidi Kankouch 2 Ksar Sghir\" en Google Maps. Distancia: 20 km.</div>"
     }
    },
-   "video": ""
+   "video": "",
+   "geoChecked": true
   },
   {
    "slug": "sidi-kankouch-1",
