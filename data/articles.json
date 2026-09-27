@@ -762,9 +762,9 @@
    "category": "beach",
    "cover": "assets/img/sidi-kankouch-1-muk6zfyn.webp",
    "gallery": [],
-   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.42!3d35.75!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
-   "lat": 35.75,
-   "lng": -5.42,
+   "map": "",
+   "lat": 35.82981,
+   "lng": -5.70647,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -804,7 +804,8 @@
      "content": "<h2 id=\"s1\"> 📍 Playa Sidi Kankouch 1 — La playa completa</h2><p>La <strong>Playa Sidi Kankouch 1</strong> está entre las mejor equipadas de la región, a 25 km al este de Ksar Sghir. Elección ideal para familias que buscan todas las instalaciones sin preparativos previos.</p><h2 id=\"s2\"> 🌊 Características</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🚿</div><div class=\"feature-title\">Duchas y baños completos</div><div class=\"feature-text\">Instalaciones sanitarias completas — gran ventaja.</div></div><div class=\"feature\"><div class=\"feature-icon\">🛡️</div><div class=\"feature-title\">Protección Civil permanente</div><div class=\"feature-text\">Presencia continua julio-agosto para tranquilidad total.</div></div><div class=\"feature\"><div class=\"feature-icon\">🍽️</div><div class=\"feature-title\">Restaurantes estacionales</div><div class=\"feature-text\">Restaurantes con pescado fresco y mariscos.</div></div><div class=\"feature\"><div class=\"feature-icon\">🅿️</div><div class=\"feature-title\">Aparcamiento dedicado</div><div class=\"feature-text\">Espacio de aparcamiento dedicado cerca de la playa.</div></div><div class=\"feature\"><div class=\"feature-icon\">👨‍👩‍👧</div><div class=\"feature-title\">Ideal para familias</div><div class=\"feature-text\">Combinación completa de seguridad, instalaciones y comida.</div></div></div><div class=\"highlight\">✅ <strong>Mejor elección familiar:</strong> Sidi Kankouch 1 es ideal para un día de playa completo sin complicaciones.</div><h2 id=\"s4\"> 🎯 Actividades</h2><p><div class=\"info-grid\"><div class=\"info-item\"><div class=\"info-icon\">🏊</div><div><div class=\"info-label\">Natación</div><div class=\"info-val\">Aguas vigiladas y seguras</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🍽️</div><div><div class=\"info-label\">Gastronomía marina</div><div class=\"info-val\">Restaurantes en la playa</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🌅</div><div><div class=\"info-label\">Puesta de sol</div><div class=\"info-val\">Vista excepcional</div></div></div></div></p><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Sidi Kankouch 1 Ksar Sghir\" en Google Maps. Distancia: 25 km.</div>"
     }
    },
-   "video": ""
+   "video": "",
+   "geoChecked": true
   }
  ]
 }
