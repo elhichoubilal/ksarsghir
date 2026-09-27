@@ -5,10 +5,20 @@
    "section": "tourisme",
    "category": "beach",
    "cover": "assets/img/20073-mujr4ueq.webp",
-   "gallery": [],
-   "map": "",
-   "lat": 35.8447,
-   "lng": -5.55706,
+   "gallery": [
+    {
+     "src": "assets/img/favicon-mujqt9vq.webp"
+    },
+    {
+     "src": "assets/img/site-archeologique-muk6brkb.webp"
+    },
+    {
+     "src": "assets/img/port-peche-muk6dkbe.webp"
+    }
+   ],
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.5597!3d35.6897!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.6897,
+   "lng": -5.5597,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -48,8 +58,7 @@
      "content": "<h2 id=\"s1\">📍 Ubicación e importancia geográfica</h2>\n<p>La <strong>Playa de Ksar Sghir</strong> se extiende a lo largo del frente marítimo principal de la ciudad, en una posición geográfica de suma importancia en la orilla sur del estrecho de Gibraltar. Ubicada en el corazón de la ciudad costera de Ksar Sghir, en la provincia de Fahs-Anjra de la región Tánger-Tetuán-Al Hoceima, se encuentra a unos treinta y cinco kilómetros al este de Tánger por la carretera costera N16.</p>\n<p>Lo que otorga a esta playa su carácter excepcional es su vista directa al <strong>estrecho de Gibraltar</strong> — ese paso marítimo estratégico que separa los continentes africano y europeo y conecta el océano Atlántico con el mar Mediterráneo. En días despejados, el visitante puede ver a simple vista la costa española y la famosa Roca de Gibraltar a tan solo catorce kilómetros a través de las aguas azules — un espectáculo que hace de cada visita una experiencia visual y geográfica única e inolvidable.</p>\n<p>La playa destaca por su posición en el corazón mismo de la ciudad, haciéndola accesible a todos los habitantes y visitantes sin necesidad de desplazarse lejos, lo que le confiere un carácter social vibrante que la convierte en punto de encuentro natural para familias, jóvenes y niños durante toda la temporada estival.</p>\n\n<h2 id=\"s2\">🏖️ Naturaleza de la playa y características naturales</h2>\n<p>La Playa de Ksar Sghir está compuesta de arena fina y dorada que confiere al lugar una belleza serena. Las aguas se caracterizan por un <strong>alto grado de claridad y pureza</strong>, gracias a las fuertes corrientes del estrecho de Gibraltar que renuevan y depuran continuamente el agua, haciendo que su calidad sea muy superior a la de las playas situadas en bahías cerradas o lagunas encerradas.</p>\n<p>La temperatura del agua oscila entre templada en primavera y otoño y relativamente cálida en verano, pero las corrientes del estrecho aportan siempre una frescura distintiva que hace del baño un verdadero placer incluso en los días más calurosos de julio y agosto.</p>\n<p>A primera hora de la mañana, cuando el mar está tranquilo y libre de visitantes, suaves olas rompen sobre la arena dorada en una escena de absoluta tranquilidad, haciendo de la playa un lugar ideal para la contemplación, la natación matutina y el descanso lejos del ajetreo cotidiano. Al atardecer, se transforma en un animado espacio social donde las familias se reúnen en un ambiente seguro y alegre.</p>\n\n<h2 id=\"s3\">🛡️ Instalaciones y servicios disponibles</h2>\n<div class=\"features\">\n<div class=\"feature\"><div class=\"feature-icon\">🛡️</div><div class=\"feature-title\">Protección Civil</div><div class=\"feature-text\">Presencia permanente de la Protección Civil marroquí durante toda la temporada de verano, con torre de vigilancia y embarcaciones de rescate listas para intervenir de inmediato.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🚿</div><div class=\"feature-title\">Duchas y baños</div><div class=\"feature-text\">Instalaciones sanitarias básicas con duchas para enjuagarse después del baño y baños públicos, haciendo cómodo el día de playa de principio a fin.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🍽️</div><div class=\"feature-title\">Restaurantes y quioscos</div><div class=\"feature-text\">Varios restaurantes y quioscos de temporada ofrecen pescado fresco a la brasa, mariscos y bebidas frías.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🛒</div><div class=\"feature-title\">Comercios</div><div class=\"feature-text\">Pequeñas tiendas que venden artículos de playa como protectores solares, juguetes para niños, toallas y bañadores.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🅿️</div><div class=\"feature-title\">Aparcamiento</div><div class=\"feature-text\">Espacios de aparcamiento cercanos permiten a los visitantes en coche aparcar con seguridad y llegar a pie a la playa en pocos minutos.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🏥</div><div class=\"feature-title\">Primeros auxilios</div><div class=\"feature-text\">Puesto de primeros auxilios de la Protección Civil, equipado para atender emergencias menores.</div></div>\n</div>\n\n<h2 id=\"s4\">🎯 Actividades y experiencias disponibles</h2>\n<div class=\"info-grid\">\n<div class=\"info-item\"><div class=\"info-icon\">🏊</div><div><div class=\"info-label\">Natación</div><div class=\"info-val\">En aguas seguras y vigiladas por la Protección Civil</div></div></div>\n<div class=\"info-item\"><div class=\"info-icon\">🐟</div><div><div class=\"info-label\">Pesca con caña</div><div class=\"info-val\">Aguas ricas en peces — experiencia agradable para aficionados</div></div></div>\n<div class=\"info-item\"><div class=\"info-icon\">🏐</div><div><div class=\"info-label\">Vóley playa</div><div class=\"info-val\">Espacios adecuados para deportes grupales en la arena</div></div></div>\n<div class=\"info-item\"><div class=\"info-icon\">📸</div><div><div class=\"info-label\">Fotografía</div><div class=\"info-val\">Vistas impresionantes del estrecho y la costa española en el horizonte</div></div></div>\n<div class=\"info-item\"><div class=\"info-icon\">🚶</div><div><div class=\"info-label\">Paseo y jogging</div><div class=\"info-val\">Largo paseo junto a la playa ideal para caminatas matutinas</div></div></div>\n<div class=\"info-item\"><div class=\"info-icon\">🌅</div><div><div class=\"info-label\">Puesta de sol</div><div class=\"info-val\">El atardecer sobre el estrecho ofrece un espectáculo mágico y excepcional</div></div></div>\n<div class=\"info-item\"><div class=\"info-icon\">🏛️</div><div><div class=\"info-label\">Sitio arqueológico</div><div class=\"info-val\">La fortaleza marinida a solo 300 metros de la playa</div></div></div>\n<div class=\"info-item\"><div class=\"info-icon\">🍲</div><div><div class=\"info-label\">Experiencia gastronómica</div><div class=\"info-val\">Pesca tu propio pescado y pide que te lo preparen en tajín en los restaurantes cercanos</div></div></div>\n</div>\n<div class=\"highlight\">🌟 <strong>Experiencia inolvidable:</strong> En las primeras horas de la mañana, cuando los barcos de los pescadores salen hacia el estrecho y el silencio lo envuelve todo, la playa de Ksar Sghir se transforma en un cuadro vivo de extraordinaria belleza.</div>\n\n<h2 id=\"s5\">📅 Mejores épocas para visitar</h2>\n<div class=\"seasons\">\n<div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera (Marzo—Mayo)</div><div class=\"season-desc\">Condiciones ideales — templado, tranquilo y florecido</div><span class=\"badge badge-best\">⭐ Ideal para fotos</span></div>\n<div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano (Junio—Agosto)</div><div class=\"season-desc\">Temporada alta — ambiente animado y familiar</div><span class=\"badge badge-good\">✅ Ideal para nadar</span></div>\n<div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño (Sept—Nov)</div><div class=\"season-desc\">Tranquilo y hermoso — la playa en su mejor estado</div><span class=\"badge badge-best\">⭐ Ideal para relajarse</span></div>\n<div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno (Dic—Feb)</div><div class=\"season-desc\">Muy tranquilo — adecuado solo para pasear</div><span class=\"badge badge-ok\">⚠️ Para visita, no para baño</span></div>\n</div>\n\n<h2 id=\"s6\">💡 Consejos prácticos</h2>\n<ul class=\"tips\">\n<li><span>⏰</span><div><strong>Mejor horario:</strong> Llega antes de las 10h para conseguir los mejores lugares cerca del agua.</div></li>\n<li><span>🌞</span><div><strong>Protección solar:</strong> Usa protector solar SPF 50 mínimo — los rayos sobre el estrecho son más fuertes de lo que imaginas.</div></li>\n<li><span>💧</span><div><strong>Hidratación:</strong> Trae agua suficiente o cómprala en los comercios cercanos.</div></li>\n<li><span>🏊</span><div><strong>Baño seguro:</strong> Permanece en las zonas vigiladas por la Protección Civil y respeta las banderas de alerta.</div></li>\n</ul>\n\n<h2 id=\"s7\">🚌 Cómo llegar</h2>\n<ul class=\"tips\">\n<li><span>🚌</span><div><strong>Autobús público:</strong> Líneas I3 e I12 desde la estación de tren de Tánger — trayecto de unos 45 minutos a precio muy asequible.</div></li>\n<li><span>🚕</span><div><strong>Gran taxi:</strong> Desde la plaza de la estación de Tánger, taxis colectivos regulares a Ksar Sghir.</div></li>\n<li><span>🚗</span><div><strong>Vehículo propio:</strong> Carretera nacional N16 desde Tánger — 35 a 40 minutos por una ruta costera panorámica.</div></li>\n</ul>\n<div class=\"highlight\">📍 <strong>Coordenadas GPS:</strong> 35.6897° N, 5.5597° O. Escribe \"Playa Ksar Sghir\" en Google Maps para acceder directamente.</div>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "dalia",
@@ -57,9 +66,9 @@
    "category": "beach",
    "cover": "assets/img/dalia-muk61o94.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.90499,
-   "lng": -5.47713,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.49!3d35.72!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.72,
+   "lng": -5.49,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -99,8 +108,7 @@
      "content": "<h2 id=\"s1\">📍 Ubicación e importancia geográfica</h2>\n<p>La <strong>Playa Dalia</strong> está situada en la carretera costera que une Ksar Sghir con Tanger Med, a ocho kilómetros al este de Ksar Sghir. Destaca por su posición geográfica privilegiada que le confiere ventajas naturales raramente encontradas en las playas cercanas.</p>\n<p>La playa ofrece un panorama excepcional del estrecho de Gibraltar donde confluyen en un mismo cuadro visual elementos únicos: el enorme <strong>puerto de Tanger Med</strong> se extiende con sus luces y gigantescos barcos a la izquierda, la costa española aparece a catorce kilómetros a la derecha, y en el centro, las vastas aguas azules del estrecho que contemplan el paso diario de cientos de buques mercantes y petroleros de todo el mundo.</p>\n<p>Esta rara convergencia de elementos naturales y humanos en un solo panorama convierte a la Playa Dalia en un destino incomparable para amantes de la naturaleza, la fotografía y la contemplación.</p>\n\n<h2 id=\"s2\">🌊 Naturaleza del agua, arena y particularidades</h2>\n<p>La Playa Dalia se distingue por sus <strong>aguas de una transparencia cristalina</strong>, consideradas entre las más claras de la región norte. Esto se debe a tres factores combinados: su alejamiento relativo de las grandes aglomeraciones urbanas, la fuerza de las corrientes del estrecho que renuevan constantemente el agua, y la ausencia de fuentes industriales o residenciales cercanas que pudieran alterar su calidad.</p>\n<p>El fondo de la playa está compuesto de una mezcla de arena fina y pequeños guijarros, combinación apreciada por los bañistas. La playa es relativamente estrecha debido a los acantilados y colinas circundantes que le crean un marco natural hermoso, dándole el aspecto de un pequeño paraíso aislado lejos del ruido de la carretera.</p>\n\n<h2 id=\"s3\">🛡️ Instalaciones y servicios disponibles</h2>\n<div class=\"features\">\n<div class=\"feature\"><div class=\"feature-icon\">🛡️</div><div class=\"feature-title\">Protección Civil estacional</div><div class=\"feature-text\">Presencia intermitente durante los meses pico de verano. No se recomienda nadar solo y lejos durante su ausencia.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🅿️</div><div class=\"feature-title\">Aparcamiento</div><div class=\"feature-text\">Espacio natural al borde de la carretera para aparcar, con capacidad limitada en días de mayor afluencia.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🍽️</div><div class=\"feature-title\">Quioscos estacionales</div><div class=\"feature-text\">En verano, algunos quioscos ofrecen bebidas frías y aperitivos. Se recomienda traer su propia comida.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🌿</div><div class=\"feature-title\">Naturaleza limpia</div><div class=\"feature-text\">Los lugareños mantienen la playa excepcionalmente limpia, dándole un aspecto cuidado.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">📱</div><div class=\"feature-title\">Cobertura de red</div><div class=\"feature-text\">Buena cobertura de las principales redes móviles marroquíes.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🚗</div><div class=\"feature-title\">Acceso fácil</div><div class=\"feature-text\">La carretera de acceso está asfaltada y es practicable para todos los vehículos ordinarios.</div></div>\n</div>\n\n<h2 id=\"s4\">🎯 Actividades y experiencias disponibles</h2>\n<div class=\"info-grid\">\n<div class=\"info-item\"><div class=\"info-icon\">🏊</div><div><div class=\"info-label\">Natación</div><div class=\"info-val\">En aguas cristalinas donde se puede ver el fondo claramente</div></div></div>\n<div class=\"info-item\"><div class=\"info-icon\">🚢</div><div><div class=\"info-label\">Avistamiento de barcos</div><div class=\"info-val\">Observe los gigantes del mar cruzando el estrecho hacia Tanger Med</div></div></div>\n<div class=\"info-item\"><div class=\"info-icon\">📸</div><div><div class=\"info-label\">Fotografía profesional</div><div class=\"info-val\">Ángulo único que combina mar, puerto, montañas y España</div></div></div>\n<div class=\"info-item\"><div class=\"info-icon\">🐟</div><div><div class=\"info-label\">Pesca marina</div><div class=\"info-val\">Los guijarros pequeños hacen de este sitio un excelente puesto de pesca</div></div></div>\n<div class=\"info-item\"><div class=\"info-icon\">🌅</div><div><div class=\"info-label\">Puesta de sol</div><div class=\"info-val\">El atardecer detrás de Tanger Med — espectáculo cinematográfico inolvidable</div></div></div>\n<div class=\"info-item\"><div class=\"info-icon\">🧺</div><div><div class=\"info-label\">Picnic familiar</div><div class=\"info-val\">La tranquilidad y belleza del lugar lo hacen ideal para salidas familiares</div></div></div>\n</div>\n<div class=\"highlight\">🚢 <strong>Experiencia única:</strong> Espere el paso de gigantescos petroleros y portacontenedores por el estrecho desde la Playa Dalia — el espectáculo le dará una impresionante percepción de la grandeza del océano frente a la pequeñez humana.</div>\n\n<h2 id=\"s5\">📅 Mejores épocas para visitar</h2>\n<div class=\"seasons\">\n<div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera (Marzo—Mayo)</div><div class=\"season-desc\">Ideal absoluto — templado, tranquilo, hermoso</div><span class=\"badge badge-best\">⭐ El mejor</span></div>\n<div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano (Junio—Agosto)</div><div class=\"season-desc\">Excelente para nadar, más concurrido</div><span class=\"badge badge-good\">✅ Excelente</span></div>\n<div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño (Sept—Nov)</div><div class=\"season-desc\">Tranquilo y muy hermoso</div><span class=\"badge badge-best\">⭐ Muy bien</span></div>\n<div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno (Dic—Feb)</div><div class=\"season-desc\">Solo para fotografía</div><span class=\"badge badge-ok\">⚠️ Visita, no baño</span></div>\n</div>\n\n<h2 id=\"s6\">💡 Consejos prácticos esenciales</h2>\n<ul class=\"tips\">\n<li><span>🚗</span><div><strong>Llegada matutina:</strong> Llegue antes de las 10h para encontrar fácilmente aparcamiento, especialmente en verano.</div></li>\n<li><span>🍱</span><div><strong>Comida y agua:</strong> Traiga su propia comida y agua ya que los servicios disponibles son limitados.</div></li>\n<li><span>☀️</span><div><strong>Protección solar:</strong> Sea especialmente cuidadoso con los rayos del sol del estrecho en julio y agosto.</div></li>\n<li><span>📷</span><div><strong>Fotografía golden hour:</strong> La hora antes del atardecer es ideal para fotos combinando barcos, puesta de sol y puerto.</div></li>\n</ul>\n<div class=\"warn\">⚠️ <strong>Advertencia:</strong> La Playa Dalia no siempre cuenta con una presencia intensa de Protección Civil. Evite nadar lejos de la orilla y tenga cuidado con las corrientes del estrecho.</div>\n\n<h2 id=\"s7\">🚌 Cómo llegar a la Playa Dalia</h2>\n<ul class=\"tips\">\n<li><span>🚗</span><div><strong>Coche (recomendado):</strong> Desde Ksar Sghir, dirección este hacia Tanger Med por la carretera costera. La playa está a 8 km. Desde Tánger: N16 hacia Ksar Sghir, playa visible a la izquierda después del puerto de Tanger Med.</div></li>\n<li><span>🚌</span><div><strong>Autobús público:</strong> Línea I3 o I12 — pida al conductor que pare en \"Playa Dalia\". Unos minutos a pie después.</div></li>\n<li><span>🚕</span><div><strong>Taxi:</strong> Desde el centro de Ksar Sghir, taxi privado ida y vuelta a precio acordado.</div></li>\n</ul>\n<div class=\"highlight\">📍 <strong>GPS:</strong> 35.7200° N, 5.4900° O. Busca \"Dalia Beach Ksar Sghir\" en Google Maps.</div>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "belyounech",
@@ -108,9 +116,9 @@
    "category": "nature",
    "cover": "assets/img/belyounech-muk655s9.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.90948,
-   "lng": -5.3939,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.3667!3d35.9167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.9167,
+   "lng": -5.3667,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -150,8 +158,7 @@
      "content": "<h2 id=\"s1\">📍 Pueblo Belyounech & Monte Moussa</h2>\n<p>Belyounech — pueblo costero virgen bajo el monte Moussa. Mejor sitio de buceo del Norte de África, isla de Leila y panorama de dos continentes.</p>\n<p>Ce site exceptionnel vous attend à bras ouverts — une expérience inoubliable dans l'une des plus belles régions du nord du Maroc, aux portes du détroit de Gibraltar.</p>\n<h2 id=\"s2\">✨ Caractéristiques principales</h2>\n<div class=\"features\">\n<div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Nature préservée</div><div class=\"feature-text\">Un cadre naturel d'une beauté rare, loin du bruit et de l'agitation des grandes villes touristiques.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Panoramas exceptionnels</div><div class=\"feature-text\">Des vues à couper le souffle sur le détroit, l'Espagne et les montagnes du Rif.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🏊</div><div class=\"feature-title\">Baignade</div><div class=\"feature-text\">Eaux claires et rafraîchissantes du détroit de Gibraltar.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🚶</div><div class=\"feature-title\">Randonnée</div><div class=\"feature-text\">Sentiers naturels entre montagnes et mer pour les amateurs de plein air.</div></div>\n</div>\n<div class=\"seasons\">\n<div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Printemps</div><div class=\"season-desc\">Mars — Mai</div><span class=\"badge badge-best\">⭐ Idéal</span></div>\n<div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Été</div><div class=\"season-desc\">Juin — Août</div><span class=\"badge badge-good\">✅ Bien</span></div>\n<div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Automne</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Très bien</span></div>\n<div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Hiver</div><div class=\"season-desc\">Déc — Fév</div><span class=\"badge badge-ok\">⚠️ Variable</span></div>\n</div>\n<h2 id=\"s6\">💡 Conseils pratiques</h2>\n<p>Apportez votre nourriture et eau. Portez des chaussures confortables. Respectez la nature et ne laissez pas de déchets.</p>\n<h2 id=\"s7\">🚌 Comment y accéder</h2>\n<p>Depuis Ksar Sghir ou Tanger, en voiture personnelle ou en grand taxi. Utilisez Google Maps pour la navigation précise.</p>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "tanger-med",
@@ -159,9 +166,9 @@
    "category": "port",
    "cover": "assets/img/tanger-med-muk681ck.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.87578,
-   "lng": -5.5244,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.495!3d35.71!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.71,
+   "lng": -5.495,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -201,8 +208,7 @@
      "content": "<h2 id=\"s1\">📍 Presentación</h2>\n<p><strong>Puerto Tanger Med</strong> — El mayor puerto de África a pocos kilómetros de Ksar Sghir.</p><p>Ubicado a 5 km del centro de Ksar Sghir en la costa del estrecho de Gibraltar en el norte de Marruecos.</p>\n<h2 id=\"s2\">🎯 Actividades disponibles</h2>\n<div class=\"info-grid\"><div class=\"info-item\"><div class=\"info-icon\">🏊</div><div><div class=\"info-label\">Actividad</div><div class=\"info-val\">Natación en aguas tranquilas</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🐟</div><div><div class=\"info-label\">Actividad</div><div class=\"info-val\">Pesca con caña</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🍳</div><div><div class=\"info-label\">Actividad</div><div class=\"info-val\">Tajín con pescado fresco</div></div></div><div class=\"info-item\"><div class=\"info-icon\">📸</div><div><div class=\"info-label\">Actividad</div><div class=\"info-val\">Fotografía de naturaleza</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🚶</div><div><div class=\"info-label\">Actividad</div><div class=\"info-val\">Paseo por la playa</div></div></div><div class=\"info-item\"><div class=\"info-icon\">👨‍👩‍👧</div><div><div class=\"info-label\">Actividad</div><div class=\"info-val\">Salida familiar</div></div></div></div>\n<div class=\"highlight\">🍲 <strong>La experiencia del tajín junto al mar:</strong> Pesca con caña y luego prepara un tajín marroquí auténtico al aire libre.</div>\n<h2 id=\"s3\">📅 Mejores épocas</h2>\n<div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div>\n<h2 id=\"s4\">🚌 Cómo llegar</h2>\n<ul class='tips'><li><span>🚌</span><div><strong>Autobús:</strong> حافلة I3/I12 أو سيارة خاصة</div></li><li><span>🚕</span><div><strong>Taxi:</strong> Desde el centro de Ksar Sghir o la estación de tren de Tánger.</div></li><li><span>🚗</span><div><strong>Coche:</strong> Carretera nacional N16 entre Tánger y Ksar Sghir.</div></li></ul>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "site-archeologique",
@@ -210,9 +216,9 @@
    "category": "history",
    "cover": "assets/img/site-archeologique-muk6brkb.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.84293,
-   "lng": -5.55829,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.558!3d35.69!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.69,
+   "lng": -5.558,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -252,8 +258,7 @@
      "content": "<h2 id=\"s1\">📍 Sitio arqueológico de Ksar Sghir</h2>\n<p>La rara fortaleza marinida circular del siglo XIV — una joya arquitectónica que atestigua mil años de historia a orillas del estrecho de Gibraltar.</p>\n<p>Ce site exceptionnel vous attend à bras ouverts — une expérience inoubliable dans l'une des plus belles régions du nord du Maroc, aux portes du détroit de Gibraltar.</p>\n<h2 id=\"s2\">✨ Caractéristiques principales</h2>\n<div class=\"features\">\n<div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Nature préservée</div><div class=\"feature-text\">Un cadre naturel d'une beauté rare, loin du bruit et de l'agitation des grandes villes touristiques.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Panoramas exceptionnels</div><div class=\"feature-text\">Des vues à couper le souffle sur le détroit, l'Espagne et les montagnes du Rif.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🏊</div><div class=\"feature-title\">Baignade</div><div class=\"feature-text\">Eaux claires et rafraîchissantes du détroit de Gibraltar.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🚶</div><div class=\"feature-title\">Randonnée</div><div class=\"feature-text\">Sentiers naturels entre montagnes et mer pour les amateurs de plein air.</div></div>\n</div>\n<div class=\"seasons\">\n<div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Printemps</div><div class=\"season-desc\">Mars — Mai</div><span class=\"badge badge-best\">⭐ Idéal</span></div>\n<div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Été</div><div class=\"season-desc\">Juin — Août</div><span class=\"badge badge-good\">✅ Bien</span></div>\n<div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Automne</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Très bien</span></div>\n<div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Hiver</div><div class=\"season-desc\">Déc — Fév</div><span class=\"badge badge-ok\">⚠️ Variable</span></div>\n</div>\n<h2 id=\"s6\">💡 Conseils pratiques</h2>\n<p>Apportez votre nourriture et eau. Portez des chaussures confortables. Respectez la nature et ne laissez pas de déchets.</p>\n<h2 id=\"s7\">🚌 Comment y accéder</h2>\n<p>Depuis Ksar Sghir ou Tanger, en voiture personnelle ou en grand taxi. Utilisez Google Maps pour la navigation précise.</p>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "port-peche",
@@ -261,9 +266,9 @@
    "category": "port",
    "cover": "assets/img/port-peche-muk6dkbe.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.84786,
-   "lng": -5.5604,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.559!3d35.6895!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.6895,
+   "lng": -5.559,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -303,8 +308,7 @@
      "content": "<h2 id=\"s1\"> ⚓ Puerto pesquero tradicional — El corazón latiente de Ksar Sghir</h2><p>El <strong>puerto pesquero tradicional de Ksar Sghir</strong>, a 0,5 km de la playa, es un teatro diario donde se desarrolla la vida real de la ciudad. Desde el amanecer hasta la tarde, el puerto vive un ritmo diario fascinante.</p><h2 id=\"s2\"> 🐟 La subasta — Tradición, economía y vida social</h2><p>La <strong>subasta diaria</strong> es lo que distingue al puerto: el subastador anuncia especies y cantidades en voz alta. Método tradicional que combina eficiencia económica y calidez social. Pescado variado del estrecho — fresco del mar a la mano en pocas horas.</p><h2 id=\"s3\"> ⚓ Lo que hace al puerto único</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">⚓</div><div class=\"feature-title\">Puerto vivo</div><div class=\"feature-text\">Al contrario de los puertos-museo — este puerto cumple su función real cada día.</div></div><div class=\"feature\"><div class=\"feature-icon\">🐟</div><div class=\"feature-title\">Pescado excepcionalmente fresco</div><div class=\"feature-text\">Del mar a la mano en pocas horas — frescura incomparable.</div></div><div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Mina de fotos</div><div class=\"feature-text\">Colores de barcas, pescadores en acción, pescado en hielo — material visual inagotable.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌅</div><div class=\"feature-title\">Escena de partida al atardecer</div><div class=\"feature-text\">Ver las barcas encenderse una a una y zarpar — espectáculo poético inolvidable.</div></div><div class=\"feature\"><div class=\"feature-icon\">🤝</div><div class=\"feature-title\">Espacio social auténtico</div><div class=\"feature-text\">Tejido social fuerte: pescadores, comerciantes y vecinos — intercambios humanos reales diarios.</div></div><div class=\"feature\"><div class=\"feature-icon\">🍽️</div><div class=\"feature-title\">Del puerto a tu plato</div><div class=\"feature-text\">Compre al pescador, un restaurante cercano lo cocinará al estilo marroquí.</div></div></div><div class=\"highlight\">🌅 <strong>Experiencia nocturna rara:</strong> Sentarse al atardecer y ver las barcas partir hacia el horizonte estrellado — experiencia humana profunda.</div><h2 id=\"s4\"> 📍 Acceso</h2><ul class=\"tips\"><li><span>🚶</span><div>A pie: 500 m de la playa principal — 6 minutos por el paseo marítimo.</div></li><li><span>🚶</span><div>Del centro: en el corazón de la ciudad — cualquier vecino lo conoce.</div></li></ul><div class=\"highlight\">📍 <strong>GPS:</strong> 35.6895° N, 5.5590° O.</div>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "zahara-hatba",
@@ -312,9 +316,9 @@
    "category": "beach",
    "cover": "assets/img/zahara-hatba-muk6fgrf.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.83515,
-   "lng": -5.58365,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.535!3d35.682!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.682,
+   "lng": -5.535,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -354,8 +358,7 @@
      "content": "<h2 id=\"s1\"> 📍 Playa Zahara / Hatba — La más cercana y tranquila</h2><p>La <strong>Playa Zahara / Hatba</strong> está a solo 3 km al oeste — la más fácil de alcanzar. Su posición geográfica la protege de los vientos del noreste, haciendo las olas más tranquilas.</p><h2 id=\"s2\"> 🌊 Ventajas de Zahara</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">📍</div><div class=\"feature-title\">Excepcionalmente cercana</div><div class=\"feature-text\">Solo 3 km — accesible a pie o en taxi por menos de 5 dírhams.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Olas aptas para niños</div><div class=\"feature-text\">La protección natural hace las aguas ideales para el baño familiar seguro.</div></div><div class=\"feature\"><div class=\"feature-icon\">🛡️</div><div class=\"feature-title\">Vigilancia estacional</div><div class=\"feature-text\">Presencia julio-agosto para seguridad.</div></div><div class=\"feature\"><div class=\"feature-icon\">💰</div><div class=\"feature-title\">Económico</div><div class=\"feature-text\">La cercanía reduce costes — ideal para visitas diarias frecuentes.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌅</div><div class=\"feature-title\">Atardecer montañoso</div><div class=\"feature-text\">El atardecer tras las montañas del oeste es diferente y auténtico.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌿</div><div class=\"feature-title\">Naturaleza salvaje cercana</div><div class=\"feature-text\">Las laderas circundantes están llenas de plantas silvestres.</div></div></div><h2 id=\"s3\"> 🏪 Servicios</h2><div class=\"warn\">⚠️ Servicios limitados — algunos vendedores ambulantes en verano. Mejor traer comida y agua propias.</div><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Zahara Beach Ksar Sghir\" en Google Maps. Distancia: 3 km.</div>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "ghojin-srama",
@@ -363,9 +366,9 @@
    "category": "beach",
    "cover": "assets/img/ghojin-srama-muk6iyas.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.83009,
-   "lng": -5.6012,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.52!3d35.678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.678,
+   "lng": -5.52,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -405,8 +408,7 @@
      "content": "<h2 id=\"s1\"> 📍 Playa Ghojin / Srama — Dos nombres, un solo lugar</h2><p><strong>Ghojin / Srama</strong> — playa de montaña a 6 km conocida por dos nombres: \"Ghojin\" por la montaña adyacente y \"Srama\" por el caserío cercano. El acceso pasa entre las casas del caserío y los olivos.</p><h2 id=\"s2\"> 🌊 Características</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Olas suaves</div><div class=\"feature-text\">El entorno montañoso reduce las olas — ideal para familias con niños.</div></div><div class=\"feature\"><div class=\"feature-icon\">💎</div><div class=\"feature-title\">Aguas cristalinas</div><div class=\"feature-text\">Distancia de la contaminación — agua tan clara que se ve el fondo.</div></div><div class=\"feature\"><div class=\"feature-icon\">🏡</div><div class=\"feature-title\">Calidez local</div><div class=\"feature-text\">Los habitantes son acogedores — hospitalidad auténtica, no turismo frío.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌿</div><div class=\"feature-title\">Vegetación densa</div><div class=\"feature-text\">Plantas silvestres y árboles que dan sombra natural y aromas raros.</div></div><div class=\"feature\"><div class=\"feature-icon\">🧭</div><div class=\"feature-title\">Cerca de Ksar Sghir</div><div class=\"feature-text\">Solo 6 km — día de playa asequible para todos.</div></div></div><h2 id=\"s3\"> 🏪 Servicios</h2><div class=\"warn\">⚠️ Playa semi-salvaje — Protección Civil estacional. Sin duchas ni restaurantes. Traiga sus provisiones.</div><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Ghojin Srama Beach Ksar Sghir\" en Google Maps. Distancia: 6 km.</div>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "ferdiwa",
@@ -414,9 +416,9 @@
    "category": "beach",
    "cover": "assets/img/ferdiwa-muk6m32t.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.83235,
-   "lng": -5.61613,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.51!3d35.675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.675,
+   "lng": -5.51,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -456,8 +458,7 @@
      "content": "<h2 id=\"s1\"> 📍 Playa Ferdiwa — Magia salvaje</h2><p>La <strong>Playa Ferdiwa</strong> está entre las más tranquilas y auténticas, a 7 km al sureste. El acceso pasa por un camino rural estrecho entre granjas tradicionales — viaje a la vida rural marroquí auténtica antes de llegar a una playa salvaje con aguas excepcionalmente puras.</p><h2 id=\"s2\"> 🌿 Lo que distingue a Ferdiwa</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🌿</div><div class=\"feature-title\">Naturaleza virgen real</div><div class=\"feature-text\">Ferdiwa no tocada por el desarrollo urbano.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Aguas excepcionalmente puras</div><div class=\"feature-text\">La distancia da al agua una pureza visual rara.</div></div><div class=\"feature\"><div class=\"feature-icon\">🤫</div><div class=\"feature-title\">Silencio y calma verdaderos</div><div class=\"feature-text\">Sin música fuerte ni multitudes — para quienes buscan descanso real.</div></div><div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Fotos raras</div><div class=\"feature-text\">La naturaleza virgen ofrece imágenes imposibles en playas abarrotadas.</div></div><div class=\"feature\"><div class=\"feature-icon\">🐦</div><div class=\"feature-title\">Sonidos de la naturaleza</div><div class=\"feature-text\">Canto de pájaros, sonido de olas y viento — antídoto al estrés moderno.</div></div><div class=\"feature\"><div class=\"feature-icon\">🚴</div><div class=\"feature-title\">Para aventureros</div><div class=\"feature-text\">La carretera de montaña es ideal para ciclismo de montaña y senderismo.</div></div></div><h2 id=\"s3\"> 🏪 Servicios</h2><div class=\"warn\">⚠️ Playa completamente salvaje — sin duchas, restaurantes ni comercios. Traiga absolutamente todo.</div><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Ferdiwa Beach Ksar Sghir\" en Google Maps. Distancia: 7 km.</div>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "dahdaha",
@@ -465,9 +466,9 @@
    "category": "beach",
    "cover": "assets/img/dahdaha-muk6o1mk.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.83251,
-   "lng": -5.6349,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.49!3d35.67!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.67,
+   "lng": -5.49,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -507,8 +508,7 @@
      "content": "<h2 id=\"s1\"> 📍 Playa Dahdaha — Donde las montañas se encuentran con el mar</h2><p>La <strong>Playa Dahdaha</strong> ocupa una posición geográfica dramática donde cadenas montañosas verdes descienden hacia las aguas del estrecho, a 10 km al este. La dificultad relativa de acceso mantiene una calma natural rara en temporada alta.</p><h2 id=\"s2\"> 🏔️ Lo que distingue a Dahdaha</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🏔️</div><div class=\"feature-title\">Entorno montañoso encantador</div><div class=\"feature-text\">Las montañas verdes crean un cuadro natural incomparable.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Aguas tranquilas y claras</div><div class=\"feature-text\">La bahía protegida ofrece aguas más tranquilas — ideal para niños.</div></div><div class=\"feature\"><div class=\"feature-icon\">🤫</div><div class=\"feature-title\">Tranquilidad excepcional</div><div class=\"feature-text\">El acceso difícil mantiene la calma incluso en pleno julio-agosto.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌅</div><div class=\"feature-title\">Atardecer inolvidable</div><div class=\"feature-text\">Los colores pasan del azul al dorado al naranja — espectáculo cromático raro.</div></div><div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Fotografía excepcional</div><div class=\"feature-text\">Montañas, mar y cielo juntos — cada foto es una obra de arte.</div></div><div class=\"feature\"><div class=\"feature-icon\">🏕️</div><div class=\"feature-title\">Camping en la naturaleza</div><div class=\"feature-text\">Noche entre montañas y mar bajo las estrellas — experiencia incomparable.</div></div></div><h2 id=\"s3\"> 🏪 Servicios</h2><div class=\"warn\">⚠️ Sin duchas ni restaurantes. Protección Civil estacional. Traiga todo. Carretera difícil bajo la lluvia.</div><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Dahdaha Beach Ksar Sghir\" en Google Maps. Distancia: 10 km.</div>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "port-diki",
@@ -516,9 +516,9 @@
    "category": "port",
    "cover": "assets/img/port-diki-muk6q6yr.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.83225,
-   "lng": -5.59256,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.55!3d35.687!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.687,
+   "lng": -5.55,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -558,8 +558,7 @@
      "content": "<h2 id=\"s1\"> ⚓ Puerto Diki — Donde los barcos duermen sobre la arena</h2><p>El <strong>Puerto Diki</strong>, a 1 km de la playa principal, es uno de los espectáculos marítimos más auténticos. Coloridas barcas de madera descansan directamente sobre la arena sin infraestructura moderna — tradición heredada de generaciones de pescadores.</p><h2 id=\"s2\"> 🏺 Patrimonio marítimo vivo</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🚢</div><div class=\"feature-title\">Barcos sobre la arena</div><div class=\"feature-text\">Escena única — barcas coloridas descansando directamente sobre la arena.</div></div><div class=\"feature\"><div class=\"feature-icon\">🐟</div><div class=\"feature-title\">Pescado del productor</div><div class=\"feature-text\">Comprar directamente al pescador garantiza frescura inencontrable.</div></div><div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Tesoro fotográfico</div><div class=\"feature-text\">Colores vivos, azul del estrecho, arena dorada — mezcla visual irrepetible.</div></div><div class=\"feature\"><div class=\"feature-icon\">🕰️</div><div class=\"feature-title\">Viaje en el tiempo</div><div class=\"feature-text\">Diki te lleva a una época no contaminada por la globalización.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌅</div><div class=\"feature-title\">Amanecer de los pescadores</div><div class=\"feature-text\">Llegar al amanecer para ver el regreso de los pescadores — experiencia humana rara.</div></div><div class=\"feature\"><div class=\"feature-icon\">🤝</div><div class=\"feature-title\">Espacio social vivo</div><div class=\"feature-text\">Pescadores, comerciantes y vecinos — tejido social auténtico en movimiento diario.</div></div></div><div class=\"highlight\">📸 <strong>Para fotógrafos:</strong> Llegue al amanecer para fotografiar las barcas regresando con la luz del alba — fotos inestimables.</div><h2 id=\"s4\"> 🗺️ Acceso</h2><ul class=\"tips\"><li><span>🚶</span><div>A pie: 1 km de la playa principal — 12 minutos por el paseo marítimo.</div></li><li><span>🚕</span><div>Taxi del centro a precio simbólico.</div></li></ul><div class=\"highlight\">📍 <strong>GPS:</strong> 35.6870° N, 5.5500° O.</div>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "oued-alian",
@@ -567,9 +566,9 @@
    "category": "beach",
    "cover": "assets/img/oued-alian-muk6t40e.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.82795,
-   "lng": -5.64793,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.5!3d35.73!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.73,
+   "lng": -5.5,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -609,8 +608,7 @@
      "content": "<h2 id=\"s1\"> 📍 Playa Oued Alian — La orilla amplia y tranquila</h2><p>La <strong>Playa Oued Alian</strong> se extiende a doce kilómetros al este de Ksar Sghir. Sus amplias extensiones de arena dorada pueden acoger a numerosos visitantes incluso en temporada alta.</p><h2 id=\"s2\"> 🌊 Características</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🏖️</div><div class=\"feature-title\">Playa muy amplia</div><div class=\"feature-text\">Larga extensión arenosa con espacio para todos.</div></div><div class=\"feature\"><div class=\"feature-icon\">👨‍👩‍👧</div><div class=\"feature-title\">Ideal para familias</div><div class=\"feature-text\">Aguas moderadas y arena suave para niños pequeños.</div></div><div class=\"feature\"><div class=\"feature-icon\">🛡️</div><div class=\"feature-title\">Vigilancia estacional</div><div class=\"feature-text\">Presencia en julio-agosto. Comprueba antes de nadar lejos.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌅</div><div class=\"feature-title\">Vista panorámica</div><div class=\"feature-text\">Ver el puerto Tanger Med y la costa española en días despejados.</div></div><div class=\"feature\"><div class=\"feature-icon\">🐟</div><div class=\"feature-title\">Pesca excelente</div><div class=\"feature-text\">Aguas ricas del estrecho, excelente para la pesca con caña.</div></div></div><h2 id=\"s3\"> 🏪 Servicios disponibles</h2><div class=\"warn\">⚠️ Sin restaurantes ni duchas — traiga sus propias provisiones.</div><h2 id=\"s4\"> 🎯 Actividades</h2><p><div class=\"info-grid\"><div class=\"info-item\"><div class=\"info-icon\">🏊</div><div><div class=\"info-label\">Natación</div><div class=\"info-val\">Aguas abiertas del estrecho</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🐟</div><div><div class=\"info-label\">Pesca</div><div class=\"info-val\">Directamente desde la playa</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🏐</div><div><div class=\"info-label\">Deportes de playa</div><div class=\"info-val\">Amplio espacio para juegos</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🚶</div><div><div class=\"info-label\">Caminatas largas</div><div class=\"info-val\">Playa que se extiende largas distancias</div></div></div></div></p><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s6\"> 💡 Consejos prácticos</h2><ul class=\"tips\"><li><span>⏰</span><div>Llega temprano en verano — los aparcamientos se llenan rápido.</div></li><li><span>🍱</span><div>Traiga comida y agua — sin servicios en la playa.</div></li></ul><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Oued Alian Beach Ksar Sghir\" en Google Maps. Distancia: 12 km.</div>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "zrara",
@@ -618,9 +616,9 @@
    "category": "beach",
    "cover": "assets/img/zrara-muk6usi1.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.83283,
-   "lng": -5.67458,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.46!3d35.77!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.77,
+   "lng": -5.46,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -660,8 +658,7 @@
      "content": "<h2 id=\"s1\"> 📍 Playas Zrara 1 y 2 — Las gemelas montañesas</h2><p>Las <strong>Playas Zrara</strong> están a 15 km de Ksar Sghir. La carretera N16 pasa por encima y senderos de montaña conducen a una bahía protegida. Zrara 1 es más pequeña y tranquila; Zrara 2 más amplia y abierta.</p><h2 id=\"s2\"> 🏔️ Características</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🛡️</div><div class=\"feature-title\">Vigilada en temporada</div><div class=\"feature-text\">Protección Civil en julio-agosto.</div></div><div class=\"feature\"><div class=\"feature-icon\">🏔️</div><div class=\"feature-title\">Entorno montañoso</div><div class=\"feature-text\">Las montañas verdes proporcionan sombra natural y belleza visual única.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Aguas variadas</div><div class=\"feature-text\">Entre Zrara 1 tranquila y Zrara 2 más activa — para todos los gustos.</div></div><div class=\"feature\"><div class=\"feature-icon\">⛺</div><div class=\"feature-title\">Camping estacional</div><div class=\"feature-text\">Algunos visitantes prefieren acampar aquí en verano para noches bajo las estrellas.</div></div></div><h2 id=\"s3\"> 💡 Consejos</h2><ul class=\"tips\"><li><span>👟</span><div>Calzado antideslizante — la bajada es empinada.</div></li><li><span>🍱</span><div>Sin servicios — traiga todo lo necesario.</div></li><li><span>🚗</span><div>Aparque en la N16 lejos de las curvas peligrosas.</div></li></ul><div class=\"warn\">⚠️ El descenso es muy pronunciado — vigile a los niños pequeños.</div><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Zrara Beach Ksar Sghir\" en Google Maps. Distancia: 15 km.</div>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "oued-marsa",
@@ -669,9 +666,9 @@
    "category": "nature",
    "cover": "assets/img/oued-marsa-muk6wn7p.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.90431,
-   "lng": -5.44588,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.42!3d35.85!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.85,
+   "lng": -5.42,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -711,8 +708,7 @@
      "content": "<h2 id=\"s1\">📍 Oued El Marsa</h2>\n<p>Oued El Marsa — joya natural virgen donde las montañas del Rif se encuentran con las aguas del estrecho de Gibraltar. Naturaleza salvaje, fauna rica y panoramas impresionantes.</p>\n<p>Ce site exceptionnel vous attend à bras ouverts — une expérience inoubliable dans l'une des plus belles régions du nord du Maroc, aux portes du détroit de Gibraltar.</p>\n<h2 id=\"s2\">✨ Caractéristiques principales</h2>\n<div class=\"features\">\n<div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Nature préservée</div><div class=\"feature-text\">Un cadre naturel d'une beauté rare, loin du bruit et de l'agitation des grandes villes touristiques.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Panoramas exceptionnels</div><div class=\"feature-text\">Des vues à couper le souffle sur le détroit, l'Espagne et les montagnes du Rif.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🏊</div><div class=\"feature-title\">Baignade</div><div class=\"feature-text\">Eaux claires et rafraîchissantes du détroit de Gibraltar.</div></div>\n<div class=\"feature\"><div class=\"feature-icon\">🚶</div><div class=\"feature-title\">Randonnée</div><div class=\"feature-text\">Sentiers naturels entre montagnes et mer pour les amateurs de plein air.</div></div>\n</div>\n<div class=\"seasons\">\n<div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Printemps</div><div class=\"season-desc\">Mars — Mai</div><span class=\"badge badge-best\">⭐ Idéal</span></div>\n<div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Été</div><div class=\"season-desc\">Juin — Août</div><span class=\"badge badge-good\">✅ Bien</span></div>\n<div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Automne</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Très bien</span></div>\n<div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Hiver</div><div class=\"season-desc\">Déc — Fév</div><span class=\"badge badge-ok\">⚠️ Variable</span></div>\n</div>\n<h2 id=\"s6\">💡 Conseils pratiques</h2>\n<p>Apportez votre nourriture et eau. Portez des chaussures confortables. Respectez la nature et ne laissez pas de déchets.</p>\n<h2 id=\"s7\">🚌 Comment y accéder</h2>\n<p>Depuis Ksar Sghir ou Tanger, en voiture personnelle ou en grand taxi. Utilisez Google Maps pour la navigation précise.</p>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "sidi-kankouch-2",
@@ -720,9 +716,9 @@
    "category": "beach",
    "cover": "assets/img/sidi-kankouch-2-muk6y0wm.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.83148,
-   "lng": -5.7017,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.44!3d35.76!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.76,
+   "lng": -5.44,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -762,8 +758,7 @@
      "content": "<h2 id=\"s1\"> 📍 Playa Sidi Kankouch 2 — El gemelo más tranquilo</h2><p><strong>Sidi Kankouch 2</strong> está a 5 km de su vecino (20 km de Ksar Sghir). Más tranquila y menos concurrida, es la opción inteligente para quienes buscan servicios similares en un ambiente más sereno.</p><h2 id=\"s2\"> 🌊 Características</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🤫</div><div class=\"feature-title\">Más tranquilo</div><div class=\"feature-text\">Menos concurrida — perfecto para quienes buscan relajación real.</div></div><div class=\"feature\"><div class=\"feature-icon\">🛡️</div><div class=\"feature-title\">Vigilancia estacional</div><div class=\"feature-text\">Presencia julio-agosto para seguridad de bañistas.</div></div><div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Más pintoresco</div><div class=\"feature-text\">El entorno con colinas ofrece una belleza visual superior.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Aguas excelentes</div><div class=\"feature-text\">Misma calidad de agua del estrecho con olas moderadas.</div></div></div><h2 id=\"s3\"> 💡 Consejos para elegir</h2><ul class=\"tips\"><li><span>🤔</span><div>¿Quiere restaurantes y todos los servicios? Elija SK1. ¿Prefiere tranquilidad con servicios básicos? SK2.</div></li><li><span>🧭</span><div>Diga claramente al conductor \"Sidi Kankouch 2\" para evitar la parada equivocada.</div></li></ul><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Sidi Kankouch 2 Ksar Sghir\" en Google Maps. Distancia: 20 km.</div>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   },
   {
    "slug": "sidi-kankouch-1",
@@ -771,9 +766,9 @@
    "category": "beach",
    "cover": "assets/img/sidi-kankouch-1-muk6zfyn.webp",
    "gallery": [],
-   "map": "",
-   "lat": 35.8296,
-   "lng": -5.70697,
+   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.42!3d35.75!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
+   "lat": 35.75,
+   "lng": -5.42,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -813,8 +808,7 @@
      "content": "<h2 id=\"s1\"> 📍 Playa Sidi Kankouch 1 — La playa completa</h2><p>La <strong>Playa Sidi Kankouch 1</strong> está entre las mejor equipadas de la región, a 25 km al este de Ksar Sghir. Elección ideal para familias que buscan todas las instalaciones sin preparativos previos.</p><h2 id=\"s2\"> 🌊 Características</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🚿</div><div class=\"feature-title\">Duchas y baños completos</div><div class=\"feature-text\">Instalaciones sanitarias completas — gran ventaja.</div></div><div class=\"feature\"><div class=\"feature-icon\">🛡️</div><div class=\"feature-title\">Protección Civil permanente</div><div class=\"feature-text\">Presencia continua julio-agosto para tranquilidad total.</div></div><div class=\"feature\"><div class=\"feature-icon\">🍽️</div><div class=\"feature-title\">Restaurantes estacionales</div><div class=\"feature-text\">Restaurantes con pescado fresco y mariscos.</div></div><div class=\"feature\"><div class=\"feature-icon\">🅿️</div><div class=\"feature-title\">Aparcamiento dedicado</div><div class=\"feature-text\">Espacio de aparcamiento dedicado cerca de la playa.</div></div><div class=\"feature\"><div class=\"feature-icon\">👨‍👩‍👧</div><div class=\"feature-title\">Ideal para familias</div><div class=\"feature-text\">Combinación completa de seguridad, instalaciones y comida.</div></div></div><div class=\"highlight\">✅ <strong>Mejor elección familiar:</strong> Sidi Kankouch 1 es ideal para un día de playa completo sin complicaciones.</div><h2 id=\"s4\"> 🎯 Actividades</h2><p><div class=\"info-grid\"><div class=\"info-item\"><div class=\"info-icon\">🏊</div><div><div class=\"info-label\">Natación</div><div class=\"info-val\">Aguas vigiladas y seguras</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🍽️</div><div><div class=\"info-label\">Gastronomía marina</div><div class=\"info-val\">Restaurantes en la playa</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🌅</div><div><div class=\"info-label\">Puesta de sol</div><div class=\"info-val\">Vista excepcional</div></div></div></div></p><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Sidi Kankouch 1 Ksar Sghir\" en Google Maps. Distancia: 25 km.</div>"
     }
    },
-   "video": "",
-   "geoChecked": true
+   "video": ""
   }
  ]
 }
