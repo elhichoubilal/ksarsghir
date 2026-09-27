@@ -312,9 +312,9 @@
    "category": "beach",
    "cover": "assets/img/zahara-hatba-muk6fgrf.webp",
    "gallery": [],
-   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.535!3d35.682!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
-   "lat": 35.682,
-   "lng": -5.535,
+   "map": "",
+   "lat": 35.8352,
+   "lng": -5.58418,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -354,7 +354,8 @@
      "content": "<h2 id=\"s1\"> 📍 Playa Zahara / Hatba — La más cercana y tranquila</h2><p>La <strong>Playa Zahara / Hatba</strong> está a solo 3 km al oeste — la más fácil de alcanzar. Su posición geográfica la protege de los vientos del noreste, haciendo las olas más tranquilas.</p><h2 id=\"s2\"> 🌊 Ventajas de Zahara</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">📍</div><div class=\"feature-title\">Excepcionalmente cercana</div><div class=\"feature-text\">Solo 3 km — accesible a pie o en taxi por menos de 5 dírhams.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌊</div><div class=\"feature-title\">Olas aptas para niños</div><div class=\"feature-text\">La protección natural hace las aguas ideales para el baño familiar seguro.</div></div><div class=\"feature\"><div class=\"feature-icon\">🛡️</div><div class=\"feature-title\">Vigilancia estacional</div><div class=\"feature-text\">Presencia julio-agosto para seguridad.</div></div><div class=\"feature\"><div class=\"feature-icon\">💰</div><div class=\"feature-title\">Económico</div><div class=\"feature-text\">La cercanía reduce costes — ideal para visitas diarias frecuentes.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌅</div><div class=\"feature-title\">Atardecer montañoso</div><div class=\"feature-text\">El atardecer tras las montañas del oeste es diferente y auténtico.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌿</div><div class=\"feature-title\">Naturaleza salvaje cercana</div><div class=\"feature-text\">Las laderas circundantes están llenas de plantas silvestres.</div></div></div><h2 id=\"s3\"> 🏪 Servicios</h2><div class=\"warn\">⚠️ Servicios limitados — algunos vendedores ambulantes en verano. Mejor traer comida y agua propias.</div><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Zahara Beach Ksar Sghir\" en Google Maps. Distancia: 3 km.</div>"
     }
    },
-   "video": ""
+   "video": "",
+   "geoChecked": true
   },
   {
    "slug": "ghojin-srama",
