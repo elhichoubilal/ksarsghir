@@ -567,9 +567,9 @@
    "category": "beach",
    "cover": "assets/img/oued-alian-muk6t40e.webp",
    "gallery": [],
-   "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000!2d-5.5!3d35.73!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2sma!4v1",
-   "lat": 35.73,
-   "lng": -5.5,
+   "map": "",
+   "lat": 35.82795,
+   "lng": -5.64793,
    "date": "2026-09-26",
    "updated": "2026-09-27",
    "draft": false,
@@ -609,7 +609,8 @@
      "content": "<h2 id=\"s1\"> 📍 Playa Oued Alian — La orilla amplia y tranquila</h2><p>La <strong>Playa Oued Alian</strong> se extiende a doce kilómetros al este de Ksar Sghir. Sus amplias extensiones de arena dorada pueden acoger a numerosos visitantes incluso en temporada alta.</p><h2 id=\"s2\"> 🌊 Características</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">🏖️</div><div class=\"feature-title\">Playa muy amplia</div><div class=\"feature-text\">Larga extensión arenosa con espacio para todos.</div></div><div class=\"feature\"><div class=\"feature-icon\">👨‍👩‍👧</div><div class=\"feature-title\">Ideal para familias</div><div class=\"feature-text\">Aguas moderadas y arena suave para niños pequeños.</div></div><div class=\"feature\"><div class=\"feature-icon\">🛡️</div><div class=\"feature-title\">Vigilancia estacional</div><div class=\"feature-text\">Presencia en julio-agosto. Comprueba antes de nadar lejos.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌅</div><div class=\"feature-title\">Vista panorámica</div><div class=\"feature-text\">Ver el puerto Tanger Med y la costa española en días despejados.</div></div><div class=\"feature\"><div class=\"feature-icon\">🐟</div><div class=\"feature-title\">Pesca excelente</div><div class=\"feature-text\">Aguas ricas del estrecho, excelente para la pesca con caña.</div></div></div><h2 id=\"s3\"> 🏪 Servicios disponibles</h2><div class=\"warn\">⚠️ Sin restaurantes ni duchas — traiga sus propias provisiones.</div><h2 id=\"s4\"> 🎯 Actividades</h2><p><div class=\"info-grid\"><div class=\"info-item\"><div class=\"info-icon\">🏊</div><div><div class=\"info-label\">Natación</div><div class=\"info-val\">Aguas abiertas del estrecho</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🐟</div><div><div class=\"info-label\">Pesca</div><div class=\"info-val\">Directamente desde la playa</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🏐</div><div><div class=\"info-label\">Deportes de playa</div><div class=\"info-val\">Amplio espacio para juegos</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🚶</div><div><div class=\"info-label\">Caminatas largas</div><div class=\"info-val\">Playa que se extiende largas distancias</div></div></div></div></p><h2 id=\"s5\"> 📅 Mejores épocas</h2><div class=\"seasons\"><div class=\"season\"><div class=\"season-icon\">🌸</div><div class=\"season-name\">Primavera</div><div class=\"season-desc\">Marzo — Mayo</div><span class=\"badge badge-best\">⭐ Ideal</span></div><div class=\"season\"><div class=\"season-icon\">☀️</div><div class=\"season-name\">Verano</div><div class=\"season-desc\">Junio — Agosto</div><span class=\"badge badge-good\">✅ Excelente</span></div><div class=\"season\"><div class=\"season-icon\">🍂</div><div class=\"season-name\">Otoño</div><div class=\"season-desc\">Sept — Nov</div><span class=\"badge badge-best\">⭐ Muy bien</span></div><div class=\"season\"><div class=\"season-icon\">🌧️</div><div class=\"season-name\">Invierno</div><div class=\"season-desc\">Dic — Feb</div><span class=\"badge badge-ok\">⚠️ Tranquilo</span></div></div><h2 id=\"s6\"> 💡 Consejos prácticos</h2><ul class=\"tips\"><li><span>⏰</span><div>Llega temprano en verano — los aparcamientos se llenan rápido.</div></li><li><span>🍱</span><div>Traiga comida y agua — sin servicios en la playa.</div></li></ul><h2 id=\"s7\">🚌 Cómo llegar</h2><ul class=\"tips\"><li><span>🚌</span><div>Bus I3/I12 desde Tánger.</div></li><li><span>🚗</span><div>Carretera costera N16.</div></li><li><span>🚕</span><div>Taxi desde Ksar Sghir.</div></li></ul><div class=\"highlight\">📍 Busca \"Oued Alian Beach Ksar Sghir\" en Google Maps. Distancia: 12 km.</div>"
     }
    },
-   "video": ""
+   "video": "",
+   "geoChecked": true
   },
   {
    "slug": "zrara",
