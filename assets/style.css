@@ -574,3 +574,7 @@ html.js .ph-bg img.is-loaded{opacity:1}
 .leaflet-popup-content{margin:10px}
 [dir="rtl"] .leaflet-popup-content{text-align:right}
 @media (max-width:600px){.dmap-box{height:360px}}
+/* dark map without an API key: darken the OpenStreetMap tiles */
+.dmap-box.is-dark .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.95) contrast(.9) saturate(.6)}
+.dmap-box.is-dark .leaflet-control-attribution{background:rgba(10,22,34,.8);color:#9fb3c2}
+.dmap-box.is-dark .leaflet-control-attribution a{color:#5fd6ef}

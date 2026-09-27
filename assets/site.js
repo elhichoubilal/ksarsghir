@@ -223,9 +223,10 @@
         mapEl.innerHTML = '';
         var dark = document.documentElement.dataset.theme === 'dark' || (!document.documentElement.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
         var map = L.map(mapEl, { scrollWheelZoom: false, tap: true });
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/' + (dark ? 'dark_all' : 'voyager') + '/{z}/{x}/{y}{r}.png', {
-          maxZoom: 18, subdomains: 'abcd', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
+        if (dark) mapEl.classList.add('is-dark');
         var bounds = [];
         pts.forEach(function (p) {
           var icon = L.divIcon({ className: '', html: '<div class="dpin" style="background:' + p.c + '"><span>' + p.i + '</span></div>', iconSize: [34, 34], iconAnchor: [4, 34], popupAnchor: [13, -30] });
