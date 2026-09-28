@@ -1,239 +1,43 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>من أنا | القصر الصغير</title>
-<meta name="description" content="بلال الهيشو — مصور ومؤسس موقع القصر الصغير"/>
-<link rel="canonical" href="https://www.ksarsghir.com/about/"/>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet"/>
-<style>
-:root{--bg:#0a0f1a;--bg2:#16213e;--bg3:#1a2a40;--accent:#00b4d8;--accent2:#0096c7;--accent-glow:rgba(0,180,216,0.1);--text:#e2e8f0;--text2:#94a3b8;--text3:#475569;--border:rgba(0,180,216,0.15);--border2:rgba(255,255,255,0.06);--green:#34d399;--gold:#c29b62;--radius:14px;--radius2:10px;--shadow:0 4px 24px rgba(0,0,0,0.4);}
-[data-theme=light]{--bg:#f0f4f8;--bg2:#fff;--bg3:#e8edf5;--text:#1a1a2e;--text2:#444;--text3:#888;--border:rgba(0,150,180,0.2);--border2:rgba(0,0,0,0.06);}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;transition:background .3s,color .3s;}
-a{color:var(--accent);text-decoration:none;}
-img{max-width:100%;}
-::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg2);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
-nav{background:var(--bg2);border-bottom:2px solid var(--accent);padding:0 20px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:var(--shadow);}
-.nav-logo{display:flex;align-items:center;gap:8px;}.nav-logo-icon{font-size:22px;}.nav-logo-text{font-size:15px;font-weight:900;color:var(--accent);}
-.nav-links{display:flex;gap:2px;}.nav-links a{font-size:11px;color:var(--text2);padding:5px 9px;border-radius:8px;transition:all .2s;}.nav-links a:hover,.nav-links a.active{background:var(--accent-glow);color:var(--accent);}
-.nav-right{display:flex;align-items:center;gap:6px;}
-.lang-sw{display:flex;gap:2px;background:var(--bg3);border-radius:20px;padding:3px;}.lb{background:transparent;border:none;color:var(--text2);padding:3px 8px;border-radius:16px;cursor:pointer;font-size:10px;font-weight:700;font-family:'Tajawal',sans-serif;transition:all .2s;}.lb.on{background:var(--accent);color:#fff;}
-.theme-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-.back-link{font-size:11px;color:var(--text2);border:1px solid var(--border);padding:5px 12px;border-radius:20px;transition:all .2s;}.back-link:hover{color:var(--accent);border-color:var(--accent);}
-.hero-article{position:relative;height:380px;overflow:hidden;}
-.hero-article img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
-.hero-article-placeholder{position:absolute;inset:0;background:linear-gradient(135deg,#0d1b2a,#1a3a5c);display:flex;align-items:center;justify-content:center;font-size:64px;}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.3) 50%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:28px 24px;}
-.hero-cat{display:inline-block;background:var(--accent);color:#fff;font-size:10px;font-weight:700;padding:3px 12px;border-radius:20px;margin-bottom:10px;width:fit-content;letter-spacing:1px;}
-.hero-h1{font-size:clamp(22px,4vw,36px);font-weight:900;color:#fff;line-height:1.25;margin-bottom:8px;}
-.hero-meta{display:flex;gap:12px;flex-wrap:wrap;}.hero-meta span{font-size:11px;color:rgba(255,255,255,.6);}
-.layout{display:grid;grid-template-columns:1fr 268px;gap:22px;max-width:1100px;margin:26px auto;padding:0 20px;}
-.article-main{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;}
-.read-bar-wrap{height:3px;background:rgba(0,180,216,0.1);border-radius:3px;margin-bottom:20px;overflow:hidden;}.read-bar{height:100%;background:var(--accent);border-radius:3px;width:0;transition:width .2s;}
-.toc{background:rgba(0,180,216,0.04);border:1px solid var(--border);border-radius:var(--radius2);padding:14px 18px;margin-bottom:20px;}.toc-title{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:8px;}.toc ol{margin-right:16px;}.toc li{font-size:12px;color:var(--text2);margin-bottom:5px;}.toc a{color:var(--text2);transition:color .2s;}.toc a:hover{color:var(--accent);}
-html[dir=ltr] .toc ol{margin-left:16px;margin-right:0;}
-.stats-row{display:flex;gap:1px;background:rgba(0,180,216,0.1);border-radius:var(--radius2);overflow:hidden;margin-bottom:20px;}.stat{flex:1;text-align:center;padding:14px 8px;background:rgba(0,180,216,0.04);}.stat-n{font-size:18px;font-weight:900;color:var(--accent);}.stat-l{font-size:9px;color:var(--text3);margin-top:2px;}
-.content h2{font-size:18px;font-weight:700;color:var(--text);margin:26px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:8px;}
-.content h3{font-size:15px;font-weight:700;color:var(--accent);margin:16px 0 8px;}
-.content p{font-size:14px;color:var(--text2);margin-bottom:15px;text-align:justify;}
-.content strong{color:var(--text);font-weight:700;}
-.features{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:16px 0;}
-.feature{background:rgba(0,180,216,0.04);border:1px solid var(--border);border-radius:var(--radius2);padding:14px;transition:all .3s;}
-.feature:hover{border-color:var(--accent);transform:translateY(-2px);}
-.feature-icon{font-size:26px;margin-bottom:8px;}.feature-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;}.feature-text{font-size:11px;color:var(--text2);line-height:1.6;}
-.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:14px 0;}
-.info-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:12px;display:flex;gap:8px;align-items:flex-start;}
-.info-icon{font-size:18px;flex-shrink:0;}.info-label{font-size:9px;color:var(--text3);margin-bottom:2px;}.info-val{font-size:12px;font-weight:600;color:var(--text);}
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0;}
-.svc{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:10px;text-align:center;}
-.svc-icon{font-size:20px;margin-bottom:5px;}.svc-name{font-size:10px;color:var(--text3);margin-bottom:3px;}.svc-yes{font-size:16px;color:var(--green);}.svc-no{font-size:16px;color:#f87171;}.svc-partial{font-size:16px;color:#ffb703;}
-.highlight{background:rgba(0,180,216,0.06);border-right:4px solid var(--accent);padding:13px 16px;border-radius:8px;margin:16px 0;color:#90e0ef;font-size:13px;}
-html[dir=ltr] .highlight{border-right:none;border-left:4px solid var(--accent);}
-.warn{background:rgba(255,183,3,0.05);border-right:4px solid #ffb703;padding:13px 16px;border-radius:8px;margin:16px 0;color:#e5a900;font-size:13px;}
-html[dir=ltr] .warn{border-right:none;border-left:4px solid #ffb703;}
-.tips{list-style:none;margin:12px 0;}.tips li{padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);display:flex;gap:10px;align-items:flex-start;}.tips li:last-child{border-bottom:none;}
-.seasons{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0;}
-.season{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius2);padding:12px;text-align:center;}
-.season-icon{font-size:20px;margin-bottom:5px;}.season-name{font-size:11px;font-weight:700;color:var(--text);margin-bottom:3px;}.season-desc{font-size:9px;color:var(--text3);}
-.badge{display:inline-block;font-size:8px;padding:2px 7px;border-radius:7px;margin-top:4px;font-weight:700;}
-.badge-best{background:rgba(5,150,105,0.2);color:var(--green);}.badge-good{background:rgba(0,180,216,0.15);color:var(--accent);}.badge-ok{background:rgba(255,183,3,0.15);color:#ffb703;}
-.map-widget{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:16px 0;}
-.map-widget-hdr{padding:10px 14px;border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--accent);}
-.map-frame{width:100%;height:220px;border:none;filter:invert(0.9) hue-rotate(180deg);}
-[data-theme=light] .map-frame{filter:none;}
-.video-wrap{margin:16px 0;border-radius:var(--radius);overflow:hidden;background:var(--bg3);display:none;}
-.video-wrap.has-video{display:block;}.video-frame{width:100%;height:240px;border:none;}
-.ad-zone{background:var(--bg3);border:1px dashed rgba(0,180,216,0.2);border-radius:var(--radius2);padding:12px;text-align:center;margin:14px 0;min-height:50px;display:flex;align-items:center;justify-content:center;}
-.ad-zone-lbl{font-size:9px;color:var(--text3);display:block;margin-bottom:4px;}
-.tags{margin-top:20px;padding-top:12px;border-top:1px solid var(--border);}
-.tag{display:inline-block;background:var(--accent-glow);border:1px solid var(--border);color:var(--accent);font-size:9px;padding:3px 9px;border-radius:8px;margin:0 3px 5px 0;}
-.share-box{margin-top:18px;padding:14px 16px;background:var(--bg3);border-radius:var(--radius2);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.share-lbl{font-size:12px;font-weight:600;color:var(--text2);}
-.share-fb{background:#1877f2;color:#fff!important;padding:6px 16px;border-radius:20px;font-size:11px;font-weight:700;}
-.share-wa{background:#25d366;color:#fff!important;padding:6px 16px;border-radius:20px;font-size:11px;font-weight:700;}
-.sidebar{display:flex;flex-direction:column;gap:14px;}
-.sw{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.sw-title{padding:12px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:700;color:var(--accent);}
-.sw-body{padding:14px 16px;}
-.related-card{display:block;padding:10px;border:1px solid var(--border);border-radius:var(--radius2);margin-bottom:8px;transition:all .2s;text-decoration:none;color:inherit;}
-.related-card:last-child{margin-bottom:0;}
-.related-card:hover{border-color:var(--accent);background:var(--accent-glow);}
-.rc-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.rc-img{width:52px;height:44px;border-radius:8px;background:var(--bg3);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;}
-.rc-img img{width:100%;height:100%;object-fit:cover;}
-.rc-title{font-size:12px;font-weight:700;color:var(--text);line-height:1.3;}
-.rc-cat{font-size:9px;color:var(--text3);}
-.rc-dist{display:inline-flex;align-items:center;gap:4px;background:rgba(0,180,216,0.1);border:1px solid var(--border);color:var(--accent);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
-.ad-widget{background:linear-gradient(135deg,#0d1b2a,#1a3a5c);border-radius:var(--radius);padding:18px;text-align:center;border:1px solid rgba(0,180,216,0.2);}
-.ad-widget h4{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px;}
-.ad-widget p{font-size:10px;color:#90e0ef;margin-bottom:10px;line-height:1.5;}
-.ad-widget a{background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:6px 14px;border-radius:20px;display:inline-block;}
-footer{background:#060c14;border-top:1px solid var(--bg2);padding:30px 20px 20px;margin-top:20px;}
-.footer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1100px;margin:0 auto 16px;}
-.footer-col h4{font-size:11px;font-weight:700;color:var(--accent);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);}
-.footer-col a{display:block;color:var(--text3);font-size:11px;margin-bottom:6px;transition:color .2s;}
-.footer-col a:hover{color:var(--accent);}
-.footer-bottom{text-align:center;padding-top:12px;border-top:1px solid var(--bg2);font-size:10px;color:var(--text3);}
-#wa-float{position:fixed;bottom:20px;left:20px;z-index:999;background:#25d366;color:#fff;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 16px rgba(37,211,102,0.4);transition:all .3s;}
-#wa-float:hover{transform:scale(1.1);}
-[dir=rtl] #wa-float{left:auto;right:20px;}
-#back-top{position:fixed;bottom:80px;left:20px;z-index:999;background:var(--bg2);border:1px solid var(--border);color:var(--accent);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s;opacity:0;pointer-events:none;font-size:14px;}
-#back-top.show{opacity:1;pointer-events:all;}
-#back-top:hover{background:var(--accent);color:#fff;}
-[dir=rtl] #back-top{left:auto;right:20px;}
-@media(max-width:900px){.layout{grid-template-columns:1fr;}.sidebar{display:none;}.hero-article{height:240px;}.features,.info-grid{grid-template-columns:1fr;}.seasons{grid-template-columns:1fr 1fr;}.footer-grid{grid-template-columns:1fr 1fr;}.nav-links{display:none;}}
-@media(max-width:480px){.seasons,.services-grid{grid-template-columns:1fr 1fr;}.stats-row{flex-wrap:wrap;}.stat{min-width:50%;}}
-
-.page-hero{background:linear-gradient(135deg,#060c14,#1a3a5c);padding:40px 20px;text-align:center;}
-.page-hero h1{font-size:clamp(22px,4vw,34px);font-weight:900;color:#fff;margin-bottom:8px;}
-.page-hero p{font-size:13px;color:var(--text2);}
-.page-content{max-width:800px;margin:0 auto;padding:30px 20px;}
-.page-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:28px;}
-.page-card h2{font-size:18px;font-weight:700;color:var(--text);margin:22px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--border);}
-.page-card p{font-size:14px;color:var(--text2);line-height:1.9;margin-bottom:14px;}
-.page-card ul{margin:10px 0 14px 20px;} .page-card li{font-size:14px;color:var(--text2);margin-bottom:8px;}
-</style>
+<meta name="description" content="بلال الهيشو، مصور ومؤسس موقع القصر الصغير السياحي وصفحتي Ksar Sghir Lens وksarsghircity.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://www.ksarsghir.com/about/">
+<link rel="alternate" hreflang="ar" href="https://www.ksarsghir.com/about/">
+<link rel="alternate" hreflang="fr" href="https://www.ksarsghir.com/fr/about/">
+<link rel="alternate" hreflang="en" href="https://www.ksarsghir.com/en/about/">
+<link rel="alternate" hreflang="es" href="https://www.ksarsghir.com/es/about/">
+<link rel="alternate" hreflang="x-default" href="https://www.ksarsghir.com/about/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="القصر الصغير">
+<meta property="og:title" content="من أنا">
+<meta property="og:description" content="بلال الهيشو، مصور ومؤسس موقع القصر الصغير السياحي وصفحتي Ksar Sghir Lens وksarsghircity.">
+<meta property="og:url" content="https://www.ksarsghir.com/about/">
+<meta property="og:locale" content="ar_MA">
+<meta property="og:image" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyF6zy_A4LJ2L-xiH04Zd6XJEDMXIaOmyzWtN3vaFdByi2ysaLnHUcv4jYzuv5UqLPoM44_VLDfwr4MWEGATxl4QX7J7Ad0Z9bLL6kqB5lHnCQOf3EaC_snAy2TJCCt14okvSQDDPb0XvpNRZ6Gmhq6VIIHpESdyZ3P2uaZaSIm7PfxqtSHWL4-TUFwdU/s1600/8510.jpg">
+<meta name="twitter:image" content="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyF6zy_A4LJ2L-xiH04Zd6XJEDMXIaOmyzWtN3vaFdByi2ysaLnHUcv4jYzuv5UqLPoM44_VLDfwr4MWEGATxl4QX7J7Ad0Z9bLL6kqB5lHnCQOf3EaC_snAy2TJCCt14okvSQDDPb0XvpNRZ6Gmhq6VIIHpESdyZ3P2uaZaSIm7PfxqtSHWL4-TUFwdU/s1600/8510.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0b1e2d">
+<link rel="icon" type="image/svg+xml" href="../assets/logo.svg?v=mulj7gm1">
+<link rel="icon" type="image/png" sizes="64x64" href="../assets/favicon-64.png?v=mulj7gm1">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png?v=mulj7gm1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css?v=mulj7gm1">
+<style>.prose p, .intro p, .lead, .card-big p { text-align: justify; text-justify: inter-word; }</style>
+<script>document.documentElement.classList.add("js");try{var th=localStorage.getItem("ks-theme");if(th)document.documentElement.dataset.theme=th;}catch(e){}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"الرئيسية","item":"https://www.ksarsghir.com/"},{"@type":"ListItem","position":2,"name":"من أنا","item":"https://www.ksarsghir.com/about/"}]}]}</script>
 </head>
-<body>
-<nav>
-  <a class="nav-logo" href="../"><span class="nav-logo-icon">🏖️</span><div><div id="nav-logo" class="nav-logo-text">القصر الصغير</div></div></a>
-  <div class="nav-links"><a href="../" id="nl-home">🏠 الرئيسية</a><a href="../tourisme/" id="nl-tour">🗺️ السياحة</a><a href="../meteo/" id="nl-meteo">🌤️ الطقس</a><a href="../salat/" id="nl-salat">🕌 الصلاة</a></div>
-  <div class="nav-right">
-    <div class="lang-sw"><button class="lb on" onclick="setL('ar')">AR</button><button class="lb" onclick="setL('fr')">FR</button><button class="lb" onclick="setL('en')">EN</button><button class="lb" onclick="setL('es')">ES</button></div>
-    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">🌙</button>
-  </div>
-</nav>
-<div class="page-hero"><h1 id="page-title">من أنا</h1><p id="page-sub">بلال الهيشو — مصور ومؤسس موقع القصر الصغير</p></div>
-<div class="page-content"><div class="page-card" id="page-body"><div style="text-align:center;margin-bottom:24px;"><div style="font-size:64px;margin-bottom:10px;">📸</div><h2 style="color:var(--accent);font-size:22px;">بلال الهيشو</h2><p style="color:var(--text2);font-size:14px;">Bilal El Hichou — Ksar Sghir Lens</p></div>
-<p>مرحباً، أنا بلال الهيشو، مصور محترف وصاحب مشروع <strong>القصر الصغير</strong> الرقمي. أسكن في القصر الصغير وأعشق هذه المدينة الصغيرة ذات الموقع الاستثنائي على مضيق جبل طارق.</p>
-<p>أسست صفحة <strong>Ksar Sghir Lens</strong> (56K متابع) و<strong>ksarsghircity</strong> (21K متابع) لمشاركة جمال هذه المنطقة مع العالم من خلال الصور الاحترافية والمحتوى السياحي المفيد.</p>
-<h2>🎯 هدفي</h2>
-<p>وضع القصر الصغير على خريطة السياحة المغربية الدولية. هذه المدينة الصغيرة تمتلك كنوزاً طبيعية وتاريخية نادرة لا يعرفها إلا القليل — وأنا هنا لأغير ذلك.</p>
-<h2>📞 تواصل</h2>
-<p><a href="https://wa.me/212708053745">💬 WhatsApp</a> · <a href="https://www.facebook.com/KsarSghirLens">📸 Facebook</a></p></div></div>
-<footer>
-  <div class="footer-grid">
-    <div class="footer-col"><h4 id="fc1">🗺️ السياحة</h4><a href="../tourisme/" id="fl2">دليل السياحة</a><a href="../tourisme/plage/" id="fl1">الشاطئ الرئيسي</a></div>
-    <div class="footer-col"><h4 id="fc2">🔗 المواقع</h4><a href="../meteo/" id="fl8">الطقس</a><a href="../salat/" id="fl9">الصلاة</a></div>
-    <div class="footer-col"><h4 id="fc3">📄 معلومات</h4><a href="../privacy/" id="fl12">الخصوصية</a><a href="../contact/" id="fl10">اتصل بنا</a></div>
-  </div>
-  <div class="footer-bottom"><span id="footer-copy">© 2026 Ksar Sghir · Bilal El Hichou</span></div>
-</footer>
-<a id="wa-float" href="https://wa.me/212708053745" target="_blank">💬</a>
-<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆️</button>
-<script>
-function applyLangContent(l){
-  var titles={ar:"من أنا",fr:"À propos",en:"About Me",es:"Sobre mí"};
-  var el=document.getElementById('page-title');if(el)el.innerHTML=titles[l]||titles.ar;
-}
-
-var T={
-ar:{dir:'rtl','nav-logo':'🏖️ القصر الصغير','nl-home':'🏠 الرئيسية','nl-tour':'🗺️ السياحة','nl-gal':'📸 المعرض','nl-meteo':'🌤️ الطقس','nl-salat':'🕌 الصلاة','nl-ads':'📢 إعلن معنا','back-lnk':'← السياحة',
-  'toc-title':'📋 محتوى المقال','share-lbl':'شارك:','read-more':'اقرأ المزيد ←','dist-lbl':'المسافة','sidebar-related':'🗺️ مواضيع قريبة منك','sidebar-ad-title':'📢 إعلن معنا','sidebar-ad-desc':'وصل إلى 77K متابع في المنطقة','sidebar-ad-btn':'إعلن هنا',
-  'season-spring':'الربيع','season-summer':'الصيف','season-autumn':'الخريف','season-winter':'الشتاء',
-  'badge-best':'⭐ الأفضل','badge-good':'✅ جيد','badge-ok':'⚠️ مقبول',
-  'svc-yes':'✅','svc-no':'❌','svc-partial':'⚠️',
-  'map-hdr':'📍 الموقع على الخريطة','map-open':'فتح في Google Maps',
-  'fc1':'🗺️ السياحة','fc2':'🔗 المواقع','fc3':'📄 معلومات',
-  'fl1':'الرئيسية','fl2':'قرية بليونش','fl3':'ميناء الصيد','fl4':'طنجة المتوسط','fl5':'شاطئ الدالية',
-  'fl6':'معرض الصور','fl7':'المتجر','fl8':'الطقس','fl9':'الصلاة','fl10':'من أنا','fl11':'إعلن معنا','fl12':'الخصوصية',
-  'footer-copy':'© 2026 Ksar Sghir · Bilal El Hichou',
-  'wa-tip':'تواصل معنا'
-},
-fr:{dir:'ltr','nav-logo':'🏖️ Ksar Sghir','nl-home':'🏠 Accueil','nl-tour':'🗺️ Tourisme','nl-gal':'📸 Galerie','nl-meteo':'🌤️ Météo','nl-salat':'🕌 Prière','nl-ads':'📢 Annonces','back-lnk':'← Tourisme',
-  'toc-title':'📋 Sommaire','share-lbl':'Partager:','read-more':'Lire la suite →','dist-lbl':'Distance','sidebar-related':'🗺️ À proximité','sidebar-ad-title':'📢 Annoncez','sidebar-ad-desc':'Atteignez 77K abonnés','sidebar-ad-btn':'Annoncez ici',
-  'season-spring':'Printemps','season-summer':'Été','season-autumn':'Automne','season-winter':'Hiver',
-  'badge-best':'⭐ Idéal','badge-good':'✅ Bien','badge-ok':'⚠️ Acceptable',
-  'svc-yes':'✅','svc-no':'❌','svc-partial':'⚠️',
-  'map-hdr':'📍 Localisation sur la carte','map-open':'Ouvrir dans Google Maps',
-  'fc1':'🗺️ Tourisme','fc2':'🔗 Sites','fc3':'📄 Infos',
-  'fl1':'Accueil','fl2':'Belyounech','fl3':'Port pêche','fl4':'Tanger Med','fl5':'Plage Dalia',
-  'fl6':'Galerie','fl7':'Boutique','fl8':'Météo','fl9':'Prière','fl10':'À propos','fl11':'Annonces','fl12':'Confidentialité',
-  'footer-copy':'© 2026 Ksar Sghir · Bilal El Hichou',
-  'wa-tip':'Contactez-nous'
-},
-en:{dir:'ltr','nav-logo':'🏖️ Ksar Sghir','nl-home':'🏠 Home','nl-tour':'🗺️ Tourism','nl-gal':'📸 Gallery','nl-meteo':'🌤️ Weather','nl-salat':'🕌 Prayer','nl-ads':'📢 Advertise','back-lnk':'← Tourism',
-  'toc-title':'📋 Contents','share-lbl':'Share:','read-more':'Read more →','dist-lbl':'Distance','sidebar-related':'🗺️ Nearby places','sidebar-ad-title':'📢 Advertise','sidebar-ad-desc':'Reach 77K followers','sidebar-ad-btn':'Advertise here',
-  'season-spring':'Spring','season-summer':'Summer','season-autumn':'Autumn','season-winter':'Winter',
-  'badge-best':'⭐ Best','badge-good':'✅ Good','badge-ok':'⚠️ OK',
-  'svc-yes':'✅','svc-no':'❌','svc-partial':'⚠️',
-  'map-hdr':'📍 Location on map','map-open':'Open in Google Maps',
-  'fc1':'🗺️ Tourism','fc2':'🔗 Sites','fc3':'📄 Info',
-  'fl1':'Home','fl2':'Belyounech','fl3':'Fishing port','fl4':'Tanger Med','fl5':'Dalia Beach',
-  'fl6':'Gallery','fl7':'Store','fl8':'Weather','fl9':'Prayer','fl10':'About','fl11':'Advertise','fl12':'Privacy',
-  'footer-copy':'© 2026 Ksar Sghir · Bilal El Hichou',
-  'wa-tip':'Contact us'
-},
-es:{dir:'ltr','nav-logo':'🏖️ Ksar Sghir','nl-home':'🏠 Inicio','nl-tour':'🗺️ Turismo','nl-gal':'📸 Galería','nl-meteo':'🌤️ Clima','nl-salat':'🕌 Oración','nl-ads':'📢 Anúnciate','back-lnk':'← Turismo',
-  'toc-title':'📋 Contenido','share-lbl':'Compartir:','read-more':'Leer más →','dist-lbl':'Distancia','sidebar-related':'🗺️ Lugares cercanos','sidebar-ad-title':'📢 Anúnciate','sidebar-ad-desc':'Llega a 77K seguidores','sidebar-ad-btn':'Anúnciate aquí',
-  'season-spring':'Primavera','season-summer':'Verano','season-autumn':'Otoño','season-winter':'Invierno',
-  'badge-best':'⭐ Ideal','badge-good':'✅ Bien','badge-ok':'⚠️ Aceptable',
-  'svc-yes':'✅','svc-no':'❌','svc-partial':'⚠️',
-  'map-hdr':'📍 Ubicación en el mapa','map-open':'Abrir en Google Maps',
-  'fc1':'🗺️ Turismo','fc2':'🔗 Sitios','fc3':'📄 Info',
-  'fl1':'Inicio','fl2':'Belyounech','fl3':'Puerto pesquero','fl4':'Tanger Med','fl5':'Playa Dalia',
-  'fl6':'Galería','fl7':'Tienda','fl8':'Clima','fl9':'Oración','fl10':'Sobre mí','fl11':'Anúnciate','fl12':'Privacidad',
-  'footer-copy':'© 2026 Ksar Sghir · Bilal El Hichou',
-  'wa-tip':'Contáctanos'
-}};
-
-function setL(l){
-  var t=T[l];if(!t)return;
-  document.documentElement.setAttribute('dir',t.dir);
-  document.body.setAttribute('dir',t.dir);
-  Object.keys(t).forEach(function(id){
-    var el=document.getElementById(id);
-    if(el)el.innerHTML=t[id];
-  });
-  document.querySelectorAll('.lb').forEach(function(b){
-    b.classList.remove('on');
-    var oc=b.getAttribute('onclick')||'';
-    if(oc.indexOf("'"+l+"'")>-1)b.classList.add('on');
-  });
-  if(typeof applyLangContent==='function')applyLangContent(l);
-  try{localStorage.setItem('ks_lang',l);}catch(e){}
-}
-function toggleTheme(){
-  var isDark=document.documentElement.getAttribute('data-theme')==='dark';
-  document.documentElement.setAttribute('data-theme',isDark?'light':'dark');
-  document.getElementById('theme-btn').textContent=isDark?'☀️':'🌙';
-  try{localStorage.setItem('ks_theme',isDark?'light':'dark');}catch(e){}
-}
-window.addEventListener('scroll',function(){
-  var b=document.getElementById('read-bar');
-  if(b){var s=window.scrollY,h=document.body.scrollHeight-window.innerHeight;b.style.width=(h>0?Math.min(100,s/h*100):0)+'%';}
-  var bt=document.getElementById('back-top');
-  if(bt)bt.classList.toggle('show',window.scrollY>300);
-});
-(function(){
-  var st='dark';try{st=localStorage.getItem('ks_theme')||'dark';}catch(e){}
-  document.documentElement.setAttribute('data-theme',st);
-  document.getElementById('theme-btn').textContent=st==='dark'?'🌙':'☀️';
-  var sl='ar';try{sl=localStorage.getItem('ks_lang')||'ar';}catch(e){}
-  setL(sl);
-})();
-
-</script>
+<body class="lang-ar">
+<a class="skip" href="#main">انتقل إلى المحتوى</a>
+<div class="topbar has-ticker"><div class="wrap topbar-in"><div class="ticker" data-speed="normal"><span class="tk-label">جديد</span><div class="tk-track"><div class="tk-move"><div class="tk-set"><span class="tk-item">مرحباً بكم فالدليل السياحي للقصر الصغير، بأربع لغات</span><span class="tk-sep" aria-hidden="true">•</span><span class="tk-item"><a href="../tourisme/">اكتشف 16 وجهة سياحية: شواطئ، موانئ وتاريخ</a></span><span class="tk-sep" aria-hidden="true">•</span><span class="tk-item">ملاحظة: الموقع حالياً في مرحلة التجريب (الإصدار التجريبي). انتظرونا قريباً في حلة جديدة وبميزات جديدة بإذن الله!</span><span class="tk-sep" aria-hidden="true">•</span></div><div class="tk-set" aria-hidden="true"><span class="tk-item">مرحباً بكم فالدليل السياحي للقصر الصغير، بأربع لغات</span><span class="tk-sep" aria-hidden="true">•</span><span class="tk-item"><a href="../tourisme/">اكتشف 16 وجهة سياحية: شواطئ، موانئ وتاريخ</a></span><span class="tk-sep" aria-hidden="true">•</span><span class="tk-item">ملاحظة: الموقع حالياً في مرحلة التجريب (الإصدار التجريبي). انتظرونا قريباً في حلة جديدة وبميزات جديدة بإذن الله!</span><span class="tk-sep">•</span></div></div></div></div><div class="top-soc"><a class="soc soc-facebook" href="https://www.facebook.com/ksarsghircity" target="_blank" rel="noopener" aria-label="Facebook — ksarsghircity" title="Facebook — ksarsghircity"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V8.8c0-.5.3-.8.5-.8z"/></svg></a><a class="soc soc-facebook" href="https://www.facebook.com/KsarSghirLens" target="_blank" rel="noopener" aria-label="Facebook — Ksar Sghir Lens" title="Facebook — Ksar Sghir Lens"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V8.8c0-.5.3-.8.5-.8z"/></svg></a><a class="soc soc-whatsapp" href="https://wa.me/212708053745" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg></a></div></div></div>
+<header class="top"><div class="wrap top-in"><a class="brand" href="../"><img class="brand-logo" src="../assets/logo.svg" alt="" width="40" height="40"><span class="brand-txt"><b>القصر الصغير</b><small>Ksar Sghir</small></span></a><nav class="nav" id="nav" aria-label="القائمة"><a href="../">الرئيسية</a><a href="../tourisme/">السياحة</a><a href="../gallery/">المعرض</a><a href="../meteo/">الطقس</a><a href="../salat/">الصلاة</a><a href="../advertise/">أعلن معنا</a></nav><div class="tools"><div class="langs" role="group" aria-label="اللغة"><a class="lang is-on" href="../about/" hreflang="ar" lang="ar" title="العربية" aria-current="true">AR</a><a class="lang" href="../fr/about/" hreflang="fr" lang="fr" title="Français">FR</a><a class="lang" href="../en/about/" hreflang="en" lang="en" title="English">EN</a><a class="lang" href="../es/about/" hreflang="es" lang="es" title="Español">ES</a></div><button class="icon-btn" type="button" data-theme-toggle aria-label="تبديل الوضع"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button><button class="icon-btn menu-btn" type="button" data-menu aria-controls="nav" aria-expanded="false" aria-label="القائمة"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div></div></header>
+<main id="main" class="page"><div class="wrap narrow"><nav class="crumbs" aria-label="breadcrumb"><ol><li><a href="../">الرئيسية</a></li><li><span aria-current="page">من أنا</span></li></ol></nav><h1 class="page-title">من أنا</h1><p class="lead">بلال الهيشو، مصور ومؤسس موقع القصر الصغير السياحي وصفحتي Ksar Sghir Lens وksarsghircity.</p></div><div class="wrap narrow"><nav class="toc" aria-label="في هذا الموضوع"><h2>في هذا الموضوع</h2><ol><li><a href="#s1">📸 بلال الهيشو — Ksar Sghir Lens</a></li><li><a href="#s2">🎯 هدفي</a></li><li><a href="#s3">📞 تواصل</a></li></ol></nav><div class="prose"><h2 id="s1">📸 بلال الهيشو — Ksar Sghir Lens</h2><p>مرحباً، أنا <strong>بلال الهيشو</strong>، مصور وصاحب مشروع <strong>القصر الصغير</strong> الرقمي. أسكن في القصر الصغير وأعشق هذه المدينة الصغيرة ذات الموقع الاستثنائي على مضيق جبل طارق.</p><p>أسست صفحة <strong>Ksar Sghir Lens</strong> (56K متابع) وصفحة <strong>ksarsghircity</strong> (21K متابع) لمشاركة جمال هذه المنطقة مع العالم من خلال الصور والمحتوى السياحي المفيد.</p><h2 id="s2">🎯 هدفي</h2><p>وضع القصر الصغير على خريطة السياحة المغربية والدولية. هذه المدينة تمتلك كنوزاً طبيعية وتاريخية لا يعرفها إلا القليل، وهذا الموقع هو دليلي لتعريف الزوار بها بأربع لغات.</p><h2 id="s3">📞 تواصل</h2><div data-block="contact"></div></div><section class="share"><h2>شارك الموضوع</h2><div><a class="sh sh-wa" href="https://wa.me/?text=%D9%85%D9%86%20%D8%A3%D9%86%D8%A7%20https%3A%2F%2Fwww.ksarsghir.com%2Fabout%2F" target="_blank" rel="noopener">WhatsApp</a><a class="sh sh-fb" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.ksarsghir.com%2Fabout%2F" target="_blank" rel="noopener">Facebook</a><button class="sh sh-cp" type="button" data-copy="https://www.ksarsghir.com/about/">نسخ الرابط</button></div></section></div></main>
+<footer class="foot"><div class="wrap"><div class="f-grid"><div class="f-about"><a class="brand" href="../"><img class="brand-logo" src="../assets/logo.svg" alt="" width="40" height="40"><span class="brand-txt"><b>القصر الصغير</b></span></a><p>دليلك السياحي لشمال المغرب على مضيق جبل طارق</p><div class="social" aria-label="تابعنا"><span>تابعنا</span><div class="foot-soc"><a class="soc soc-facebook" href="https://www.facebook.com/ksarsghircity" target="_blank" rel="noopener" aria-label="Facebook — ksarsghircity" title="Facebook — ksarsghircity"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V8.8c0-.5.3-.8.5-.8z"/></svg></a><a class="soc soc-facebook" href="https://www.facebook.com/KsarSghirLens" target="_blank" rel="noopener" aria-label="Facebook — Ksar Sghir Lens" title="Facebook — Ksar Sghir Lens"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V8.8c0-.5.3-.8.5-.8z"/></svg></a><a class="soc soc-whatsapp" href="https://wa.me/212708053745" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .1-1.3c0-.1-.2-.2-.4-.3z"/></svg></a></div></div></div><div class="f-col"><h2>السياحة</h2><ul><li><a href="../tourisme/plage/">شاطئ القصر الصغير</a></li><li><a href="../tourisme/dalia/">شاطئ الدالية</a></li><li><a href="../tourisme/belyounech/">قرية بليونش</a></li><li><a href="../tourisme/">كل الوجهات</a></li></ul></div><div class="f-col"><h2>الموقع</h2><ul><li><a href="../about/">من أنا</a></li><li><a href="../contact/">اتصل بنا</a></li><li><a href="../privacy/">الخصوصية</a></li><li><a href="../terms/">الشروط</a></li></ul></div></div><p class="copy">© 2026 القصر الصغير · Bilal El Hichou · جميع الحقوق محفوظة</p></div></footer>
+<script src="../assets/site.js?v=mulj7gm1" defer></script>
 </body>
 </html>

@@ -825,6 +825,261 @@
    },
    "video": "",
    "geoChecked": true
+  },
+  {
+   "slug": "about",
+   "section": "page",
+   "category": "",
+   "cover": "",
+   "gallery": [],
+   "video": "",
+   "map": "",
+   "lat": null,
+   "lng": null,
+   "date": "2026-09-28",
+   "updated": "2026-09-28",
+   "draft": false,
+   "featured": false,
+   "related": [],
+   "geoChecked": true,
+   "i18n": {
+    "ar": {
+     "title": "من أنا",
+     "seoTitle": "",
+     "description": "بلال الهيشو، مصور ومؤسس موقع القصر الصغير السياحي وصفحتي Ksar Sghir Lens وksarsghircity.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>📸 بلال الهيشو — Ksar Sghir Lens</h2><p>مرحباً، أنا <strong>بلال الهيشو</strong>، مصور وصاحب مشروع <strong>القصر الصغير</strong> الرقمي. أسكن في القصر الصغير وأعشق هذه المدينة الصغيرة ذات الموقع الاستثنائي على مضيق جبل طارق.</p><p>أسست صفحة <strong>Ksar Sghir Lens</strong> (56K متابع) وصفحة <strong>ksarsghircity</strong> (21K متابع) لمشاركة جمال هذه المنطقة مع العالم من خلال الصور والمحتوى السياحي المفيد.</p><h2>🎯 هدفي</h2><p>وضع القصر الصغير على خريطة السياحة المغربية والدولية. هذه المدينة تمتلك كنوزاً طبيعية وتاريخية لا يعرفها إلا القليل، وهذا الموقع هو دليلي لتعريف الزوار بها بأربع لغات.</p><h2>📞 تواصل</h2><div data-block=\"contact\"></div>"
+    },
+    "fr": {
+     "title": "À propos",
+     "seoTitle": "",
+     "description": "Bilal El Hichou, photographe et fondateur du guide touristique de Ksar Sghir et des pages Ksar Sghir Lens et ksarsghircity.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>📸 Bilal El Hichou — Ksar Sghir Lens</h2><p>Bonjour, je suis <strong>Bilal El Hichou</strong>, photographe et créateur du projet numérique <strong>Ksar Sghir</strong>. J’habite à Ksar Sghir et j’aime profondément cette petite ville au site exceptionnel sur le détroit de Gibraltar.</p><p>J’ai créé les pages <strong>Ksar Sghir Lens</strong> (56K abonnés) et <strong>ksarsghircity</strong> (21K abonnés) pour partager la beauté de la région à travers la photo et des contenus touristiques utiles.</p><h2>🎯 Mon objectif</h2><p>Mettre Ksar Sghir sur la carte du tourisme marocain et international. La ville possède des trésors naturels et historiques encore peu connus, et ce site est mon guide pour les faire découvrir en quatre langues.</p><h2>📞 Contact</h2><div data-block=\"contact\"></div>"
+    },
+    "en": {
+     "title": "About me",
+     "seoTitle": "",
+     "description": "Bilal El Hichou, photographer and founder of the Ksar Sghir travel guide and the Ksar Sghir Lens and ksarsghircity pages.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>📸 Bilal El Hichou — Ksar Sghir Lens</h2><p>Hi, I’m <strong>Bilal El Hichou</strong>, a photographer and the creator of the <strong>Ksar Sghir</strong> digital project. I live in Ksar Sghir and love this small town with its exceptional setting on the Strait of Gibraltar.</p><p>I founded the <strong>Ksar Sghir Lens</strong> (56K followers) and <strong>ksarsghircity</strong> (21K followers) pages to share the beauty of the area through photography and useful travel content.</p><h2>🎯 My goal</h2><p>To put Ksar Sghir on the Moroccan and international travel map. The town has natural and historic treasures that few people know about, and this site is my guide to them, in four languages.</p><h2>📞 Contact</h2><div data-block=\"contact\"></div>"
+    },
+    "es": {
+     "title": "Sobre mí",
+     "seoTitle": "",
+     "description": "Bilal El Hichou, fotógrafo y fundador de la guía turística de Alcazarseguer y de las páginas Ksar Sghir Lens y ksarsghircity.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>📸 Bilal El Hichou — Ksar Sghir Lens</h2><p>Hola, soy <strong>Bilal El Hichou</strong>, fotógrafo y creador del proyecto digital <strong>Alcazarseguer (Ksar Sghir)</strong>. Vivo en Alcazarseguer y me encanta este pequeño pueblo con su ubicación excepcional en el estrecho de Gibraltar.</p><p>Fundé las páginas <strong>Ksar Sghir Lens</strong> (56K seguidores) y <strong>ksarsghircity</strong> (21K seguidores) para compartir la belleza de la zona con fotografía y contenido turístico útil.</p><h2>🎯 Mi objetivo</h2><p>Poner Alcazarseguer en el mapa del turismo marroquí e internacional. El pueblo tiene tesoros naturales e históricos que pocos conocen, y esta web es mi guía para descubrirlos en cuatro idiomas.</p><h2>📞 Contacto</h2><div data-block=\"contact\"></div>"
+    }
+   }
+  },
+  {
+   "slug": "contact",
+   "section": "page",
+   "category": "",
+   "cover": "",
+   "gallery": [],
+   "video": "",
+   "map": "",
+   "lat": null,
+   "lng": null,
+   "date": "2026-09-28",
+   "updated": "2026-09-28",
+   "draft": false,
+   "featured": false,
+   "related": [],
+   "geoChecked": true,
+   "i18n": {
+    "ar": {
+     "title": "اتصل بنا",
+     "seoTitle": "",
+     "description": "تواصل مع موقع القصر الصغير السياحي عبر WhatsApp أو Facebook: أسئلة، اقتراحات، تصحيح معلومة أو إعلان.",
+     "keyword": "",
+     "alt": "",
+     "content": "<p>نحن سعداء بالتواصل معك. اختر الوسيلة الأنسب لك:</p><div data-block=\"contact\"></div><h2>📢 الإعلانات</h2><p>للإعلان على الموقع وصفحاتنا (77K متابع في منطقة القصر الصغير وشمال المغرب)، راسلنا عبر WhatsApp أو زر صفحة <a href=\"~/advertise/\">أعلن معنا</a>.</p><h2>💡 اقتراحات وتصحيحات</h2><p>لديك اقتراح لتحسين الموقع، أو لاحظت معلومة غير دقيقة؟ لا تتردد في مراسلتنا، فكل ملاحظة تساعدنا على تحسين الدليل.</p>"
+    },
+    "fr": {
+     "title": "Contact",
+     "seoTitle": "",
+     "description": "Contactez le guide de Ksar Sghir par WhatsApp ou Facebook : questions, suggestions, correction ou publicité.",
+     "keyword": "",
+     "alt": "",
+     "content": "<p>Nous serons ravis d’échanger avec vous. Choisissez le moyen qui vous convient :</p><div data-block=\"contact\"></div><h2>📢 Publicité</h2><p>Pour faire de la publicité sur le site et nos pages (77K abonnés à Ksar Sghir et dans le nord du Maroc), écrivez-nous sur WhatsApp ou consultez la page <a href=\"~/advertise/\">Publicité</a>.</p><h2>💡 Suggestions et corrections</h2><p>Une idée pour améliorer le site ou une information inexacte ? Écrivez-nous : chaque remarque nous aide à améliorer ce guide.</p>"
+    },
+    "en": {
+     "title": "Contact",
+     "seoTitle": "",
+     "description": "Contact the Ksar Sghir travel guide on WhatsApp or Facebook: questions, suggestions, corrections or advertising.",
+     "keyword": "",
+     "alt": "",
+     "content": "<p>We’d be happy to hear from you. Choose whatever suits you best:</p><div data-block=\"contact\"></div><h2>📢 Advertising</h2><p>To advertise on the site and our pages (77K followers in Ksar Sghir and northern Morocco), message us on WhatsApp or see the <a href=\"~/advertise/\">Advertise</a> page.</p><h2>💡 Suggestions and corrections</h2><p>Have an idea to improve the site, or spotted something inaccurate? Let us know: every note helps us improve this guide.</p>"
+    },
+    "es": {
+     "title": "Contacto",
+     "seoTitle": "",
+     "description": "Contacta con la guía de Alcazarseguer por WhatsApp o Facebook: preguntas, sugerencias, correcciones o publicidad.",
+     "keyword": "",
+     "alt": "",
+     "content": "<p>Estaremos encantados de hablar contigo. Elige el medio que prefieras:</p><div data-block=\"contact\"></div><h2>📢 Publicidad</h2><p>Para anunciarte en la web y en nuestras páginas (77K seguidores en Alcazarseguer y el norte de Marruecos), escríbenos por WhatsApp o visita la página <a href=\"~/advertise/\">Publicidad</a>.</p><h2>💡 Sugerencias y correcciones</h2><p>¿Tienes una idea para mejorar la web o has visto un dato incorrecto? Escríbenos: cada comentario nos ayuda a mejorar esta guía.</p>"
+    }
+   }
+  },
+  {
+   "slug": "advertise",
+   "section": "page",
+   "category": "beach",
+   "cover": "",
+   "gallery": [],
+   "video": "",
+   "map": "",
+   "lat": null,
+   "lng": null,
+   "date": "2026-09-28",
+   "updated": "2026-09-28",
+   "draft": false,
+   "featured": false,
+   "related": [],
+   "geoChecked": true,
+   "i18n": {
+    "ar": {
+     "title": "أعلن معنا",
+     "seoTitle": "",
+     "description": "أعلن على موقع القصر الصغير السياحي وصفحاتنا: 77K متابع، جمهور من السياح والزوار والمقيمين، وبأربع لغات.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>📢 لماذا تعلن معنا؟</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">👥</div><div class=\"feature-title\">77K متابع</div><div class=\"feature-text\">جمهور كبير ومتفاعل على صفحتي Ksar Sghir Lens (56K) وksarsghircity (21K).</div></div><div class=\"feature\"><div class=\"feature-icon\">🎯</div><div class=\"feature-title\">جمهور مستهدف</div><div class=\"feature-text\">سياح وزوار ومقيمون في منطقة القصر الصغير وشمال المغرب.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌍</div><div class=\"feature-title\">4 لغات</div><div class=\"feature-text\">الموقع بالعربية والفرنسية والإنجليزية والإسبانية، فيصل إعلانك للزوار الأجانب أيضاً.</div></div><div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">محتوى أصلي</div><div class=\"feature-text\">صور ومحتوى من ابن المنطقة، يثق فيه الزوار.</div></div></div><h2>📐 أماكن الإعلان في الموقع</h2><div class=\"info-grid\"><div class=\"info-item\"><div class=\"info-icon\">🔝</div><div><div class=\"info-label\">فوق المحتوى</div><div class=\"info-val\">الصفحة الرئيسية وصفحات المواضيع</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🔻</div><div><div class=\"info-label\">أسفل المحتوى</div><div class=\"info-val\">نهاية المواضيع وصفحة السياحة</div></div></div><div class=\"info-item\"><div class=\"info-icon\">📱</div><div><div class=\"info-label\">منشورات Facebook</div><div class=\"info-val\">على صفحاتنا بعد الاتفاق</div></div></div></div><div data-block=\"ad-packages\"></div><h2>📞 تواصل معنا</h2><p>راسلنا لنتفق على الإعلان المناسب لنشاطك:</p><div data-block=\"contact\"></div>"
+    },
+    "fr": {
+     "title": "Publicité",
+     "seoTitle": "",
+     "description": "Faites de la publicité sur le guide de Ksar Sghir et nos pages : 77K abonnés, touristes et habitants, en quatre langues.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>📢 Pourquoi nous choisir ?</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">👥</div><div class=\"feature-title\">77K abonnés</div><div class=\"feature-text\">Une audience large et active sur Ksar Sghir Lens (56K) et ksarsghircity (21K).</div></div><div class=\"feature\"><div class=\"feature-icon\">🎯</div><div class=\"feature-title\">Audience ciblée</div><div class=\"feature-text\">Touristes, visiteurs et habitants de Ksar Sghir et du nord du Maroc.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌍</div><div class=\"feature-title\">4 langues</div><div class=\"feature-text\">Arabe, français, anglais et espagnol : votre annonce touche aussi les visiteurs étrangers.</div></div><div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Contenu original</div><div class=\"feature-text\">Photos et contenus d’un habitant, auxquels les visiteurs font confiance.</div></div></div><h2>📐 Emplacements</h2><div class=\"info-grid\"><div class=\"info-item\"><div class=\"info-icon\">🔝</div><div><div class=\"info-label\">Au-dessus du contenu</div><div class=\"info-val\">Accueil et pages d’articles</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🔻</div><div><div class=\"info-label\">Sous le contenu</div><div class=\"info-val\">Fin des articles et page Tourisme</div></div></div><div class=\"info-item\"><div class=\"info-icon\">📱</div><div><div class=\"info-label\">Publications Facebook</div><div class=\"info-val\">Sur nos pages, sur demande</div></div></div></div><div data-block=\"ad-packages\"></div><h2>📞 Contact</h2><p>Écrivez-nous pour trouver la formule adaptée à votre activité :</p><div data-block=\"contact\"></div>"
+    },
+    "en": {
+     "title": "Advertise with us",
+     "seoTitle": "",
+     "description": "Advertise on the Ksar Sghir travel guide and our pages: 77K followers, visitors and residents, in four languages.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>📢 Why advertise with us?</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">👥</div><div class=\"feature-title\">77K followers</div><div class=\"feature-text\">A large, engaged audience on Ksar Sghir Lens (56K) and ksarsghircity (21K).</div></div><div class=\"feature\"><div class=\"feature-icon\">🎯</div><div class=\"feature-title\">Targeted audience</div><div class=\"feature-text\">Tourists, visitors and residents of Ksar Sghir and northern Morocco.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌍</div><div class=\"feature-title\">4 languages</div><div class=\"feature-text\">Arabic, French, English and Spanish, so your ad reaches foreign visitors too.</div></div><div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Original content</div><div class=\"feature-text\">Photos and content by a local that visitors trust.</div></div></div><h2>📐 Ad placements</h2><div class=\"info-grid\"><div class=\"info-item\"><div class=\"info-icon\">🔝</div><div><div class=\"info-label\">Above the content</div><div class=\"info-val\">Home page and article pages</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🔻</div><div><div class=\"info-label\">Below the content</div><div class=\"info-val\">End of articles and Tourism page</div></div></div><div class=\"info-item\"><div class=\"info-icon\">📱</div><div><div class=\"info-label\">Facebook posts</div><div class=\"info-val\">On our pages, on request</div></div></div></div><div data-block=\"ad-packages\"></div><h2>📞 Get in touch</h2><p>Message us to find the right option for your business:</p><div data-block=\"contact\"></div>"
+    },
+    "es": {
+     "title": "Publicidad",
+     "seoTitle": "",
+     "description": "Anúnciate en la guía de Alcazarseguer y nuestras páginas: 77K seguidores, turistas y residentes, en cuatro idiomas.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>📢 ¿Por qué anunciarte con nosotros?</h2><div class=\"features\"><div class=\"feature\"><div class=\"feature-icon\">👥</div><div class=\"feature-title\">77K seguidores</div><div class=\"feature-text\">Una audiencia amplia y activa en Ksar Sghir Lens (56K) y ksarsghircity (21K).</div></div><div class=\"feature\"><div class=\"feature-icon\">🎯</div><div class=\"feature-title\">Público objetivo</div><div class=\"feature-text\">Turistas, visitantes y residentes de Alcazarseguer y el norte de Marruecos.</div></div><div class=\"feature\"><div class=\"feature-icon\">🌍</div><div class=\"feature-title\">4 idiomas</div><div class=\"feature-text\">Árabe, francés, inglés y español: tu anuncio llega también a visitantes extranjeros.</div></div><div class=\"feature\"><div class=\"feature-icon\">📸</div><div class=\"feature-title\">Contenido original</div><div class=\"feature-text\">Fotos y contenido de un vecino en quien los visitantes confían.</div></div></div><h2>📐 Espacios publicitarios</h2><div class=\"info-grid\"><div class=\"info-item\"><div class=\"info-icon\">🔝</div><div><div class=\"info-label\">Encima del contenido</div><div class=\"info-val\">Inicio y páginas de artículos</div></div></div><div class=\"info-item\"><div class=\"info-icon\">🔻</div><div><div class=\"info-label\">Debajo del contenido</div><div class=\"info-val\">Final de artículos y página de Turismo</div></div></div><div class=\"info-item\"><div class=\"info-icon\">📱</div><div><div class=\"info-label\">Publicaciones en Facebook</div><div class=\"info-val\">En nuestras páginas, bajo petición</div></div></div></div><div data-block=\"ad-packages\"></div><h2>📞 Contacto</h2><p>Escríbenos para encontrar la opción adecuada para tu negocio:</p><div data-block=\"contact\"></div>"
+    }
+   }
+  },
+  {
+   "slug": "privacy",
+   "section": "page",
+   "category": "",
+   "cover": "",
+   "gallery": [],
+   "video": "",
+   "map": "",
+   "lat": null,
+   "lng": null,
+   "date": "2026-09-28",
+   "updated": "2026-09-28",
+   "draft": false,
+   "featured": false,
+   "related": [],
+   "geoChecked": true,
+   "i18n": {
+    "ar": {
+     "title": "سياسة الخصوصية",
+     "seoTitle": "",
+     "description": "سياسة الخصوصية لموقع القصر الصغير السياحي: ما يُحفظ في متصفحك، والخدمات الخارجية المستعملة، والإحصائيات والإعلانات.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>1. المعلومات التي نجمعها</h2><p>لا نطلب منك أي بيانات شخصية لتصفح الموقع، ولا يوجد تسجيل أو حسابات.</p><h2>2. ما يُحفظ في متصفحك</h2><p>يحفظ الموقع في متصفحك فقط اختيارك للوضع الفاتح أو الداكن وتقييمك للموقع إن قمت به. لا تُرسل هذه المعلومات إلينا.</p><h2>3. خدمات خارجية</h2><p>لعرض بعض المحتوى، يتصل متصفحك مباشرة بخدمات أخرى، وقد تتلقى هذه الخدمات عنوان IP الخاص بك وفق سياساتها:</p><ul><li><strong>Open-Meteo</strong> لبيانات الطقس وحالة البحر.</li><li><strong>Aladhan</strong> لمواقيت الصلاة.</li><li><strong>OpenStreetMap</strong> و<strong>Google Maps</strong> للخرائط.</li><li><strong>YouTube</strong> (بدون ملفات تعريف) عند تشغيل فيديو فقط.</li><li><strong>Google Fonts</strong> للخطوط، و<strong>Blogger</strong> لاستضافة بعض الصور.</li></ul><h2>4. الإحصائيات والإعلانات</h2><p>قد نستخدم Google Analytics لمعرفة عدد الزيارات والصفحات الأكثر قراءة، وقد يعرض الموقع إعلانات من شركاء. في هذه الحالة قد تستخدم هذه الخدمات ملفات تعريف الارتباط (Cookies) وفق سياساتها. لا نبيع أي بيانات لأي طرف.</p><h2>5. التواصل</h2><p>عندما تراسلنا عبر WhatsApp أو Facebook، نستخدم رسالتك فقط للرد عليك.</p><h2>6. الاتصال</h2><p>لأي سؤال حول الخصوصية، تواصل معنا عبر صفحة <a href=\"~/contact/\">اتصل بنا</a>.</p>"
+    },
+    "fr": {
+     "title": "Politique de confidentialité",
+     "seoTitle": "",
+     "description": "Politique de confidentialité du guide de Ksar Sghir : données du navigateur, services externes, statistiques et publicité.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>1. Données collectées</h2><p>Aucune donnée personnelle n’est demandée pour naviguer sur le site ; il n’y a ni inscription ni compte.</p><h2>2. Ce qui est enregistré dans votre navigateur</h2><p>Le site enregistre uniquement dans votre navigateur votre choix de thème clair ou sombre et, le cas échéant, votre note du site. Ces informations ne nous sont pas envoyées.</p><h2>3. Services externes</h2><p>Pour afficher certains contenus, votre navigateur se connecte directement à d’autres services, qui peuvent recevoir votre adresse IP selon leurs propres politiques :</p><ul><li><strong>Open-Meteo</strong> pour la météo et l’état de la mer.</li><li><strong>Aladhan</strong> pour les horaires de prière.</li><li><strong>OpenStreetMap</strong> et <strong>Google Maps</strong> pour les cartes.</li><li><strong>YouTube</strong> (sans cookies) uniquement si vous lancez une vidéo.</li><li><strong>Google Fonts</strong> pour les polices et <strong>Blogger</strong> pour héberger certaines photos.</li></ul><h2>4. Statistiques et publicité</h2><p>Nous pouvons utiliser Google Analytics pour mesurer les visites et le site peut afficher des publicités de partenaires ; ces services peuvent alors utiliser des cookies selon leurs politiques. Nous ne vendons aucune donnée.</p><h2>5. Messages</h2><p>Si vous nous écrivez sur WhatsApp ou Facebook, votre message sert uniquement à vous répondre.</p><h2>6. Contact</h2><p>Pour toute question sur la confidentialité, utilisez la page <a href=\"~/contact/\">Contact</a>.</p>"
+    },
+    "en": {
+     "title": "Privacy policy",
+     "seoTitle": "",
+     "description": "Privacy policy of the Ksar Sghir travel guide: browser storage, third-party services, analytics and advertising.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>1. Information we collect</h2><p>You don’t need to give any personal data to browse the site; there is no sign-up and no accounts.</p><h2>2. What is stored in your browser</h2><p>The site only stores your light or dark theme choice and, if you give one, your site rating in your own browser. This is not sent to us.</p><h2>3. Third-party services</h2><p>To show some content, your browser connects directly to other services, which may receive your IP address under their own policies:</p><ul><li><strong>Open-Meteo</strong> for weather and sea conditions.</li><li><strong>Aladhan</strong> for prayer times.</li><li><strong>OpenStreetMap</strong> and <strong>Google Maps</strong> for maps.</li><li><strong>YouTube</strong> (no-cookie mode), only when you play a video.</li><li><strong>Google Fonts</strong> for fonts and <strong>Blogger</strong> to host some photos.</li></ul><h2>4. Analytics and advertising</h2><p>We may use Google Analytics to count visits, and the site may show ads from partners; these services may then use cookies under their policies. We never sell any data.</p><h2>5. Messages</h2><p>If you message us on WhatsApp or Facebook, we only use your message to reply to you.</p><h2>6. Contact</h2><p>For any privacy question, use the <a href=\"~/contact/\">Contact</a> page.</p>"
+    },
+    "es": {
+     "title": "Política de privacidad",
+     "seoTitle": "",
+     "description": "Política de privacidad de la guía de Alcazarseguer: datos del navegador, servicios externos, estadísticas y publicidad.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>1. Datos que recogemos</h2><p>No necesitas dar ningún dato personal para navegar por la web; no hay registro ni cuentas.</p><h2>2. Lo que se guarda en tu navegador</h2><p>La web solo guarda en tu navegador tu elección de tema claro u oscuro y, si la das, tu valoración del sitio. No se nos envía.</p><h2>3. Servicios externos</h2><p>Para mostrar algunos contenidos, tu navegador se conecta directamente a otros servicios, que pueden recibir tu dirección IP según sus propias políticas:</p><ul><li><strong>Open-Meteo</strong> para el tiempo y el estado del mar.</li><li><strong>Aladhan</strong> para los horarios de oración.</li><li><strong>OpenStreetMap</strong> y <strong>Google Maps</strong> para los mapas.</li><li><strong>YouTube</strong> (sin cookies), solo si reproduces un vídeo.</li><li><strong>Google Fonts</strong> para las fuentes y <strong>Blogger</strong> para alojar algunas fotos.</li></ul><h2>4. Estadísticas y publicidad</h2><p>Podemos usar Google Analytics para contar las visitas y la web puede mostrar anuncios de socios; estos servicios pueden usar cookies según sus políticas. Nunca vendemos datos.</p><h2>5. Mensajes</h2><p>Si nos escribes por WhatsApp o Facebook, solo usamos tu mensaje para responderte.</p><h2>6. Contacto</h2><p>Para cualquier pregunta sobre privacidad, usa la página de <a href=\"~/contact/\">Contacto</a>.</p>"
+    }
+   }
+  },
+  {
+   "slug": "terms",
+   "section": "page",
+   "category": "",
+   "cover": "",
+   "gallery": [],
+   "video": "",
+   "map": "",
+   "lat": null,
+   "lng": null,
+   "date": "2026-09-28",
+   "updated": "2026-09-28",
+   "draft": false,
+   "featured": false,
+   "related": [],
+   "geoChecked": true,
+   "i18n": {
+    "ar": {
+     "title": "اتفاقية الاستخدام",
+     "seoTitle": "",
+     "description": "اتفاقية استخدام موقع القصر الصغير السياحي: حقوق المحتوى والصور، دقة المعلومات والروابط الخارجية.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>1. القبول</h2><p>باستخدامك لموقع القصر الصغير (ksarsghir.com)، فإنك تقبل هذه الاتفاقية. إذا لم توافق على هذه الشروط، يرجى التوقف عن استخدام الموقع.</p><h2>2. استخدام المحتوى</h2><p>جميع محتويات الموقع من نصوص وصور ومقاطع فيديو محمية بحقوق الملكية الفكرية. يُمنع نسخ أو توزيع أو استخدام هذا المحتوى دون إذن كتابي مسبق من إدارة الموقع.</p><h2>3. الصور</h2><p>جميع الصور المنشورة على الموقع من إبداع بلال الهيشو — Ksar Sghir Lens، ما لم يُذكر غير ذلك. يُمنع استخدامها تجارياً دون إذن صريح.</p><h2>4. دقة المعلومات</h2><p>نحرص على دقة المعلومات، لكن الأوقات والأسعار وحالة الطقس والبحر قد تتغير. معلومات الطقس والبحر والمد والجزر ومواقيت الصلاة تقريبية وإرشادية فقط.</p><h2>5. الروابط الخارجية</h2><p>يحتوي الموقع على روابط لمواقع خارجية. لا نتحمل أي مسؤولية عن محتوى هذه المواقع أو سياسات خصوصيتها.</p><h2>6. التعديلات</h2><p>نحتفظ بحق تعديل هذه الاتفاقية في أي وقت. الاستمرار في استخدام الموقع بعد التعديلات يعني قبولك لها.</p>"
+    },
+    "fr": {
+     "title": "Conditions d’utilisation",
+     "seoTitle": "",
+     "description": "Conditions d’utilisation du guide de Ksar Sghir : droits sur les contenus et photos, exactitude, liens externes.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>1. Acceptation</h2><p>En utilisant le site Ksar Sghir (ksarsghir.com), vous acceptez ces conditions. Si vous ne les acceptez pas, merci de ne pas utiliser le site.</p><h2>2. Utilisation du contenu</h2><p>Tous les contenus du site (textes, photos, vidéos) sont protégés par le droit de la propriété intellectuelle. Toute copie, diffusion ou utilisation sans autorisation écrite préalable est interdite.</p><h2>3. Photos</h2><p>Sauf mention contraire, toutes les photos sont l’œuvre de Bilal El Hichou — Ksar Sghir Lens. Leur usage commercial est interdit sans autorisation explicite.</p><h2>4. Exactitude des informations</h2><p>Nous veillons à l’exactitude des informations, mais horaires, prix et conditions météo ou marines peuvent changer. Météo, état de la mer, marées et horaires de prière sont indicatifs.</p><h2>5. Liens externes</h2><p>Le site contient des liens vers des sites externes. Nous ne sommes pas responsables de leur contenu ni de leurs politiques.</p><h2>6. Modifications</h2><p>Nous pouvons modifier ces conditions à tout moment. Continuer à utiliser le site vaut acceptation des modifications.</p>"
+    },
+    "en": {
+     "title": "Terms of use",
+     "seoTitle": "",
+     "description": "Terms of use of the Ksar Sghir travel guide: content and photo rights, accuracy and external links.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>1. Acceptance</h2><p>By using the Ksar Sghir site (ksarsghir.com), you accept these terms. If you do not agree, please stop using the site.</p><h2>2. Use of content</h2><p>All site content (text, photos, videos) is protected by intellectual property rights. Copying, distributing or using it without prior written permission is not allowed.</p><h2>3. Photos</h2><p>Unless stated otherwise, all photos are by Bilal El Hichou — Ksar Sghir Lens. Commercial use requires explicit permission.</p><h2>4. Accuracy</h2><p>We do our best to keep information accurate, but times, prices and weather or sea conditions can change. Weather, sea, tide and prayer information is approximate and for guidance only.</p><h2>5. External links</h2><p>The site links to external websites. We are not responsible for their content or policies.</p><h2>6. Changes</h2><p>We may change these terms at any time. Continuing to use the site means you accept the changes.</p>"
+    },
+    "es": {
+     "title": "Condiciones de uso",
+     "seoTitle": "",
+     "description": "Condiciones de uso de la guía de Alcazarseguer: derechos de contenido y fotos, exactitud y enlaces externos.",
+     "keyword": "",
+     "alt": "",
+     "content": "<h2>1. Aceptación</h2><p>Al usar la web de Alcazarseguer (ksarsghir.com), aceptas estas condiciones. Si no estás de acuerdo, deja de usar la web.</p><h2>2. Uso del contenido</h2><p>Todo el contenido (textos, fotos, vídeos) está protegido por derechos de propiedad intelectual. No se permite copiarlo, distribuirlo ni usarlo sin permiso previo por escrito.</p><h2>3. Fotos</h2><p>Salvo indicación contraria, todas las fotos son de Bilal El Hichou — Ksar Sghir Lens. Su uso comercial requiere permiso expreso.</p><h2>4. Exactitud</h2><p>Cuidamos la exactitud de la información, pero horarios, precios y condiciones meteorológicas o del mar pueden cambiar. El tiempo, el mar, las mareas y los horarios de oración son orientativos.</p><h2>5. Enlaces externos</h2><p>La web enlaza a sitios externos. No nos responsabilizamos de su contenido ni de sus políticas.</p><h2>6. Cambios</h2><p>Podemos cambiar estas condiciones en cualquier momento. Seguir usando la web implica aceptar los cambios.</p>"
+    }
+   }
   }
  ]
 }

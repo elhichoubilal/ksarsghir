@@ -1,5 +1,5 @@
 {
- "version": "mukcq8ol",
+ "version": "mulj7gm1",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -190,7 +190,8 @@
     "en": "Advertise",
     "es": "Publicidad"
    },
-   "url": "advertise/"
+   "url": "advertise/",
+   "i18n": true
   }
  ],
  "footer": [
@@ -259,7 +260,8 @@
       "en": "About",
       "es": "Sobre mí"
      },
-     "url": "about/"
+     "url": "about/",
+     "i18n": true
     },
     {
      "label": {
@@ -268,7 +270,8 @@
       "en": "Contact",
       "es": "Contacto"
      },
-     "url": "contact/"
+     "url": "contact/",
+     "i18n": true
     },
     {
      "label": {
@@ -277,7 +280,8 @@
       "en": "Privacy",
       "es": "Privacidad"
      },
-     "url": "privacy/"
+     "url": "privacy/",
+     "i18n": true
     },
     {
      "label": {
@@ -286,7 +290,8 @@
       "en": "Terms",
       "es": "Condiciones"
      },
-     "url": "terms/"
+     "url": "terms/",
+     "i18n": true
     }
    ]
   }
@@ -318,11 +323,7 @@
   "google": ""
  },
  "analytics": "",
- "extraUrls": [
-  "about/",
-  "contact/",
-  "advertise/"
- ],
+ "extraUrls": [],
  "live": {
   "weather": true,
   "sea": true,
@@ -473,7 +474,8 @@
     "en": "Reach 77K followers in the region",
     "es": "Llega a 77K seguidores en la región"
    },
-   "url": "advertise/"
+   "url": "advertise/",
+   "i18n": true
   }
  ],
  "rating": {
@@ -557,6 +559,22 @@
  },
  "favicon": "",
  "migrations": [
-  "v7"
- ]
+  "v7",
+  "v8"
+ ],
+ "whatsapp": {
+  "float": true,
+  "number": "",
+  "message": {
+   "ar": "السلام عليكم، جيت من موقع القصر الصغير",
+   "fr": "Bonjour, je viens du site Ksar Sghir",
+   "en": "Hello, I found you on the Ksar Sghir website",
+   "es": "Hola, vengo de la web de Alcazarseguer"
+  }
+ },
+ "adPackages": {
+  "show": false,
+  "title": {},
+  "items": []
+ }
 }
