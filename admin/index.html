@@ -310,6 +310,11 @@ function migrate(){
     s.migrations.push('v8');
     setTimeout(function(){markDirty();toast('✨ تزادو الصفحات (من أنا، اتصل بنا، أعلن معنا، الخصوصية، الشروط) بالتصميم الجديد. ضغط "نشر التغييرات".');},1400);
   }
+  if(s.migrations.indexOf('v9')<0){
+    S.articles.forEach(function(a){if(a.section==='page'&&/^(contact|advertise|privacy|terms)$/.test(a.slug))a.noindex=true;});
+    s.migrations.push('v9');
+    setTimeout(markDirty,1500);
+  }
   if(s.migrations.indexOf('v7')>=0)return;
   var fix=function(it){if(!it||!it.url)return;
     if(/gallery\.ksarsghir\.com/.test(it.url)){it.url='gallery/';it.i18n=true;}
@@ -443,7 +448,7 @@ function viewArticles(){
       return '<div class="item"><div class="thumb" style="background-image:url(\''+esc(imgSrc(a.cover))+'\')">'+(a.cover?'':'🖼️')+'</div>'+
         '<div><h3>'+esc(x.title||a.slug)+'</h3><div class="sub"><span>'+esc(B.catLabel(S.site,a.category,'ar'))+'</span>'+
         '<span class="dots">'+LANGS.map(function(l){return '<span class="dot'+(B.hasLang(a,l)?' on':'')+'" title="'+LN[l]+'">'+l.toUpperCase()+'</span>';}).join('')+'</span>'+
-        '<span>SEO: <b class="score '+scoreCls(sc)+'">'+sc+'%</b></span>'+(a.draft?'<span class="pill">مسودة</span>':'')+((a.section||'tourisme')==='tourisme'&&!a.geoChecked?'<span class="pill" title="افتح الموضوع وصحح الموقع فالخريطة">📍 صحح الموقع</span>':'')+(S.site.featured===a.slug?'<span class="pill" style="background:var(--seaS);color:var(--seaD)">⭐ مميز</span>':'')+
+        '<span>SEO: <b class="score '+scoreCls(sc)+'">'+sc+'%</b></span>'+(a.draft?'<span class="pill">مسودة</span>':'')+(a.noindex?'<span class="pill" style="background:#eef2f5;color:#556">🚫 غير مؤرشفة</span>':'')+((a.section||'tourisme')==='tourisme'&&!a.geoChecked?'<span class="pill" title="افتح الموضوع وصحح الموقع فالخريطة">📍 صحح الموقع</span>':'')+(S.site.featured===a.slug?'<span class="pill" style="background:var(--seaS);color:var(--seaD)">⭐ مميز</span>':'')+
         '<span class="ltr">/'+esc(B.articleDir(a,'ar'))+'</span></div></div>'+
         '<div class="row acts"><button class="btn btn-s" data-edit="'+esc(a.slug)+'">✏️ تعديل</button>'+
         (a.draft?'':'<a class="btn btn-s" target="_blank" rel="noopener" href="'+esc(pagesUrl()+B.articleDir(a,'ar'))+'">↗</a>')+
@@ -490,6 +495,7 @@ function viewEdit(slug){
       field('تاريخ النشر','<input type="date" id="e-date" value="'+esc(a.date||today())+'">')+
       '<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="e-feat"'+(S.site.featured===a.slug&&a.slug?' checked':'')+'> ⭐ موضوع مميز فالصفحة الرئيسية</label>'+
       '<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="e-draft"'+(a.draft?' checked':'')+'> مسودة (ما يبانش فالموقع)</label>'+
+      '<label style="display:flex;gap:8px;align-items:center;font-weight:500" title="الصفحة كتبقى خدامة للزوار، ولكن ما كتبانش فنتائج Google وكتحيد من الـ sitemap"><input type="checkbox" id="e-noindex"'+(a.noindex?' checked':'')+'> 🚫 لا تؤرشف فـ Google</label>'+
     '</div>'+
     '<div class="card"><h2>🖼️ الصورة الرئيسية</h2><div class="cover-prev" id="cover-prev"></div>'+
       '<div class="row" style="margin-top:8px"><button class="btn btn-s" id="cover-up">⬆️ رفع صورة</button><button class="btn btn-s" id="cover-lib">📁 من المكتبة</button><button class="btn btn-s btn-d" id="cover-rm">حذف</button></div>'+
@@ -584,7 +590,7 @@ function viewEdit(slug){
   var slugTouched=!!orig;
   function syncMeta(){
     a.slug=$('#e-slug').value.trim();a.section=$('#e-section').value;a.category=$('#e-cat').value;a.date=$('#e-date').value||today();
-    a.draft=$('#e-draft').checked;a.cover=$('#e-cover').value.trim();a.map=$('#e-map').value.trim();a.video=$('#e-video').value.trim();vprev(a.video);
+    a.draft=$('#e-draft').checked;a.noindex=$('#e-noindex').checked;a.cover=$('#e-cover').value.trim();a.map=$('#e-map').value.trim();a.video=$('#e-video').value.trim();vprev(a.video);
     var la=parseFloat($('#e-lat').value),ln=parseFloat($('#e-lng').value);a.lat=isNaN(la)?null:la;a.lng=isNaN(ln)?null:ln;
     $('#e-url').textContent=a.slug?'/'+B.articleDir(a,'ar'):'';
     $('#cover-prev').style.backgroundImage=a.cover?'url("'+imgSrc(a.cover)+'")':'';
@@ -607,7 +613,7 @@ function viewEdit(slug){
     if(a.map&&!/output=embed&?$|maps\.google\.com\/maps\?q=/.test(a.map)){$('#e-map').value='';}
     $('#geo-status').textContent='✅ الموقع تبدل ('+src+')';syncMeta();});
   $('#ltabs').addEventListener('click',function(e){var b=e.target.closest('[data-l]');if(!b)return;S.editLang=b.dataset.l;tabs();pane();seo();});
-  ['e-slug','e-section','e-cat','e-date','e-draft','e-cover','e-map','e-lat','e-lng','e-video'].forEach(function(id){$('#'+id).addEventListener('input',function(){if(id==='e-slug')slugTouched=true;syncMeta();});$('#'+id).addEventListener('change',syncMeta);});
+  ['e-slug','e-section','e-cat','e-date','e-draft','e-noindex','e-cover','e-map','e-lat','e-lng','e-video'].forEach(function(id){$('#'+id).addEventListener('input',function(){if(id==='e-slug')slugTouched=true;syncMeta();});$('#'+id).addEventListener('change',syncMeta);});
   $('#e-slug').addEventListener('blur',function(){$('#e-slug').value=slugify($('#e-slug').value);syncMeta();});
   $('#cover-up').addEventListener('click',function(){pickImages(false,a.slug||'cover').then(function(p){if(p.length){$('#e-cover').value=p[0];syncMeta();}});});
   $('#cover-lib').addEventListener('click',function(){chooseFromLibrary(false).then(function(p){if(p.length){$('#e-cover').value=p[0];syncMeta();}});});

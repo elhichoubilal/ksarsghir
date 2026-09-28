@@ -305,7 +305,7 @@
       '<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n' +
       '<title>' + esc(o.title) + '</title>\n' +
       '<meta name="description" content="' + esc(o.description) + '">\n' +
-      '<meta name="robots" content="index, follow, max-image-preview:large">\n' +
+      '<meta name="robots" content="' + (o.noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large') + '">\n' +
       '<link rel="canonical" href="' + esc(absUrl(site, o.dir)) + '">\n' + alt + '\n' +
       '<meta property="og:type" content="' + (o.ogType || 'website') + '">\n' +
       '<meta property="og:site_name" content="' + esc(t(site.name, lang)) + '">\n' +
@@ -579,7 +579,7 @@
         publisher: { '@type': 'Organization', name: t(site.name, lang) }, mainEntityOfPage: url });
     }
     var o = { lang: lang, file: file, dir: dir, alternates: alternates, current: isPage ? a.slug + '/' : 'tourisme/', title: seoTitle(site, a, lang),
-      ogTitle: x.title, description: x.description, image: a.cover, ogType: 'article', schema: { '@context': 'https://schema.org', '@graph': graph } };
+      ogTitle: x.title, description: x.description, image: a.cover, ogType: 'article', noindex: !!a.noindex, schema: { '@context': 'https://schema.org', '@graph': graph } };
     var shareUrl = encodeURIComponent(url);
     var gallery = (a.gallery || []).filter(function (g) { return g && g.src; });
     return head(site, o) + header(site, o) +
@@ -630,7 +630,7 @@
       if (!files || !files[d + 'index.html']) return;
       var m = {}; LANGS.forEach(function (l) { m[l] = prefix(l) + d; }); add(m, today);
     });
-    published(articles).forEach(function (a) {
+    published(articles).filter(function (a) { return !a.noindex; }).forEach(function (a) {
       var d = {}; LANGS.forEach(function (l) { if (hasLang(a, l)) d[l] = articleDir(a, l); });
       add(d, a.updated || a.date);
     });
