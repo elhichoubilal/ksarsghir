@@ -99,8 +99,40 @@
     });
     return { html: out, toc: items };
   }
-  function fixContentPaths(file, html) {
-    return String(html || '').replace(/(src|href)="(assets\/[^"]+)"/g, function (m, a, p) { return a + '="' + rel(file, p) + '"'; });
+  function fixContentPaths(file, html, lang) {
+    return String(html || '').replace(/(src|href)="(assets\/[^"]+)"/g, function (m, a, p) { return a + '="' + rel(file, p) + '"'; })
+      .replace(/href="~\/([^"]*)"/g, function (m, p) { return 'href="' + rel(file, prefix(lang || 'ar') + p) + '"'; });
+  }
+  /* blocks that pages can include: <div data-block="contact"></div>, <div data-block="ad-packages"></div> */
+  var BLK = { ar: ['راسلنا', 'تابعنا', 'باقات الإعلان', 'الأكثر طلباً', 'اطلب هذه الباقة'], fr: ['Écrivez-nous', 'Suivez-nous', 'Formules publicitaires', 'Populaire', 'Choisir cette formule'],
+    en: ['Message us', 'Follow us', 'Advertising packages', 'Most popular', 'Choose this package'], es: ['Escríbenos', 'Síguenos', 'Paquetes publicitarios', 'Más popular', 'Elegir este paquete'] };
+  function waNumber(site) {
+    var w = (site.whatsapp && site.whatsapp.number) || ((site.social || []).filter(function (x) { return /wa\.me/.test(x.url || ''); })[0] || {}).url || '';
+    return String(w).replace(/\D/g, '');
+  }
+  function blocks(site, file, lang, html) {
+    return html.replace(/<div data-block="([a-z-]+)"><\/div>/g, function (m, name) {
+      if (name === 'contact') {
+        return '<div class="contact-grid">' + (site.social || []).filter(function (x) { return x && x.url; }).map(function (x) {
+          var ty = x.icon || socialType(x.url), sub = ty === 'whatsapp' ? '+' + String(x.url).replace(/\D/g, '') : String(x.url).replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+          return '<a class="contact-card soc-' + ty + '" href="' + esc(x.url) + '" target="_blank" rel="noopener"><span class="soc"><svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">' + (SOCIAL_SVG[ty] || SOCIAL_SVG.link) + '</svg></span><span><b>' + esc(x.name || ty) + '</b><small dir="ltr">' + esc(sub) + '</small></span></a>';
+        }).join('') + '</div>';
+      }
+      if (name === 'ad-packages') {
+        var ap = site.adPackages || {}, list = (ap.items || []).filter(function (x) { return t(x.name, lang); });
+        if (!ap.show || !list.length) return '';
+        var wa = waNumber(site);
+        return '<h2>' + esc(t(ap.title, lang) || BLK[lang][2]) + '</h2><div class="pk-grid">' + list.map(function (x) {
+          var feats = String(t(x.features, lang) || '').split(/\n+/).filter(function (f) { return f.trim(); });
+          var msg = encodeURIComponent((lang === 'ar' ? 'السلام عليكم، مهتم بباقة: ' : lang === 'fr' ? 'Bonjour, je suis intéressé par la formule : ' : lang === 'es' ? 'Hola, me interesa el paquete: ' : 'Hello, I am interested in the package: ') + t(x.name, lang));
+          return '<div class="pk' + (x.highlight ? ' pk-hot' : '') + '">' + (x.highlight ? '<span class="pk-tag">' + esc(BLK[lang][3]) + '</span>' : '') +
+            '<h3>' + esc(t(x.name, lang)) + '</h3>' + (x.price ? '<div class="pk-price"><b>' + esc(x.price) + '</b>' + (t(x.period, lang) ? '<small>' + esc(t(x.period, lang)) + '</small>' : '') + '</div>' : '') +
+            (feats.length ? '<ul>' + feats.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' : '') +
+            (wa ? '<a class="btn" href="https://wa.me/' + wa + '?text=' + msg + '" target="_blank" rel="noopener">' + esc(BLK[lang][4]) + '</a>' : '') + '</div>';
+        }).join('') + '</div>';
+      }
+      return '';
+    });
   }
 
   /* ---------- theme (editable from the dashboard) ---------- */
@@ -320,9 +352,15 @@
       '<div class="f-grid"><div class="f-about"><a class="brand" href="' + rel(file, prefix(lang)) + '">' + brandMark(site, file) + '<span class="brand-txt"><b>' + esc(t(site.name, lang)) + '</b></span></a>' +
       '<p>' + esc(t(site.tagline, lang)) + '</p>' + (social ? '<div class="social" aria-label="' + esc(UI[lang].follow) + '"><span>' + esc(UI[lang].follow) + '</span>' + social + '</div>' : '') + '</div>' + cols + '</div>' +
       '<p class="copy">© ' + new Date().getFullYear() + ' ' + esc(t(site.name, lang)) + ' · ' + esc(site.owner || '') + ' · ' + esc(UI[lang].rights) + '</p>' +
-      '</div></footer>\n<script src="' + rel(file, 'assets/site.js') + '?v=' + (site.version || 1) + '" defer></script>\n</body>\n</html>\n';
+      '</div></footer>\n' + waFloat(site, lang) + '<script src="' + rel(file, 'assets/site.js') + '?v=' + (site.version || 1) + '" defer></script>\n</body>\n</html>\n';
   }
 
+  function waFloat(site, lang) {
+    var w = site.whatsapp || {}, num = waNumber(site);
+    if (w.float === false || !num) return '';
+    var msg = t(w.message, lang);
+    return '<a class="wa-float" href="https://wa.me/' + num + (msg ? '?text=' + encodeURIComponent(msg) : '') + '" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">' + SOCIAL_SVG.whatsapp + '</svg></a>\n';
+  }
   function brandSvg() {
     return '<svg viewBox="0 0 40 40" width="34" height="34"><circle cx="20" cy="20" r="19" fill="currentColor" opacity=".12"/>' +
       '<path d="M6 25c4-3 8-3 12 0s8 3 12 0 6-2 6-2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>' +
@@ -522,7 +560,7 @@
     var x = a.i18n[lang], file = articleFile(a, lang), dir = articleDir(a, lang);
     var alternates = {}; LANGS.forEach(function (l) { if (hasLang(a, l)) alternates[l] = articleDir(a, l); });
     var isPage = a.section === 'page';
-    var body = withToc(fixContentPaths(file, x.content));
+    var body = withToc(blocks(site, file, lang, fixContentPaths(file, x.content, lang)));
     var rel4 = isPage ? [] : relatedFor(a, articles, lang);
     var url = absUrl(site, dir);
     var cover = a.cover ? (isAbs(a.cover) ? a.cover : absUrl(site, a.cover)) : undefined;
