@@ -64,9 +64,51 @@
   function absUrl(site, dir) { return String(site.baseUrl || '').replace(/\/$/, '') + '/' + dir; }
 
   function published(articles) { return articles.filter(function (a) { return !a.draft; }); }
-  function tourism(articles, lang) {
-    return published(articles).filter(function (a) { return (a.section || 'tourisme') === 'tourisme' && hasLang(a, lang); })
+  function byDate(a, b) { return (b.updated || b.date || '').localeCompare(a.updated || a.date || ''); }
+  function secOf(a) { return a.section || 'tourisme'; }
+  function inSection(articles, sec, lang) {
+    return published(articles).filter(function (a) { return secOf(a) === sec && hasLang(a, lang); })
       .sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
+  }
+  function tourism(articles, lang) { return inSection(articles, 'tourisme', lang); }
+
+  /* content sections with their own listing page */
+  var SECTIONS = {
+    guide: { icon: '📚',
+      name: { ar: 'الدليل', fr: 'Guide pratique', en: 'Travel guide', es: 'Guía práctica' },
+      h1: { ar: 'دليل القصر الصغير العملي', fr: 'Guide pratique de Ksar Sghir', en: 'Ksar Sghir travel guide', es: 'Guía práctica de Alcazarseguer' },
+      intro: { ar: 'أجوبة عملية قبل ما تجي: أحسن الشواطئ، كيفاش توصل، البواخر، الأوقات المناسبة ونصائح من عين المكان.',
+        fr: 'Des réponses pratiques avant de venir : meilleures plages, comment venir, ferries, meilleure période et conseils sur place.',
+        en: 'Practical answers before you come: best beaches, getting here, ferries, best time to visit and local tips.',
+        es: 'Respuestas prácticas antes de venir: mejores playas, cómo llegar, ferris, mejor época y consejos locales.' },
+      block: { ar: 'من الدليل', fr: 'Guide pratique', en: 'From the guide', es: 'De la guía' },
+      all: { ar: 'كل الدليل', fr: 'Tout le guide', en: 'Full guide', es: 'Toda la guía' } },
+    news: { icon: '📰',
+      name: { ar: 'المستجدات', fr: 'Actualités', en: 'News', es: 'Noticias' },
+      h1: { ar: 'مستجدات القصر الصغير', fr: 'Actualités de Ksar Sghir', en: 'Ksar Sghir news', es: 'Noticias de Alcazarseguer' },
+      intro: { ar: 'آخر الأخبار والإعلانات المفيدة للساكنة والزوار: الأشغال، الطرقان، المواسم والأحداث.',
+        fr: 'Les dernières infos utiles aux habitants et visiteurs : travaux, routes, saisons et événements.',
+        en: 'Latest useful updates for residents and visitors: works, roads, seasons and events.',
+        es: 'Últimas novedades útiles para vecinos y visitantes: obras, carreteras, temporadas y eventos.' },
+      block: { ar: 'آخر المستجدات', fr: 'Dernières actualités', en: 'Latest news', es: 'Últimas noticias' },
+      all: { ar: 'كل المستجدات', fr: 'Toutes les actualités', en: 'All news', es: 'Todas las noticias' } }
+  };
+  function secText(site, sec, key, lang) {
+    var s = ((site.sections || {})[sec] || {})[key];
+    return t(s, lang) || t((SECTIONS[sec] || {})[key], lang);
+  }
+  function recentNews(site, articles, lang) {
+    var cfg = (site.sections || {}).news || {}, days = +cfg.days || 30;
+    var list = inSection(articles, 'news', lang);
+    if (cfg.always) return list;
+    var lim = new Date(Date.now() - days * 864e5).toISOString().slice(0, 10);
+    return list.filter(function (a) { return (a.date || '') >= lim; });
+  }
+  function fmtDate(iso, lang) {
+    if (!iso) return '';
+    try {
+      return new Intl.DateTimeFormat({ ar: 'ar-MA', fr: 'fr-FR', en: 'en-GB', es: 'es-ES' }[lang], { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(iso + 'T12:00:00Z'));
+    } catch (e) { return iso; }
   }
   function category(site, id) {
     var c = (site.categories || []).filter(function (x) { return x.id === id; })[0];
@@ -75,6 +117,11 @@
   function catLabel(site, id, lang) { var c = category(site, id); return (c.icon ? c.icon + ' ' : '') + t(c.name, lang); }
 
   function relatedFor(a, articles, lang) {
+    if (secOf(a) !== 'tourisme') {
+      var same = inSection(articles, secOf(a), lang).filter(function (x) { return x.slug !== a.slug; });
+      var picks = (a.related || []).map(function (s) { return published(articles).filter(function (x) { return x.slug === s && hasLang(x, lang) && x.section !== 'page'; })[0]; }).filter(Boolean);
+      return picks.concat(same.filter(function (x) { return picks.indexOf(x) < 0; })).slice(0, 4);
+    }
     var pool = tourism(articles, lang).filter(function (x) { return x.slug !== a.slug; });
     var picked = (a.related || []).map(function (s) { return pool.filter(function (x) { return x.slug === s; })[0]; }).filter(Boolean);
     var same = pool.filter(function (x) { return x.category === a.category && picked.indexOf(x) < 0; });
@@ -111,7 +158,27 @@
     return String(w).replace(/\D/g, '');
   }
   function blocks(site, file, lang, html) {
-    return html.replace(/<div data-block="([a-z-]+)"><\/div>/g, function (m, name) {
+    return html.replace(/<div data-block="([a-z-]+)"[^>]*><\/div>/g, function (m, name) {
+      if (name === 'tm-live') {
+        var TM = { ar: ['جدول الوصول المباشر — ميناء طنجة المتوسط', 'مباشر', 'إلا ما بانش الجدول:', 'الموقع الرسمي Tanger Med Passagers ↗', 'المعلومات معروضة كما هي من لوحة الرحلات ديال الميناء.'],
+          fr: ['Arrivées en direct — port de Tanger Med', 'En direct', 'Si le tableau ne s’affiche pas :', 'Site officiel Tanger Med Passagers ↗', 'Données affichées telles quelles depuis le tableau du port.'],
+          en: ['Live arrivals — Tanger Med port', 'Live', 'If the board does not show:', 'Official Tanger Med Passagers site ↗', 'Shown as-is from the port’s live board.'],
+          es: ['Llegadas en directo — puerto de Tánger Med', 'Directo', 'Si no aparece el panel:', 'Web oficial Tanger Med Passagers ↗', 'Datos mostrados tal cual desde el panel del puerto.'] }[lang];
+        var off = { ar: 'ar', fr: 'fr', en: 'en', es: 'es' }[lang];
+        return '<div class="tm-live"><div class="tm-head"><b>' + esc(TM[0]) + '</b><span class="tm-dot">' + esc(TM[1]) + '</span></div>' +
+          '<div class="tm-frame"><iframe title="' + esc(TM[0]) + '" loading="lazy" src="https://panel1.tangermed.ma/arriv%C3%A9e-live.aspx"></iframe></div>' +
+          '<div class="tm-below"><span>' + esc(TM[2]) + '</span><a class="btn" href="https://www.tangermed-passagers.com/' + off + '/" target="_blank" rel="noopener">' + esc(TM[3]) + '</a></div>' +
+          '<p class="tm-note">' + esc(TM[4]) + '</p></div>';
+      }
+      if (name === 'ferry-map') {
+        var FM = { ar: ['المضيق', 'كل الخطوط', 'ميناء طنجة المتوسط', 'الجزيرة الخضراء', 'القصر الصغير', 'ميناء طنجة المدينة', 'طريفة', 'برشلونة', 'جنوة', 'طنجة المتوسط ⇄ الجزيرة الخضراء', 'خطوط نحو أوروبا', 'طنجة المدينة ⇄ طريفة', 'المسارات تقريبية'],
+          fr: ['Le détroit', 'Toutes les lignes', 'Port Tanger Med', 'Algésiras', 'Ksar Sghir', 'Port Tanger Ville', 'Tarifa', 'Barcelone', 'Gênes', 'Tanger Med ⇄ Algésiras', 'Lignes vers l’Europe', 'Tanger Ville ⇄ Tarifa', 'Tracés approximatifs'],
+          en: ['The Strait', 'All lines', 'Tanger Med port', 'Algeciras', 'Ksar Sghir', 'Tanger Ville port', 'Tarifa', 'Barcelona', 'Genoa', 'Tanger Med ⇄ Algeciras', 'Lines to Europe', 'Tanger Ville ⇄ Tarifa', 'Routes are approximate'],
+          es: ['El Estrecho', 'Todas las líneas', 'Puerto Tánger Med', 'Algeciras', 'Alcazarseguer', 'Puerto Tánger Ciudad', 'Tarifa', 'Barcelona', 'Génova', 'Tánger Med ⇄ Algeciras', 'Líneas a Europa', 'Tánger Ciudad ⇄ Tarifa', 'Rutas aproximadas'] }[lang];
+        return '<div class="fmap"><div class="fmap-tabs" role="group"><button type="button" data-fview="strait" aria-pressed="true">' + esc(FM[0]) + '</button><button type="button" data-fview="all" aria-pressed="false">' + esc(FM[1]) + '</button></div>' +
+          '<div class="fmap-box" data-fmap="' + esc(JSON.stringify(FM.slice(2, 9))) + '" role="img" aria-label="' + esc(FM[9]) + '"></div>' +
+          '<div class="fmap-legend"><span><i style="background:#f2a541"></i>' + esc(FM[9]) + '</span><span><i style="background:#2cc6e6"></i>' + esc(FM[10]) + '</span><span><i style="background:#fff;outline:1px solid #999"></i>' + esc(FM[11]) + '</span><span>· ' + esc(FM[12]) + '</span></div></div>';
+      }
       if (name === 'contact') {
         return '<div class="contact-grid">' + (site.social || []).filter(function (x) { return x && x.url; }).map(function (x) {
           var ty = x.icon || socialType(x.url), sub = ty === 'whatsapp' ? '+' + String(x.url).replace(/\D/g, '') : String(x.url).replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
@@ -215,6 +282,9 @@
     var k = site.ticker || {};
     if (!k.enabled) return '';
     var items = (k.items || []).filter(function (i) { return t(i.text, lang); });
+    if (k.autoNews && ARTS.length) {
+      items = recentNews(site, ARTS, lang).slice(0, 3).map(function (a) { var o = { text: {}, url: articleDir(a, lang), i18n: false }; o.text[lang] = '📰 ' + a.i18n[lang].title; return o; }).concat(items);
+    }
     if (!items.length) return '';
     var one = items.map(function (i) {
       var txt = esc(t(i.text, lang));
@@ -233,7 +303,7 @@
 
   /* ---------- images ---------- */
   /* small copies: Blogger resizes on its side; uploaded images get a "-sm" copy (640px) listed in site._thumbs */
-  var THUMBS = {};
+  var THUMBS = {}, ARTS = [], OFFICIAL = false;
   function smallOf(src) { return String(src).replace(/\.(webp|jpe?g|png)$/i, '-sm.webp'); }
   function sized(src, w) {
     if (/blogger\.googleusercontent\.com/.test(src || '')) return String(src).replace(/\/(s\d+|w\d+-h\d+[^/]*)\//, '/s' + w + '/');
@@ -374,9 +444,11 @@
     var x = a.i18n[lang];
     var img = a.cover ? '<img src="' + esc(asset(file, big ? sized(a.cover, 1200) : sized(a.cover, 640))) + '" alt="' + esc(x.alt || x.title) + '" loading="lazy" decoding="async" width="800" height="500">'
       : '<span class="ph" aria-hidden="true">' + brandSvg() + '</span>';
+    var sec = secOf(a), label = sec === 'tourisme' ? catLabel(site, a.category, lang) : (SECTIONS[sec] ? SECTIONS[sec].icon + ' ' + secText(site, sec, 'name', lang) : '');
     return '<article class="card' + (big ? ' card-big' : '') + '" data-cat="' + esc(a.category) + '">' +
       '<a href="' + esc(rel(file, articleDir(a, lang))) + '"><div class="card-img ph-bg">' + img + '</div>' +
-      '<div class="card-body"><span class="cat">' + esc(catLabel(site, a.category, lang)) + '</span>' +
+      '<div class="card-body"><span class="cat">' + esc(label) + '</span>' +
+      (sec === 'news' && a.date ? '<time class="card-date" datetime="' + esc(a.date) + '">' + esc(fmtDate(a.date, lang)) + '</time>' : '') +
       (big ? '<h3 class="card-title">' : '<h3 class="card-title">') + esc(x.title) + '</h3>' +
       (big ? '<p>' + esc(x.description) + '</p><span class="more">' + esc(UI[lang].read) + '</span>' : '') +
       '</div></a></article>';
@@ -391,16 +463,16 @@
 
   /* ---------- homepage extra sections ---------- */
   var LIVE_UI = {
-    ar: { title: 'القصر الصغير الآن', weather: 'الطقس', sea: 'حالة البحر', prayer: 'مواقيت الصلاة', waves: 'الموج', water: 'حرارة الماء', wind: 'الرياح', humidity: 'الرطوبة', period: 'فترة الموج', next: 'الصلاة القادمة', approx: 'مواقيت تقريبية حسب موقع القصر الصغير', unavailable: 'غير متاح حالياً', more: 'التفاصيل',
+    ar: { title: 'القصر الصغير الآن', weather: 'الطقس', sea: 'حالة البحر', prayer: 'مواقيت الصلاة', waves: 'الموج', water: 'حرارة الماء', wind: 'الرياح', humidity: 'الرطوبة', period: 'فترة الموج', next: 'الصلاة القادمة', official: 'مواقيت وزارة الأوقاف الرسمية', approx: 'مواقيت تقريبية حسب موقع القصر الصغير', unavailable: 'غير متاح حالياً', more: 'التفاصيل',
       prayers: { Fajr: 'الفجر', Sunrise: 'الشروق', Dhuhr: 'الظهر', Asr: 'العصر', Maghrib: 'المغرب', Isha: 'العشاء' }, seaStates: ['هادئ', 'خفيف', 'متوسط', 'هائج'],
       codes: { clear: 'صافٍ', partly: 'غائم جزئياً', cloudy: 'غائم', fog: 'ضباب', drizzle: 'رذاذ', rain: 'ممطر', snow: 'ثلج', showers: 'زخات مطر', storm: 'عاصفة رعدية' } },
-    fr: { title: 'Ksar Sghir en direct', weather: 'Météo', sea: 'État de la mer', prayer: 'Horaires de prière', waves: 'Vagues', water: 'Eau', wind: 'Vent', humidity: 'Humidité', period: 'Période', next: 'Prochaine prière', approx: 'Horaires approximatifs pour Ksar Sghir', unavailable: 'Indisponible pour le moment', more: 'Détails',
+    fr: { title: 'Ksar Sghir en direct', weather: 'Météo', sea: 'État de la mer', prayer: 'Horaires de prière', waves: 'Vagues', water: 'Eau', wind: 'Vent', humidity: 'Humidité', period: 'Période', next: 'Prochaine prière', official: 'Horaires officiels du ministère des Habous', approx: 'Horaires approximatifs pour Ksar Sghir', unavailable: 'Indisponible pour le moment', more: 'Détails',
       prayers: { Fajr: 'Fajr', Sunrise: 'Chourouk', Dhuhr: 'Dohr', Asr: 'Asr', Maghrib: 'Maghrib', Isha: 'Icha' }, seaStates: ['Calme', 'Peu agitée', 'Agitée', 'Forte'],
       codes: { clear: 'Ensoleillé', partly: 'Partiellement nuageux', cloudy: 'Nuageux', fog: 'Brouillard', drizzle: 'Bruine', rain: 'Pluie', snow: 'Neige', showers: 'Averses', storm: 'Orage' } },
-    en: { title: 'Ksar Sghir right now', weather: 'Weather', sea: 'Sea conditions', prayer: 'Prayer times', waves: 'Waves', water: 'Water', wind: 'Wind', humidity: 'Humidity', period: 'Period', next: 'Next prayer', approx: 'Approximate times for Ksar Sghir', unavailable: 'Not available right now', more: 'Details',
+    en: { title: 'Ksar Sghir right now', weather: 'Weather', sea: 'Sea conditions', prayer: 'Prayer times', waves: 'Waves', water: 'Water', wind: 'Wind', humidity: 'Humidity', period: 'Period', next: 'Next prayer', official: 'Official Ministry of Habous times', approx: 'Approximate times for Ksar Sghir', unavailable: 'Not available right now', more: 'Details',
       prayers: { Fajr: 'Fajr', Sunrise: 'Sunrise', Dhuhr: 'Dhuhr', Asr: 'Asr', Maghrib: 'Maghrib', Isha: 'Isha' }, seaStates: ['Calm', 'Slight', 'Moderate', 'Rough'],
       codes: { clear: 'Clear', partly: 'Partly cloudy', cloudy: 'Cloudy', fog: 'Fog', drizzle: 'Drizzle', rain: 'Rain', snow: 'Snow', showers: 'Showers', storm: 'Thunderstorm' } },
-    es: { title: 'Alcazarseguer ahora', weather: 'Tiempo', sea: 'Estado del mar', prayer: 'Horarios de oración', waves: 'Olas', water: 'Agua', wind: 'Viento', humidity: 'Humedad', period: 'Periodo', next: 'Próxima oración', approx: 'Horarios aproximados para Alcazarseguer', unavailable: 'No disponible ahora', more: 'Detalles',
+    es: { title: 'Alcazarseguer ahora', weather: 'Tiempo', sea: 'Estado del mar', prayer: 'Horarios de oración', waves: 'Olas', water: 'Agua', wind: 'Viento', humidity: 'Humedad', period: 'Periodo', next: 'Próxima oración', official: 'Horarios oficiales del Ministerio de Habices', approx: 'Horarios aproximados para Alcazarseguer', unavailable: 'No disponible ahora', more: 'Detalles',
       prayers: { Fajr: 'Fajr', Sunrise: 'Amanecer', Dhuhr: 'Dhuhr', Asr: 'Asr', Maghrib: 'Maghrib', Isha: 'Isha' }, seaStates: ['Calma', 'Marejadilla', 'Marejada', 'Fuerte'],
       codes: { clear: 'Despejado', partly: 'Parcialmente nublado', cloudy: 'Nublado', fog: 'Niebla', drizzle: 'Llovizna', rain: 'Lluvia', snow: 'Nieve', showers: 'Chubascos', storm: 'Tormenta' } }
   };
@@ -413,6 +485,7 @@
     if (w.prayer !== false) parts.push('<div class="live-card" data-live="prayer"><div class="live-h"><h3>' + esc(L.prayer) + '</h3>' + link('prayer') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
     if (!parts.length) return '';
     var cfg = { off: +w.utcOffset || 0, lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, seaLat: w.seaLat || 35.87, seaLng: w.seaLng || -5.55, method: w.method || 21, tune: w.tune || '', ui: L };
+    if (OFFICIAL) cfg.official = rel(file, 'data/prayer.json') + '?v=' + (site.version || 1);
     return '<section class="wrap block live" aria-labelledby="live-t"><h2 class="block-title" id="live-t">' + esc(L.title) + '</h2><div class="live-grid">' + parts.join('') + '</div>' +
       '<script type="application/json" id="ks-live">' + JSON.stringify(cfg).replace(/</g, '\\u003c') + '</script></section>';
   }
@@ -472,6 +545,12 @@
       '<script type="application/json" id="ks-map">' + JSON.stringify(pts).replace(/</g, '\\u003c') + '</script></section>';
   }
 
+  function secBlock(site, file, lang, sec, list, n) {
+    if (!list.length) return '';
+    return '<section class="wrap block sec-' + sec + '"><div class="block-head"><h2 class="block-title">' + esc(SECTIONS[sec].icon + ' ' + secText(site, sec, 'block', lang)) + '</h2><a href="' + rel(file, prefix(lang) + sec + '/') + '">' + esc(secText(site, sec, 'all', lang)) + '</a></div>' +
+      '<div class="grid">' + list.slice(0, n || 3).map(function (a) { return card(site, file, a, lang); }).join('') + '</div></section>';
+  }
+
   /* ---------- pages ---------- */
   function homePage(site, articles, lang) {
     var file = prefix(lang) + 'index.html', dir = prefix(lang);
@@ -506,12 +585,14 @@
       '<a class="btn" href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(t(h.cta, lang) || UI[lang].explore) + '</a>' +
       '</div><svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40c160-30 320-30 480 0s320 30 480 0 320-30 480 0v40H0z"/></svg></section>' +
       (show(site, 'live') ? liveSection(site, file, lang) : '') +
+      (show(site, 'news') ? secBlock(site, file, lang, 'news', recentNews(site, articles, lang), 3) : '') +
       adSlot(site, 'top', lang) +
       (show(site, 'intro') && t(site.intro, lang) ? '<section class="wrap intro prose">' + t(site.intro, lang) + '</section>' : '') +
       (show(site, 'video') ? homeVideo(site, lang) : '') +
       (show(site, 'featured') && feat ? '<section class="wrap block"><h2 class="block-title">' + esc(UI[lang].featured) + '</h2>' + card(site, file, feat, lang, true) + '</section>' : '') +
       (show(site, 'latest') && rest.length ? '<section class="wrap block"><div class="block-head"><h2 class="block-title">' + esc(UI[lang].latest) + '</h2><a href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(UI[lang].allTourism) + '</a></div>' +
         '<div class="grid">' + rest.map(function (a) { return card(site, file, a, lang); }).join('') + '</div></section>' : '') +
+      (show(site, 'guide') ? secBlock(site, file, lang, 'guide', inSection(articles, 'guide', lang), 3) : '') +
       (show(site, 'map') ? mapSection(site, articles, file, lang) : '') +
       (show(site, 'gallery') ? gallerySection(site, file, lang) : '') +
       (show(site, 'services') ? servicesSection(site, file, lang) : '') +
@@ -543,6 +624,24 @@
       adSlot(site, 'bottom', lang) + '</main>\n' + footer(site, o);
   }
 
+  function sectionPage(site, articles, sec, lang) {
+    var dir = prefix(lang) + sec + '/', file = dir + 'index.html';
+    var alternates = {}; LANGS.forEach(function (l) { alternates[l] = prefix(l) + sec + '/'; });
+    var list = inSection(articles, sec, lang);
+    var cfg = (site.sections || {})[sec] || {};
+    var h1 = secText(site, sec, 'h1', lang), intro = secText(site, sec, 'intro', lang);
+    var o = { lang: lang, file: file, dir: dir, alternates: alternates, current: sec + '/', title: (t(cfg.seoTitle, lang) || h1) + (t(cfg.seoTitle, lang) ? '' : ' | ' + t(site.name, lang)),
+      description: intro, image: list[0] && list[0].cover, noindex: !list.length,
+      schema: { '@context': 'https://schema.org', '@type': 'CollectionPage', name: h1, description: intro, mainEntity: { '@type': 'ItemList', itemListElement: list.map(function (a, i) {
+        return { '@type': 'ListItem', position: i + 1, url: absUrl(site, articleDir(a, lang)), name: a.i18n[lang].title }; }) } } };
+    var empty = { ar: 'قريباً… كنخدمو على أول المواضيع.', fr: 'Bientôt… les premiers articles arrivent.', en: 'Coming soon… first articles on the way.', es: 'Próximamente… primeros artículos en camino.' }[lang];
+    return head(site, o) + header(site, o) +
+      '<main id="main" class="wrap page">' + crumbs(site, file, lang, [[UI[lang].home, prefix(lang)], [secText(site, sec, 'name', lang)]]) +
+      '<h1 class="page-title">' + esc(h1) + '</h1><p class="lead">' + esc(intro) + '</p>' +
+      (list.length ? '<div class="grid">' + list.map(function (a) { return card(site, file, a, lang); }).join('') + '</div>' : '<p class="empty-note">' + esc(empty) + '</p>') +
+      adSlot(site, 'bottom', lang) + '</main>\n' + footer(site, o);
+  }
+
   function crumbs(site, file, lang, items) {
     return '<nav class="crumbs" aria-label="breadcrumb"><ol>' + items.map(function (it) {
       return '<li>' + (it[1] != null ? '<a href="' + esc(rel(file, it[1])) + '">' + esc(it[0]) + '</a>' : '<span aria-current="page">' + esc(it[0]) + '</span>') + '</li>';
@@ -564,12 +663,19 @@
     var rel4 = isPage ? [] : relatedFor(a, articles, lang);
     var url = absUrl(site, dir);
     var cover = a.cover ? (isAbs(a.cover) ? a.cover : absUrl(site, a.cover)) : undefined;
+    var sec = secOf(a), isTour = sec === 'tourisme';
+    var secName = isTour ? UI[lang].tourism : (SECTIONS[sec] ? secText(site, sec, 'name', lang) : '');
     var graph = [{ '@type': 'BreadcrumbList', itemListElement: [
       { '@type': 'ListItem', position: 1, name: UI[lang].home, item: absUrl(site, prefix(lang)) }
     ].concat(isPage ? [{ '@type': 'ListItem', position: 2, name: x.title, item: url }] : [
-      { '@type': 'ListItem', position: 2, name: UI[lang].tourism, item: absUrl(site, prefix(lang) + 'tourisme/') },
+      { '@type': 'ListItem', position: 2, name: secName, item: absUrl(site, prefix(lang) + sec + '/') },
       { '@type': 'ListItem', position: 3, name: x.title, item: url }]) }];
-    if (!isPage) {
+    if (!isPage && !isTour) {
+      graph.push({ '@type': sec === 'news' ? 'NewsArticle' : 'Article', headline: x.title, description: x.description, image: cover, inLanguage: lang,
+        datePublished: a.date, dateModified: a.updated || a.date, author: { '@type': 'Person', name: site.owner || '' },
+        publisher: { '@type': 'Organization', name: t(site.name, lang) }, mainEntityOfPage: url });
+    }
+    if (isTour) {
       var place = { '@type': a.category === 'beach' ? ['TouristAttraction', 'Beach'] : 'TouristAttraction', name: x.title, description: x.description, url: url,
         image: cover, inLanguage: lang, containedInPlace: { '@type': 'City', name: t(site.name, lang), alternateName: PLACE_NAMES, containedInPlace: { '@type': 'Country', name: 'Morocco' } } };
       if (a.lat != null) place.geo = { '@type': 'GeoCoordinates', latitude: a.lat, longitude: a.lng };
@@ -578,23 +684,24 @@
         datePublished: a.date, dateModified: a.updated || a.date, author: { '@type': 'Person', name: site.owner || '' },
         publisher: { '@type': 'Organization', name: t(site.name, lang) }, mainEntityOfPage: url });
     }
-    var o = { lang: lang, file: file, dir: dir, alternates: alternates, current: isPage ? a.slug + '/' : 'tourisme/', title: seoTitle(site, a, lang),
+    var o = { lang: lang, file: file, dir: dir, alternates: alternates, current: isPage ? a.slug + '/' : sec + '/', title: seoTitle(site, a, lang),
       ogTitle: x.title, description: x.description, image: a.cover, ogType: 'article', noindex: !!a.noindex, schema: { '@context': 'https://schema.org', '@graph': graph } };
     var shareUrl = encodeURIComponent(url);
     var gallery = (a.gallery || []).filter(function (g) { return g && g.src; });
     return head(site, o) + header(site, o) +
       '<main id="main" class="page">' +
       '<div class="wrap narrow">' + crumbs(site, file, lang, isPage ? [[UI[lang].home, prefix(lang)], [x.title]] :
-        [[UI[lang].home, prefix(lang)], [UI[lang].tourism, prefix(lang) + 'tourisme/'], [x.title]]) +
-      (isPage ? '' : '<span class="cat">' + esc(catLabel(site, a.category, lang)) + '</span>') +
+        [[UI[lang].home, prefix(lang)], [secName, prefix(lang) + sec + '/'], [x.title]]) +
+      (isPage ? '' : '<span class="cat">' + esc(isTour ? catLabel(site, a.category, lang) : (SECTIONS[sec] ? SECTIONS[sec].icon + ' ' : '') + secName) + '</span>') +
       '<h1 class="page-title">' + esc(x.title) + '</h1>' +
       (x.description ? '<p class="lead">' + esc(x.description) + '</p>' : '') +
-      (isPage ? '' : '<p class="meta"><time datetime="' + esc(a.updated || a.date) + '">' + esc(UI[lang].updated + ': ' + (a.updated || a.date)) + '</time></p>') +
+      (isPage ? '' : '<p class="meta"><time datetime="' + esc(a.updated || a.date) + '">' + esc(UI[lang].updated + ': ' + fmtDate(a.updated || a.date, lang)) + '</time></p>') +
       '</div>' +
       (a.cover ? '<figure class="cover wrap ph-bg"><img src="' + esc(asset(file, a.cover)) + '" alt="' + esc(x.alt || x.title) + '" width="1400" height="780" fetchpriority="high"></figure>' : '') +
       '<div class="wrap narrow">' +
       (body.toc.length > 2 ? '<nav class="toc" aria-label="' + esc(UI[lang].toc) + '"><h2>' + esc(UI[lang].toc) + '</h2><ol>' +
         body.toc.map(function (i) { return '<li><a href="#' + esc(i.id) + '">' + esc(i.text) + '</a></li>'; }).join('') + '</ol></nav>' : '') +
+      wxMini(site, a, lang) +
       adSlot(site, 'top', lang) +
       '<div class="prose">' + body.html + '</div>' +
       (a.video && ytId(a.video) ? '<section class="video"><h2>' + esc({ ar: 'فيديو', fr: 'Vidéo', en: 'Video', es: 'Vídeo' }[lang]) + '</h2>' + ytBlock(a.video, x.title, lang) + '</section>' : '') +
@@ -609,7 +716,7 @@
       '<a class="sh sh-fb" href="https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '" target="_blank" rel="noopener">Facebook</a>' +
       '<button class="sh sh-cp" type="button" data-copy="' + esc(url) + '">' + (lang === 'ar' ? 'نسخ الرابط' : lang === 'fr' ? 'Copier le lien' : lang === 'es' ? 'Copiar enlace' : 'Copy link') + '</button>' +
       '</div></section></div>' +
-      (rel4.length ? '<section class="related"><div class="wrap"><h2 class="block-title">' + esc(UI[lang].related) + '</h2><div class="grid grid-4">' +
+      (rel4.length ? '<section class="related"><div class="wrap"><h2 class="block-title">' + esc(isTour ? UI[lang].related : READ_ALSO[lang]) + '</h2><div class="grid grid-4">' +
         rel4.map(function (r) { return card(site, file, r, lang); }).join('') + '</div></div></section>' : '') +
       '</main>\n' + footer(site, o);
   }
@@ -626,9 +733,10 @@
     var today = new Date().toISOString().slice(0, 10);
     var home = {}, tour = {}; LANGS.forEach(function (l) { home[l] = prefix(l); tour[l] = prefix(l) + 'tourisme/'; });
     add(home, today); add(tour, today);
-    ['gallery/', 'meteo/', 'salat/'].forEach(function (d) {
+    ['gallery/', 'meteo/', 'salat/', 'mer/', 'guide/', 'news/', 'hebergement/', 'numeros-utiles/'].forEach(function (d) {
       if (!files || !files[d + 'index.html']) return;
-      var m = {}; LANGS.forEach(function (l) { m[l] = prefix(l) + d; }); add(m, today);
+      if ((d === 'guide/' || d === 'news/') && !published(articles).some(function (a) { return a.section === d.slice(0, -1); })) return;
+      var m = {}; LANGS.forEach(function (l) { if (files[prefix(l) + d + 'index.html']) m[l] = prefix(l) + d; }); add(m, today);
     });
     published(articles).filter(function (a) { return !a.noindex; }).forEach(function (a) {
       var d = {}; LANGS.forEach(function (l) { if (hasLang(a, l)) d[l] = articleDir(a, l); });
@@ -711,12 +819,13 @@
     return simplePage(site, lang, 'meteo/', {
       h1: U.h1, title: U.h1 + ' | ' + t(site.name, lang), description: U.lead, lead: U.lead, mainClass: 'tool-page',
       schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: U.h1, description: U.lead, about: { '@type': 'Place', name: t(site.name, lang), geo: { '@type': 'GeoCoordinates', latitude: cfg.lat, longitude: cfg.lng } } },
-      body: function () {
+      body: function (file) {
         return '<div class="wrap tool" data-tool="weather">' +
           sec('wx-now', U.now, '<div class="wx-now" data-slot="now"><div class="live-skel"></div></div>') +
           sec('wx-hours', U.today, '<div class="wx-hours" data-slot="hours"><div class="live-skel"></div></div>') +
           sec('wx-week', U.week, '<div class="wx-week" data-slot="week"><div class="live-skel"></div></div>') +
-          '<div class="wx-two">' + sec('wx-sea', U.sea, '<div data-slot="sea"><div class="live-skel"></div></div><p class="live-note">' + esc(U.safety) + '</p>') +
+          '<div class="wx-two">' + sec('wx-sea', U.sea, '<div data-slot="sea"><div class="live-skel"></div></div><p class="live-note">' + esc(U.safety) + '</p>' +
+            (pg(site, 'mer') ? '<a class="btn btn-ghost wx-sea-more" href="' + esc(rel(file, prefix(lang) + 'mer/')) + '">🌊 ' + esc(SUI[lang].name) + (lang === 'ar' ? ' ←' : ' →') + '</a>' : '')) +
           sec('wx-sun', U.sun, '<div data-slot="sun"><div class="live-skel"></div></div>') + '</div>' +
           sec('wx-tide', U.tide, '<div data-slot="tide"><div class="live-skel"></div></div><p class="live-note">' + esc(U.tideNote) + '</p>') +
           sec('wx-map', U.map, '<div class="wx-map"><iframe loading="lazy" title="' + esc(U.map) + '" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=mm&metricTemp=%C2%B0C&metricWind=km%2Fh&zoom=8&overlay=wind&product=ecmwf&level=surface&lat=' + cfg.lat + '&lon=' + cfg.lng + '&message=true"></iframe></div>') +
@@ -743,6 +852,7 @@
   function prayerPage(site, lang) {
     var U = PUI[lang], w = site.live || {}, L = LIVE_UI[lang];
     var cfg = { off: +w.utcOffset || 0, tool: 'prayer', lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, method: w.method || 21, tune: w.tune || '', hijriAdj: w.hijriAdj || 0, ui: U, prayers: L.prayers, place: t(site.name, lang) };
+    if (OFFICIAL) cfg.officialNote = t(w.officialNote, lang) || { ar: 'المواقيت حسب الجدول الرسمي لوزارة الأوقاف والشؤون الإسلامية.', fr: 'Horaires selon le calendrier officiel du ministère des Habous et des Affaires islamiques.', en: 'Times from the official timetable of the Ministry of Habous and Islamic Affairs.', es: 'Horarios según el calendario oficial del Ministerio de Habices y Asuntos Islámicos.' }[lang];
     return simplePage(site, lang, 'salat/', {
       h1: U.h1, title: U.h1 + ' | ' + t(site.name, lang), description: U.lead, lead: U.lead, mainClass: 'tool-page',
       schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: U.h1, description: U.lead },
@@ -753,16 +863,251 @@
           '<div class="pr-table" data-slot="month"><div class="live-skel"></div></div></section>' +
           '<p class="live-note">' + esc(U.note) + '</p><div class="prose wx-about">' + U.about + '</div></div>';
       },
+      scripts: function (file) { var c = JSON.parse(JSON.stringify(cfg)); if (OFFICIAL) c.official = rel(file, 'data/prayer.json') + '?v=' + (site.version || 1); return toolScript(site, file, c); }
+    });
+  }
+
+  /* ---------- small helpers for new sections ---------- */
+  var READ_ALSO = { ar: 'اقرأ أيضاً', fr: 'À lire aussi', en: 'Read also', es: 'Lee también' };
+  function pg(site, key) { return (site.pages || {})[key] !== false; }
+
+  /* mini weather card inside beach / port articles (filled by site.js) */
+  var MINI = { ar: ['الجو والبحر دابا', 'تفاصيل البحر', 'الموج', 'الماء', 'الرياح', 'السباحة'], fr: ['Météo et mer maintenant', 'Détails de la mer', 'Vagues', 'Eau', 'Vent', 'Baignade'],
+    en: ['Weather and sea now', 'Sea details', 'Waves', 'Water', 'Wind', 'Swimming'], es: ['Tiempo y mar ahora', 'Detalles del mar', 'Olas', 'Agua', 'Viento', 'Baño'] };
+  function wxMini(site, a, lang) {
+    var mode = a.wx || 'auto';
+    if (mode === 'off' || a.lat == null || isNaN(a.lat)) return '';
+    if (mode === 'auto' && !(secOf(a) === 'tourisme' && (a.category === 'beach' || a.category === 'port'))) return '';
+    var file = articleFile(a, lang), M = MINI[lang], L = LIVE_UI[lang], W = WUI[lang];
+    var cfg = { lat: +a.lat, lng: +a.lng, lang: lang, off: +((site.live || {}).utcOffset) || 0, ui: { waves: M[2], water: M[3], wind: M[4], swim: M[5], good: W.good, fair: W.fair, bad: W.bad, error: W.error }, codes: L.codes };
+    return '<aside class="wx-mini" data-wx="' + esc(JSON.stringify(cfg)) + '"><div class="wx-mini-h"><b>' + esc(M[0]) + '</b>' +
+      (pg(site, 'mer') ? '<a href="' + esc(rel(file, prefix(lang) + 'mer/')) + '">' + esc(M[1]) + (lang === 'ar' ? ' ←' : ' →') + '</a>' : '') + '</div><div class="wx-mini-b"><div class="live-skel"></div></div></aside>';
+  }
+
+  /* ---------- accommodation: Booking + local rentals (data/rentals.json) ---------- */
+  var HUI = {
+    ar: { h1: 'الإقامة في القصر الصغير', lead: 'فنادق قريبة عبر Booking، وديور وشقق للكراء من عند ناس المنطقة مباشرة عبر واتساب.', name: 'الإقامة',
+      bookTitle: 'فنادق وشقق على Booking', bookText: 'قارن الأثمنة والتقييمات واحجز بأمان. الحجز كيتم فموقع Booking مباشرة.', bookBtn: 'شوف الأثمنة على Booking ↗',
+      sponsored: 'رابط شراكة: إلا حجزتي عبره كناخدو عمولة صغيرة بلا ما يزيد عليك حتى درهم، وكتعاونا نخليو الموقع مجاني.',
+      rentTitle: 'ديور وشقق للكراء', rentIntro: 'إعلانات من عند ملاكين فالمنطقة. التواصل مباشرة مع المالك عبر واتساب.', persons: 'أشخاص', rooms: 'بيوت', from: 'ابتداءً من', ask: 'السلام عليكم، شفت الإعلان ديالكم فموقع القصر الصغير: ', ask2: '. واش باقي متوفر؟',
+      wa: 'تواصل عبر واتساب', busy: 'محجوز حالياً', featured: 'مميز', none: 'ما كاين حتى إعلان دابا. رجع قريباً.', photos: 'صور',
+      ctaTitle: 'عندك دار ولا شقة للكراء؟', ctaText: 'زيد الإعلان ديالك فهاد الصفحة. صيفط لينا الصور والمعلومات فواتساب.', ctaBtn: 'زيد الإعلان ديالي', ctaMsg: 'السلام عليكم، بغيت نزيد إعلان كراء فموقع القصر الصغير.',
+      warn: '⚠️ ما تصيفط حتى شي عربون قبل ما تشوف المكان ولا تتأكد من المالك. الموقع كيعرض الإعلانات فقط وماشي طرف فالكراء.' },
+    fr: { h1: 'Où dormir à Ksar Sghir', lead: 'Hôtels proches via Booking, et maisons ou appartements à louer directement auprès des habitants via WhatsApp.', name: 'Hébergement',
+      bookTitle: 'Hôtels et appartements sur Booking', bookText: 'Comparez prix et avis, réservez en sécurité. La réservation se fait directement sur Booking.', bookBtn: 'Voir les prix sur Booking ↗',
+      sponsored: 'Lien partenaire : si vous réservez via ce lien, nous touchons une petite commission sans aucun surcoût pour vous. Cela aide à garder le site gratuit.',
+      rentTitle: 'Maisons et appartements à louer', rentIntro: 'Annonces de propriétaires de la région. Contact direct avec le propriétaire via WhatsApp.', persons: 'pers.', rooms: 'ch.', from: 'à partir de', ask: 'Bonjour, j’ai vu votre annonce sur le site de Ksar Sghir : ', ask2: '. Est-elle toujours disponible ?',
+      wa: 'Contacter sur WhatsApp', busy: 'Indisponible', featured: 'À la une', none: 'Aucune annonce pour le moment. Revenez bientôt.', photos: 'photos',
+      ctaTitle: 'Vous louez une maison ou un appartement ?', ctaText: 'Ajoutez votre annonce sur cette page. Envoyez-nous photos et infos sur WhatsApp.', ctaBtn: 'Ajouter mon annonce', ctaMsg: 'Bonjour, je souhaite publier une annonce de location sur le site de Ksar Sghir.',
+      warn: '⚠️ N’envoyez jamais d’acompte avant d’avoir vu le logement ou vérifié le propriétaire. Le site affiche les annonces et n’est pas partie à la location.' },
+    en: { h1: 'Where to stay in Ksar Sghir', lead: 'Nearby hotels on Booking, plus houses and flats rented directly by locals via WhatsApp.', name: 'Where to stay',
+      bookTitle: 'Hotels and apartments on Booking', bookText: 'Compare prices and reviews and book safely. Booking is made directly on Booking.com.', bookBtn: 'See prices on Booking ↗',
+      sponsored: 'Affiliate link: if you book through it we earn a small commission at no extra cost to you. It helps keep this site free.',
+      rentTitle: 'Houses and flats for rent', rentIntro: 'Listings from local owners. Contact the owner directly on WhatsApp.', persons: 'guests', rooms: 'rooms', from: 'from', ask: 'Hello, I saw your listing on the Ksar Sghir website: ', ask2: '. Is it still available?',
+      wa: 'Contact on WhatsApp', busy: 'Currently booked', featured: 'Featured', none: 'No listings right now. Check back soon.', photos: 'photos',
+      ctaTitle: 'Renting out a house or flat?', ctaText: 'Add your listing to this page. Send us photos and details on WhatsApp.', ctaBtn: 'Add my listing', ctaMsg: 'Hello, I would like to add a rental listing on the Ksar Sghir website.',
+      warn: '⚠️ Never send a deposit before seeing the place or checking the owner. This site only displays listings and is not a party to any rental.' },
+    es: { h1: 'Dónde dormir en Alcazarseguer', lead: 'Hoteles cercanos en Booking, y casas o pisos de alquiler directamente con vecinos por WhatsApp.', name: 'Alojamiento',
+      bookTitle: 'Hoteles y apartamentos en Booking', bookText: 'Compara precios y opiniones y reserva con seguridad. La reserva se hace directamente en Booking.', bookBtn: 'Ver precios en Booking ↗',
+      sponsored: 'Enlace de afiliado: si reservas a través de él recibimos una pequeña comisión sin coste extra para ti. Nos ayuda a mantener el sitio gratuito.',
+      rentTitle: 'Casas y pisos en alquiler', rentIntro: 'Anuncios de propietarios de la zona. Contacto directo con el propietario por WhatsApp.', persons: 'pers.', rooms: 'hab.', from: 'desde', ask: 'Hola, he visto su anuncio en la web de Alcazarseguer: ', ask2: '. ¿Sigue disponible?',
+      wa: 'Contactar por WhatsApp', busy: 'Ocupado', featured: 'Destacado', none: 'No hay anuncios ahora. Vuelve pronto.', photos: 'fotos',
+      ctaTitle: '¿Alquilas una casa o un piso?', ctaText: 'Añade tu anuncio a esta página. Envíanos fotos e información por WhatsApp.', ctaBtn: 'Añadir mi anuncio', ctaMsg: 'Hola, quiero publicar un anuncio de alquiler en la web de Alcazarseguer.',
+      warn: '⚠️ No envíes nunca una señal antes de ver el alojamiento o comprobar al propietario. Esta web solo muestra anuncios y no es parte del alquiler.' }
+  };
+  var DEFAULT_RENTALS = { page: {}, booking: { enabled: true, aid: '', url: '', hotels: [] }, rentals: { enabled: true, items: [] }, cta: { enabled: true } };
+  function bookingUrl(b, lang, u) {
+    var bl = { ar: 'ar', fr: 'fr', en: 'en-gb', es: 'es' }[lang];
+    u = u || b.url || 'https://www.booking.com/searchresults.html?ss=Ksar+es+Seghir%2C+Morocco';
+    if (/booking\.com/.test(u)) {
+      if (!/[?&]lang=/.test(u)) u += (u.indexOf('?') < 0 ? '?' : '&') + 'lang=' + bl;
+      if (b.aid && !/[?&]aid=/.test(u)) u += '&aid=' + encodeURIComponent(b.aid);
+    }
+    return u;
+  }
+  function lodgingPage(site, data, lang) {
+    var D = data || DEFAULT_RENTALS, U = HUI[lang], P = D.page || {}, B = D.booking || {}, R = D.rentals || {}, C = D.cta || {};
+    var h1 = t(P.title, lang) || U.h1, lead = t(P.intro, lang) || U.lead;
+    var wa = waNumber(site);
+    var items = (R.items || []).filter(function (x) { return x && !x.hidden && t(x.title, lang); })
+      .sort(function (p, q) { return (q.featured ? 1 : 0) - (p.featured ? 1 : 0) || (p.available === false ? 1 : 0) - (q.available === false ? 1 : 0); });
+    return simplePage(site, lang, 'hebergement/', {
+      h1: h1, title: t(P.seoTitle, lang) || (h1 + ' | ' + t(site.name, lang)), description: t(P.description, lang) || lead, lead: lead, mainClass: 'lodge-page',
+      image: items[0] && items[0].images && items[0].images[0],
+      schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: h1, description: lead },
+      body: function (file) {
+        var out = '<div class="wrap">';
+        if (B.enabled !== false) {
+          var hotels = (B.hotels || []).filter(function (h) { return h && h.name && h.url; });
+          out += '<section class="bk"><div class="bk-in"><div><h2>' + esc(t(B.title, lang) || U.bookTitle) + '</h2><p>' + esc(t(B.text, lang) || U.bookText) + '</p></div>' +
+            '<a class="btn bk-btn" href="' + esc(bookingUrl(B, lang)) + '" target="_blank" rel="sponsored noopener">' + esc(t(B.button, lang) || U.bookBtn) + '</a></div>' +
+            (hotels.length ? '<div class="htl-grid">' + hotels.map(function (h) {
+              return '<a class="htl" href="' + esc(bookingUrl(B, lang, h.url)) + '" target="_blank" rel="sponsored noopener">' +
+                (h.img ? '<span class="htl-img ph-bg"><img src="' + esc(asset(file, sized(h.img, 640))) + '" alt="' + esc(h.name) + '" loading="lazy" decoding="async"></span>' : '') +
+                '<span class="htl-b"><b>' + esc(h.name) + '</b>' + (t(h.area, lang) ? '<small>' + esc(t(h.area, lang)) + '</small>' : '') + (t(h.note, lang) ? '<span>' + esc(t(h.note, lang)) + '</span>' : '') + '</span></a>';
+            }).join('') + '</div>' : '') +
+            '<p class="bk-note">' + esc(t(B.note, lang) || U.sponsored) + '</p></section>';
+        }
+        if (R.enabled !== false) {
+          out += '<section class="rent"><h2>' + esc(t(R.title, lang) || U.rentTitle) + '</h2><p class="muted-p">' + esc(t(R.intro, lang) || U.rentIntro) + '</p>';
+          out += items.length ? '<div class="rent-grid">' + items.map(function (x) {
+            var imgs = (x.images || []).filter(Boolean), title = t(x.title, lang), busy = x.available === false;
+            var feats = String(t(x.features, lang) || '').split(/\n+/).filter(function (f) { return f.trim(); });
+            var num = String(x.whatsapp || wa || '').replace(/\D/g, '');
+            var msg = encodeURIComponent(U.ask + title + (x.id ? ' (#' + x.id + ')' : '') + U.ask2);
+            return '<article class="rent-card' + (busy ? ' is-busy' : '') + (x.featured ? ' is-hot' : '') + '">' +
+              '<div class="rent-imgs ph-bg" data-lb-group data-lb-all>' + (imgs.length ? imgs.map(function (src, i) {
+                return '<a href="' + esc(asset(file, sized(src, 2048))) + '" data-lb' + (i ? ' hidden' : '') + '><img src="' + esc(asset(file, sized(src, 800))) + '" alt="' + esc(title) + '" loading="lazy" decoding="async"></a>';
+              }).join('') : '<span class="ph">' + brandSvg() + '</span>') +
+              (imgs.length > 1 ? '<span class="rent-count">📷 ' + imgs.length + ' ' + esc(U.photos) + '</span>' : '') +
+              (x.featured ? '<span class="rent-tag">' + esc(U.featured) + '</span>' : '') + (busy ? '<span class="rent-tag rent-busy">' + esc(U.busy) + '</span>' : '') + '</div>' +
+              '<div class="rent-b"><h3>' + esc(title) + '</h3>' + (t(x.area, lang) ? '<p class="rent-area">📍 ' + esc(t(x.area, lang)) + '</p>' : '') +
+              '<p class="rent-facts">' + (x.capacity ? '<span>👥 ' + esc(x.capacity) + ' ' + esc(U.persons) + '</span>' : '') + (x.rooms ? '<span>🛏️ ' + esc(x.rooms) + ' ' + esc(U.rooms) + '</span>' : '') + '</p>' +
+              (t(x.desc, lang) ? '<p class="rent-desc">' + esc(t(x.desc, lang)) + '</p>' : '') +
+              (feats.length ? '<ul class="rent-feats">' + feats.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' : '') +
+              '<div class="rent-foot">' + (x.price ? '<span class="rent-price"><small>' + esc(U.from) + '</small> <b>' + esc(x.price) + '</b>' + (t(x.priceNote, lang) ? ' <small>' + esc(t(x.priceNote, lang)) + '</small>' : '') + '</span>' : '<span></span>') +
+              (num ? '<a class="btn btn-wa" href="https://wa.me/' + num + '?text=' + msg + '" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">' + SOCIAL_SVG.whatsapp + '</svg> ' + esc(U.wa) + '</a>' : '') + '</div></div></article>';
+          }).join('') + '</div>' : '<p class="empty-note">' + esc(U.none) + '</p>';
+          out += '<p class="rent-warn">' + esc(t(R.warn, lang) || U.warn) + '</p></section>';
+        }
+        if (C.enabled !== false && wa) {
+          out += '<section class="lodge-cta"><div><h2>' + esc(t(C.title, lang) || U.ctaTitle) + '</h2><p>' + esc(t(C.text, lang) || U.ctaText) + '</p></div>' +
+            '<a class="btn btn-wa" href="https://wa.me/' + wa + '?text=' + encodeURIComponent(U.ctaMsg) + '" target="_blank" rel="noopener">' + esc(t(C.button, lang) || U.ctaBtn) + '</a></section>';
+        }
+        return out + '</div>';
+      }
+    });
+  }
+
+  /* ---------- useful numbers (data/numbers.json) ---------- */
+  var NUI = {
+    ar: { h1: 'أرقام مهمة في القصر الصغير', lead: 'أرقام الطوارئ والأرقام المفيدة. ضغط على الرقم باش تعيط مباشرة.', name: 'الأرقام المهمة', sos: 'الطوارئ', verified: 'آخر تحقق', pending: 'قيد التحقق',
+      note: 'فالقصر الصغير والطرقان ديال المنطقة، الدرك الملكي (177) هو المسؤول عادة. فحالة حادث ولا إصابة عيط على 15 للإسعاف.',
+      src: 'الأرقام المحلية ما كتنشرش حتى يتم التأكد منها. لاحظتي رقم غالط ولا ناقص؟ تواصل معنا. هاد الصفحة إرشادية وماشي تابعة لأي جهة رسمية.' },
+    fr: { h1: 'Numéros utiles à Ksar Sghir', lead: 'Numéros d’urgence et contacts utiles. Touchez un numéro pour appeler.', name: 'Numéros utiles', sos: 'Urgences', verified: 'Vérifié', pending: 'En vérification',
+      note: 'À Ksar Sghir et sur les routes de la région, la Gendarmerie royale (177) est généralement compétente. En cas d’accident ou de blessure, appelez le 15.',
+      src: 'Les numéros locaux ne sont publiés qu’après vérification. Un numéro faux ou manquant ? Contactez-nous. Page indicative, sans lien avec un organisme officiel.' },
+    en: { h1: 'Useful numbers in Ksar Sghir', lead: 'Emergency numbers and useful contacts. Tap a number to call.', name: 'Useful numbers', sos: 'Emergency', verified: 'Last checked', pending: 'Being verified',
+      note: 'In Ksar Sghir and on the region’s roads, the Royal Gendarmerie (177) is usually in charge. For an accident or injury, call 15.',
+      src: 'Local numbers are only published once verified. Spotted a wrong or missing number? Contact us. This page is for guidance and is not run by any official body.' },
+    es: { h1: 'Teléfonos útiles en Alcazarseguer', lead: 'Números de emergencia y contactos útiles. Toca un número para llamar.', name: 'Teléfonos útiles', sos: 'Emergencias', verified: 'Verificado', pending: 'En verificación',
+      note: 'En Alcazarseguer y en las carreteras de la zona, la Gendarmería Real (177) suele ser la competente. En caso de accidente o herida, llama al 15.',
+      src: 'Los números locales solo se publican tras verificarlos. ¿Un número erróneo o que falta? Contáctanos. Página orientativa, sin relación con ningún organismo oficial.' }
+  };
+  var DEFAULT_NUMBERS = { verified: '2026-10', showPending: false, groups: [
+    { id: 'sos', icon: '🚨', name: { ar: 'الطوارئ', fr: 'Urgences', en: 'Emergency', es: 'Emergencias' }, items: [
+      { sos: true, color: '#0b5f8a', phone: '177', name: { ar: 'الدرك الملكي', fr: 'Gendarmerie royale', en: 'Royal Gendarmerie', es: 'Gendarmería Real' }, note: { ar: 'خارج المدن والطرقان', fr: 'Hors villes et routes', en: 'Outside cities, roads', es: 'Fuera de ciudades, carreteras' } },
+      { sos: true, color: '#d93a3a', phone: '15', name: { ar: 'الوقاية المدنية', fr: 'Protection civile', en: 'Civil Protection', es: 'Protección Civil' }, note: { ar: 'الإسعاف والمطافئ', fr: 'Ambulance et pompiers', en: 'Ambulance and fire', es: 'Ambulancia y bomberos' } },
+      { sos: true, color: '#1f4e9c', phone: '19', name: { ar: 'الشرطة', fr: 'Police', en: 'Police', es: 'Policía' }, note: { ar: 'داخل المدن', fr: 'En ville', en: 'In cities', es: 'En ciudad' } },
+      { sos: true, color: '#0b1e2d', phone: '112', name: { ar: 'رقم الطوارئ', fr: 'Numéro d’urgence', en: 'Emergency number', es: 'Número de emergencia' }, note: { ar: 'من التيليفون المحمول', fr: 'Depuis un mobile', en: 'From a mobile', es: 'Desde un móvil' } } ] },
+    { id: 'health', icon: '🏥', name: { ar: 'الصحة', fr: 'Santé', en: 'Health', es: 'Salud' }, items: [
+      { icon: '🚑', phone: '141', name: { ar: 'SAMU — المستعجلات الطبية', fr: 'SAMU — urgences médicales', en: 'SAMU — medical emergencies', es: 'SAMU — urgencias médicas' }, note: { ar: 'متوفر غالباً فالمدن الكبرى، وإلا عيط على 15', fr: 'Surtout dans les grandes villes, sinon le 15', en: 'Mainly in large cities, otherwise call 15', es: 'Sobre todo en grandes ciudades; si no, el 15' } },
+      { icon: '🏥', phone: '', name: { ar: 'المركز الصحي — القصر الصغير', fr: 'Centre de santé — Ksar Sghir', en: 'Health centre — Ksar Sghir', es: 'Centro de salud — Alcazarseguer' } },
+      { icon: '💊', phone: '', name: { ar: 'صيدلية الحراسة', fr: 'Pharmacie de garde', en: 'On-duty pharmacy', es: 'Farmacia de guardia' } } ] },
+    { id: 'security', icon: '👮', name: { ar: 'الأمن', fr: 'Sécurité', en: 'Security', es: 'Seguridad' }, items: [
+      { icon: '🛡️', phone: '', name: { ar: 'مركز الدرك الملكي — القصر الصغير', fr: 'Brigade de gendarmerie — Ksar Sghir', en: 'Gendarmerie post — Ksar Sghir', es: 'Puesto de la Gendarmería — Alcazarseguer' } },
+      { icon: '🚒', phone: '', name: { ar: 'الوقاية المدنية — أقرب مركز', fr: 'Protection civile — centre le plus proche', en: 'Civil Protection — nearest station', es: 'Protección Civil — centro más cercano' } } ] },
+    { id: 'transport', icon: '🚕', name: { ar: 'النقل والطريق', fr: 'Transport et route', en: 'Transport and roads', es: 'Transporte y carretera' }, items: [
+      { icon: '🛣️', phone: '5050', name: { ar: 'مساعدة الطريق السيار (ADM)', fr: 'Assistance autoroute (ADM)', en: 'Motorway assistance (ADM)', es: 'Asistencia autopista (ADM)' }, note: { ar: 'على الطرق السيارة', fr: 'Sur autoroute', en: 'On motorways', es: 'En autopistas' } },
+      { icon: '🚕', phone: '', name: { ar: 'الطاكسيات — القصر الصغير', fr: 'Taxis — Ksar Sghir', en: 'Taxis — Ksar Sghir', es: 'Taxis — Alcazarseguer' } },
+      { icon: '⛴️', phone: '', name: { ar: 'ميناء طنجة المتوسط — المسافرين', fr: 'Port Tanger Med — passagers', en: 'Tanger Med port — passengers', es: 'Puerto Tánger Med — pasajeros' } } ] },
+    { id: 'admin', icon: '🏛️', name: { ar: 'الإدارات', fr: 'Administrations', en: 'Public offices', es: 'Administraciones' }, items: [
+      { icon: '🏛️', phone: '', name: { ar: 'جماعة القصر الصغير', fr: 'Commune de Ksar Sghir', en: 'Ksar Sghir municipality', es: 'Ayuntamiento de Alcazarseguer' } } ] }
+  ] };
+  function telOf(p) { return String(p || '').replace(/[^\d+]/g, ''); }
+  function numbersPage(site, data, lang) {
+    var D = data || DEFAULT_NUMBERS, U = NUI[lang];
+    var h1 = t(D.title, lang) || U.h1, lead = t(D.intro, lang) || U.lead;
+    var all = []; (D.groups || []).forEach(function (g) { (g.items || []).forEach(function (x) { all.push(x); }); });
+    var sos = all.filter(function (x) { return x.sos && telOf(x.phone); });
+    var vm = '';
+    if (D.verified) { try { vm = new Intl.DateTimeFormat({ ar: 'ar-MA', fr: 'fr-FR', en: 'en-GB', es: 'es-ES' }[lang], { month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(String(D.verified).slice(0, 7) + '-15T12:00:00Z')); } catch (e) { vm = D.verified; } }
+    return simplePage(site, lang, 'numeros-utiles/', {
+      h1: h1, title: t(D.seoTitle, lang) || (h1 + ' | ' + t(site.name, lang)), description: lead, lead: lead, mainClass: 'num-page',
+      schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: h1, description: lead, dateModified: D.verified },
+      body: function () {
+        var out = '<div class="wrap narrow">' + (vm ? '<p class="num-ver">✅ ' + esc(U.verified + ': ' + vm) + '</p>' : '');
+        if (sos.length) out += '<h2>🚨 ' + esc(U.sos) + '</h2><div class="sos">' + sos.map(function (x) {
+          return '<a href="tel:' + telOf(x.phone) + '" style="background:' + esc(x.color || '#0b1e2d') + '"><b>' + esc(x.phone) + '</b><span>' + esc(t(x.name, lang)) + '</span>' + (t(x.note, lang) ? '<small>' + esc(t(x.note, lang)) + '</small>' : '') + '</a>';
+        }).join('') + '</div>';
+        out += '<div class="num-warn">ℹ️ ' + esc(t(D.note, lang) || U.note) + '</div>';
+        (D.groups || []).forEach(function (g) {
+          var rows = (g.items || []).filter(function (x) { return !x.sos && t(x.name, lang) && (telOf(x.phone) || D.showPending); });
+          if (!rows.length) return;
+          out += '<h2>' + esc((g.icon ? g.icon + ' ' : '') + t(g.name, lang)) + '</h2><div class="num-list">' + rows.map(function (x) {
+            var p = telOf(x.phone);
+            return '<div class="num-row"><span class="num-ic" aria-hidden="true">' + esc(x.icon || '📞') + '</span><div class="num-tx"><b>' + esc(t(x.name, lang)) + '</b>' + (t(x.note, lang) ? '<small>' + esc(t(x.note, lang)) + '</small>' : '') + '</div>' +
+              (p ? '<a class="num-call" href="tel:' + p + '" dir="ltr">' + esc(x.phone) + '</a>' : '<span class="num-todo">' + esc(U.pending) + '</span>') + '</div>';
+          }).join('') + '</div>';
+        });
+        return out + '<p class="live-note">' + esc(t(D.source, lang) || U.src) + '</p></div>';
+      }
+    });
+  }
+
+  /* ---------- sea today (filled by tools.js) ---------- */
+  var SUI = {
+    ar: { h1: 'البحر اليوم في القصر الصغير', name: 'البحر اليوم', lead: 'واش البحر مزيان اليوم؟ الرياح (شرقي ولا غربي)، علو الموج، السباحة والصيد والخروج بالفلوكة، مع توقعات كل 3 ساعات لـ5 أيام.',
+      verdict: 'الخلاصة دابا', today: 'اليوم', tomorrow: 'غداً', morning: 'الصباح', afternoon: 'العشية', evening: 'الليل', table: 'التوقعات كل 3 ساعات', hour: 'الساعة', wind: 'الرياح', gust: 'الهبات', dir: 'الاتجاه', wave: 'الموج', period: 'الفترة', water: 'الماء', swim: 'السباحة', fish: 'الصيد', boat: 'الفلوكة',
+      east: 'شرقي', west: 'غربي', north: 'شمالي', south: 'جنوبي', calm: 'هادئ', light: 'خفيف', moderate: 'متوسط', strong: 'قوي', vstrong: 'قوي بزاف', good: 'مزيان', fair: 'بحذر', bad: 'ماشي مناسب', kn: 'عقدة', kmh: 'كم/س', unit: 'الوحدة',
+      seaStates: ['هادئ', 'خفيف', 'متوسط', 'هائج'], loading: 'جاري التحميل…', error: 'تعذر تحميل البيانات حالياً.', weather: 'صفحة الطقس الكاملة',
+      safety: 'هاد المؤشرات تقديرية من نماذج الطقس (Open-Meteo) وماشي رسمية. البحر كيتبدل بسرعة: احترم ديما الرايات وتعليمات المنقذين والسلطات المينائية.',
+      about: '<h2>كيفاش تقرا البحر فالقصر الصغير؟</h2><p>القصر الصغير فوسط مضيق جبل طارق، والرياح هي اللي كتحكم: <b>الشرقي</b> (Levante) كيجي من الشرق وكيرفع الموج على الشط، و<b>الغربي</b> (Poniente) كيكون غالباً أهدأ على الشاطئ. ملي كتكون الرياح فوق 20 عقدة، البحر كيولي صعيب للسباحة والفلوكات الصغيرة.</p>' },
+    fr: { h1: 'La mer aujourd’hui à Ksar Sghir', name: 'La mer aujourd’hui', lead: 'La mer est-elle bonne aujourd’hui ? Vent (Levante ou Poniente), vagues, baignade, pêche et sortie en barque, avec prévisions toutes les 3 heures sur 5 jours.',
+      verdict: 'En bref maintenant', today: 'Aujourd’hui', tomorrow: 'Demain', morning: 'Matin', afternoon: 'Après-midi', evening: 'Soir', table: 'Prévisions toutes les 3 heures', hour: 'Heure', wind: 'Vent', gust: 'Rafales', dir: 'Direction', wave: 'Vagues', period: 'Période', water: 'Eau', swim: 'Baignade', fish: 'Pêche', boat: 'Barque',
+      east: 'Levante', west: 'Poniente', north: 'Nord', south: 'Sud', calm: 'Calme', light: 'Faible', moderate: 'Modéré', strong: 'Fort', vstrong: 'Très fort', good: 'Bon', fair: 'Prudence', bad: 'Déconseillé', kn: 'nœuds', kmh: 'km/h', unit: 'Unité',
+      seaStates: ['Calme', 'Peu agitée', 'Agitée', 'Forte'], loading: 'Chargement…', error: 'Impossible de charger les données.', weather: 'Météo complète',
+      safety: 'Indicateurs estimés à partir de modèles (Open-Meteo), non officiels. La mer change vite : respectez toujours les drapeaux, les sauveteurs et les autorités portuaires.',
+      about: '<h2>Lire la mer à Ksar Sghir</h2><p>Ksar Sghir est au cœur du détroit de Gibraltar, où le vent commande : le <b>Levante</b> (est) forme des vagues sur la plage, le <b>Poniente</b> (ouest) est souvent plus calme sur le rivage. Au-delà de 20 nœuds, la mer devient difficile pour la baignade et les petites barques.</p>' },
+    en: { h1: 'Sea today in Ksar Sghir', name: 'Sea today', lead: 'Is the sea good today? Wind (Levante or Poniente), waves, swimming, fishing and small-boat outlook, with 3-hourly forecasts for 5 days.',
+      verdict: 'Right now', today: 'Today', tomorrow: 'Tomorrow', morning: 'Morning', afternoon: 'Afternoon', evening: 'Evening', table: '3-hourly forecast', hour: 'Time', wind: 'Wind', gust: 'Gusts', dir: 'Direction', wave: 'Waves', period: 'Period', water: 'Water', swim: 'Swim', fish: 'Fishing', boat: 'Small boat',
+      east: 'Levante (E)', west: 'Poniente (W)', north: 'North', south: 'South', calm: 'Calm', light: 'Light', moderate: 'Moderate', strong: 'Strong', vstrong: 'Very strong', good: 'Good', fair: 'Caution', bad: 'Not advised', kn: 'kn', kmh: 'km/h', unit: 'Unit',
+      seaStates: ['Calm', 'Slight', 'Moderate', 'Rough'], loading: 'Loading…', error: 'Could not load data.', weather: 'Full weather',
+      safety: 'Estimates from weather models (Open-Meteo), not official. The sea changes fast: always follow flags, lifeguards and port authorities.',
+      about: '<h2>Reading the sea in Ksar Sghir</h2><p>Ksar Sghir sits in the middle of the Strait of Gibraltar, where the wind rules: the easterly <b>Levante</b> builds waves on the beach, while the westerly <b>Poniente</b> is often calmer on the shore. Above 20 knots the sea gets hard for swimming and small boats.</p>' },
+    es: { h1: 'El mar hoy en Alcazarseguer', name: 'El mar hoy', lead: '¿Está bueno el mar hoy? Viento (Levante o Poniente), olas, baño, pesca y salida en barca, con previsión cada 3 horas a 5 días.',
+      verdict: 'Ahora mismo', today: 'Hoy', tomorrow: 'Mañana', morning: 'Mañana', afternoon: 'Tarde', evening: 'Noche', table: 'Previsión cada 3 horas', hour: 'Hora', wind: 'Viento', gust: 'Rachas', dir: 'Dirección', wave: 'Olas', period: 'Periodo', water: 'Agua', swim: 'Baño', fish: 'Pesca', boat: 'Barca',
+      east: 'Levante', west: 'Poniente', north: 'Norte', south: 'Sur', calm: 'Calma', light: 'Flojo', moderate: 'Moderado', strong: 'Fuerte', vstrong: 'Muy fuerte', good: 'Bueno', fair: 'Precaución', bad: 'No recomendado', kn: 'nudos', kmh: 'km/h', unit: 'Unidad',
+      seaStates: ['Calma', 'Marejadilla', 'Marejada', 'Fuerte'], loading: 'Cargando…', error: 'No se pudieron cargar los datos.', weather: 'Tiempo completo',
+      safety: 'Indicadores estimados con modelos (Open-Meteo), no oficiales. El mar cambia rápido: respeta siempre banderas, socorristas y autoridades portuarias.',
+      about: '<h2>Cómo leer el mar en Alcazarseguer</h2><p>Alcazarseguer está en pleno estrecho de Gibraltar, donde manda el viento: el <b>Levante</b> forma olas en la playa y el <b>Poniente</b> suele ser más tranquilo en la orilla. Por encima de 20 nudos el mar se complica para el baño y las barcas pequeñas.</p>' }
+  };
+  function seaPage(site, lang) {
+    var U = SUI[lang], w = site.live || {};
+    var cfg = { off: +w.utcOffset || 0, tool: 'sea', lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, seaLat: w.seaLat || 35.87, seaLng: w.seaLng || -5.55, ui: U };
+    return simplePage(site, lang, 'mer/', {
+      h1: U.h1, title: U.h1 + ' | ' + t(site.name, lang), description: U.lead, lead: U.lead, mainClass: 'tool-page',
+      schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: U.h1, description: U.lead },
+      body: function (file) {
+        return '<div class="wrap tool" data-tool="sea">' +
+          '<section class="sea-verdict" data-slot="verdict"><div class="live-skel"></div></section>' +
+          '<section class="wx-sec"><h2>' + esc(U.today + ' / ' + U.tomorrow) + '</h2><div class="sea-periods" data-slot="periods"><div class="live-skel"></div></div></section>' +
+          '<section class="wx-sec"><div class="pr-mhead"><h2>' + esc(U.table) + '</h2><div class="pr-nav" role="group" aria-label="' + esc(U.unit) + '"><button class="chip is-on" type="button" data-unit="kn">' + esc(U.kn) + '</button><button class="chip" type="button" data-unit="kmh">' + esc(U.kmh) + '</button></div></div>' +
+          '<div class="sea-table" data-slot="table"><div class="live-skel"></div></div></section>' +
+          '<p class="live-note">' + esc(U.safety) + '</p>' +
+          (pg(site, 'meteo') ? '<p><a class="btn btn-ghost" href="' + esc(rel(file, prefix(lang) + 'meteo/')) + '">🌤️ ' + esc(U.weather) + '</a></p>' : '') +
+          '<div class="prose wx-about">' + U.about + '</div></div>';
+      },
       scripts: function (file) { return toolScript(site, file, cfg); }
     });
   }
 
-  /* Build every generated file. Returns { "path": "content" } */
-  function buildAll(site, articles, gallery) {
+  /* Build every generated file. Returns { "path": "content" }
+     extra = { rentals, numbers, prayer } (optional data files) */
+  function buildAll(site, articles, gallery, extra) {
     var files = {};
+    extra = extra || {};
     THUMBS = {}; (site._thumbs || []).forEach(function (p) { THUMBS[p] = 1; });
+    ARTS = articles || [];
+    OFFICIAL = !!(extra.prayer && extra.prayer.days && Object.keys(extra.prayer.days).length);
     LANGS.forEach(function (lang) {
       files[prefix(lang) + 'index.html'] = homePage(site, articles, lang);
+      ['guide', 'news'].forEach(function (sec) {
+        if (pg(site, sec)) files[prefix(lang) + sec + '/index.html'] = sectionPage(site, articles, sec, lang);
+      });
+      if (pg(site, 'hebergement')) files[prefix(lang) + 'hebergement/index.html'] = lodgingPage(site, extra.rentals, lang);
+      if (pg(site, 'numeros')) files[prefix(lang) + 'numeros-utiles/index.html'] = numbersPage(site, extra.numbers, lang);
+      if (pg(site, 'mer')) files[prefix(lang) + 'mer/index.html'] = seaPage(site, lang);
       if (gallery && (gallery.photos || []).length) files[prefix(lang) + 'gallery/index.html'] = galleryPage(site, gallery, lang);
       if ((site.pages || {}).meteo !== false) files[prefix(lang) + 'meteo/index.html'] = weatherPage(site, lang);
       if ((site.pages || {}).salat !== false) files[prefix(lang) + 'salat/index.html'] = prayerPage(site, lang);
@@ -808,6 +1153,6 @@
   }
 
   var api = { LANGS: LANGS, UI: UI, buildAll: buildAll, articlePage: articlePage, homePage: homePage, tourismPage: tourismPage,
-    ytId: ytId, socialType: socialType, SOCIAL_SVG: SOCIAL_SVG, galleryPage: galleryPage, weatherPage: weatherPage, prayerPage: prayerPage, sized: sized, smallOf: smallOf, setThumbs: function (l) { THUMBS = {}; (l || []).forEach(function (p) { THUMBS[p] = 1; }); }, seoCheck: seoCheck, FONTS: FONTS, DISPLAY: DISPLAY, articleDir: articleDir, articleFile: articleFile, hasLang: hasLang, strip: strip, esc: esc, catLabel: catLabel };
+    ytId: ytId, socialType: socialType, SOCIAL_SVG: SOCIAL_SVG, galleryPage: galleryPage, weatherPage: weatherPage, prayerPage: prayerPage, sized: sized, smallOf: smallOf, setThumbs: function (l) { THUMBS = {}; (l || []).forEach(function (p) { THUMBS[p] = 1; }); }, seoCheck: seoCheck, SECTIONS: SECTIONS, DEFAULT_RENTALS: DEFAULT_RENTALS, DEFAULT_NUMBERS: DEFAULT_NUMBERS, lodgingPage: lodgingPage, numbersPage: numbersPage, seaPage: seaPage, sectionPage: sectionPage, bookingUrl: bookingUrl, FONTS: FONTS, DISPLAY: DISPLAY, articleDir: articleDir, articleFile: articleFile, hasLang: hasLang, strip: strip, esc: esc, catLabel: catLabel };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.KSBuild = api;
 })(this);

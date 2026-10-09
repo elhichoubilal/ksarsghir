@@ -178,6 +178,9 @@ main{padding:24px clamp(14px,3vw,36px) 120px;min-width:0}
     <button data-view="home">🏠 الصفحة الرئيسية</button>
     <button data-view="design">🎨 التصميم</button>
     <button data-view="links">🔗 القائمة والروابط</button>
+    <button data-view="lodging">🏠 الإقامة والكراء</button>
+    <button data-view="numbers">📞 الأرقام المهمة</button>
+    <button data-view="prayer">🕌 مواقيت الحبوس</button>
     <button data-view="gallery">📷 المعرض</button>
     <button data-view="images">🗂️ مكتبة الصور</button>
     <button data-view="settings">⚙️ الإعدادات</button>
@@ -193,7 +196,8 @@ main{padding:24px clamp(14px,3vw,36px) 120px;min-width:0}
 </div>
 <input type="file" id="file-pick" accept="image/*" multiple hidden>
 
-<script src="build.js"></script>
+<script src="build.js?v=13"></script>
+<script src="seed-v10.js?v=13"></script>
 <script>
 (function(){
 'use strict';
@@ -276,7 +280,7 @@ async function start(){
   var btn=$('#login-form .btn-p');btn.disabled=true;btn.textContent='كنتحقق…';
   try{
     await gh('');
-    var r=await Promise.all([readFile('data/site.json'),readFile('data/articles.json'),readFile('data/manifest.json'),readFile('assets/style.css'),readFile('data/gallery.json')]);
+    var r=await Promise.all([readFile('data/site.json'),readFile('data/articles.json'),readFile('data/manifest.json'),readFile('assets/style.css'),readFile('data/gallery.json'),readFile('data/rentals.json'),readFile('data/numbers.json'),readFile('data/prayer.json')]);
     if(!r[0]||!r[1])throw new Error('ما لقيناش data/site.json ولا data/articles.json فالريبو. ارفع ملفات الموقع أولاً.');
     S.site=JSON.parse(r[0]);S.articles=JSON.parse(r[1]).articles||[];
     var DEF={"live": {"weather": true, "sea": true, "prayer": true, "lat": 35.8426, "lng": -5.5596, "seaLat": 35.87, "seaLng": -5.55, "method": 21, "tune": "", "weatherUrl": "meteo/", "seaUrl": "meteo/", "prayerUrl": "salat/"}, "homeGallery": {"title": {"ar": "معرض الصور", "fr": "Galerie photos", "en": "Photo gallery", "es": "Galería de fotos"}, "subtitle": {"ar": "لقطات من عدسة بلال الهيشو", "fr": "Photos de Bilal El Hichou", "en": "Photos by Bilal El Hichou", "es": "Fotos de Bilal El Hichou"}, "cta": {"ar": "عرض كل الصور", "fr": "Voir toutes les photos", "en": "See all photos", "es": "Ver todas las fotos"}, "url": "https://gallery.ksarsghir.com", "images": [{"src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjETG-3niCoeG0AcNV2SdGpI3ApVHoLYV-F2d3OgpqvSrI4lMF32QLj_dKeEOkOcOnwJ6OO0BjAuem3ss-jk0CJUadghleD4OeVXyI2I84F31shW3_X6Ul3t6L1g7DBx3KXvpl0kBphfDFYqr2bryoUeYT1IAM_brbGgptbLLR6XVi58b7NjsMX5cvVrFY/s1200/4353.jpg", "alt": {"ar": "ميناء طنجة المتوسط", "fr": "Port Tanger Med", "en": "Tanger Med port", "es": "Puerto Tánger Med"}}, {"src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjyF6zy_A4LJ2L-xiH04Zd6XJEDMXIaOmyzWtN3vaFdByi2ysaLnHUcv4jYzuv5UqLPoM44_VLDfwr4MWEGATxl4QX7J7Ad0Z9bLL6kqB5lHnCQOf3EaC_snAy2TJCCt14okvSQDDPb0XvpNRZ6Gmhq6VIIHpESdyZ3P2uaZaSIm7PfxqtSHWL4-TUFwdU/s1200/8510.jpg", "alt": {"ar": "غروب الشمس على شاطئ القصر الصغير", "fr": "Coucher de soleil à Ksar Sghir", "en": "Sunset over Ksar Sghir beach", "es": "Atardecer en Alcazarseguer"}}, {"src": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhHQolv6RmyUqkJCdSImtvNinU325jN_uTkEdP2K3Zn1y1zSmnlHdtGk7rMCKJFh5MGbspcJ_5pHzLRCriLKIq3DmTI0Pl10-1NCfQLSHrPuheemplMGTpTmmPLjHuia3FA0XTRpXU1NAow2H93nBBEVegH8tT5Y_zbrCmKwvWOHI040KHDdzidEpbgnOI/s1200/3385.jpg", "alt": {"ar": "شاطئ القصر الصغير", "fr": "Plage de Ksar Sghir", "en": "Ksar Sghir beach", "es": "Playa de Alcazarseguer"}}]}, "servicesBlock": {"title": {"ar": "خدماتنا", "fr": "Nos services", "en": "Our services", "es": "Nuestros servicios"}}, "services": [{"icon": "🌤️", "title": {"ar": "الطقس والبحر", "fr": "Météo et mer", "en": "Weather & sea", "es": "Tiempo y mar"}, "text": {"ar": "نشرة جوية 7 أيام + حالة البحر", "fr": "Prévisions 7 jours + état de la mer", "en": "7-day forecast + sea conditions", "es": "Previsión 7 días + estado del mar"}, "url": "meteo/"}, {"icon": "🕌", "title": {"ar": "مواقيت الصلاة", "fr": "Horaires de prière", "en": "Prayer times", "es": "Horarios de oración"}, "text": {"ar": "أوقات الأذان يومياً + اتجاه القبلة", "fr": "Horaires quotidiens + direction de la Qibla", "en": "Daily times + Qibla direction", "es": "Horarios diarios + dirección de la Qibla"}, "url": "salat/"}, {"icon": "🖼️", "title": {"ar": "متجر الصور", "fr": "Boutique photos", "en": "Photo shop", "es": "Tienda de fotos"}, "text": {"ar": "اقتن صوراً احترافية للقصر الصغير", "fr": "Photos professionnelles de Ksar Sghir", "en": "Professional photos of Ksar Sghir", "es": "Fotos profesionales de Alcazarseguer"}, "url": "https://store.ksarsghir.com"}, {"icon": "📢", "title": {"ar": "أعلن معنا", "fr": "Publicité", "en": "Advertise", "es": "Publicidad"}, "text": {"ar": "وصل إلى 77K متابع في المنطقة", "fr": "Touchez 77K abonnés dans la région", "en": "Reach 77K followers in the region", "es": "Llega a 77K seguidores en la región"}, "url": "advertise/"}], "rating": {"enabled": true, "google": "", "facebook": "https://www.facebook.com/ksarsghircity/reviews", "title": {}, "text": {}}, "ticker": {"enabled": true, "speed": "normal", "label": {"ar": "جديد", "fr": "Nouveau", "en": "New", "es": "Nuevo"}, "items": [{"text": {"ar": "مرحباً بكم فالدليل السياحي للقصر الصغير، بأربع لغات", "fr": "Bienvenue sur le guide touristique de Ksar Sghir, en quatre langues", "en": "Welcome to the Ksar Sghir travel guide, in four languages", "es": "Bienvenidos a la guía turística de Alcazarseguer, en cuatro idiomas"}, "url": "", "i18n": false}, {"text": {"ar": "اكتشف 16 وجهة سياحية: شواطئ، موانئ وتاريخ", "fr": "Découvrez 16 destinations : plages, ports et histoire", "en": "Discover 16 destinations: beaches, ports and history", "es": "Descubre 16 destinos: playas, puertos e historia"}, "url": "tourisme/", "i18n": true}]}, "topbar": {"social": true}};
@@ -284,6 +288,8 @@ async function start(){
     if(added.length)setTimeout(function(){markDirty();toast('✨ تزادو أقسام جداد للصفحة الرئيسية. ضغط "نشر التغييرات" باش يبانو.');},500);
     S.manifest=r[2]?JSON.parse(r[2]):{files:[]};S.css=r[3]||'';
     S.gallery=r[4]?JSON.parse(r[4]):{title:{},intro:{},categories:[],photos:[]};
+    S.rentals=r[5]?JSON.parse(r[5]):null;S.numbers=r[6]?JSON.parse(r[6]):null;S.prayer=r[7]?JSON.parse(r[7]):{days:{}};
+    S.extraDirty={};
     migrate();
     $('#login').hidden=true;$('#app').hidden=false;
     $('#side-repo').textContent=S.repo;
@@ -315,6 +321,32 @@ function migrate(){
     s.migrations.push('v9');
     setTimeout(markDirty,1500);
   }
+  if(s.migrations.indexOf('v10')<0){
+    var seed=(window.KS_SEED_V10||{}).articles||[];
+    seed.forEach(function(a){if(!S.articles.some(function(x){return x.slug===a.slug;}))S.articles.push(clone(a));});
+    var L=function(ar,fr,en,es){return {ar:ar,fr:fr,en:en,es:es};};
+    s.menu=s.menu||[];
+    var hasM=function(u){return s.menu.some(function(m){return m.url===u;});};
+    var at=function(after){var i=-1;s.menu.forEach(function(m,k){if(m.url===after)i=k;});return i<0?s.menu.length:i+1;};
+    if(!hasM('guide/'))s.menu.splice(at('tourisme/'),0,{label:L('الدليل','Guide','Guide','Guía'),url:'guide/',i18n:true});
+    if(!hasM('hebergement/'))s.menu.splice(at('guide/'),0,{label:L('الإقامة','Hébergement','Stay','Alojamiento'),url:'hebergement/',i18n:true});
+    if(!hasM('numeros-utiles/'))s.menu.splice(at('salat/'),0,{label:L('الأرقام المهمة','Numéros utiles','Useful numbers','Teléfonos útiles'),url:'numeros-utiles/',i18n:true});
+    s.footer=s.footer||[];
+    if(!s.footer.some(function(c){return (c.links||[]).some(function(l){return l.url==='mer/';});}))
+      s.footer.splice(1,0,{title:L('خدمات','Services','Services','Servicios'),links:[
+        {label:L('البحر اليوم','La mer aujourd’hui','Sea today','El mar hoy'),url:'mer/',i18n:true},
+        {label:L('مواعيد البواخر','Horaires des ferries','Ferry times','Horarios de ferris'),url:'guide/bateaux-tanger-med/',i18n:true},
+        {label:L('الإقامة','Hébergement','Where to stay','Alojamiento'),url:'hebergement/',i18n:true},
+        {label:L('أرقام مهمة','Numéros utiles','Useful numbers','Teléfonos útiles'),url:'numeros-utiles/',i18n:true}]});
+    s.live=s.live||{};if(!s.live.seaUrl||s.live.seaUrl==='meteo/')s.live.seaUrl='mer/';
+    s.pages=s.pages||{};['guide','news','hebergement','numeros','mer'].forEach(function(k){if(s.pages[k]==null)s.pages[k]=true;});
+    s.sections=s.sections||{guide:{},news:{days:30,always:false}};
+    s.homeSections=s.homeSections||{};if(s.homeSections.guide==null)s.homeSections.guide=true;if(s.homeSections.news==null)s.homeSections.news=true;
+    if(!S.rentals){S.rentals=clone(B.DEFAULT_RENTALS);S.extraDirty.rentals=true;}
+    if(!S.numbers){S.numbers=clone(B.DEFAULT_NUMBERS);S.extraDirty.numbers=true;}
+    s.migrations.push('v10');
+    setTimeout(function(){markDirty();toast('✨ تزادو: الدليل (موضوعين بـ4 لغات)، الإقامة، الأرقام المهمة، البحر اليوم، والقائمة. ضغط "نشر التغييرات".');},1800);
+  }
   if(s.migrations.indexOf('v7')>=0)return;
   var fix=function(it){if(!it||!it.url)return;
     if(/gallery\.ksarsghir\.com/.test(it.url)){it.url='gallery/';it.i18n=true;}
@@ -333,7 +365,7 @@ function go(v,arg){
   S.view=v;
   var ov=$('#view'),nv=ov.cloneNode(false);ov.replaceWith(nv);
   $$('.side [data-view]').forEach(function(b){b.toggleAttribute('aria-current',b.dataset.view===v||(v==='edit'&&b.dataset.view==='articles'));if(b.hasAttribute('aria-current'))b.setAttribute('aria-current','page');});
-  var views={gallery:viewGallery,articles:viewArticles,edit:viewEdit,home:viewHome,design:viewDesign,links:viewLinks,images:viewImages,settings:viewSettings};
+  var views={lodging:viewLodging,numbers:viewNumbers,prayer:viewPrayer,gallery:viewGallery,articles:viewArticles,edit:viewEdit,home:viewHome,design:viewDesign,links:viewLinks,images:viewImages,settings:viewSettings};
   views[v](arg);
   window.scrollTo(0,0);
 }
@@ -353,6 +385,27 @@ function today(){return new Date().toISOString().slice(0,10);}
 function avgScore(a){var s=0,n=0;LANGS.forEach(function(l){if(B.hasLang(a,l)){s+=B.seoCheck(S.site,a,l).score;n++;}});return n?Math.round(s/n):0;}
 function scoreCls(s){return s>=80?'g':s>=55?'m':'b';}
 function catOptions(sel){return (S.site.categories||[]).map(function(c){return '<option value="'+esc(c.id)+'"'+(c.id===sel?' selected':'')+'>'+esc((c.icon||'')+' '+(c.name.ar||c.id))+'</option>';}).join('');}
+
+var SECS=[['tourisme','🏖️ السياحة','/tourisme/…'],['guide','📚 الدليل','/guide/…'],['news','📰 المستجدات','/news/…'],['page','📄 الصفحات','/…']];
+function secName(sec){var x=SECS.filter(function(s){return s[0]===sec;})[0];return x?x[1]:sec;}
+function saveFile(name,text,type){
+  var blob=new Blob([text],{type:type||'text/html;charset=utf-8'}),u=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(u);a.remove();},800);
+}
+/* article -> one HTML file with 4 language blocks (same format the import reads) */
+function articleHtml(a){
+  var blocks=LANGS.filter(function(l){return a.i18n[l]&&(a.i18n[l].title||a.i18n[l].content);}).map(function(l){
+    var x=a.i18n[l];
+    return '<section data-lang="'+l+'" lang="'+l+'" dir="'+(l==='ar'?'rtl':'ltr')+'">\n'+
+      '<h1>'+esc(x.title||'')+'</h1>\n'+
+      '<meta data-description="'+esc(x.description||'')+'">\n<meta data-keyword="'+esc(x.keyword||'')+'">\n<meta data-alt="'+esc(x.alt||'')+'">\n<meta data-seo-title="'+esc(x.seoTitle||'')+'">\n'+
+      (x.content||'')+'\n</section>';
+  });
+  return '<!DOCTYPE html>\n<html lang="ar">\n<head>\n<meta charset="UTF-8">\n<title>'+esc((a.i18n.ar&&a.i18n.ar.title)||a.slug)+'</title>\n'+
+    (a.cover?'<meta property="og:image" content="'+esc(/^https?:/.test(a.cover)?a.cover:(S.site.baseUrl||'').replace(/\/$/,'')+'/'+a.cover)+'">\n':'')+
+    '</head>\n<body>\n<!--\n  ksarsghir.com — '+a.slug+' ('+(a.section||'tourisme')+')\n  الصيغة: بلوك لكل لغة data-lang. العنوان = H1. الوصف/الكلمة/alt/عنوان SEO فـ data-…\n  رجعو للداشبورد: فتح الموضوع ← 📥 استيراد HTML (4 لغات)\n-->\n'+blocks.join('\n\n')+'\n</body>\n</html>\n';
+}
+function downloadArticle(a){if(!a)return;saveFile((a.slug||'article')+'.html',articleHtml(a));toast('⬇️ تحمل '+(a.slug||'')+'.html');}
 
 /* ---------- clean pasted HTML ---------- */
 function cleanContent(html){
@@ -436,31 +489,32 @@ function viewArticles(){
   var v=$('#view');
   v.innerHTML='<div class="head"><h1>المواضيع <span class="muted" style="font-size:16px">('+S.articles.length+')</span></h1>'+
     '<div class="row"><input type="text" class="search" id="q" placeholder="بحث…" aria-label="بحث"><button class="btn btn-p" id="new-art">+ موضوع جديد</button></div></div>'+
-    '<div class="tabs" id="sec-tabs" style="margin:0 0 12px"><button data-sec="tourisme" aria-selected="'+(S.listSec!=='page')+'">🏖️ السياحة</button><button data-sec="page" aria-selected="'+(S.listSec==='page')+'">📄 الصفحات</button></div>'+
+    '<div class="tabs" id="sec-tabs" style="margin:0 0 12px">'+SECS.map(function(x){var n=S.articles.filter(function(a){return (a.section||'tourisme')===x[0];}).length;return '<button data-sec="'+x[0]+'" aria-selected="'+((S.listSec||'tourisme')===x[0])+'">'+x[1]+' <small>('+n+')</small></button>';}).join('')+'</div>'+
     '<div class="list" id="list"></div>';
   $('#sec-tabs').addEventListener('click',function(e){var b=e.target.closest('[data-sec]');if(!b)return;S.listSec=b.dataset.sec;$$('#sec-tabs button').forEach(function(x){x.setAttribute('aria-selected',x===b);});render();});
   function render(){
-    var q=($('#q').value||'').toLowerCase(),sec=S.listSec==='page'?'page':'tourisme';
-    var list=S.articles.filter(function(a){return ((a.section||'tourisme')==='page')===(sec==='page');}).filter(function(a){return !q||JSON.stringify([a.slug,a.i18n.ar&&a.i18n.ar.title,a.i18n.fr&&a.i18n.fr.title]).toLowerCase().indexOf(q)>=0;});
+    var q=($('#q').value||'').toLowerCase(),sec=S.listSec||'tourisme';
+    var list=S.articles.filter(function(a){return (a.section||'tourisme')===sec;}).filter(function(a){return !q||JSON.stringify([a.slug,a.i18n.ar&&a.i18n.ar.title,a.i18n.fr&&a.i18n.fr.title]).toLowerCase().indexOf(q)>=0;});
     if(!list.length){$('#list').innerHTML='<div class="empty">ما كاين حتى موضوع. ضغط على "+ موضوع جديد" باش تبدا.</div>';return;}
     $('#list').innerHTML=list.map(function(a){
       var sc=avgScore(a),x=a.i18n.ar||{};
       return '<div class="item"><div class="thumb" style="background-image:url(\''+esc(imgSrc(a.cover))+'\')">'+(a.cover?'':'🖼️')+'</div>'+
-        '<div><h3>'+esc(x.title||a.slug)+'</h3><div class="sub"><span>'+esc(B.catLabel(S.site,a.category,'ar'))+'</span>'+
+        '<div><h3>'+esc(x.title||a.slug)+'</h3><div class="sub"><span>'+esc((a.section||'tourisme')==='tourisme'?B.catLabel(S.site,a.category,'ar'):secName(a.section))+'</span>'+(a.section==='news'?'<span>'+esc(a.date||'')+'</span>':'')+
         '<span class="dots">'+LANGS.map(function(l){return '<span class="dot'+(B.hasLang(a,l)?' on':'')+'" title="'+LN[l]+'">'+l.toUpperCase()+'</span>';}).join('')+'</span>'+
         '<span>SEO: <b class="score '+scoreCls(sc)+'">'+sc+'%</b></span>'+(a.draft?'<span class="pill">مسودة</span>':'')+(a.noindex?'<span class="pill" style="background:#eef2f5;color:#556">🚫 غير مؤرشفة</span>':'')+((a.section||'tourisme')==='tourisme'&&!a.geoChecked?'<span class="pill" title="افتح الموضوع وصحح الموقع فالخريطة">📍 صحح الموقع</span>':'')+(S.site.featured===a.slug?'<span class="pill" style="background:var(--seaS);color:var(--seaD)">⭐ مميز</span>':'')+
         '<span class="ltr">/'+esc(B.articleDir(a,'ar'))+'</span></div></div>'+
-        '<div class="row acts"><button class="btn btn-s" data-edit="'+esc(a.slug)+'">✏️ تعديل</button>'+
+        '<div class="row acts"><button class="btn btn-s" data-edit="'+esc(a.slug)+'">✏️ تعديل</button><button class="btn btn-s" data-dl="'+esc(a.slug)+'" title="تحميل HTML بـ4 لغات">⬇️</button>'+
         (a.draft?'':'<a class="btn btn-s" target="_blank" rel="noopener" href="'+esc(pagesUrl()+B.articleDir(a,'ar'))+'">↗</a>')+
         '<button class="btn btn-s btn-d" data-del="'+esc(a.slug)+'">🗑️</button></div></div>';
     }).join('');
   }
   render();
   $('#q').addEventListener('input',render);
-  $('#new-art').addEventListener('click',function(){go('edit',S.listSec==='page'?'__newpage':null);});
+  $('#new-art').addEventListener('click',function(){go('edit','__new:'+(S.listSec||'tourisme'));});
   $('#list').addEventListener('click',async function(e){
-    var ed=e.target.closest('[data-edit]'),dl=e.target.closest('[data-del]');
+    var ed=e.target.closest('[data-edit]'),dl=e.target.closest('[data-del]'),dw=e.target.closest('[data-dl]');
     if(ed)go('edit',ed.dataset.edit);
+    if(dw)downloadArticle(S.articles.filter(function(x){return x.slug===dw.dataset.dl;})[0]);
     if(dl){
       var a=S.articles.filter(function(x){return x.slug===dl.dataset.del;})[0];
       if(!confirm('حذف "'+((a.i18n.ar&&a.i18n.ar.title)||a.slug)+'" من الموقع بجميع اللغات؟'))return;
@@ -477,12 +531,12 @@ function blankArticle(){
   return {slug:'',section:'tourisme',category:(S.site.categories[0]||{}).id||'',cover:'',gallery:[],video:'',map:'',lat:null,lng:null,date:today(),updated:today(),draft:false,featured:false,related:[],i18n:i18n,_new:true};
 }
 function viewEdit(slug){
-  var newPage=slug==='__newpage';if(newPage)slug=null;
+  var newSec=slug==='__newpage'?'page':(/^__new:/.test(slug||'')?slug.slice(6):null);if(newSec)slug=null;
   var orig=slug?S.articles.filter(function(a){return a.slug===slug;})[0]:null;
-  var a=orig?clone(orig):blankArticle();if(newPage){a.section='page';a.category='';a.geoChecked=true;}
+  var a=orig?clone(orig):blankArticle();if(newSec&&newSec!=='tourisme'){a.section=newSec;a.geoChecked=true;if(newSec==='page')a.category='';}
   S.editing=a;S.editLang='ar';
   var v=$('#view');
-  v.innerHTML='<div class="head"><h1>'+(orig?'تعديل الموضوع':'موضوع جديد')+'</h1><div class="row"><button class="btn" id="back">→ رجوع للمواضيع</button><button class="btn" id="import">📥 استيراد HTML (4 لغات)</button><button class="btn" id="preview">👁️ معاينة</button><button class="btn btn-a" id="save">🚀 حفظ ونشر</button></div></div>'+
+  v.innerHTML='<div class="head"><h1>'+(orig?'تعديل الموضوع':'موضوع جديد')+'</h1><div class="row"><button class="btn" id="back">→ رجوع للمواضيع</button><button class="btn" id="import">📥 استيراد HTML (4 لغات)</button><button class="btn" id="export">⬇️ تحميل HTML</button><button class="btn" id="preview">👁️ معاينة</button><button class="btn btn-a" id="save">🚀 حفظ ونشر</button></div></div>'+
   '<div class="cols"><div>'+
     '<div class="card"><div class="tabs" role="tablist" id="ltabs"></div><div id="lang-pane"></div></div>'+
   '</div><div>'+
@@ -490,8 +544,9 @@ function viewEdit(slug){
     '<div class="card"><h2>الإعدادات</h2>'+
       field('الرابط (slug)','<input type="text" id="e-slug" class="ltr" value="'+esc(a.slug)+'" placeholder="ferdiwa">','حروف لاتينية صغيرة، أرقام و -')+
       '<div class="muted ltr" style="font-size:12px;margin-top:4px" id="e-url"></div>'+
-      field('القسم','<select id="e-section"><option value="tourisme"'+(a.section!=='page'?' selected':'')+'>السياحة (/tourisme/…)</option><option value="page"'+(a.section==='page'?' selected':'')+'>صفحة عادية (/…)</option></select>')+
-      field('التصنيف','<select id="e-cat">'+catOptions(a.category)+'</select>')+
+      field('القسم','<select id="e-section">'+SECS.map(function(x){return '<option value="'+x[0]+'"'+((a.section||'tourisme')===x[0]?' selected':'')+'>'+x[1]+' ('+x[2]+')</option>';}).join('')+'</select>')+
+      '<div id="cat-wrap">'+field('التصنيف','<select id="e-cat">'+catOptions(a.category)+'</select>','كيتستعمل فالسياحة: الفلتر، الخريطة واللون')+'</div>'+
+      field('بطاقة الطقس والبحر فالموضوع','<select id="e-wx"><option value="auto"'+(!a.wx||a.wx==='auto'?' selected':'')+'>أوتوماتيكي (الشواطئ والموانئ)</option><option value="on"'+(a.wx==='on'?' selected':'')+'>دائماً (إلا كانت الإحداثيات)</option><option value="off"'+(a.wx==='off'?' selected':'')+'>لا</option></select>')+
       field('تاريخ النشر','<input type="date" id="e-date" value="'+esc(a.date||today())+'">')+
       '<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="e-feat"'+(S.site.featured===a.slug&&a.slug?' checked':'')+'> ⭐ موضوع مميز فالصفحة الرئيسية</label>'+
       '<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="e-draft"'+(a.draft?' checked':'')+'> مسودة (ما يبانش فالموقع)</label>'+
@@ -529,6 +584,8 @@ function viewEdit(slug){
         '<button class="btn" data-ins="h2">عنوان H2</button><button class="btn" data-ins="p">فقرة</button><button class="btn" data-ins="features">مميزات</button>'+
         '<button class="btn" data-ins="seasons">مواسم</button><button class="btn" data-ins="info">معلومات</button><button class="btn" data-ins="tips">نصائح</button>'+
         '<button class="btn" data-ins="highlight">ملاحظة</button><button class="btn" data-ins="warn">تنبيه</button><button class="btn" data-ins="img">🖼️ صور (واحدة ولا بزاف)</button><button class="btn" data-ins="imglib">📁 صور من المكتبة</button>'+
+        '<button class="btn" data-ins="quick">⚡ جواب سريع</button><button class="btn" data-ins="facts">🔢 أرقام بارزة</button><button class="btn" data-ins="chips">🏷️ شارات</button><button class="btn" data-ins="pick">🥇 اختيار مع صورة</button><button class="btn" data-ins="table">📊 جدول مقارنة</button><button class="btn" data-ins="faq">❓ سؤال وجواب</button>'+
+        '<button class="btn" data-ins="blk-tm">⛴️ جدول البواخر المباشر</button><button class="btn" data-ins="blk-fmap">🛰️ خريطة البواخر</button>'+
         (a.section==='page'?'<button class="btn" data-ins="blk-contact">📞 بطاقات التواصل</button><button class="btn" data-ins="blk-packages">💰 باقات الإعلان</button>':'')+
         (l!=='ar'?'<button class="btn" data-copy-ar>📋 نسخ البنية من العربية</button>':'')+
       '</div>'+
@@ -573,7 +630,14 @@ function viewEdit(slug){
       seasons:'<div class="seasons">\n<div class="season"><div class="season-icon">🌸</div><div class="season-name">الربيع</div><div class="season-desc">مارس — ماي</div><span class="badge badge-best">⭐ مثالي</span></div>\n<div class="season"><div class="season-icon">☀️</div><div class="season-name">الصيف</div><div class="season-desc">يونيو — غشت</div><span class="badge badge-good">✅ ممتاز</span></div>\n<div class="season"><div class="season-icon">🍂</div><div class="season-name">الخريف</div><div class="season-desc">شتنبر — نونبر</div><span class="badge badge-good">⭐ جيد</span></div>\n<div class="season"><div class="season-icon">🌧️</div><div class="season-name">الشتاء</div><div class="season-desc">دجنبر — فبراير</div><span class="badge badge-ok">⚠️ هادئ</span></div>\n</div>\n',
       info:'<div class="info-grid">\n<div class="info-item"><div class="info-icon">📍</div><div><div class="info-label">الموقع</div><div class="info-val">…</div></div></div>\n<div class="info-item"><div class="info-icon">🚗</div><div><div class="info-label">الوصول</div><div class="info-val">…</div></div></div>\n</div>\n',
       tips:'<ul class="tips">\n<li><span>💡</span><span>نصيحة…</span></li>\n<li><span>💡</span><span>نصيحة…</span></li>\n</ul>\n',
-      highlight:'<div class="highlight">📍 ملاحظة مهمة…</div>\n','blk-contact':'<div data-block="contact"></div>\n','blk-packages':'<div data-block="ad-packages"></div>\n',warn:'<div class="warn">⚠️ تنبيه…</div>\n'
+      highlight:'<div class="highlight">📍 ملاحظة مهمة…</div>\n','blk-contact':'<div data-block="contact"></div>\n','blk-packages':'<div data-block="ad-packages"></div>\n',warn:'<div class="warn">⚠️ تنبيه…</div>\n',
+      quick:'<div class="quick"><b>⚡ الجواب السريع</b><p>جواب مباشر فسطرين…</p></div>\n',
+      facts:'<div class="facts"><div><b>~ 1h30</b><span>وصف قصير</span></div><div><b>يومياً</b><span>وصف قصير</span></div><div><b>قريب</b><span>وصف قصير</span></div></div>\n',
+      chips:'<ul class="chips-row"><li><span class="chip-ok">✅ ميزة</span></li><li><span class="chip-mid">🟡 متوسط</span></li><li><span class="chip-no">❌ غير متوفر</span></li></ul>\n',
+      pick:'<div class="pick"><img src="assets/img/اسم-الصورة.webp" alt="وصف الصورة" loading="lazy"><div><h3>1. الاسم</h3><p><b>⭐ مناسب لـ…</b></p><p>وصف قصير…</p><p><a href="~/tourisme/slug/">اقرأ أكثر ←</a></p></div></div>\n',
+      table:'<table><thead><tr><th>العمود 1</th><th>العمود 2</th><th>العمود 3</th></tr></thead><tbody>\n<tr><td>…</td><td>…</td><td>…</td></tr>\n<tr><td>…</td><td>…</td><td>…</td></tr>\n</tbody></table>\n',
+      faq:'<details><summary>السؤال؟</summary><p>الجواب…</p></details>\n',
+      'blk-tm':'<div data-block="tm-live"></div>\n','blk-fmap':'<div data-block="ferry-map"></div>\n'
     };
     if(kind==='img'||kind==='imglib'){
       (kind==='img'?pickImages(true,a.slug||'img'):chooseFromLibrary(true)).then(function(p){if(!p.length)return;
@@ -589,7 +653,8 @@ function viewEdit(slug){
 
   var slugTouched=!!orig;
   function syncMeta(){
-    a.slug=$('#e-slug').value.trim();a.section=$('#e-section').value;a.category=$('#e-cat').value;a.date=$('#e-date').value||today();
+    a.slug=$('#e-slug').value.trim();a.section=$('#e-section').value;a.category=$('#e-cat').value;a.date=$('#e-date').value||today();a.wx=$('#e-wx').value;
+    $('#cat-wrap').hidden=a.section==='page'||a.section==='news';
     a.draft=$('#e-draft').checked;a.noindex=$('#e-noindex').checked;a.cover=$('#e-cover').value.trim();a.map=$('#e-map').value.trim();a.video=$('#e-video').value.trim();vprev(a.video);
     var la=parseFloat($('#e-lat').value),ln=parseFloat($('#e-lng').value);a.lat=isNaN(la)?null:la;a.lng=isNaN(ln)?null:ln;
     $('#e-url').textContent=a.slug?'/'+B.articleDir(a,'ar'):'';
@@ -613,7 +678,7 @@ function viewEdit(slug){
     if(a.map&&!/output=embed&?$|maps\.google\.com\/maps\?q=/.test(a.map)){$('#e-map').value='';}
     $('#geo-status').textContent='✅ الموقع تبدل ('+src+')';syncMeta();});
   $('#ltabs').addEventListener('click',function(e){var b=e.target.closest('[data-l]');if(!b)return;S.editLang=b.dataset.l;tabs();pane();seo();});
-  ['e-slug','e-section','e-cat','e-date','e-draft','e-noindex','e-cover','e-map','e-lat','e-lng','e-video'].forEach(function(id){$('#'+id).addEventListener('input',function(){if(id==='e-slug')slugTouched=true;syncMeta();});$('#'+id).addEventListener('change',syncMeta);});
+  ['e-slug','e-section','e-cat','e-date','e-draft','e-noindex','e-cover','e-map','e-lat','e-lng','e-video','e-wx'].forEach(function(id){$('#'+id).addEventListener('input',function(){if(id==='e-slug')slugTouched=true;syncMeta();});$('#'+id).addEventListener('change',syncMeta);});
   $('#e-slug').addEventListener('blur',function(){$('#e-slug').value=slugify($('#e-slug').value);syncMeta();});
   $('#cover-up').addEventListener('click',function(){pickImages(false,a.slug||'cover').then(function(p){if(p.length){$('#e-cover').value=p[0];syncMeta();}});});
   $('#cover-lib').addEventListener('click',function(){chooseFromLibrary(false).then(function(p){if(p.length){$('#e-cover').value=p[0];syncMeta();}});});
@@ -629,6 +694,8 @@ function viewEdit(slug){
   $('#rel').addEventListener('change',function(){a.related=$$('#rel input:checked').map(function(i){return i.value;});});
   $('#back').addEventListener('click',function(){if(changed()&&!confirm('التغييرات ديال هاد الموضوع ما تحفظاتش. ترجع؟'))return;go('articles');});
   $('#preview').addEventListener('click',function(){syncMeta();preview(a,S.editLang);});
+  $('#export').addEventListener('click',function(){syncMeta();if(!a.slug)return toast('❌ عطي الموضوع رابط (slug) أولاً',true);downloadArticle(a);});
+  $('#e-section').addEventListener('change',function(){pane();});
   $('#import').addEventListener('click',function(){importHtml(function(res){
     LANGS.forEach(function(l){var r=res[l];if(!r)return;var x=a.i18n[l];
       if(r.content)x.content=r.content;if(r.title)x.title=r.title;if(r.description)x.description=r.description;
@@ -907,6 +974,7 @@ function viewHome(){
       '<button class="btn btn-s btn-d" id="hv-rm">حذف الفيديو</button></div>'+
     '<div class="card" id="x-tk"><h2>📢 الشريط المتحرك</h2><p class="hint">شريط أخبار فوق الموقع (فجميع الصفحات). كيتوقف ملي الزائر يحط عليه الماوس. استعملو للأخبار، العروض، ولا التنبيهات (مثلاً: حالة البحر، الأنشطة، الإعلانات).</p>'+
       '<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="tk-on"'+(L.tk.enabled?' checked':'')+'> تشغيل الشريط</label>'+
+      '<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="tk-news"'+(L.tk.autoNews?' checked':'')+'> 📰 زيد آخر المستجدات أوتوماتيكياً للشريط</label>'+
       '<div class="two">'+field('الكلمة فالبداية',l4(L.tk.label,'tk-label'),'مثلاً: جديد، عاجل')+field('السرعة','<select id="tk-speed"><option value="slow"'+(L.tk.speed==='slow'?' selected':'')+'>بطيئة</option><option value="normal"'+(!L.tk.speed||L.tk.speed==='normal'?' selected':'')+'>متوسطة</option><option value="fast"'+(L.tk.speed==='fast'?' selected':'')+'>سريعة</option></select>')+'</div>'+
       '<label>الأخبار</label><div id="tk-items"></div><button class="btn btn-s" id="tk-add">+ زيد خبر</button></div>'+
     '<div class="card"><h2>📊 الأرقام</h2><div id="stats"></div><button class="btn btn-s" id="add-stat">+ زيد رقم</button></div>'+
@@ -917,7 +985,8 @@ function viewHome(){
       field('تعديل المواقيت بالدقائق','<input type="text" class="ltr" data-lk="tune" value="'+esc(L.live.tune||'')+'" placeholder="0,0,0,0,0,0,0,0,0">','الترتيب: إمساك، فجر، شروق، ظهر، عصر، مغرب، غروب، عشاء، منتصف الليل. مثلاً باش تزيد 5 دقائق للمغرب: 0,0,0,0,0,5,0,0,0')+
       field('فارق التوقيت عن غرينيتش (UTC)','<select data-lk="utcOffset">'+[-1,0,1,2].map(function(o){return '<option value="'+o+'"'+((+L.live.utcOffset||0)===o?' selected':'')+'>'+(o>0?'+':'')+o+(o===0?' (المغرب منذ 20 شتنبر 2026)':'')+'</option>';}).join('')+'</select>','الساعة ديال المغرب كتحسب من التوقيت العالمي، باش تبقى صحيحة حتى إلا كان المتصفح ديال الزائر ما محدثش. إلا تبدل التوقيت الرسمي، بدلها هنا ونشر.')+
       field('تعديل التاريخ الهجري','<select data-lk="hijriAdj"><option value="-1"'+(L.live.hijriAdj==-1?' selected':'')+'>ناقص نهار (-1)</option><option value=""'+(!L.live.hijriAdj?' selected':'')+'>بلا تعديل</option><option value="1"'+(L.live.hijriAdj==1?' selected':'')+'>زايد نهار (+1)</option></select>','باش يطابق التاريخ الرسمي ديال وزارة الأوقاف (رؤية الهلال)')+
-      '<div class="two">'+field('رابط "التفاصيل" للطقس','<input type="text" class="ltr" data-lk="weatherUrl" value="'+esc(L.live.weatherUrl||'')+'">')+field('رابط "التفاصيل" للصلاة','<input type="text" class="ltr" data-lk="prayerUrl" value="'+esc(L.live.prayerUrl||'')+'">')+'</div></div>'+
+      '<div class="two">'+field('رابط "التفاصيل" للطقس','<input type="text" class="ltr" data-lk="weatherUrl" value="'+esc(L.live.weatherUrl||'')+'">')+field('رابط "التفاصيل" للصلاة','<input type="text" class="ltr" data-lk="prayerUrl" value="'+esc(L.live.prayerUrl||'')+'">')+'</div>'+
+      field('رابط "التفاصيل" للبحر','<input type="text" class="ltr" data-lk="seaUrl" value="'+esc(L.live.seaUrl||'')+'">','mer/ = صفحة البحر اليوم')+'</div>'+
     '<div class="card" id="x-gal"><h2>📸 معرض الصور فالرئيسية</h2>'+field('العنوان',l4(L.gal.title,'g-title'))+field('النص الصغير',l4(L.gal.subtitle,'g-sub'))+field('نص الزر',l4(L.gal.cta,'g-cta'))+
       field('رابط الزر','<input type="text" class="ltr" id="g-url" value="'+esc(L.gal.url||'')+'">')+
       '<label>الصور <span class="hint">(حتى 6)</span></label><div class="imgs" id="g-imgs"></div><div class="row" style="margin-top:8px"><button class="btn btn-s" id="g-up">⬆️ رفع</button><button class="btn btn-s" id="g-lib">📁 من المكتبة</button></div></div>'+
@@ -959,7 +1028,7 @@ function viewHome(){
   function tkItems(){$('#tk-items').innerHTML=L.tk.items.map(function(x,i){return '<div class="rep" data-ti="'+i+'"><div class="rep-h" style="gap:8px"><input type="text" class="ltr" data-tu value="'+esc(x.url||'')+'" placeholder="رابط (اختياري): tourisme/plage/ أو https://…"><label style="margin:0;display:flex;gap:6px;align-items:center;font-weight:500;white-space:nowrap"><input type="checkbox" data-ti18n'+(x.i18n?' checked':'')+'> حسب اللغة</label><button class="btn btn-s" data-tup="'+i+'">↑</button><button class="btn btn-s btn-d" data-tx="'+i+'">✕</button></div>'+l4(x.text,'tk-t')+'</div>';}).join('')||'<p class="hint">ما كاين حتى خبر.</p>';}
   tkItems();
   $('#x-tk').addEventListener('input',function(e){
-    L.tk.enabled=$('#tk-on').checked;L.tk.speed=$('#tk-speed').value;L.tk.label=readL4($('#x-tk'),'tk-label');
+    L.tk.enabled=$('#tk-on').checked;L.tk.autoNews=$('#tk-news').checked;L.tk.speed=$('#tk-speed').value;L.tk.label=readL4($('#x-tk'),'tk-label');
     var r=e.target.closest('[data-ti]');if(r){var x=L.tk.items[+r.dataset.ti];x.url=$('[data-tu]',r).value.trim();x.i18n=$('[data-ti18n]',r).checked;x.text=readL4(r,'tk-t');}
     markDirty();e.stopPropagation();
   });
@@ -1050,7 +1119,7 @@ function viewDesign(){
       field('الزوايا','<select id="c-radius"><option value="small"'+(T.radius==='small'?' selected':'')+'>حادة</option><option value=""'+(!T.radius?' selected':'')+'>متوسطة</option><option value="large"'+(T.radius==='large'?' selected':'')+'>دائرية</option></select>')+
     '</div></div>'+
     '<div class="card"><h2>🏠 أقسام الصفحة الرئيسية</h2><p class="hint">خبي ولا بيّن الأقسام.</p>'+
-      [['live','الطقس والبحر والصلاة'],['intro','نص التعريف'],['video','الفيديو التعريفي'],['featured','الموضوع المميز'],['latest','أحدث المواضيع'],['map','خريطة الوجهات'],['gallery','معرض الصور'],['services','الخدمات'],['categories','التصنيفات'],['stats','الأرقام'],['rating','تقييم الموقع']].map(function(x){
+      [['live','الطقس والبحر والصلاة'],['news','آخر المستجدات (كتبان غير إلا كاين جديد)'],['intro','نص التعريف'],['video','الفيديو التعريفي'],['featured','الموضوع المميز'],['latest','أحدث المواضيع'],['guide','من الدليل'],['map','خريطة الوجهات'],['gallery','معرض الصور'],['services','الخدمات'],['categories','التصنيفات'],['stats','الأرقام'],['rating','تقييم الموقع']].map(function(x){
         return '<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" data-sec="'+x[0]+'"'+(H[x[0]]!==false?' checked':'')+'> '+x[1]+'</label>';}).join('')+'</div>'+
     '<div class="card"><h2>🧩 CSS إضافي <span class="hint">(متقدم)</span></h2><p class="hint">كود CSS صغير كيتزاد فوق التصميم فجميع الصفحات. مثال: <span class="ltr">.hero h1{font-size:80px}</span></p><textarea class="code" id="c-css" style="min-height:140px">'+esc(T.customCss||'')+'</textarea></div>'+
     '<div class="card"><h2>📄 ملف التصميم الكامل <span class="hint">(متقدم جداً)</span></h2><p class="hint">تعديل مباشر لـ <span class="ltr">assets/style.css</span>. أي غلطة هنا كتأثر على الموقع كامل، استعمل "CSS إضافي" إلا ما كنتيش متأكد.</p><button class="btn btn-s" id="full-css">فتح المحرر</button><div id="full-wrap" hidden><textarea class="code" id="full" style="min-height:500px"></textarea></div></div>';
@@ -1135,6 +1204,7 @@ function viewSettings(){
     v.innerHTML='<div class="head"><h1>الإعدادات</h1></div>'+
     '<div class="card"><h2>الموقع</h2>'+field('اسم الموقع',l4(s.name,'s-name'))+field('الشعار (tagline)',l4(s.tagline,'s-tag'))+
       '<div class="two">'+field('الدومين الأساسي','<input type="url" id="s-base" class="ltr" value="'+esc(s.baseUrl||'')+'">','كيستعمل فـ canonical والـ sitemap. خليه https://www.ksarsghir.com')+field('صاحب الموقع','<input type="text" id="s-owner" value="'+esc(s.owner||'')+'">')+'</div></div>'+
+    sectionsCard()+
     '<div class="card"><h2>التصنيفات</h2><div id="cats">'+s.categories.map(function(c,i){return '<div class="rep" data-ci="'+i+'"><div class="rep-h" style="gap:8px"><input type="text" data-cid class="ltr" value="'+esc(c.id)+'" placeholder="beach" style="max-width:160px"><input type="text" data-cic value="'+esc(c.icon||'')+'" placeholder="🏖️" style="max-width:70px"><button class="btn btn-s btn-d" data-crm="'+i+'">✕</button></div>'+l4(c.name,'cn')+'</div>';}).join('')+'</div><button class="btn btn-s" id="add-cat">+ زيد تصنيف</button></div>'+
     '<div class="card"><h2>📢 الإعلانات</h2><p class="hint">الصق كود الإعلان (AdSense ولا HTML ديال معلن). خليه خاوي باش ما يبانش.</p>'+field('فوق المحتوى','<textarea class="code" id="ad-top" style="min-height:90px">'+esc(s.ads.top||'')+'</textarea>')+field('تحت المحتوى','<textarea class="code" id="ad-bottom" style="min-height:90px">'+esc(s.ads.bottom||'')+'</textarea>')+'</div>'+
     '<div class="card" id="x-wa"><h2>💬 زر WhatsApp العائم</h2><label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="wa-on"'+(s.whatsapp.float!==false?' checked':'')+'> بيّن الزر فجميع الصفحات</label>'+
@@ -1153,6 +1223,7 @@ function viewSettings(){
     var wa=e.target.closest('#x-wa');if(wa){s.whatsapp.float=$('#wa-on').checked;s.whatsapp.number=$('#wa-num').value.replace(/\D/g,'');s.whatsapp.message=readL4(wa,'wa-msg');}
     var pk=e.target.closest('#x-pk');if(pk){s.adPackages.show=$('#pk-on').checked;s.adPackages.title=readL4(pk,'pk-title');
       var r=e.target.closest('[data-pk]');if(r){var x=s.adPackages.items[+r.dataset.pk];x.price=$('[data-pk-price]',r).value;x.highlight=$('[data-pk-hot]',r).checked;x.name=readL4(r,'pk-n');x.period=readL4(r,'pk-p');x.features=readL4(r,'pk-f');}}
+    var sc=e.target.closest('#x-secs');if(sc)readSectionsCard(sc);
     var c=e.target.closest('[data-ci]');if(c){var x=s.categories[+c.dataset.ci];x.id=slugify($('[data-cid]',c).value)||x.id;x.icon=$('[data-cic]',c).value;x.name=readL4(c,'cn');}
     markDirty();
   };
@@ -1168,6 +1239,205 @@ function viewSettings(){
   };
 }
 
+/* ---- shared: JSON export / import for data files ---- */
+function jsonTools(name,get,set){
+  return '<div class="row"><button class="btn btn-s" data-json-dl="'+name+'">⬇️ تحميل JSON</button><label class="btn btn-s" style="margin:0;cursor:pointer">⬆️ استيراد JSON<input type="file" accept=".json,application/json" data-json-up="'+name+'" hidden></label></div>';
+}
+function bindJson(v,name,get,set){
+  v.addEventListener('click',function(e){var b=e.target.closest('[data-json-dl="'+name+'"]');if(b)saveFile(name+'.json',JSON.stringify(get(),null,1),'application/json');});
+  v.addEventListener('change',function(e){var i=e.target.closest('[data-json-up="'+name+'"]');if(!i||!i.files[0])return;
+    var fr=new FileReader();fr.onload=function(){try{var d=JSON.parse(fr.result);set(d);toast('✅ تستورد '+name+'.json');}catch(x){toast('❌ ملف JSON غالط',true);}};fr.readAsText(i.files[0],'utf-8');});
+}
+function chk(id,label,on,attr){return '<label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" '+(attr||('id="'+id+'"'))+(on?' checked':'')+'> '+label+'</label>';}
+function imgStrip(list,key){
+  return '<div class="imgs">'+list.map(function(src,i){return '<div class="img"><img src="'+esc(imgSrc(src))+'" alt=""><div class="bar">'+(i?'<button class="btn" data-'+key+'-l="'+i+'">←</button>':'<span class="hint">الأولى</span>')+'<button class="btn btn-d" data-'+key+'-x="'+i+'">✕</button></div></div>';}).join('')+'</div>';
+}
+
+/* ---- accommodation: Booking + rentals (data/rentals.json) ---- */
+function viewLodging(){
+  var D=S.rentals||(S.rentals=clone(B.DEFAULT_RENTALS));
+  D.page=D.page||{};D.booking=D.booking||{enabled:true,hotels:[]};D.booking.hotels=D.booking.hotels||[];D.rentals=D.rentals||{enabled:true,items:[]};D.rentals.items=D.rentals.items||[];D.cta=D.cta||{enabled:true};
+  var v=$('#view');
+  function dirty(){S.extraDirty.rentals=true;markDirty();}
+  function render(){
+    var Bk=D.booking,R=D.rentals,C=D.cta;
+    v.innerHTML='<div class="head"><h1>🏠 الإقامة</h1><div class="row"><button class="btn" id="lg-pv">👁️ معاينة</button>'+jsonTools('rentals')+'</div></div>'+
+      '<p class="hint">صفحة <span class="ltr">/hebergement/</span>: فنادق Booking (رابط الشراكة) + ديور وشقق للكراء من عند الناس، التواصل غير بـ WhatsApp والرقم ما كيبانش فالصفحة.</p>'+
+      '<div class="card" id="lg-page"><h2>نصوص الصفحة</h2><details><summary class="hint" style="cursor:pointer;margin:8px 0">✏️ تعديل النصوص (اختياري — خاوي = النص الافتراضي)</summary>'+field('العنوان',l4(D.page.title,'lp-t'))+field('المقدمة',l4(D.page.intro,'lp-i',true))+field('عنوان SEO',l4(D.page.seoTitle,'lp-s'))+field('الوصف (Google)',l4(D.page.description,'lp-d',true))+'</details></div>'+
+      '<div class="card" id="lg-bk"><h2>🔵 Booking (رابط الشراكة)</h2>'+chk('bk-on','بيّن قسم Booking',Bk.enabled!==false)+
+        field('رابط الشراكة الكامل','<input type="url" class="ltr" id="bk-url" value="'+esc(Bk.url||'')+'" placeholder="الرابط اللي عطاك CJ / Awin، ولا رابط بحث Booking">','إلا كان خاوي كيتستعمل بحث Booking على Ksar es Seghir. كيتزاد lang= حسب لغة الصفحة.')+
+        field('Affiliate ID (aid)','<input type="text" class="ltr" id="bk-aid" value="'+esc(Bk.aid||'')+'" placeholder="اختياري">','إلا عندك aid مباشر من Booking، كيتزاد لروابط booking.com')+
+        '<details><summary class="hint" style="cursor:pointer;margin:8px 0">✏️ تعديل النصوص (اختياري — خاوي = النص الافتراضي)</summary>'+field('عنوان القسم',l4(Bk.title,'bk-t'))+field('النص',l4(Bk.text,'bk-x'))+field('نص الزر',l4(Bk.button,'bk-b'))+field('ملاحظة رابط الشراكة',l4(Bk.note,'bk-n',true),'خاوي = الملاحظة الافتراضية (ضرورية، ما تحيدهاش)')+'</details>'+
+        '<h3 style="margin-top:14px">فنادق مختارة <span class="hint">(اختياري)</span></h3><div id="hotels">'+Bk.hotels.map(function(h,i){return '<div class="rep" data-h="'+i+'"><div class="rep-h" style="gap:8px"><input type="text" data-h-name value="'+esc(h.name||'')+'" placeholder="اسم الفندق"><input type="url" class="ltr" data-h-url value="'+esc(h.url||'')+'" placeholder="رابط Booking ديال الفندق"><button class="btn btn-s btn-d" data-h-x="'+i+'">✕</button></div>'+
+          '<div class="row" style="margin:6px 0">'+(h.img?'<img src="'+esc(imgSrc(h.img))+'" alt="" style="width:90px;height:60px;object-fit:cover;border-radius:8px">':'')+'<button class="btn btn-s" data-h-up="'+i+'">⬆️ صورة</button><button class="btn btn-s" data-h-lib="'+i+'">📁</button></div>'+field('المنطقة',l4(h.area,'h-a'))+field('ملاحظة قصيرة',l4(h.note,'h-n'))+'</div>';}).join('')+'</div><button class="btn btn-s" id="h-add">+ زيد فندق</button></div>'+
+      '<div class="card" id="lg-r"><h2>🏡 إعلانات الكراء</h2>'+chk('r-on','بيّن قسم الكراء',R.enabled!==false)+'<details><summary class="hint" style="cursor:pointer;margin:8px 0">✏️ تعديل النصوص (اختياري — خاوي = النص الافتراضي)</summary>'+field('عنوان القسم',l4(R.title,'r-t'))+field('المقدمة',l4(R.intro,'r-i'))+field('تنبيه الأمان',l4(R.warn,'r-w',true),'خاوي = التنبيه الافتراضي (ما تصيفطش العربون…)')+'</details>'+
+        '<div id="rents">'+R.items.map(function(x,i){x.images=x.images||[];return '<div class="rep" data-r="'+i+'"><div class="rep-h" style="gap:8px;flex-wrap:wrap"><b class="ltr">#'+esc(x.id||'')+'</b>'+
+          chk('',' مميز',x.featured,'data-r-feat')+chk('',' متوفر',x.available!==false,'data-r-av')+chk('',' مخفي',x.hidden,'data-r-hid')+
+          '<button class="btn btn-s" data-r-up="'+i+'">↑</button><button class="btn btn-s btn-d" data-r-x="'+i+'">✕</button></div>'+
+          field('العنوان',l4(x.title,'r-ti'))+field('المنطقة / الحي',l4(x.area,'r-ar'))+
+          '<div class="two">'+field('عدد الأشخاص','<input type="text" data-r-cap value="'+esc(x.capacity||'')+'" placeholder="6">')+field('عدد البيوت','<input type="text" data-r-rooms value="'+esc(x.rooms||'')+'" placeholder="2">')+'</div>'+
+          '<div class="two">'+field('الثمن','<input type="text" data-r-price value="'+esc(x.price||'')+'" placeholder="مثلاً: 400 درهم">','خاوي = ما يبانش الثمن')+field('WhatsApp المالك','<input type="text" class="ltr" data-r-wa value="'+esc(x.whatsapp||'')+'" placeholder="2126…">','ما كيبانش فالصفحة، غير فزر WhatsApp. خاوي = رقم الموقع')+'</div>'+
+          field('ملاحظة الثمن',l4(x.priceNote,'r-pn'),'مثلاً: لليلة، فالصيف')+field('الوصف',l4(x.desc,'r-d',true))+field('المميزات (كل وحدة فسطر)',l4(x.features,'r-f',true))+
+          '<label>الصور</label>'+imgStrip(x.images,'ri'+i)+'<div class="row" style="margin-top:6px"><button class="btn btn-s" data-r-img="'+i+'">⬆️ رفع صور</button><button class="btn btn-s" data-r-lib="'+i+'">📁 من المكتبة</button></div></div>';}).join('')+'</div>'+
+        '<button class="btn btn-s" id="r-add">+ زيد إعلان كراء</button></div>'+
+      '<div class="card" id="lg-c"><h2>📣 "زيد الإعلان ديالك"</h2>'+chk('c-on','بيّن الدعوة لأصحاب الديور (WhatsApp ديال الموقع)',C.enabled!==false)+'<details><summary class="hint" style="cursor:pointer;margin:8px 0">✏️ تعديل النصوص (اختياري — خاوي = النص الافتراضي)</summary>'+field('العنوان',l4(C.title,'c-t'))+field('النص',l4(C.text,'c-x'))+field('نص الزر',l4(C.button,'c-b'))+'</details></div>';
+  }
+  function read(e){
+    var t=e.target;
+    D.page.title=readL4($('#lg-page'),'lp-t');D.page.intro=readL4($('#lg-page'),'lp-i');D.page.seoTitle=readL4($('#lg-page'),'lp-s');D.page.description=readL4($('#lg-page'),'lp-d');
+    var Bk=D.booking;Bk.enabled=$('#bk-on').checked;Bk.url=$('#bk-url').value.trim();Bk.aid=$('#bk-aid').value.trim();
+    Bk.title=readL4($('#lg-bk'),'bk-t');Bk.text=readL4($('#lg-bk'),'bk-x');Bk.button=readL4($('#lg-bk'),'bk-b');Bk.note=readL4($('#lg-bk'),'bk-n');
+    var h=t.closest('[data-h]');if(h){var x=Bk.hotels[+h.dataset.h];x.name=$('[data-h-name]',h).value;x.url=$('[data-h-url]',h).value.trim();x.area=readL4(h,'h-a');x.note=readL4(h,'h-n');}
+    var R=D.rentals;R.enabled=$('#r-on').checked;
+    var rw=$('#lg-r');R.title=readL4(rw,'r-t');R.intro=readL4(rw,'r-i');R.warn=readL4(rw,'r-w');
+    var r=t.closest('[data-r]');if(r){var it=R.items[+r.dataset.r];it.title=readL4(r,'r-ti');it.area=readL4(r,'r-ar');it.capacity=$('[data-r-cap]',r).value.trim();it.rooms=$('[data-r-rooms]',r).value.trim();
+      it.price=$('[data-r-price]',r).value.trim();it.whatsapp=$('[data-r-wa]',r).value.replace(/\D/g,'');it.priceNote=readL4(r,'r-pn');it.desc=readL4(r,'r-d');it.features=readL4(r,'r-f');
+      it.featured=$('[data-r-feat]',r).checked;it.available=$('[data-r-av]',r).checked;it.hidden=$('[data-r-hid]',r).checked;}
+    var C=D.cta;C.enabled=$('#c-on').checked;C.title=readL4($('#lg-c'),'c-t');C.text=readL4($('#lg-c'),'c-x');C.button=readL4($('#lg-c'),'c-b');
+    dirty();
+  }
+  render();
+  v.oninput=function(e){if(e.target.closest('[data-json-up]'))return;read(e);};
+  v.onchange=v.oninput;
+  v.onclick=function(e){
+    var b=e.target.closest('button');if(!b)return;
+    var Bk=D.booking,R=D.rentals,ds=b.dataset;
+    if(b.id==='lg-pv')return previewPage(B.lodgingPage(S.site,D,'ar'),'hebergement/','الإقامة');
+    if(b.id==='h-add'){Bk.hotels.push({name:'',url:'',img:'',area:{},note:{}});render();dirty();}
+    if(ds.hX!=null){Bk.hotels.splice(+ds.hX,1);render();dirty();}
+    if(ds.hUp!=null)pickImages(false,'hotel').then(function(p){if(p.length){Bk.hotels[+ds.hUp].img=p[0];render();dirty();}});
+    if(ds.hLib!=null)chooseFromLibrary(false).then(function(p){if(p.length){Bk.hotels[+ds.hLib].img=p[0];render();dirty();}});
+    if(b.id==='r-add'){var n=1;R.items.forEach(function(x){n=Math.max(n,(+x.id||0)+1);});R.items.push({id:String(n),title:{},area:{},desc:{},features:{},images:[],capacity:'',rooms:'',price:'',priceNote:{},whatsapp:'',featured:false,available:true,hidden:false});render();dirty();toast('تزاد إعلان جديد فالتحت');}
+    if(ds.rX!=null&&confirm('حذف هاد الإعلان؟')){R.items.splice(+ds.rX,1);render();dirty();}
+    if(ds.rUp!=null&&+ds.rUp>0){var i=+ds.rUp;R.items.splice(i-1,0,R.items.splice(i,1)[0]);render();dirty();}
+    if(ds.rImg!=null)pickImages(true,'location-'+(R.items[+ds.rImg].id||'')).then(function(p){if(p.length){R.items[+ds.rImg].images=R.items[+ds.rImg].images.concat(p);render();dirty();}});
+    if(ds.rLib!=null)chooseFromLibrary(true).then(function(p){if(p.length){R.items[+ds.rLib].images=R.items[+ds.rLib].images.concat(p);render();dirty();}});
+    Object.keys(ds).forEach(function(k){var m=k.match(/^ri(\d+)([LX])$/);if(!m)return;var imgs=R.items[+m[1]].images,j=+ds[k];
+      if(m[2]==='X')imgs.splice(j,1);else if(j>0)imgs.splice(j-1,0,imgs.splice(j,1)[0]);render();dirty();});
+  };
+  bindJson(v,'rentals',function(){return D;},function(d){S.rentals=d;dirty();viewLodging();});
+}
+
+/* ---- useful numbers (data/numbers.json) ---- */
+function viewNumbers(){
+  var D=S.numbers||(S.numbers=clone(B.DEFAULT_NUMBERS));D.groups=D.groups||[];
+  var v=$('#view');
+  function dirty(){S.extraDirty.numbers=true;markDirty();}
+  function render(){
+    v.innerHTML='<div class="head"><h1>📞 الأرقام المهمة</h1><div class="row"><button class="btn" id="nm-pv">👁️ معاينة</button>'+jsonTools('numbers')+'</div></div>'+
+      '<div class="card" id="nm-top"><p class="hint" style="margin-top:0">⚠️ ما تحط حتى رقم محلي حتى تتأكد منو بنفسك (عيطتي عليه ولا من مصدر رسمي). الأرقام الخاوية ما كتبانش فالصفحة.</p>'+
+        '<div class="two">'+field('آخر تحقق (شهر)','<input type="month" id="nm-ver" value="'+esc(String(D.verified||'').slice(0,7))+'">')+'<div style="padding-top:28px">'+chk('nm-pend','بيّن الأرقام الخاوية بـ "قيد التحقق"',D.showPending)+'</div></div>'+
+        '<details><summary class="hint" style="cursor:pointer;margin:8px 0">✏️ تعديل النصوص (اختياري — خاوي = النص الافتراضي)</summary>'+field('العنوان',l4(D.title,'nm-t'))+field('المقدمة',l4(D.intro,'nm-i'))+field('ملاحظة مهمة (المربع الأصفر)',l4(D.note,'nm-n',true))+field('المصدر (تحت)',l4(D.source,'nm-s',true))+'</details></div>'+
+      D.groups.map(function(g,gi){g.items=g.items||[];return '<div class="card" data-g="'+gi+'"><div class="rep-h" style="gap:8px"><input type="text" data-g-icon value="'+esc(g.icon||'')+'" style="max-width:70px"><h2 style="margin:0;flex:1">'+esc((g.name&&g.name.ar)||'مجموعة')+'</h2><button class="btn btn-s" data-g-up="'+gi+'">↑</button><button class="btn btn-s btn-d" data-g-x="'+gi+'">حذف المجموعة</button></div>'+field('اسم المجموعة',l4(g.name,'g-n'))+
+        g.items.map(function(x,i){return '<div class="rep" data-it="'+i+'"><div class="rep-h" style="gap:8px;flex-wrap:wrap"><input type="text" data-it-icon value="'+esc(x.icon||'')+'" style="max-width:60px" placeholder="📞"><input type="text" class="ltr" data-it-phone value="'+esc(x.phone||'')+'" placeholder="الرقم" style="max-width:170px">'+
+          chk('','🚨 طوارئ (مربع كبير)',x.sos,'data-it-sos')+(x.sos?'<input type="color" data-it-color value="'+esc(x.color||'#0b1e2d')+'">':'')+'<button class="btn btn-s" data-it-up="'+i+'">↑</button><button class="btn btn-s btn-d" data-it-x="'+i+'">✕</button></div>'+field('الاسم',l4(x.name,'it-n'))+field('ملاحظة',l4(x.note,'it-o'))+'</div>';}).join('')+
+        '<button class="btn btn-s" data-it-add="'+gi+'">+ زيد رقم</button></div>';}).join('')+
+      '<div class="card"><button class="btn btn-s" id="g-add">+ زيد مجموعة</button></div>';
+  }
+  render();
+  v.oninput=function(e){
+    if(e.target.closest('[data-json-up]'))return;
+    var top=$('#nm-top');D.verified=$('#nm-ver').value;D.showPending=$('#nm-pend').checked;D.title=readL4(top,'nm-t');D.intro=readL4(top,'nm-i');D.note=readL4(top,'nm-n');D.source=readL4(top,'nm-s');
+    var g=e.target.closest('[data-g]');if(g){var G=D.groups[+g.dataset.g];G.icon=$('[data-g-icon]',g).value;
+      var gn=$$('[data-k="g-n"]',g);var o={};gn.forEach(function(i){o[i.dataset.l]=i.value.trim();});G.name=o;
+      var r=e.target.closest('[data-it]');if(r){var x=G.items[+r.dataset.it],was=x.sos;x.icon=$('[data-it-icon]',r).value;x.phone=$('[data-it-phone]',r).value.trim();x.sos=$('[data-it-sos]',r).checked;
+        var c=$('[data-it-color]',r);if(c)x.color=c.value;x.name=readL4(r,'it-n');x.note=readL4(r,'it-o');if(was!==x.sos&&e.type==='change'){render();}}}
+    dirty();
+  };
+  v.onchange=v.oninput;
+  v.onclick=function(e){
+    var b=e.target.closest('button');if(!b)return;var ds=b.dataset;
+    if(b.id==='nm-pv')return previewPage(B.numbersPage(S.site,D,'ar'),'numeros-utiles/','الأرقام المهمة');
+    if(b.id==='g-add'){D.groups.push({id:'g'+Date.now().toString(36),icon:'📞',name:{},items:[]});render();dirty();}
+    if(ds.gX!=null&&confirm('حذف المجموعة بكل الأرقام ديالها؟')){D.groups.splice(+ds.gX,1);render();dirty();}
+    if(ds.gUp!=null&&+ds.gUp>0){var i=+ds.gUp;D.groups.splice(i-1,0,D.groups.splice(i,1)[0]);render();dirty();}
+    var g=b.closest('[data-g]');
+    if(ds.itAdd!=null){D.groups[+ds.itAdd].items.push({icon:'📞',phone:'',name:{},note:{}});render();dirty();}
+    if(g&&ds.itX!=null){D.groups[+g.dataset.g].items.splice(+ds.itX,1);render();dirty();}
+    if(g&&ds.itUp!=null&&+ds.itUp>0){var it=D.groups[+g.dataset.g].items,j=+ds.itUp;it.splice(j-1,0,it.splice(j,1)[0]);render();dirty();}
+  };
+  bindJson(v,'numbers',function(){return D;},function(d){S.numbers=d;dirty();viewNumbers();});
+}
+
+/* ---- official Habous prayer times (data/prayer.json) ---- */
+var HIJRI_M=['محرم','صفر','ربيع الأول','ربيع الآخر','جمادى الأولى','جمادى الآخرة','رجب','شعبان','رمضان','شوال','ذو القعدة','ذو الحجة'];
+function toLatinDigits(s){return String(s).replace(/[٠-٩]/g,function(d){return d.charCodeAt(0)-1632;}).replace(/[۰-۹]/g,function(d){return d.charCodeAt(0)-1776;});}
+function parseHabous(text,o){
+  /* o: {y, m, hm, hy, order:'hg'|'gh'|'g'} -> {rows:[{iso,t:[6],h:[d,m,y]}], errors:[]} */
+  var lines=toLatinDigits(text).split(/\r?\n/),rows=[],errors=[],hm=+o.hm,hy=+o.hy,lastH=null,lastG=0;
+  lines.forEach(function(line,n){
+    var times=(line.match(/\b\d{1,2}[:h.]\d{2}\b/g)||[]).map(function(x){return x.replace(/[h.]/,':');});
+    if(times.length<6)return;
+    var rest=line.replace(/\b\d{1,2}[:h.]\d{2}\b/g,' '),nums=(rest.match(/\b\d{1,2}\b/g)||[]).map(Number);
+    var hd=null,gd=null;
+    if(o.order==='hg'){hd=nums[0];gd=nums[1];}else if(o.order==='gh'){gd=nums[0];hd=nums[1];}else{gd=nums[0];}
+    if(gd==null){gd=lastG+1;}
+    if(!gd||gd>31){errors.push('سطر '+(n+1)+': ما لقيناش النهار الميلادي');return;}
+    if(hd!=null){if(lastH!=null&&hd<lastH){hm++;if(hm>12){hm=1;hy++;}}lastH=hd;}
+    lastG=gd;
+    var t=times.slice(0,6).map(function(x,i){var p=x.split(':'),h=+p[0],mi=p[1];if(i>=2&&h<11)h+=12;return ('0'+h).slice(-2)+':'+mi;});
+    for(var k=1;k<6;k++){if(t[k]<=t[k-1]){errors.push('سطر '+(n+1)+': الأوقات ماشي مرتبة ('+t.join(' ')+')');return;}}
+    var iso=o.y+'-'+('0'+o.m).slice(-2)+'-'+('0'+gd).slice(-2);
+    rows.push({iso:iso,t:t,h:hd!=null?[hd,hm,hy]:null});
+  });
+  return {rows:rows,errors:errors};
+}
+function viewPrayer(){
+  var P=S.prayer||(S.prayer={days:{}});P.days=P.days||{};
+  var v=$('#view'),now=new Date(),parsed=null;
+  function months(){var m={};Object.keys(P.days).forEach(function(k){var x=k.slice(0,7);m[x]=(m[x]||0)+1;});return m;}
+  function render(){
+    var M=months(),keys=Object.keys(M).sort();
+    v.innerHTML='<div class="head"><h1>🕌 مواقيت الحبوس الرسمية</h1></div>'+
+      '<div class="card"><p class="hint" style="margin-top:0">الموقع كيحسب المواقيت أوتوماتيكياً (Aladhan، طريقة المغرب). إلا زدتي هنا الجدول الرسمي ديال وزارة الأوقاف (حصة الصلاة)، الموقع كيستعملو فبلاصتو للأيام اللي كاينين فيه، وكيكتب "مواقيت وزارة الأوقاف الرسمية". الأيام اللي ما كايناش كترجع للحساب الأوتوماتيكي.</p>'+
+        '<h2>الشهور المسجلة</h2>'+(keys.length?'<div class="row">'+keys.map(function(k){return '<span class="pill" style="font-size:14px">'+k+' · '+M[k]+' يوم <button class="btn btn-s btn-d" data-pm-x="'+k+'" style="padding:2px 8px">✕</button></span>';}).join('')+'</div>':'<p class="hint">ما كاين حتى شهر. الموقع خدام بالحساب الأوتوماتيكي.</p>')+'</div>'+
+      '<div class="card" id="pr-in"><h2>📋 زيد شهر من جدول الحبوس</h2>'+
+        '<p class="hint">1) حل الجدول ديال "حصة الصلاة" للمدينة فموقع وزارة الأوقاف (habous.gov.ma). 2) حدد الجدول كامل ونسخو (Ctrl+C). 3) الصقو هنا. كل سطر خاصو يكون فيه 6 أوقات (الصبح، الشروق، الظهر، العصر، المغرب، العشاء).</p>'+
+        '<div class="two">'+field('الشهر الميلادي','<div class="row" style="flex-wrap:nowrap"><select id="pr-m">'+[1,2,3,4,5,6,7,8,9,10,11,12].map(function(m){return '<option value="'+m+'"'+(m===now.getMonth()+1?' selected':'')+'>'+m+'</option>';}).join('')+'</select><input type="number" id="pr-y" value="'+now.getFullYear()+'" style="max-width:110px"></div>')+
+        field('ترتيب أعمدة الأيام','<select id="pr-ord"><option value="hg">هجري ثم ميلادي (بحال جدول الحبوس)</option><option value="gh">ميلادي ثم هجري</option><option value="g">غير الميلادي</option></select>')+'</div>'+
+        '<div class="two">'+field('الشهر الهجري فأول سطر','<select id="pr-hm">'+HIJRI_M.map(function(n,i){return '<option value="'+(i+1)+'">'+(i+1)+' — '+n+'</option>';}).join('')+'</select>','كيتبدل أوتوماتيكياً ملي يرجع النهار الهجري لـ 1')+field('السنة الهجرية','<input type="number" id="pr-hy" value="1448">')+'</div>'+
+        '<label>الصق الجدول هنا</label><textarea class="code" id="pr-txt" style="min-height:220px" placeholder="الأحد	19	12	06:47	08:13	13:31	16:44	19:12	20:30"></textarea>'+
+        '<div class="row" style="margin-top:8px"><button class="btn" id="pr-parse">🔍 تحليل</button></div><div id="pr-out"></div></div>';
+    var hm=$('#pr-hm');
+    // guess hijri month from Aladhan-like approximation is not reliable: default to last saved month if any
+    var last=Object.keys(P.days).sort().pop();if(last&&P.days[last].h){hm.value=String(P.days[last].h[1]);$('#pr-hy').value=P.days[last].h[2];}
+  }
+  function show(){
+    var o={y:+$('#pr-y').value,m:+$('#pr-m').value,hm:+$('#pr-hm').value,hy:+$('#pr-hy').value,order:$('#pr-ord').value};
+    parsed=parseHabous($('#pr-txt').value,o);
+    var dim=new Date(o.y,o.m,0).getDate();
+    $('#pr-out').innerHTML=(parsed.errors.length?'<div class="hint" style="color:var(--bad);margin:8px 0">'+parsed.errors.map(esc).join('<br>')+'</div>':'')+
+      '<p><b>'+parsed.rows.length+'</b> يوم من '+dim+(parsed.rows.length<dim?' <span style="color:var(--bad)">(ناقصين أيام، الأيام الناقصة كترجع للحساب الأوتوماتيكي)</span>':' ✅')+'</p>'+
+      (parsed.rows.length?'<div style="overflow-x:auto"><table class="tbl" style="width:100%;font-size:13px;text-align:center"><thead><tr><th>الميلادي</th><th>الهجري</th><th>الصبح</th><th>الشروق</th><th>الظهر</th><th>العصر</th><th>المغرب</th><th>العشاء</th></tr></thead><tbody>'+
+        parsed.rows.map(function(r){return '<tr><td class="ltr">'+r.iso+'</td><td>'+(r.h?r.h[0]+' '+HIJRI_M[r.h[1]-1]+' '+r.h[2]:'—')+'</td>'+r.t.map(function(x){return '<td class="ltr">'+x+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>'+
+        '<div class="row" style="margin-top:10px"><button class="btn btn-p" id="pr-save">💾 حفظ هاد الشهر فالموقع</button></div>':'');
+  }
+  render();
+  v.onclick=function(e){
+    var b=e.target.closest('button');if(!b)return;
+    if(b.id==='pr-parse')show();
+    if(b.id==='pr-save'&&parsed){parsed.rows.forEach(function(r){P.days[r.iso]=r.h?{t:r.t,h:r.h}:{t:r.t};});S.extraDirty.prayer=true;markDirty();toast('✅ تزاد الشهر. ضغط "نشر التغييرات" باش يبان فالموقع.');render();}
+    if(b.dataset.pmX&&confirm('حذف مواقيت '+b.dataset.pmX+'؟')){Object.keys(P.days).forEach(function(k){if(k.slice(0,7)===b.dataset.pmX)delete P.days[k];});S.extraDirty.prayer=true;markDirty();render();}
+  };
+}
+
+/* ---- sections & pages settings (inside settings view) ---- */
+function sectionsCard(){
+  var s=S.site;s.pages=s.pages||{};s.sections=s.sections||{};var G=s.sections.guide||(s.sections.guide={}),N=s.sections.news||(s.sections.news={days:30});
+  var pg=[['guide','📚 الدليل','guide/'],['news','📰 المستجدات','news/'],['hebergement','🏠 الإقامة','hebergement/'],['numeros','📞 الأرقام المهمة','numeros-utiles/'],['mer','🌊 البحر اليوم','mer/'],['meteo','🌤️ الطقس','meteo/'],['salat','🕌 الصلاة','salat/']];
+  return '<div class="card" id="x-secs"><h2>🧩 الأقسام والصفحات</h2><p class="hint">إلا طفيتي صفحة، كتتحيد من الموقع فالنشر الجاي (حيد حتى الرابط ديالها من القائمة).</p>'+
+    '<div class="row">'+pg.map(function(x){return chk('',x[1]+' <span class="ltr hint">/'+x[2]+'</span>',s.pages[x[0]]!==false,'data-pg="'+x[0]+'"');}).join('')+'</div>'+
+    '<h3 style="margin-top:14px">📚 الدليل</h3>'+field('الاسم (القائمة والمسار)',l4(G.name,'sg-n'))+field('العنوان H1',l4(G.h1,'sg-h'))+field('المقدمة',l4(G.intro,'sg-i',true))+
+    '<h3 style="margin-top:14px">📰 المستجدات</h3><div class="two">'+field('كتبان فالرئيسية لمدة (أيام)','<input type="number" id="sn-days" value="'+esc(N.days||30)+'" min="1">','من بعد كتختفي من الرئيسية وكتبقى فصفحة المستجدات')+'<div style="padding-top:28px">'+chk('sn-always','بيّن آخر المستجدات ديما (حتى القديمة)',N.always)+'</div></div>'+
+    field('الاسم',l4(N.name,'sn-n'))+field('العنوان H1',l4(N.h1,'sn-h'))+field('المقدمة',l4(N.intro,'sn-i',true))+'</div>';
+}
+function readSectionsCard(root){
+  var s=S.site;$$('[data-pg]',root).forEach(function(c){s.pages[c.dataset.pg]=c.checked;});
+  var G=s.sections.guide,N=s.sections.news;
+  G.name=readL4(root,'sg-n');G.h1=readL4(root,'sg-h');G.intro=readL4(root,'sg-i');
+  N.name=readL4(root,'sn-n');N.h1=readL4(root,'sn-h');N.intro=readL4(root,'sn-i');N.days=+$('#sn-days').value||30;N.always=$('#sn-always').checked;
+}
+
 /* ---------- publish ---------- */
 var publishing=false;
 async function publish(message){
@@ -1178,7 +1448,8 @@ async function publish(message){
     S.site.version=Date.now().toString(36);
     try{var lst=await listImages(true);var names={};lst.forEach(function(f){names[f.path]=1;});
       S.site._thumbs=lst.filter(function(f){return !/-sm\.webp$/.test(f.path)&&names[B.smallOf(f.path)];}).map(function(f){return f.path;});}catch(e){S.site._thumbs=[];}
-    var files=B.buildAll(S.site,S.articles,S.gallery);
+    var hasPrayer=S.prayer&&S.prayer.days&&Object.keys(S.prayer.days).length;
+    var files=B.buildAll(S.site,S.articles,S.gallery,{rentals:S.rentals,numbers:S.numbers,prayer:hasPrayer?S.prayer:null});
     delete S.site._thumbs;
     var list=Object.keys(files).sort();
     var deletes=(S.manifest.files||[]).filter(function(p){return !files[p];});
@@ -1186,10 +1457,13 @@ async function publish(message){
     files['data/site.json']=JSON.stringify(S.site,null,1);
     files['data/gallery.json']=JSON.stringify(S.gallery,null,1);
     files['data/articles.json']=JSON.stringify({articles:S.articles},null,1);
+    if(S.rentals)files['data/rentals.json']=JSON.stringify(S.rentals,null,1);
+    if(S.numbers)files['data/numbers.json']=JSON.stringify(S.numbers,null,1);
+    if(hasPrayer||S.extraDirty.prayer)files['data/prayer.json']=JSON.stringify(S.prayer);
     files['data/manifest.json']=JSON.stringify({files:list},null,1);
     setStatus('<span class="progress"><i></i></span> كنرفع '+Object.keys(files).length+' ملف لـ GitHub…');
     var sha=await commit(files,deletes,message||'📝 تحديث الموقع');
-    S.manifest={files:list};S.dirty=false;S.cssDirty=false;
+    S.manifest={files:list};S.dirty=false;S.cssDirty=false;S.extraDirty={};
     toast('✅ تنشر! غادي يبان فالموقع خلال دقيقة تقريباً.');
     watchDeploy(sha);
     return true;

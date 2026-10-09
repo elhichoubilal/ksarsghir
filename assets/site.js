@@ -101,16 +101,26 @@
 
     if (box('prayer')) {
       var now = mnow(), ds = dmy(now);
-      get('https://api.aladhan.com/v1/timings/' + ds + '?latitude=' + C.lat + '&longitude=' + C.lng + '&method=' + C.method + (C.tune ? '&tune=' + encodeURIComponent(C.tune) : ''))
+      var HM = ['محرم', 'صفر', 'ربيع الأول', 'ربيع الآخر', 'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوال', 'ذو القعدة', 'ذو الحجة'];
+      var HE = ['Muharram', 'Safar', 'Rabi al-Awwal', 'Rabi al-Thani', 'Jumada al-Awwal', 'Jumada al-Thani', 'Rajab', 'Shaaban', 'Ramadan', 'Shawwal', 'Dhu al-Qadah', 'Dhu al-Hijjah'];
+      var iso = now.getUTCFullYear() + '-' + ('0' + (now.getUTCMonth() + 1)).slice(-2) + '-' + ('0' + now.getUTCDate()).slice(-2);
+      var aladhan = function () { return get('https://api.aladhan.com/v1/timings/' + ds + '?latitude=' + C.lat + '&longitude=' + C.lng + '&method=' + C.method + (C.tune ? '&tune=' + encodeURIComponent(C.tune) : '')); };
+      var src = !C.official ? aladhan() : get(C.official).then(function (o) {
+        var x = o && o.days && o.days[iso]; if (!x) return aladhan();
+        var k = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'], T = {}; k.forEach(function (n, i) { T[n] = x.t[i]; });
+        var h = x.h || [];
+        return { official: true, data: { timings: T, date: { hijri: h.length ? { day: h[0], month: { ar: HM[h[1] - 1], en: HE[h[1] - 1] }, year: h[2] } : null } } };
+      }, aladhan);
+      src
         .then(function (d) {
           var T = d.data.timings, keys = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
           var mins = function (x) { var p = String(x).slice(0, 5).split(':'); return +p[0] * 60 + +p[1]; };
           var cur = now.getUTCHours() * 60 + now.getUTCMinutes(), next = keys.filter(function (k) { return k !== 'Sunrise' && mins(T[k]) > cur; })[0] || 'Fajr';
-          var hj = d.data.date.hijri, hijri = lang === 'ar' ? hj.day + ' ' + hj.month.ar + ' ' + hj.year + ' هـ' : hj.day + ' ' + hj.month.en + ' ' + hj.year + ' AH';
+          var hj = d.data.date.hijri, hijri = !hj ? '' : lang === 'ar' ? hj.day + ' ' + hj.month.ar + ' ' + hj.year + ' هـ' : hj.day + ' ' + hj.month.en + ' ' + hj.year + ' AH';
           var left = mins(T[next]) - cur; if (left < 0) left += 1440;
           box('prayer').innerHTML = '<p class="next-p">' + U.next + ': <b>' + U.prayers[next] + ' ' + String(T[next]).slice(0, 5) + '</b> <span>(' + Math.floor(left / 60) + ':' + ('0' + left % 60).slice(-2) + ')</span></p>' +
             '<ul class="prayers">' + keys.map(function (k) { return '<li' + (k === next ? ' class="is-next"' : '') + '><span>' + U.prayers[k] + '</span><b>' + String(T[k]).slice(0, 5) + '</b></li>'; }).join('') + '</ul>' +
-            '<p class="live-note">' + hijri + ' · ' + U.approx + '</p>';
+            '<p class="live-note">' + (hijri ? hijri + ' · ' : '') + (d.official ? (U.official || '✓ Habous') : U.approx) + '</p>';
         }).catch(function () { fail('prayer'); });
     }
   }
@@ -192,7 +202,7 @@
     groups.forEach(function (g) {
       g.addEventListener('click', function (e) {
         var a = e.target.closest('[data-lb]'); if (!a) return; e.preventDefault();
-        items = Array.prototype.filter.call(g.querySelectorAll('[data-lb]'), function (x) { return !x.hidden; });
+        items = Array.prototype.filter.call(g.querySelectorAll('[data-lb]'), function (x) { return !x.hidden || g.hasAttribute('data-lb-all'); });
         lastFocus = a; box.hidden = false; document.documentElement.style.overflow = 'hidden'; show(items.indexOf(a)); box.querySelector('.lb-x').focus();
       });
     });
@@ -243,5 +253,81 @@
       var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { io.disconnect(); start(); } }, { rootMargin: '300px' });
       io.observe(mapEl);
     } else start();
+  }
+  /* ---------- shared: load Leaflet once ---------- */
+  var leafletCbs = null;
+  function withLeaflet(cb) {
+    if (window.L) return cb(window.L);
+    if (leafletCbs) return leafletCbs.push(cb);
+    leafletCbs = [cb];
+    var css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css'; document.head.appendChild(css);
+    var js = document.createElement('script'); js.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+    js.onload = function () { leafletCbs.forEach(function (f) { f(window.L); }); };
+    document.head.appendChild(js);
+  }
+  function whenVisible(el, fn) {
+    if (!('IntersectionObserver' in window)) return fn();
+    var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { io.disconnect(); fn(); } }, { rootMargin: '300px' });
+    io.observe(el);
+  }
+
+  /* ---------- ferry lines map (satellite) ---------- */
+  document.querySelectorAll('[data-fmap]').forEach(function (el) {
+    var names = JSON.parse(el.dataset.fmap || '[]'), wrap = el.closest('.fmap');
+    var P = { tm: [35.8885, -5.5005], alg: [36.13, -5.438], ks: [35.8426, -5.5596], tv: [35.789, -5.809], tar: [36.008, -5.604], bcn: [41.35, 2.17], gen: [44.405, 8.91] };
+    var map = null, strait, all;
+    whenVisible(el, function () {
+      withLeaflet(function (L) {
+        map = L.map(el, { scrollWheelZoom: false });
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 18, attribution: 'Imagery © Esri' }).addTo(map);
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { maxZoom: 18, opacity: .85 }).addTo(map);
+        var pin = function (ll, color, label) { return L.marker(ll, { icon: L.divIcon({ className: '', html: '<div class="fpin" style="background:' + color + '"></div>', iconSize: [14, 14], iconAnchor: [7, 7] }) }).addTo(map).bindTooltip(label, { permanent: true, direction: 'top', className: 'ftip', offset: [0, -8] }); };
+        var arc = function (a, b, bend) { var pts = []; for (var i = 0; i <= 40; i++) { var t = i / 40, off = Math.sin(Math.PI * t) * bend; pts.push([a[0] + (b[0] - a[0]) * t + off, a[1] + (b[1] - a[1]) * t - off * 0.6]); } return pts; };
+        pin(P.tm, '#f2a541', names[0]); pin(P.alg, '#f2a541', names[1]); pin(P.ks, '#00b4d8', names[2]); pin(P.tv, '#ffffff', names[3]); pin(P.tar, '#ffffff', names[4]);
+        pin(P.bcn, '#2cc6e6', names[5]); pin(P.gen, '#2cc6e6', names[6]);
+        L.polyline(arc(P.tm, P.alg, 0.02), { color: '#f2a541', weight: 4, dashArray: '10 8' }).addTo(map);
+        L.polyline(arc(P.tv, P.tar, 0.015), { color: '#ffffff', weight: 3, dashArray: '6 8' }).addTo(map);
+        L.polyline([P.ks, P.tm], { color: '#00b4d8', weight: 3, opacity: .9 }).addTo(map);
+        var mid = [[35.98, -5.30], [36.05, -4.60], [36.25, -3.20]];
+        L.polyline([P.tm].concat(mid, [[36.55, -1.90], [37.05, -0.60], [37.75, 0.40], [38.70, 1.00], [39.80, 1.60], [40.80, 2.10], P.bcn]), { color: '#2cc6e6', weight: 3, dashArray: '10 8', smoothFactor: 2 }).addTo(map);
+        L.polyline([P.tm].concat(mid, [[36.65, -1.60], [37.35, 0.60], [38.20, 3.00], [39.40, 5.50], [41.20, 7.10], [42.80, 8.20], [43.90, 8.80], P.gen]), { color: '#7fe0ff', weight: 3, dashArray: '4 8', smoothFactor: 2 }).addTo(map);
+        strait = L.latLngBounds([P.tv, P.alg, P.tar, P.ks, P.tm]); all = L.latLngBounds([P.tv, P.bcn, P.gen, P.tm]);
+        map.fitBounds(strait, { padding: [30, 30] });
+      });
+    });
+    if (wrap) wrap.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-fview]'); if (!b || !map) return;
+      wrap.querySelectorAll('[data-fview]').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      map.fitBounds(b.dataset.fview === 'all' ? all : strait, { padding: [30, 30] });
+    });
+  });
+
+  /* ---------- mini weather + sea card inside beach articles ---------- */
+  document.querySelectorAll('[data-wx]').forEach(function (el) {
+    var c = JSON.parse(el.dataset.wx), U = c.ui, b = el.querySelector('.wx-mini-b'), lg = c.lang;
+    var loc2 = lg === 'ar' ? 'ar-MA' : lg, nf = function (v, d) { return new Intl.NumberFormat(loc2, { maximumFractionDigits: d || 0 }).format(v); };
+    var code = function (x) { return x === 0 ? ['☀️', 'clear'] : x <= 2 ? ['🌤️', 'partly'] : x === 3 ? ['☁️', 'cloudy'] : (x === 45 || x === 48) ? ['🌫️', 'fog'] : x <= 57 ? ['🌦️', 'drizzle'] : x <= 67 ? ['🌧️', 'rain'] : x <= 77 ? ['❄️', 'snow'] : x <= 82 ? ['🌦️', 'showers'] : ['⛈️', 'storm']; };
+    var g = function (u) { return fetch(u).then(function (r) { if (!r.ok) throw 0; return r.json(); }); };
+    whenVisible(el, function () {
+      Promise.all([
+        g('https://api.open-meteo.com/v1/forecast?latitude=' + c.lat + '&longitude=' + c.lng + '&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m&timezone=UTC'),
+        g('https://marine-api.open-meteo.com/v1/marine?latitude=' + c.lat + '&longitude=' + c.lng + '&current=wave_height,sea_surface_temperature&timezone=UTC').catch(function () { return { current: {} }; })
+      ]).then(function (r) {
+        var w = r[0].current, m = r[1].current || {}, h = m.wave_height, ws = w.wind_speed_10m, k = code(w.weather_code);
+        var lvl = (h == null ? 0 : h >= 1 ? 2 : h >= 0.5 ? 1 : 0); lvl = Math.max(lvl, ws >= 35 ? 2 : ws >= 22 ? 1 : 0);
+        var sw = ['good', 'fair', 'bad'][lvl];
+        b.innerHTML = '<span class="wm-t">' + k[0] + ' <b>' + nf(w.temperature_2m) + '°</b> <small>' + (c.codes[k[1]] || '') + '</small></span>' +
+          (h != null ? '<span>🌊 ' + U.waves + ' <b>' + nf(h, 1) + ' m</b></span>' : '') +
+          (m.sea_surface_temperature != null ? '<span>🌡️ ' + U.water + ' <b>' + nf(m.sea_surface_temperature) + '°</b></span>' : '') +
+          '<span>💨 ' + U.wind + ' <b>' + nf(ws) + ' km/h</b> ' + windTxt(w.wind_direction_10m, lg) + '</span>' +
+          '<span class="wm-sw wm-' + sw + '">🏊 ' + U.swim + ': <b>' + U[sw] + '</b></span>';
+      }).catch(function () { b.innerHTML = '<small class="live-note">' + U.error + '</small>'; });
+    });
+  });
+  function windTxt(deg, lg) {
+    if (deg == null) return '';
+    var d = ((deg % 360) + 360) % 360, e = d >= 45 && d <= 135, w = d >= 225 && d <= 315;
+    var N = { ar: ['شرقي', 'غربي'], fr: ['Levante', 'Poniente'], en: ['Levante', 'Poniente'], es: ['Levante', 'Poniente'] }[lg] || ['E', 'W'];
+    return e ? '(' + N[0] + ')' : w ? '(' + N[1] + ')' : '';
   }
 })();

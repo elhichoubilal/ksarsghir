@@ -168,7 +168,23 @@
     })();
     var now = mnow(), ds = dmy(now);
     var timer = null;
-    get('https://api.aladhan.com/v1/timings/' + ds + '?' + base).then(function (r) {
+    var HM = ['محرم', 'صفر', 'ربيع الأول', 'ربيع الآخر', 'جمادى الأولى', 'جمادى الآخرة', 'رجب', 'شعبان', 'رمضان', 'شوال', 'ذو القعدة', 'ذو الحجة'];
+    var HE = ['Muharram', 'Safar', 'Rabi al-Awwal', 'Rabi al-Thani', 'Jumada al-Awwal', 'Jumada al-Thani', 'Rajab', 'Shaaban', 'Ramadan', 'Shawwal', 'Dhu al-Qadah', 'Dhu al-Hijjah'];
+    var WDA = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+    var isoOf = function (y2, m2, d2) { return y2 + '-' + ('0' + m2).slice(-2) + '-' + ('0' + d2).slice(-2); };
+    var OFFICIAL = C.official ? get(C.official).then(function (o) { return o && o.days ? o.days : null; }, function () { return null; }) : Promise.resolve(null);
+    var offDay = function (days, iso) {
+      var x = days && days[iso]; if (!x || !x.t || x.t.length < 6) return null;
+      var T = {}; KEYS.forEach(function (k, i) { T[k] = x.t[i]; });
+      var h = x.h || [], dt = new Date(iso + 'T12:00:00Z');
+      return { data: { timings: T, date: { hijri: h.length ? { day: h[0], year: h[2], month: { ar: HM[h[1] - 1], en: HE[h[1] - 1], number: h[1] }, weekday: { ar: WDA[dt.getUTCDay()] } } : null } }, official: true };
+    };
+    var srcNote = $('.tool .live-note');
+    OFFICIAL.then(function (days) {
+      var o = offDay(days, isoOf(now.getUTCFullYear(), now.getUTCMonth() + 1, now.getUTCDate()));
+      if (o && srcNote && C.officialNote) srcNote.textContent = C.officialNote;
+      return o || get('https://api.aladhan.com/v1/timings/' + ds + '?' + base);
+    }).then(function (r) {
       var T = r.data.timings, hj = r.data.date.hijri;
       var render = function () {
         var n = mnow(), cur = n.getUTCHours() * 60 + n.getUTCMinutes(), sec = n.getUTCSeconds();
@@ -176,7 +192,7 @@
         var left = (mins(T[next]) - cur + 1440) % 1440 * 60 - sec; if (left < 0) left += 86400;
         var hh = Math.floor(left / 3600), mm = Math.floor(left % 3600 / 60), ss = left % 60;
         slot('today').innerHTML =
-          '<div class="pr-head"><div><p class="pr-hijri">' + esc(hijriTxt(hj)) + '</p><p class="pr-greg">' + new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(n) + ' · ' + esc(C.place) + '</p></div>' +
+          '<div class="pr-head"><div><p class="pr-hijri">' + (hj ? esc(hijriTxt(hj)) : '') + '</p><p class="pr-greg">' + new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(n) + ' · ' + esc(C.place) + '</p></div>' +
           '<div class="pr-next"><small>' + esc(U.next) + '</small><b>' + esc(C.prayers[next]) + ' ' + t5(T[next]) + '</b><span class="pr-count" dir="ltr">' + hh + ':' + ('0' + mm).slice(-2) + ':' + ('0' + ss).slice(-2) + '</span></div></div>' +
           '<ul class="pr-grid">' + KEYS.map(function (k) { return '<li' + (k === next ? ' class="is-next"' : '') + '><span>' + esc(C.prayers[k]) + '</span><b>' + t5(T[k]) + '</b></li>'; }).join('') + '</ul>' +
           '<p class="pr-qibla">🧭 ' + esc(U.qibla) + ': <b>' + qibla.toFixed(1) + '°</b> ' + esc(U.qiblaTxt) + '</p>';
@@ -187,7 +203,15 @@
     var y = now.getUTCFullYear(), mo = now.getUTCMonth() + 1;
     var loadMonth = function () {
       slot('month').innerHTML = '<div class="live-skel"></div>';
-      get('https://api.aladhan.com/v1/calendar/' + y + '/' + mo + '?' + base).then(function (r) {
+      OFFICIAL.then(function (days) {
+        var n = new Date(Date.UTC(y, mo, 0)).getUTCDate(), list = [];
+        for (var i = 1; i <= n; i++) { var o = offDay(days, isoOf(y, mo, i)); if (!o || !o.data.date.hijri) { list = null; break; } list.push({ o: o, d: i }); }
+        if (list) return { data: list.map(function (x) {
+          var h = x.o.data.date.hijri;
+          return { timings: x.o.data.timings, date: { gregorian: { date: ('0' + x.d).slice(-2) + '-' + ('0' + mo).slice(-2) + '-' + y, day: x.d, year: y, month: { number: mo } }, hijri: { day: h.day, year: h.year, month: h.month } } };
+        }) };
+        return get('https://api.aladhan.com/v1/calendar/' + y + '/' + mo + '?' + base);
+      }).then(function (r) {
         var rows = r.data, todayKey = ds;
         slot('mtitle').textContent = U.month + ' — ' + new Intl.DateTimeFormat(loc, { month: 'long', year: 'numeric' }).format(new Date(y, mo - 1, 15)) +
           ' / ' + (lang === 'ar' ? rows[0].date.hijri.month.ar : rows[0].date.hijri.month.en) + (rows[rows.length - 1].date.hijri.month.number !== rows[0].date.hijri.month.number ? ' – ' + (lang === 'ar' ? rows[rows.length - 1].date.hijri.month.ar : rows[rows.length - 1].date.hijri.month.en) : '') + ' ' + rows[0].date.hijri.year;
@@ -205,6 +229,74 @@
       var b = e.target.closest('[data-m]');
       if (b) { mo += +b.dataset.m; if (mo < 1) { mo = 12; y--; } if (mo > 12) { mo = 1; y++; } loadMonth(); }
       if (e.target.closest('[data-print]')) window.print();
+    });
+  }
+
+  /* ================= SEA TODAY ================= */
+  if (C.tool === 'sea') {
+    var unit = 'kn';
+    try { unit = localStorage.getItem('ks-unit') || 'kn'; } catch (e) {}
+    var KN = 1.852;
+    var dirKey = function (d) { d = ((d % 360) + 360) % 360; return d >= 45 && d <= 135 ? 'east' : d >= 225 && d <= 315 ? 'west' : (d > 135 && d < 225) ? 'south' : 'north'; };
+    var wLevel = function (kmh) { var k = kmh / KN; return k < 7 ? 0 : k < 12 ? 1 : k < 18 ? 2 : k < 25 ? 3 : 4; };
+    var wNames = ['calm', 'light', 'moderate', 'strong', 'vstrong'];
+    var seaSt = function (h) { return h == null ? -1 : h < 0.5 ? 0 : h < 1.25 ? 1 : h < 2.5 ? 2 : 3; };
+    var swimL = function (h, g) { return h == null ? -1 : (h < 0.5 && g < 35) ? 0 : (h < 1 && g < 45) ? 1 : 2; };
+    var fishL = function (h, w) { return h == null ? -1 : (h < 1 && w < 25) ? 0 : (h < 1.75 && w < 35) ? 1 : 2; };
+    var boatL = function (h, w, g) { return h == null ? -1 : (h < 0.6 && w < 20 && g < 30) ? 0 : (h < 1 && w < 30 && g < 40) ? 1 : 2; };
+    var LV = [U.good, U.fair, U.bad], LC = ['sea-0', 'sea-2', 'sea-3'];
+    var badge = function (l) { return l < 0 ? '–' : '<b class="sea-state ' + LC[l] + '">' + esc(LV[l]) + '</b>'; };
+    var spd = function (kmh) { return unit === 'kn' ? num(kmh / KN) : num(kmh); };
+    var uLbl = function () { return unit === 'kn' ? U.kn : U.kmh; };
+    var dayName2 = function (iso) { return new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(iso + 'T12:00:00Z')); };
+    var F2 = 'https://api.open-meteo.com/v1/forecast?latitude=' + C.seaLat + '&longitude=' + C.seaLng +
+      '&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,temperature_2m&hourly=wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,temperature_2m' +
+      '&timezone=' + encodeURIComponent(TZN) + '&forecast_days=5';
+    var M2 = 'https://marine-api.open-meteo.com/v1/marine?latitude=' + C.seaLat + '&longitude=' + C.seaLng +
+      '&current=wave_height,wave_period,sea_surface_temperature&hourly=wave_height,wave_period,sea_surface_temperature&timezone=' + encodeURIComponent(TZN) + '&forecast_days=5';
+    var DATA = null;
+    var render = function () {
+      var f = DATA.f, m = DATA.m, h = f.hourly, mh = m && m.hourly ? m.hourly : null, c = f.current, mc = m && m.current ? m.current : {};
+      var wave = function (i) { return mh && mh.wave_height[i] != null ? mh.wave_height[i] : null; };
+      var nowL = wLevel(c.wind_speed_10m), dk = dirKey(c.wind_direction_10m), wh = mc.wave_height, st = seaSt(wh);
+      slot('verdict').innerHTML = '<div class="sv-main"><div class="sv-wind sv-w' + nowL + '"><span class="sv-ico">' + windArrow(c.wind_direction_10m) + '</span><div><b>' + esc(U[dk]) + ' · ' + esc(U[wNames[nowL]]) + '</b>' +
+        '<span>' + spd(c.wind_speed_10m) + ' ' + esc(uLbl()) + ' · ' + esc(U.gust) + ' ' + spd(c.wind_gusts_10m) + '</span></div></div>' +
+        '<div class="sv-sea"><span class="sv-ico">🌊</span><div><b>' + (wh == null ? '–' : num(wh, 1) + ' m') + '</b>' + (st >= 0 ? '<span class="sea-state sea-' + st + '">' + esc(U.seaStates[st]) + '</span>' : '') +
+        (mc.sea_surface_temperature != null ? '<span>' + esc(U.water) + ' ' + num(mc.sea_surface_temperature) + '°</span>' : '') + '</div></div></div>' +
+        '<div class="sv-idx"><div><span>🏊 ' + esc(U.swim) + '</span>' + badge(swimL(wh, c.wind_gusts_10m)) + '</div><div><span>🎣 ' + esc(U.fish) + '</span>' + badge(fishL(wh, c.wind_speed_10m)) + '</div><div><span>🚤 ' + esc(U.boat) + '</span>' + badge(boatL(wh, c.wind_speed_10m, c.wind_gusts_10m)) + '</div></div>';
+      /* periods today / tomorrow */
+      var days = []; h.time.forEach(function (tm) { var d = tm.slice(0, 10); if (days.indexOf(d) < 0) days.push(d); });
+      var per = [[6, 12, U.morning], [12, 18, U.afternoon], [18, 24, U.evening]];
+      var curH = c.time.slice(0, 13);
+      slot('periods').innerHTML = days.slice(0, 2).map(function (d, di) {
+        return '<div class="sp-day"><h3>' + esc(di ? U.tomorrow : U.today) + ' <small>' + esc(dayName2(d)) + '</small></h3><div class="sp-row">' + per.map(function (p) {
+          var idx = []; h.time.forEach(function (tm, i) { var hr = +tm.slice(11, 13); if (tm.slice(0, 10) === d && hr >= p[0] && hr < p[1] && (di || tm.slice(0, 13) >= curH)) idx.push(i); });
+          if (!idx.length) return '<div class="sp-p is-past"><b>' + esc(p[2]) + '</b><span>—</span></div>';
+          var mw = Math.max.apply(null, idx.map(function (i) { return h.wind_speed_10m[i]; })), mg = Math.max.apply(null, idx.map(function (i) { return h.wind_gusts_10m[i]; }));
+          var wv = idx.map(wave).filter(function (v) { return v != null; }), mx = wv.length ? Math.max.apply(null, wv) : null;
+          var mid = idx[Math.floor(idx.length / 2)], l = wLevel(mw);
+          return '<div class="sp-p"><b>' + esc(p[2]) + '</b><span class="sv-w' + l + ' sp-w">' + windArrow(h.wind_direction_10m[mid]) + ' ' + esc(U[dirKey(h.wind_direction_10m[mid])]) + ' ' + spd(mw) + '</span>' +
+            '<span>🌊 ' + (mx == null ? '–' : num(mx, 1) + ' m') + '</span><span>🏊 ' + badge(swimL(mx, mg)) + '</span></div>';
+        }).join('') + '</div></div>';
+      }).join('');
+      /* 3-hourly table */
+      var rows = '', lastDay = '';
+      h.time.forEach(function (tm, i) {
+        if (+tm.slice(11, 13) % 3 !== 0 || tm.slice(0, 13) < curH.slice(0, 11) + ('0' + (Math.floor(+curH.slice(11, 13) / 3) * 3)).slice(-2)) return;
+        var d = tm.slice(0, 10);
+        if (d !== lastDay) { rows += '<tr class="st-day"><th colspan="7">' + esc(dayName2(d)) + '</th></tr>'; lastDay = d; }
+        var l = wLevel(h.wind_speed_10m[i]), wv = wave(i);
+        rows += '<tr><td>' + tm.slice(11, 16) + '</td><td class="sv-w' + l + '"><b>' + spd(h.wind_speed_10m[i]) + '</b></td><td class="sv-w' + wLevel(h.wind_gusts_10m[i]) + '">' + spd(h.wind_gusts_10m[i]) + '</td>' +
+          '<td>' + windArrow(h.wind_direction_10m[i]) + ' ' + esc(U[dirKey(h.wind_direction_10m[i])]) + '</td><td>' + (wv == null ? '–' : num(wv, 1)) + '</td><td>' + (mh && mh.wave_period[i] != null ? num(mh.wave_period[i]) : '–') + '</td><td>' + badge(swimL(wv, h.wind_gusts_10m[i])) + '</td></tr>';
+      });
+      slot('table').innerHTML = '<div class="tbl-scroll"><table class="sea-tbl"><thead><tr><th>' + esc(U.hour) + '</th><th>' + esc(U.wind) + '<small>' + esc(uLbl()) + '</small></th><th>' + esc(U.gust) + '</th><th>' + esc(U.dir) + '</th><th>' + esc(U.wave) + '<small>m</small></th><th>' + esc(U.period) + '<small>s</small></th><th>' + esc(U.swim) + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+      document.querySelectorAll('[data-unit]').forEach(function (b) { b.classList.toggle('is-on', b.dataset.unit === unit); });
+    };
+    Promise.all([get(F2), get(M2).catch(function () { return null; })]).then(function (r) { DATA = { f: r[0], m: r[1] }; render(); })
+      .catch(function () { ['verdict', 'periods', 'table'].forEach(fail); });
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-unit]'); if (!b || !DATA) return;
+      unit = b.dataset.unit; try { localStorage.setItem('ks-unit', unit); } catch (x) {} render();
     });
   }
 
