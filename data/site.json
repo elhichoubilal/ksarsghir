@@ -1,5 +1,5 @@
 {
- "version": "mulkvpps",
+ "version": "mv18lyuo",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -155,6 +155,26 @@
   },
   {
    "label": {
+    "ar": "الدليل",
+    "fr": "Guide",
+    "en": "Guide",
+    "es": "Guía"
+   },
+   "url": "guide/",
+   "i18n": true
+  },
+  {
+   "label": {
+    "ar": "الإقامة",
+    "fr": "Hébergement",
+    "en": "Stay",
+    "es": "Alojamiento"
+   },
+   "url": "hebergement/",
+   "i18n": true
+  },
+  {
+   "label": {
     "ar": "المعرض",
     "fr": "Galerie",
     "en": "Gallery",
@@ -181,6 +201,16 @@
     "es": "Oración"
    },
    "url": "salat/",
+   "i18n": true
+  },
+  {
+   "label": {
+    "ar": "الأرقام المهمة",
+    "fr": "Numéros utiles",
+    "en": "Useful numbers",
+    "es": "Teléfonos útiles"
+   },
+   "url": "numeros-utiles/",
    "i18n": true
   },
   {
@@ -241,6 +271,56 @@
       "es": "Todos los destinos"
      },
      "url": "tourisme/",
+     "i18n": true
+    }
+   ]
+  },
+  {
+   "title": {
+    "ar": "خدمات",
+    "fr": "Services",
+    "en": "Services",
+    "es": "Servicios"
+   },
+   "links": [
+    {
+     "label": {
+      "ar": "البحر اليوم",
+      "fr": "La mer aujourd’hui",
+      "en": "Sea today",
+      "es": "El mar hoy"
+     },
+     "url": "mer/",
+     "i18n": true
+    },
+    {
+     "label": {
+      "ar": "مواعيد البواخر",
+      "fr": "Horaires des ferries",
+      "en": "Ferry times",
+      "es": "Horarios de ferris"
+     },
+     "url": "guide/bateaux-tanger-med/",
+     "i18n": true
+    },
+    {
+     "label": {
+      "ar": "الإقامة",
+      "fr": "Hébergement",
+      "en": "Where to stay",
+      "es": "Alojamiento"
+     },
+     "url": "hebergement/",
+     "i18n": true
+    },
+    {
+     "label": {
+      "ar": "أرقام مهمة",
+      "fr": "Numéros utiles",
+      "en": "Useful numbers",
+      "es": "Teléfonos útiles"
+     },
+     "url": "numeros-utiles/",
      "i18n": true
     }
    ]
@@ -335,7 +415,7 @@
   "method": 21,
   "tune": "",
   "weatherUrl": "meteo/",
-  "seaUrl": "meteo/",
+  "seaUrl": "mer/",
   "prayerUrl": "salat/"
  },
  "homeGallery": {
@@ -550,7 +630,9 @@
   "services": true,
   "categories": true,
   "stats": true,
-  "rating": true
+  "rating": true,
+  "guide": true,
+  "news": true
  },
  "homeVideo": {
   "url": "",
@@ -560,7 +642,9 @@
  "favicon": "",
  "migrations": [
   "v7",
-  "v8"
+  "v8",
+  "v9",
+  "v10"
  ],
  "whatsapp": {
   "float": true,
@@ -576,5 +660,19 @@
   "show": false,
   "title": {},
   "items": []
+ },
+ "pages": {
+  "guide": true,
+  "news": true,
+  "hebergement": true,
+  "numeros": true,
+  "mer": true
+ },
+ "sections": {
+  "guide": {},
+  "news": {
+   "days": 30,
+   "always": false
+  }
  }
 }

@@ -1,0 +1,236 @@
+{
+ "verified": "2026-10",
+ "showPending": false,
+ "groups": [
+  {
+   "id": "sos",
+   "icon": "🚨",
+   "name": {
+    "ar": "الطوارئ",
+    "fr": "Urgences",
+    "en": "Emergency",
+    "es": "Emergencias"
+   },
+   "items": [
+    {
+     "sos": true,
+     "color": "#0b5f8a",
+     "phone": "177",
+     "name": {
+      "ar": "الدرك الملكي",
+      "fr": "Gendarmerie royale",
+      "en": "Royal Gendarmerie",
+      "es": "Gendarmería Real"
+     },
+     "note": {
+      "ar": "خارج المدن والطرقان",
+      "fr": "Hors villes et routes",
+      "en": "Outside cities, roads",
+      "es": "Fuera de ciudades, carreteras"
+     }
+    },
+    {
+     "sos": true,
+     "color": "#d93a3a",
+     "phone": "15",
+     "name": {
+      "ar": "الوقاية المدنية",
+      "fr": "Protection civile",
+      "en": "Civil Protection",
+      "es": "Protección Civil"
+     },
+     "note": {
+      "ar": "الإسعاف والمطافئ",
+      "fr": "Ambulance et pompiers",
+      "en": "Ambulance and fire",
+      "es": "Ambulancia y bomberos"
+     }
+    },
+    {
+     "sos": true,
+     "color": "#1f4e9c",
+     "phone": "19",
+     "name": {
+      "ar": "الشرطة",
+      "fr": "Police",
+      "en": "Police",
+      "es": "Policía"
+     },
+     "note": {
+      "ar": "داخل المدن",
+      "fr": "En ville",
+      "en": "In cities",
+      "es": "En ciudad"
+     }
+    },
+    {
+     "sos": true,
+     "color": "#0b1e2d",
+     "phone": "112",
+     "name": {
+      "ar": "رقم الطوارئ",
+      "fr": "Numéro d’urgence",
+      "en": "Emergency number",
+      "es": "Número de emergencia"
+     },
+     "note": {
+      "ar": "من التيليفون المحمول",
+      "fr": "Depuis un mobile",
+      "en": "From a mobile",
+      "es": "Desde un móvil"
+     }
+    }
+   ]
+  },
+  {
+   "id": "health",
+   "icon": "🏥",
+   "name": {
+    "ar": "الصحة",
+    "fr": "Santé",
+    "en": "Health",
+    "es": "Salud"
+   },
+   "items": [
+    {
+     "icon": "🚑",
+     "phone": "141",
+     "name": {
+      "ar": "SAMU — المستعجلات الطبية",
+      "fr": "SAMU — urgences médicales",
+      "en": "SAMU — medical emergencies",
+      "es": "SAMU — urgencias médicas"
+     },
+     "note": {
+      "ar": "متوفر غالباً فالمدن الكبرى، وإلا عيط على 15",
+      "fr": "Surtout dans les grandes villes, sinon le 15",
+      "en": "Mainly in large cities, otherwise call 15",
+      "es": "Sobre todo en grandes ciudades; si no, el 15"
+     }
+    },
+    {
+     "icon": "🏥",
+     "phone": "",
+     "name": {
+      "ar": "المركز الصحي — القصر الصغير",
+      "fr": "Centre de santé — Ksar Sghir",
+      "en": "Health centre — Ksar Sghir",
+      "es": "Centro de salud — Alcazarseguer"
+     }
+    },
+    {
+     "icon": "💊",
+     "phone": "",
+     "name": {
+      "ar": "صيدلية الحراسة",
+      "fr": "Pharmacie de garde",
+      "en": "On-duty pharmacy",
+      "es": "Farmacia de guardia"
+     }
+    }
+   ]
+  },
+  {
+   "id": "security",
+   "icon": "👮",
+   "name": {
+    "ar": "الأمن",
+    "fr": "Sécurité",
+    "en": "Security",
+    "es": "Seguridad"
+   },
+   "items": [
+    {
+     "icon": "🛡️",
+     "phone": "",
+     "name": {
+      "ar": "مركز الدرك الملكي — القصر الصغير",
+      "fr": "Brigade de gendarmerie — Ksar Sghir",
+      "en": "Gendarmerie post — Ksar Sghir",
+      "es": "Puesto de la Gendarmería — Alcazarseguer"
+     }
+    },
+    {
+     "icon": "🚒",
+     "phone": "",
+     "name": {
+      "ar": "الوقاية المدنية — أقرب مركز",
+      "fr": "Protection civile — centre le plus proche",
+      "en": "Civil Protection — nearest station",
+      "es": "Protección Civil — centro más cercano"
+     }
+    }
+   ]
+  },
+  {
+   "id": "transport",
+   "icon": "🚕",
+   "name": {
+    "ar": "النقل والطريق",
+    "fr": "Transport et route",
+    "en": "Transport and roads",
+    "es": "Transporte y carretera"
+   },
+   "items": [
+    {
+     "icon": "🛣️",
+     "phone": "5050",
+     "name": {
+      "ar": "مساعدة الطريق السيار (ADM)",
+      "fr": "Assistance autoroute (ADM)",
+      "en": "Motorway assistance (ADM)",
+      "es": "Asistencia autopista (ADM)"
+     },
+     "note": {
+      "ar": "على الطرق السيارة",
+      "fr": "Sur autoroute",
+      "en": "On motorways",
+      "es": "En autopistas"
+     }
+    },
+    {
+     "icon": "🚕",
+     "phone": "",
+     "name": {
+      "ar": "الطاكسيات — القصر الصغير",
+      "fr": "Taxis — Ksar Sghir",
+      "en": "Taxis — Ksar Sghir",
+      "es": "Taxis — Alcazarseguer"
+     }
+    },
+    {
+     "icon": "⛴️",
+     "phone": "",
+     "name": {
+      "ar": "ميناء طنجة المتوسط — المسافرين",
+      "fr": "Port Tanger Med — passagers",
+      "en": "Tanger Med port — passengers",
+      "es": "Puerto Tánger Med — pasajeros"
+     }
+    }
+   ]
+  },
+  {
+   "id": "admin",
+   "icon": "🏛️",
+   "name": {
+    "ar": "الإدارات",
+    "fr": "Administrations",
+    "en": "Public offices",
+    "es": "Administraciones"
+   },
+   "items": [
+    {
+     "icon": "🏛️",
+     "phone": "",
+     "name": {
+      "ar": "جماعة القصر الصغير",
+      "fr": "Commune de Ksar Sghir",
+      "en": "Ksar Sghir municipality",
+      "es": "Ayuntamiento de Alcazarseguer"
+     }
+    }
+   ]
+  }
+ ]
+}
