@@ -1,5 +1,5 @@
 {
- "version": "mvbk4pvg",
+ "version": "mvbmhyxf",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -566,7 +566,7 @@
   "text": {}
  },
  "ticker": {
-  "enabled": true,
+  "enabled": false,
   "speed": "normal",
   "label": {
    "ar": "جديد",
@@ -605,7 +605,8 @@
     "url": "",
     "i18n": true
    }
-  ]
+  ],
+  "autoNews": false
  },
  "topbar": {
   "social": true
