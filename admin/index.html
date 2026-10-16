@@ -1364,20 +1364,22 @@ var HIJRI_M=['محرم','صفر','ربيع الأول','ربيع الآخر','ج
 function toLatinDigits(s){return String(s).replace(/[٠-٩]/g,function(d){return d.charCodeAt(0)-1632;}).replace(/[۰-۹]/g,function(d){return d.charCodeAt(0)-1776;});}
 function parseHabous(text,o){
   /* o: {y, m, hm, hy, order:'hg'|'gh'|'g'} -> {rows:[{iso,t:[6],h:[d,m,y]}], errors:[]} */
-  var lines=toLatinDigits(text).split(/\r?\n/),rows=[],errors=[],hm=+o.hm,hy=+o.hy,lastH=null,lastG=0;
+  var lines=toLatinDigits(text).split(/\r?\n/),rows=[],errors=[],hm=+o.hm,hy=+o.hy,lastH=null,lastG=0,gm=+o.m,gy=+o.y;
   lines.forEach(function(line,n){
     var times=(line.match(/\b\d{1,2}[:h.]\d{2}\b/g)||[]).map(function(x){return x.replace(/[h.]/,':');});
     if(times.length<6)return;
     var rest=line.replace(/\b\d{1,2}[:h.]\d{2}\b/g,' '),nums=(rest.match(/\b\d{1,2}\b/g)||[]).map(Number);
     var hd=null,gd=null;
-    if(o.order==='hg'){hd=nums[0];gd=nums[1];}else if(o.order==='gh'){gd=nums[0];hd=nums[1];}else{gd=nums[0];}
+    if(o.order!=='g'&&nums.length===1){gd=nums[0];hd=lastH!=null?lastH+1:null;} /* e.g. day 30 "حسب نتيجة المراقبة" */
+    else if(o.order==='hg'){hd=nums[0];gd=nums[1];}else if(o.order==='gh'){gd=nums[0];hd=nums[1];}else{gd=nums[0];}
     if(gd==null){gd=lastG+1;}
     if(!gd||gd>31){errors.push('سطر '+(n+1)+': ما لقيناش النهار الميلادي');return;}
     if(hd!=null){if(lastH!=null&&hd<lastH){hm++;if(hm>12){hm=1;hy++;}}lastH=hd;}
+    if(lastG&&gd<lastG){gm++;if(gm>12){gm=1;gy++;}} /* Habous tables follow the Hijri month and cross two Gregorian months */
     lastG=gd;
     var t=times.slice(0,6).map(function(x,i){var p=x.split(':'),h=+p[0],mi=p[1];if(i>=2&&h<11)h+=12;return ('0'+h).slice(-2)+':'+mi;});
     for(var k=1;k<6;k++){if(t[k]<=t[k-1]){errors.push('سطر '+(n+1)+': الأوقات ماشي مرتبة ('+t.join(' ')+')');return;}}
-    var iso=o.y+'-'+('0'+o.m).slice(-2)+'-'+('0'+gd).slice(-2);
+    var iso=gy+'-'+('0'+gm).slice(-2)+'-'+('0'+gd).slice(-2);
     rows.push({iso:iso,t:t,h:hd!=null?[hd,hm,hy]:null});
   });
   return {rows:rows,errors:errors};
@@ -1393,7 +1395,7 @@ function viewPrayer(){
         '<h2>الشهور المسجلة</h2>'+(keys.length?'<div class="row">'+keys.map(function(k){return '<span class="pill" style="font-size:14px">'+k+' · '+M[k]+' يوم <button class="btn btn-s btn-d" data-pm-x="'+k+'" style="padding:2px 8px">✕</button></span>';}).join('')+'</div>':'<p class="hint">ما كاين حتى شهر. الموقع خدام بالحساب الأوتوماتيكي.</p>')+'</div>'+
       '<div class="card" id="pr-in"><h2>📋 زيد شهر من جدول الحبوس</h2>'+
         '<p class="hint">1) حل الجدول ديال "حصة الصلاة" للمدينة فموقع وزارة الأوقاف (habous.gov.ma). 2) حدد الجدول كامل ونسخو (Ctrl+C). 3) الصقو هنا. كل سطر خاصو يكون فيه 6 أوقات (الصبح، الشروق، الظهر، العصر، المغرب، العشاء).</p>'+
-        '<div class="two">'+field('الشهر الميلادي','<div class="row" style="flex-wrap:nowrap"><select id="pr-m">'+[1,2,3,4,5,6,7,8,9,10,11,12].map(function(m){return '<option value="'+m+'"'+(m===now.getMonth()+1?' selected':'')+'>'+m+'</option>';}).join('')+'</select><input type="number" id="pr-y" value="'+now.getFullYear()+'" style="max-width:110px"></div>')+
+        '<div class="two">'+field('الشهر الميلادي ديال أول سطر','<div class="row" style="flex-wrap:nowrap"><select id="pr-m">'+[1,2,3,4,5,6,7,8,9,10,11,12].map(function(m){return '<option value="'+m+'"'+(m===now.getMonth()+1?' selected':'')+'>'+m+'</option>';}).join('')+'</select><input type="number" id="pr-y" value="'+now.getFullYear()+'" style="max-width:110px"></div>')+
         field('ترتيب أعمدة الأيام','<select id="pr-ord"><option value="hg">هجري ثم ميلادي (بحال جدول الحبوس)</option><option value="gh">ميلادي ثم هجري</option><option value="g">غير الميلادي</option></select>')+'</div>'+
         '<div class="two">'+field('الشهر الهجري فأول سطر','<select id="pr-hm">'+HIJRI_M.map(function(n,i){return '<option value="'+(i+1)+'">'+(i+1)+' — '+n+'</option>';}).join('')+'</select>','كيتبدل أوتوماتيكياً ملي يرجع النهار الهجري لـ 1')+field('السنة الهجرية','<input type="number" id="pr-hy" value="1448">')+'</div>'+
         '<label>الصق الجدول هنا</label><textarea class="code" id="pr-txt" style="min-height:220px" placeholder="الأحد	19	12	06:47	08:13	13:31	16:44	19:12	20:30"></textarea>'+
@@ -1405,9 +1407,9 @@ function viewPrayer(){
   function show(){
     var o={y:+$('#pr-y').value,m:+$('#pr-m').value,hm:+$('#pr-hm').value,hy:+$('#pr-hy').value,order:$('#pr-ord').value};
     parsed=parseHabous($('#pr-txt').value,o);
-    var dim=new Date(o.y,o.m,0).getDate();
+    var R=parsed.rows,n=R.length,ok=n>=29;
     $('#pr-out').innerHTML=(parsed.errors.length?'<div class="hint" style="color:var(--bad);margin:8px 0">'+parsed.errors.map(esc).join('<br>')+'</div>':'')+
-      '<p><b>'+parsed.rows.length+'</b> يوم من '+dim+(parsed.rows.length<dim?' <span style="color:var(--bad)">(ناقصين أيام، الأيام الناقصة كترجع للحساب الأوتوماتيكي)</span>':' ✅')+'</p>'+
+      '<p><b>'+n+'</b> يوم'+(n?' · من <span class="ltr">'+R[0].iso+'</span> حتى <span class="ltr">'+R[n-1].iso+'</span>':'')+(ok?' ✅':' <span style="color:var(--bad)">(ناقصين أيام، الأيام الناقصة كترجع للحساب الأوتوماتيكي)</span>')+'</p>'+
       (parsed.rows.length?'<div style="overflow-x:auto"><table class="tbl" style="width:100%;font-size:13px;text-align:center"><thead><tr><th>الميلادي</th><th>الهجري</th><th>الصبح</th><th>الشروق</th><th>الظهر</th><th>العصر</th><th>المغرب</th><th>العشاء</th></tr></thead><tbody>'+
         parsed.rows.map(function(r){return '<tr><td class="ltr">'+r.iso+'</td><td>'+(r.h?r.h[0]+' '+HIJRI_M[r.h[1]-1]+' '+r.h[2]:'—')+'</td>'+r.t.map(function(x){return '<td class="ltr">'+x+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>'+
         '<div class="row" style="margin-top:10px"><button class="btn btn-p" id="pr-save">💾 حفظ هاد الشهر فالموقع</button></div>':'');
