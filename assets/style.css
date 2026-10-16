@@ -750,3 +750,7 @@ html.js .ph-bg img.is-loaded{opacity:1}
 .sea-tbl .sea-state{font-size:12px;padding:2px 8px}
 .wx-sea-more{margin-top:12px;font-size:14px;padding:8px 16px;text-decoration:none}
 @media (max-width:600px){.sv-main b{font-size:19px}.sp-p{font-size:13px;padding:8px 4px}.sea-tbl{font-size:13px}.sea-tbl td,.sea-tbl th{padding:6px 4px}.sv-idx>div{font-size:13px}}
+/* links inside articles: clean, no heavy underline */
+.prose a{color:var(--sea-deep);font-weight:700;text-decoration:none;border-bottom:2px solid color-mix(in srgb,var(--sea) 35%,transparent);padding-bottom:1px;transition:border-color .15s,background .15s}
+.prose a:hover,.prose a:focus-visible{border-bottom-color:var(--sea);background:var(--sea-soft)}
+.prose a.btn,.prose .tm-below a,.prose .pick a{border-bottom:0}
