@@ -416,6 +416,21 @@ function cleanContent(html){
   return html.trim();
 }
 
+/* ---------- watermark (baked into the uploaded image) ---------- */
+var WM_DEFAULT='© Bilal El Hichou · ksarsghir.com';
+function wmCfg(){var w=S.site.watermark||(S.site.watermark={});if(w.on==null)w.on=true;if(!w.text)w.text=WM_DEFAULT;w.done=w.done||[];return w;}
+function drawWatermark(c,text){
+  var g=c.getContext('2d'),w=c.width,h=c.height,fs=Math.max(12,Math.round(Math.min(w,h)/24));
+  g.save();g.font='600 '+fs+'px "Helvetica Neue",Arial,sans-serif';g.textAlign='center';g.textBaseline='middle';
+  var tw=g.measureText(text).width,sx=tw+fs*3,sy=fs*5,R=Math.sqrt(w*w+h*h)/2+sx;
+  g.translate(w/2,h/2);g.rotate(-Math.PI/7);
+  for(var y=-R,row=0;y<R;y+=sy,row++){for(var x=-R+(row%2?sx/2:0);x<R;x+=sx){
+    g.fillStyle='rgba(0,0,0,.18)';g.fillText(text,x+1,y+1);
+    g.fillStyle='rgba(255,255,255,.30)';g.fillText(text,x,y);}}
+  g.restore();
+}
+function isWmTarget(path){var n=path.split('/').pop();return /\.(webp|jpe?g)$/i.test(n)&&!/-sm\.webp$/i.test(n)&&!/^(logo|favicon|icon)/i.test(n);}
+function isWmDone(path){return /-wm-[a-z0-9]+\.(webp|jpe?g)$/i.test(path)||wmCfg().done.indexOf(path)>=0;}
 /* ---------- image upload ---------- */
 function compress(file,opt){
   opt=opt||{};
@@ -428,12 +443,13 @@ function compress(file,opt){
       if(opt.icon){var sz=Math.min(w,h);c.width=c.height=Math.min(512,sz);g.drawImage(img,(w-sz)/2,(h-sz)/2,sz,sz,0,0,c.width,c.height);}
       else{if(w>max){h=Math.round(h*max/w);w=max;}c.width=w;c.height=h;g.drawImage(img,0,0,w,h);}
       URL.revokeObjectURL(url);
+      var wm=false;if(!opt.icon){var W=wmCfg();if(W.on){drawWatermark(c,W.text);wm=true;}}
       var d,ext;
       if(opt.icon){d=c.toDataURL('image/png');ext='png';}
       else{d=c.toDataURL('image/webp',0.82);ext='webp';if(d.indexOf('data:image/webp')!==0){d=c.toDataURL('image/jpeg',0.85);ext='jpg';}}
       var small=null;
       if(!opt.icon){small=smallCanvas(c);}
-      res({data:d,ext:ext,small:small});
+      res({data:d,ext:ext,small:small,wm:wm});
     };
     img.onerror=function(){rej(new Error('ما قدرناش نقراو الصورة'));};
     img.src=url;
@@ -458,7 +474,7 @@ async function commitBlobs(entries,message){
 async function uploadImage(file,prefix){
   var r=await compress(file,{icon:prefix==='logo'||prefix==='favicon'});
   var base=slugify(prefix||file.name.replace(/\.[^.]+$/,''))||'img';
-  var path='assets/img/'+base+'-'+Date.now().toString(36)+'.'+r.ext;
+  var path='assets/img/'+base+(r.wm?'-wm':'')+'-'+Date.now().toString(36)+'.'+r.ext;
   var entries=[{path:path,b64:r.data.split(',')[1]}];
   if(r.small)entries.push({path:B.smallOf(path),b64:r.small.split(',')[1]});
   await commitBlobs(entries,'🖼️ رفع صورة: '+path);
@@ -874,10 +890,50 @@ async function optimizeImages(){
   }catch(e){say('❌ '+esc(e.message));}
   btn.disabled=false;
 }
+/* add the watermark to images uploaded before this feature (same paths, so articles keep working) */
+async function watermarkOld(){
+  var box=$('#opt-box'),W=wmCfg();box.hidden=false;
+  var say=function(h){box.innerHTML='<h2>💧 العلامة المائية للصور القديمة</h2><p>'+h+'</p>';};
+  try{
+    say('<span class="progress"><i></i></span> كنقلب على الصور…');
+    var all=await listImages(true),todo=all.filter(function(f){return isWmTarget(f.path)&&!isWmDone(f.path);});
+    if(!todo.length){say('✅ جميع الصور فيهم العلامة المائية.');return;}
+    if(!confirm('غادي نزيدو العلامة "'+W.text+'" لـ '+todo.length+' صورة.\n\nالصور غادي تتبدل فالموقع (النسخ الأصلية كتبقى فالتاريخ ديال GitHub).\n\nنكملو؟')){box.hidden=true;return;}
+    var done=0,skipped=0,CH=6;
+    for(var i=0;i<todo.length;i+=CH){
+      var part=todo.slice(i,i+CH),entries=[],ok=[];
+      for(var j=0;j<part.length;j++){
+        say('<span class="progress"><i></i></span> كنزيد العلامة للصورة '+(i+j+1)+' / '+todo.length+'…');
+        try{
+          var resp=await fetch('https://api.github.com/repos/'+S.repo+'/contents/'+encPath(part[j].path)+'?ref='+encodeURIComponent(S.branch),{headers:{'Authorization':'Bearer '+S.token,'Accept':'application/vnd.github.raw'},cache:'no-store'});
+          if(!resp.ok)throw new Error(resp.status);
+          var bmp=await createImageBitmap(await resp.blob()),c=document.createElement('canvas');c.width=bmp.width;c.height=bmp.height;c.getContext('2d').drawImage(bmp,0,0);
+          drawWatermark(c,W.text);
+          var jpg=/\.jpe?g$/i.test(part[j].path),d=jpg?c.toDataURL('image/jpeg',0.86):c.toDataURL('image/webp',0.85);
+          if(!jpg&&d.indexOf('data:image/webp')!==0)throw new Error('webp');
+          entries.push({path:part[j].path,b64:d.split(',')[1]});
+          entries.push({path:B.smallOf(part[j].path),b64:smallCanvas(c).split(',')[1]});
+          S.imgCache[part[j].path]=d;ok.push(part[j].path);
+        }catch(e){skipped++;console.warn('wm skip',part[j].path,e);}
+      }
+      if(!entries.length)continue;
+      W.done=W.done.concat(ok);
+      entries.push({path:'data/site.json',b64:btoa(unescape(encodeURIComponent(JSON.stringify(S.site,null,1))))});
+      say('<span class="progress"><i></i></span> كنرفع '+ok.length+' صورة…');
+      await commitBlobs(entries,'💧 علامة مائية ('+ok.length+')');done+=ok.length;
+    }
+    say('✅ تزادت العلامة لـ '+done+' صورة'+(skipped?' · ما قدرناش على '+skipped:'')+'. دابا كنعاود نبني الموقع…');
+    await publish('💧 العلامة المائية على الصور');
+  }catch(e){say('❌ '+esc(e.message));}
+}
 async function viewImages(){
   var v=$('#view');
   v.innerHTML='<div class="head"><h1>مكتبة الصور</h1><div class="row"><button class="btn" id="opt">⚡ تخفيف الصور</button><button class="btn btn-p" id="up">⬆️ رفع صور</button></div></div>'+
     '<div class="card" id="opt-box" hidden></div>'+
+    '<div class="card"><h2>💧 العلامة المائية</h2><p class="hint">كتزاد مباشرة فالصورة ملي كترفعها (مكررة فالصورة كاملة). أي واحد حمل الصورة من الموقع كتجيه بالعلامة.</p>'+
+      '<label class="row" style="gap:8px;align-items:center"><input type="checkbox" id="wm-on"'+(wmCfg().on?' checked':'')+' style="width:auto"> زيد العلامة للصور الجديدة</label>'+
+      field('النص','<input id="wm-text" value="'+esc(wmCfg().text)+'">')+
+      '<div class="row" style="margin-top:8px"><button class="btn" id="wm-old">💧 زيد العلامة للصور القديمة</button></div></div>'+
     '<div class="card"><div class="drop" id="drop">اسحب الصور هنا ولا ضغط على "رفع صور". كتصغر أوتوماتيكياً (أقصى عرض 1600px، WebP) باش يبقى الموقع سريع.</div></div>'+
     '<div class="card"><div class="imgs" id="imgs">كنحمل…</div></div>';
   async function load(){
@@ -889,6 +945,9 @@ async function viewImages(){
   load();
   $('#up').addEventListener('click',function(){pickImages(true).then(load);});
   $('#opt').addEventListener('click',optimizeImages);
+  $('#wm-old').addEventListener('click',function(){watermarkOld().then(load);});
+  $('#wm-on').addEventListener('change',function(){wmCfg().on=this.checked;markDirty();});
+  $('#wm-text').addEventListener('change',function(){wmCfg().text=this.value.trim()||WM_DEFAULT;this.value=wmCfg().text;markDirty();});
   var d=$('#drop');
   d.addEventListener('click',function(){pickImages(true).then(load);});
   d.addEventListener('dragover',function(e){e.preventDefault();d.classList.add('over');});

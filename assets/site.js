@@ -184,6 +184,11 @@
     }, 5500);
   }
 
+  /* ---------- photos: no right-click / drag-to-save (the watermark is baked into the images) ---------- */
+  ['contextmenu', 'dragstart'].forEach(function (ev) {
+    document.addEventListener(ev, function (e) { if (e.target && e.target.tagName === 'IMG') e.preventDefault(); });
+  });
+
   /* ---------- lightbox ---------- */
   var groups = document.querySelectorAll('[data-lb-group]');
   if (groups.length) {
