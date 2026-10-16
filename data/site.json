@@ -674,5 +674,17 @@
    "days": 30,
    "always": false
   }
+ },
+ "watermark": {
+  "on": true,
+  "text": "© Bilal El Hichou · ksarsghir.com",
+  "done": [
+   "assets/img/zrara-muk6usi1.webp",
+   "assets/img/zahara-hatba-muk6fgrf.webp",
+   "assets/img/tanger-med-muk681ck.webp",
+   "assets/img/site-archeologique-muk6brkb.webp",
+   "assets/img/sidi-kankouch-2-muk6y0wm.webp",
+   "assets/img/sidi-kankouch-1-muk6zfyn.webp"
+  ]
  }
 }
