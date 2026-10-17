@@ -436,15 +436,23 @@ function cleanContent(html){
    one setting for article images, one for gallery images. */
 var WM_DEFAULT='© Bilal El Hichou · ksarsghir.com',WM_STYLES={center:'نص واحد (www.ksarsghir.com + © الاسم)',light:'مكررة خفيفة',none:'بلا علامة'},
     WM_POS={tr:'فوق · يمين',tc:'فوق · وسط',tl:'فوق · يسار',mr:'وسط · يمين',mc:'الوسط',ml:'وسط · يسار',br:'تحت · يمين',bc:'تحت · وسط',bl:'تحت · يسار'},WM_SIZE={s:'صغيرة',m:'متوسطة',l:'كبيرة'};
+var WM_FONTS={sans:['عادي (Arial)','"Helvetica Neue",Arial,sans-serif'],mont:['Montserrat','"Montserrat",sans-serif'],bebas:['Bebas Neue (عريض)','"Bebas Neue",sans-serif'],play:['Playfair (أنيق)','"Playfair Display",serif'],script:['Dancing Script (يدوي)','"Dancing Script",cursive'],serif:['Georgia (كلاسيكي)','Georgia,"Times New Roman",serif']};
+var wmFontsLink=false;
+function wmFontFamily(k){return (WM_FONTS[k]||WM_FONTS.sans)[1];}
+async function wmFontReady(k){
+  if(!wmFontsLink){wmFontsLink=true;var l=document.createElement('link');l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Bebas+Neue&family=Playfair+Display:wght@600;700&family=Dancing+Script:wght@600;700&display=swap';document.head.appendChild(l);
+    await new Promise(function(r){l.onload=r;l.onerror=r;setTimeout(r,4000);});}
+  try{await Promise.race([document.fonts.load('700 40px '+wmFontFamily(k)),sleep(4000)]);}catch(e){}
+}
 function wmCfg(){
   var w=S.site.watermark||(S.site.watermark={});
   if(!w.article){var off=w.on===false;w.article=off?'none':'center';w.gallery=off?'none':'light';}
   if(!w.text)w.text=WM_DEFAULT;if(!w.centerText)w.centerText='www.ksarsghir.com';if(w.centerSub==null)w.centerSub='© Bilal El Hichou';
-  if(!w.pos)w.pos='mc';if(!w.size)w.size='m';w.done=w.done||[];w.done2=w.done2||[];return w;
+  if(!w.pos)w.pos='mc';if(!w.size)w.size='m';if(!w.font)w.font='sans';w.done=w.done||[];w.done2=w.done2||[];return w;
 }
 function wmKind(prefixOrPath){var n=String(prefixOrPath||'').split('/').pop();return /^gallery/i.test(n)?'gallery':'article';}
 function drawWatermark(c,style,o){
-  var W=wmCfg(),g=c.getContext('2d'),w=c.width,h=c.height;o=o||{};var pos=o.pos||W.pos||'mc',k={s:0.72,m:1,l:1.4}[o.size||W.size||'m']||1;
+  var W=wmCfg(),g=c.getContext('2d'),w=c.width,h=c.height;o=o||{};var pos=o.pos||W.pos||'mc',k={s:0.72,m:1,l:1.4}[o.size||W.size||'m']||1,FF=wmFontFamily(o.font||W.font);
   if(style==='center'){
     var f1=Math.max(12,Math.round(Math.min(w*0.048,h*0.08)*k)),f2=Math.max(9,Math.round(f1*0.5)),gap=Math.round(f1*0.35),mg=Math.round(Math.min(w,h)*0.04+f1*0.3);
     /* same transparency as the light (repeated) style: white .30 over a .18 dark offset */
@@ -452,13 +460,13 @@ function drawWatermark(c,style,o){
     var al=pos[1]==='l'?'left':pos[1]==='r'?'right':'center',x=al==='left'?mg:al==='right'?w-mg:w/2;
     g.save();g.textAlign=al;g.textBaseline='middle';
     var line=function(txt,font,y){g.font=font;g.fillStyle='rgba(0,0,0,.18)';g.fillText(txt,x+sh,y+sh);g.fillStyle='rgba(255,255,255,.30)';g.fillText(txt,x,y);};
-    line(W.centerText,'700 '+f1+'px "Helvetica Neue",Arial,sans-serif',y1);
-    if(W.centerSub)line(W.centerSub,'600 '+f2+'px "Helvetica Neue",Arial,sans-serif',y2);
+    line(W.centerText,'700 '+f1+'px '+FF,y1);
+    if(W.centerSub)line(W.centerSub,'600 '+f2+'px '+FF,y2);
     g.restore();return;
   }
   if(style!=='light')return;
   var text=W.text,fs=Math.max(10,Math.round(Math.min(w,h)/24*k));
-  g.save();g.font='600 '+fs+'px "Helvetica Neue",Arial,sans-serif';g.textAlign='center';g.textBaseline='middle';
+  g.save();g.font='600 '+fs+'px '+FF;g.textAlign='center';g.textBaseline='middle';
   var tw=g.measureText(text).width,sx=tw+fs*3,sy=fs*5,R=Math.sqrt(w*w+h*h)/2+sx;
   g.translate(w/2,h/2);g.rotate(-Math.PI/7);
   for(var y=-R,row=0;y<R;y+=sy,row++){for(var x=-R+(row%2?sx/2:0);x<R;x+=sx){
@@ -522,6 +530,7 @@ async function commitBlobs(entries,message,to){
   }
 }
 async function uploadImage(file,prefix){
+  await wmFontReady(wmCfg().font);
   var r=await compress(file,{icon:prefix==='logo'||prefix==='favicon',kind:wmKind(prefix)});
   var base=slugify(prefix||file.name.replace(/\.[^.]+$/,''))||'img';
   var path='assets/img/'+base+(r.wm?'-wm2':'')+'-'+Date.now().toString(36)+'.'+r.ext;
@@ -533,6 +542,7 @@ async function uploadImage(file,prefix){
 }
 /* many images: compress each, then one commit per 8 images (instead of one commit per image) */
 async function uploadImages(files,prefix){
+  await wmFontReady(wmCfg().font);
   var out=[],failed=[],batch=[],paths=[],N=files.length;
   async function flush(){
     if(!batch.length)return;
@@ -986,7 +996,7 @@ async function watermarkOld(){
   var say=function(h){box.innerHTML='<h2>💧 العلامة المائية للصور القديمة</h2><p>'+h+'</p>';};
   try{
     say('<span class="progress"><i></i></span> كنقلب على الصور…');
-    var all=await listImages(true),baked=[],todo=[];
+    await wmFontReady(W.font);var all=await listImages(true),baked=[],todo=[];
     all.forEach(function(f){
       if(!isWmTarget(f.path)||isWmNew(f.path))return;
       if(isWmBaked(f.path)){baked.push(f.path.split('/').pop());return;}
@@ -1099,10 +1109,11 @@ async function vaultUpload(files,album){
 }
 
 /* ---- publish from the vault: watermarked 1600px copy in the site ---- */
-function pubSettings(kind,o){var W=wmCfg();o=o||{};return {kind:kind,style:o.style||W[kind],pos:o.pos||W.pos,size:o.size||W.size};}
+function pubSettings(kind,o){var W=wmCfg();o=o||{};return {kind:kind,style:o.style||W[kind],pos:o.pos||W.pos,size:o.size||W.size,font:o.font||W.font};}
 async function renderPub(photo,st,bmp){
+  await wmFontReady(st.font);
   bmp=bmp||await vaultImg(photo.path);
-  var c=fitCanvas(bmp,1600);drawWatermark(c,st.style,{pos:st.pos,size:st.size});return c;
+  var c=fitCanvas(bmp,1600);drawWatermark(c,st.style,{pos:st.pos,size:st.size,font:st.font});return c;
 }
 async function vaultPublish(list,kind,st){
   var W=wmCfg(),out=[],entries=[],CH=8,failed=[];
@@ -1110,12 +1121,12 @@ async function vaultPublish(list,kind,st){
   for(var i=0;i<list.length;i++){
     setStatus('<span class="progress"><i></i></span> 📤 كننشر '+(i+1)+' / '+list.length+'…');
     try{
-      var st=all[i],custom=st.style!==W[kind]||st.pos!==W.pos||st.size!==W.size;
+      var st=all[i],custom=st.style!==W[kind]||st.pos!==W.pos||st.size!==W.size||(st.font||W.font)!==W.font;
       var p=list[i],c=await renderPub(p,st,st._bmp),o=enc(c,0.82);
       var path='assets/img/'+(slugify(p.name)||'photo')+(st.style!=='none'?'-wm2':'')+'-'+Date.now().toString(36)+i.toString(36)+'.'+o.ext;
       entries.push({path:path,b64:o.d.split(',')[1]},{path:B.smallOf(path),b64:smallCanvas(c).split(',')[1]});
       S.imgCache[path]=o.d;
-      p.pub.push({path:path,kind:kind,style:st.style,pos:st.pos,size:st.size,custom:custom,at:new Date().toISOString().slice(0,10)});
+      p.pub.push({path:path,kind:kind,style:st.style,pos:st.pos,size:st.size,font:st.font,custom:custom,at:new Date().toISOString().slice(0,10)});
       out.push(path);
     }catch(e){failed.push(list[i].name+' ('+e.message+')');}
     if(entries.length>=CH*2||(i===list.length-1&&entries.length)){
@@ -1144,14 +1155,14 @@ function publishDialog(list,kind){
       '<div>'+field('النوع','<select id="pk">'+opts({article:'صورة موضوع',gallery:'صورة المعرض'},kind)+'</select>')+
       field('شكل العلامة','<select id="ps"></select>')+
       '<label>البلاصة</label><div id="pp" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;direction:ltr">'+['tl','tc','tr','ml','mc','mr','bl','bc','br'].map(function(x){return '<button class="btn btn-s" data-pos="'+x+'" title="'+WM_POS[x]+'" style="justify-content:center">'+({t:'↑',m:'•',b:'↓'})[x[0]]+({l:'←',c:'',r:'→'})[x[1]]+'</button>';}).join('')+'</div>'+
-      field('الحجم','<select id="pz"></select>')+
+      field('الحجم','<select id="pz"></select>')+field('الخط','<select id="pf"></select>')+
       '<p class="hint">العامة: <span id="pg"></span></p><div class="row" style="gap:6px;flex-wrap:wrap"><button class="btn btn-s" data-reset>↺ رجع للعامة</button>'+(many?'<button class="btn btn-s" data-all>📋 طبق هاد الإعدادات على الكل</button>':'')+'</div></div></div>';
     document.body.appendChild(m);
     var cv=m.querySelector('#pv'),seq=0;
     function ui(){
       var st=sts[cur];
-      m.querySelector('#ps').innerHTML=opts(WM_STYLES,st.style);m.querySelector('#pz').innerHTML=opts(WM_SIZE,st.size);
-      m.querySelector('#pg').textContent=WM_STYLES[wmCfg()[kind]]+' · '+WM_POS[wmCfg().pos]+' · '+WM_SIZE[wmCfg().size];
+      m.querySelector('#ps').innerHTML=opts(WM_STYLES,st.style);m.querySelector('#pz').innerHTML=opts(WM_SIZE,st.size);m.querySelector('#pf').innerHTML=Object.keys(WM_FONTS).map(function(x){return '<option value="'+x+'"'+(x===st.font?' selected':'')+' style="font-family:'+WM_FONTS[x][1].replace(/"/g,"'")+'">'+WM_FONTS[x][0]+'</option>';}).join('');
+      m.querySelector('#pg').textContent=WM_STYLES[wmCfg()[kind]]+' · '+WM_POS[wmCfg().pos]+' · '+WM_SIZE[wmCfg().size]+' · '+WM_FONTS[wmCfg().font][0];
       m.querySelectorAll('[data-pos]').forEach(function(b){b.classList.toggle('btn-p',b.dataset.pos===st.pos);b.disabled=st.style!=='center';});
       m.querySelector('#pt').textContent=list[cur].name;
       if(many){m.querySelector('#pn').textContent=(cur+1)+' / '+list.length;m.querySelectorAll('#strip img').forEach(function(im){im.style.borderColor=+im.dataset.k===cur?'var(--sea)':'transparent';});}
@@ -1159,15 +1170,15 @@ function publishDialog(list,kind){
     async function draw(){
       ui();var k=cur,my=++seq,st=sts[k];
       if(!st._bmp){m.querySelector('#pv-h').textContent='كنجيب الأصل…';try{st._bmp=await vaultImg(list[k].path);}catch(e){m.querySelector('#pv-h').textContent='❌ '+e.message;return;}}
-      if(my!==seq)return;
-      var c=fitCanvas(st._bmp,1600);drawWatermark(c,st.style,{pos:st.pos,size:st.size});cv.width=c.width;cv.height=c.height;cv.getContext('2d').drawImage(c,0,0);
+      await wmFontReady(st.font);if(my!==seq)return;
+      var c=fitCanvas(st._bmp,1600);drawWatermark(c,st.style,{pos:st.pos,size:st.size,font:st.font});cv.width=c.width;cv.height=c.height;cv.getContext('2d').drawImage(c,0,0);
       m.querySelector('#pv-h').textContent='هادي هي الصورة كيف غادي تبان فالموقع.'+(many?' بدل الإعدادات ديال كل صورة، ولا طبق نفس الإعدادات على الكل.':'');
     }
     draw();
     m.addEventListener('change',function(e){
       var st=sts[cur];
       if(e.target.id==='pk'){kind=e.target.value;sts=sts.map(function(x){var n=pubSettings(kind);n._bmp=x._bmp;return n;});}
-      if(e.target.id==='ps')st.style=e.target.value;if(e.target.id==='pz')st.size=e.target.value;draw();
+      if(e.target.id==='ps')st.style=e.target.value;if(e.target.id==='pz')st.size=e.target.value;if(e.target.id==='pf')st.font=e.target.value;draw();
     });
     m.addEventListener('click',async function(e){
       var st=sts[cur];
@@ -1175,7 +1186,7 @@ function publishDialog(list,kind){
       var im=e.target.closest('[data-k]');if(im){cur=+im.dataset.k;draw();return;}
       if(e.target.closest('[data-next]')){cur=(cur+1)%list.length;draw();return;}
       if(e.target.closest('[data-prev]')){cur=(cur-1+list.length)%list.length;draw();return;}
-      if(e.target.closest('[data-all]')){sts.forEach(function(x){x.style=st.style;x.pos=st.pos;x.size=st.size;});toast('✅ نفس الإعدادات على '+list.length+' صور');return;}
+      if(e.target.closest('[data-all]')){sts.forEach(function(x){x.style=st.style;x.pos=st.pos;x.size=st.size;x.font=st.font;});toast('✅ نفس الإعدادات على '+list.length+' صور');return;}
       if(e.target.closest('[data-reset]')){var n=pubSettings(kind);n._bmp=st._bmp;sts[cur]=n;draw();return;}
       if(e.target.closest('[data-close]')||e.target===m){m.remove();res(null);return;}
       if(e.target.closest('[data-go]')){var g=e.target.closest('[data-go]');g.disabled=true;g.textContent='كننشر…';
@@ -1227,11 +1238,11 @@ async function vaultRegenerate(){
   if(!confirm('غادي نعاودو نولدو '+jobs.length+' صورة منشورة من الأصل.\n• '+nc+' بالإعدادات العامة الحالية\n• '+(jobs.length-nc)+' كيحتفظو بالإعدادات الخاصة ديالهم\n\nنكملو؟'))return;
   var entries=[],done=0,failed=[];
   for(var i=0;i<jobs.length;i++){
-    var j=jobs[i],st=j.x.custom?{style:j.x.style,pos:j.x.pos,size:j.x.size}:pubSettings(j.x.kind);
+    var j=jobs[i],st=j.x.custom?{style:j.x.style,pos:j.x.pos,size:j.x.size,font:j.x.font}:pubSettings(j.x.kind);
     setStatus('<span class="progress"><i></i></span> 🔁 كنعاود نولد '+(i+1)+' / '+jobs.length+'…');
     try{var c=await renderPub(j.p,st),jpg=/\.jpe?g$/i.test(j.x.path),d=jpg?c.toDataURL('image/jpeg',0.84):c.toDataURL('image/webp',0.82);
       entries.push({path:j.x.path,b64:d.split(',')[1]},{path:B.smallOf(j.x.path),b64:smallCanvas(c).split(',')[1]});S.imgCache[j.x.path]=d;
-      if(!j.x.custom){j.x.style=st.style;j.x.pos=st.pos;j.x.size=st.size;}}
+      if(!j.x.custom){j.x.style=st.style;j.x.pos=st.pos;j.x.size=st.size;j.x.font=st.font;}}
     catch(e){failed.push(j.p.name+' ('+e.message+')');}
     if(entries.length>=16||(i===jobs.length-1&&entries.length)){
       try{await commitBlobs(entries,'🔁 علامة من الخزانة ('+entries.length/2+')',{patient:true});done+=entries.length/2;}catch(e){failed.push(e.message);}
@@ -1345,6 +1356,7 @@ async function viewImages(){
       '<div class="two">'+field('صور المواضيع (الغلاف، المقالات، المكتبة)','<select id="wm-art">'+Object.keys(WM_STYLES).map(function(x){return '<option value="'+x+'"'+(wmCfg().article===x?' selected':'')+'>'+WM_STYLES[x]+'</option>';}).join('')+'</select>')+field('صور المعرض','<select id="wm-gal">'+Object.keys(WM_STYLES).map(function(x){return '<option value="'+x+'"'+(wmCfg().gallery===x?' selected':'')+'>'+WM_STYLES[x]+'</option>';}).join('')+'</select>')+'</div>'+
       '<div class="two">'+field('نص الوسط (كبير)','<input id="wm-ct" value="'+esc(wmCfg().centerText)+'">')+field('السطر الصغير تحتو','<input id="wm-cs" value="'+esc(wmCfg().centerSub)+'">','خليه خاوي إلا ما بغيتيهش')+'</div>'+
       '<div class="two">'+field('البلاصة (للنص الواحد)','<select id="wm-pos">'+Object.keys(WM_POS).map(function(x){return '<option value="'+x+'"'+(wmCfg().pos===x?' selected':'')+'>'+WM_POS[x]+'</option>';}).join('')+'</select>','عامة، وتقدر تبدلها لكل صورة من الخزانة')+field('الحجم','<select id="wm-size">'+Object.keys(WM_SIZE).map(function(x){return '<option value="'+x+'"'+(wmCfg().size===x?' selected':'')+'>'+WM_SIZE[x]+'</option>';}).join('')+'</select>')+'</div>'+
+      field('الخط','<select id="wm-font">'+Object.keys(WM_FONTS).map(function(x){return '<option value="'+x+'"'+(wmCfg().font===x?' selected':'')+'>'+WM_FONTS[x][0]+'</option>';}).join('')+'</select>')+
       field('نص المكررة الخفيفة','<input id="wm-text" value="'+esc(wmCfg().text)+'">')+
       '<div class="row" style="margin-top:8px"><button class="btn" id="wm-old">💧 طبق الشكل المختار على الصور القديمة</button></div></div>'+
     '<div class="card"><div class="drop" id="drop">اسحب الصور هنا ولا ضغط على "رفع صور". كتصغر أوتوماتيكياً (أقصى عرض 1600px، WebP) باش يبقى الموقع سريع.</div></div>'+
@@ -1362,6 +1374,7 @@ async function viewImages(){
   $('#wm-art').addEventListener('change',function(){wmCfg().article=this.value;markDirty();});
   $('#wm-pos').addEventListener('change',function(){wmCfg().pos=this.value;markDirty();});
   $('#wm-size').addEventListener('change',function(){wmCfg().size=this.value;markDirty();});
+  $('#wm-font').addEventListener('change',function(){wmCfg().font=this.value;wmFontReady(this.value);markDirty();});
   $('#wm-gal').addEventListener('change',function(){wmCfg().gallery=this.value;markDirty();});
   $('#wm-ct').addEventListener('change',function(){wmCfg().centerText=this.value.trim()||'www.ksarsghir.com';this.value=wmCfg().centerText;markDirty();});
   $('#wm-cs').addEventListener('change',function(){wmCfg().centerSub=this.value.trim();markDirty();});
