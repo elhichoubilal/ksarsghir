@@ -199,6 +199,7 @@ main{padding:24px clamp(14px,3vw,36px) 120px;min-width:0}
 
 <script src="build.js?v=13"></script>
 <script src="seed-v10.js?v=13"></script>
+<script src="content-v11.js?v=1"></script>
 <script>
 (function(){
 'use strict';
@@ -361,6 +362,32 @@ function migrate(){
     if(!S.numbers){S.numbers=clone(B.DEFAULT_NUMBERS);S.extraDirty.numbers=true;}
     s.migrations.push('v10');
     setTimeout(function(){markDirty();toast('✨ تزادو: الدليل (موضوعين بـ4 لغات)، الإقامة، الأرقام المهمة، البحر اليوم، والقائمة. ضغط "نشر التغييرات".');},1800);
+  }
+  if(s.migrations.indexOf('v11')<0&&window.KS_V11){
+    var V=window.KS_V11,done=[];
+    Object.keys(V.pages).forEach(function(slug){
+      var a=S.articles.filter(function(x){return x.slug===slug&&x.section==='page';})[0];
+      if(!a||(a.updated&&a.updated>'2026-09-28'))return; /* edited by hand since: keep it */
+      ['ar','fr','en','es'].forEach(function(l){var src=V.pages[slug][l];if(!src)return;a.i18n[l]=a.i18n[l]||{title:'',seoTitle:'',keyword:'',alt:''};a.i18n[l].content=src.content;a.i18n[l].description=src.description;});
+      a.updated=today();done.push(slug);
+    });
+    if(s.intro&&/شواطئ هادئة مثل الدالية/.test(s.intro.ar||'')){s.intro=clone(V.intro);done.push('intro');}
+    var nsv=(s.services||[]).filter(function(x){return !/store\.ksarsghir\.com/.test(x.url||'');});
+    if(s.services&&nsv.length!==s.services.length){s.services=nsv;done.push('store');}
+    s.hero=s.hero||{};if(!s.hero.quick){s.hero.quick=clone(V.quick);done.push('quick');}
+    if(S.numbers&&S.numbers.groups){
+      var N=V.numbers,tm=null,tg=null;
+      S.numbers.groups.forEach(function(g){(g.items||[]).forEach(function(x){
+        var ph=String(x.phone||'').replace(/[^\d+]/g,'');
+        if(N.notes_ar[ph]&&x.note)x.note.ar=N.notes_ar[ph];
+        if(x.name&&x.name.ar===N.tm_name.ar){tm=x;tg=g;}
+      });});
+      if(tm&&!tm.phone){tm.phone=N.tm_phone;tm.note=clone(N.tm_note);}
+      if(tg&&!tg.items.some(function(x){return String(x.phone||'').replace(/[^\d+]/g,'')===N.tm2.phone.replace(/[^\d+]/g,'');}))tg.items.splice(tg.items.indexOf(tm)+1,0,clone(N.tm2));
+      S.numbers.verified='2026-10';S.extraDirty.numbers=true;done.push('numbers');
+    }
+    s.migrations.push('v11');
+    setTimeout(function(){markDirty();toast('✨ تحدثو: اتصل بنا، أعلن معنا، الخصوصية، الشروط، مقدمة الرئيسية، الأزرار السريعة، والأرقام المهمة. ضغط "نشر التغييرات".');},2000);
   }
   if(s.migrations.indexOf('v7')>=0)return;
   var fix=function(it){if(!it||!it.url)return;

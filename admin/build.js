@@ -583,11 +583,19 @@
       '<h1>' + esc(t(h.title, lang) || t(site.name, lang)) + '</h1>' +
       '<p class="hero-sub">' + esc(t(h.subtitle, lang)) + '</p>' +
       '<a class="btn" href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(t(h.cta, lang) || UI[lang].explore) + '</a>' +
+      (function () {
+        var q = (h.quick || []).filter(function (x) { return x && x.url && t(x.label, lang); });
+        if (!q.length) return '';
+        return '<nav class="hero-quick" aria-label="' + esc(t(h.title, lang) || t(site.name, lang)) + '">' + q.map(function (x) {
+          var href = isAbs(x.url) ? x.url : rel(file, (x.i18n === false ? '' : prefix(lang)) + x.url);
+          return '<a href="' + esc(href) + '"' + (isAbs(x.url) ? ' target="_blank" rel="noopener"' : '') + '><span aria-hidden="true">' + esc(x.icon || '') + '</span>' + esc(t(x.label, lang)) + '</a>';
+        }).join('') + '</nav>';
+      })() +
       '</div><svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40c160-30 320-30 480 0s320 30 480 0 320-30 480 0v40H0z"/></svg></section>' +
       (show(site, 'live') ? liveSection(site, file, lang) : '') +
       (show(site, 'news') ? secBlock(site, file, lang, 'news', recentNews(site, articles, lang), 3) : '') +
       adSlot(site, 'top', lang) +
-      (show(site, 'intro') && t(site.intro, lang) ? '<section class="wrap intro prose">' + t(site.intro, lang) + '</section>' : '') +
+      (show(site, 'intro') && t(site.intro, lang) ? '<section class="wrap intro prose">' + fixContentPaths(file, t(site.intro, lang), lang) + '</section>' : '') +
       (show(site, 'video') ? homeVideo(site, lang) : '') +
       (show(site, 'featured') && feat ? '<section class="wrap block"><h2 class="block-title">' + esc(UI[lang].featured) + '</h2>' + card(site, file, feat, lang, true) + '</section>' : '') +
       (show(site, 'latest') && rest.length ? '<section class="wrap block"><div class="block-head"><h2 class="block-title">' + esc(UI[lang].latest) + '</h2><a href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(UI[lang].allTourism) + '</a></div>' +
@@ -981,9 +989,9 @@
 
   /* ---------- useful numbers (data/numbers.json) ---------- */
   var NUI = {
-    ar: { h1: 'أرقام مهمة في القصر الصغير', lead: 'أرقام الطوارئ والأرقام المفيدة. ضغط على الرقم باش تعيط مباشرة.', name: 'الأرقام المهمة', sos: 'الطوارئ', verified: 'آخر تحقق', pending: 'قيد التحقق',
-      note: 'فالقصر الصغير والطرقان ديال المنطقة، الدرك الملكي (177) هو المسؤول عادة. فحالة حادث ولا إصابة عيط على 15 للإسعاف.',
-      src: 'الأرقام المحلية ما كتنشرش حتى يتم التأكد منها. لاحظتي رقم غالط ولا ناقص؟ تواصل معنا. هاد الصفحة إرشادية وماشي تابعة لأي جهة رسمية.' },
+    ar: { h1: 'أرقام مهمة في القصر الصغير', lead: 'أرقام الطوارئ والأرقام المفيدة. اضغط على الرقم للاتصال مباشرة.', name: 'الأرقام المهمة', sos: 'الطوارئ', verified: 'آخر تحقق', pending: 'قيد التحقق',
+      note: 'في القصر الصغير وعلى طرق المنطقة، الدرك الملكي (177) هو المختص عادة. وفي حالة حادث أو إصابة، اتصل بـ15 للإسعاف.',
+      src: 'لا تُنشر الأرقام المحلية إلا بعد التأكد منها. لاحظت رقماً تغيّر أو رقماً ناقصاً؟ تواصل معنا. هذه الصفحة إرشادية وغير تابعة لأي جهة رسمية.' },
     fr: { h1: 'Numéros utiles à Ksar Sghir', lead: 'Numéros d’urgence et contacts utiles. Touchez un numéro pour appeler.', name: 'Numéros utiles', sos: 'Urgences', verified: 'Vérifié', pending: 'En vérification',
       note: 'À Ksar Sghir et sur les routes de la région, la Gendarmerie royale (177) est généralement compétente. En cas d’accident ou de blessure, appelez le 15.',
       src: 'Les numéros locaux ne sont publiés qu’après vérification. Un numéro faux ou manquant ? Contactez-nous. Page indicative, sans lien avec un organisme officiel.' },
@@ -996,12 +1004,12 @@
   };
   var DEFAULT_NUMBERS = { verified: '2026-10', showPending: false, groups: [
     { id: 'sos', icon: '🚨', name: { ar: 'الطوارئ', fr: 'Urgences', en: 'Emergency', es: 'Emergencias' }, items: [
-      { sos: true, color: '#0b5f8a', phone: '177', name: { ar: 'الدرك الملكي', fr: 'Gendarmerie royale', en: 'Royal Gendarmerie', es: 'Gendarmería Real' }, note: { ar: 'خارج المدن والطرقان', fr: 'Hors villes et routes', en: 'Outside cities, roads', es: 'Fuera de ciudades, carreteras' } },
+      { sos: true, color: '#0b5f8a', phone: '177', name: { ar: 'الدرك الملكي', fr: 'Gendarmerie royale', en: 'Royal Gendarmerie', es: 'Gendarmería Real' }, note: { ar: 'خارج المدن وعلى الطرق', fr: 'Hors villes et routes', en: 'Outside cities, roads', es: 'Fuera de ciudades, carreteras' } },
       { sos: true, color: '#d93a3a', phone: '15', name: { ar: 'الوقاية المدنية', fr: 'Protection civile', en: 'Civil Protection', es: 'Protección Civil' }, note: { ar: 'الإسعاف والمطافئ', fr: 'Ambulance et pompiers', en: 'Ambulance and fire', es: 'Ambulancia y bomberos' } },
       { sos: true, color: '#1f4e9c', phone: '19', name: { ar: 'الشرطة', fr: 'Police', en: 'Police', es: 'Policía' }, note: { ar: 'داخل المدن', fr: 'En ville', en: 'In cities', es: 'En ciudad' } },
-      { sos: true, color: '#0b1e2d', phone: '112', name: { ar: 'رقم الطوارئ', fr: 'Numéro d’urgence', en: 'Emergency number', es: 'Número de emergencia' }, note: { ar: 'من التيليفون المحمول', fr: 'Depuis un mobile', en: 'From a mobile', es: 'Desde un móvil' } } ] },
+      { sos: true, color: '#0b1e2d', phone: '112', name: { ar: 'رقم الطوارئ', fr: 'Numéro d’urgence', en: 'Emergency number', es: 'Número de emergencia' }, note: { ar: 'من الهاتف المحمول', fr: 'Depuis un mobile', en: 'From a mobile', es: 'Desde un móvil' } } ] },
     { id: 'health', icon: '🏥', name: { ar: 'الصحة', fr: 'Santé', en: 'Health', es: 'Salud' }, items: [
-      { icon: '🚑', phone: '141', name: { ar: 'SAMU — المستعجلات الطبية', fr: 'SAMU — urgences médicales', en: 'SAMU — medical emergencies', es: 'SAMU — urgencias médicas' }, note: { ar: 'متوفر غالباً فالمدن الكبرى، وإلا عيط على 15', fr: 'Surtout dans les grandes villes, sinon le 15', en: 'Mainly in large cities, otherwise call 15', es: 'Sobre todo en grandes ciudades; si no, el 15' } },
+      { icon: '🚑', phone: '141', name: { ar: 'SAMU — المستعجلات الطبية', fr: 'SAMU — urgences médicales', en: 'SAMU — medical emergencies', es: 'SAMU — urgencias médicas' }, note: { ar: 'متوفر خاصة في المدن الكبرى، وإلا اتصل بـ15', fr: 'Surtout dans les grandes villes, sinon le 15', en: 'Mainly in large cities, otherwise call 15', es: 'Sobre todo en grandes ciudades; si no, el 15' } },
       { icon: '🏥', phone: '', name: { ar: 'المركز الصحي — القصر الصغير', fr: 'Centre de santé — Ksar Sghir', en: 'Health centre — Ksar Sghir', es: 'Centro de salud — Alcazarseguer' } },
       { icon: '💊', phone: '', name: { ar: 'صيدلية الحراسة', fr: 'Pharmacie de garde', en: 'On-duty pharmacy', es: 'Farmacia de guardia' } } ] },
     { id: 'security', icon: '👮', name: { ar: 'الأمن', fr: 'Sécurité', en: 'Security', es: 'Seguridad' }, items: [
@@ -1010,7 +1018,8 @@
     { id: 'transport', icon: '🚕', name: { ar: 'النقل والطريق', fr: 'Transport et route', en: 'Transport and roads', es: 'Transporte y carretera' }, items: [
       { icon: '🛣️', phone: '5050', name: { ar: 'مساعدة الطريق السيار (ADM)', fr: 'Assistance autoroute (ADM)', en: 'Motorway assistance (ADM)', es: 'Asistencia autopista (ADM)' }, note: { ar: 'على الطرق السيارة', fr: 'Sur autoroute', en: 'On motorways', es: 'En autopistas' } },
       { icon: '🚕', phone: '', name: { ar: 'الطاكسيات — القصر الصغير', fr: 'Taxis — Ksar Sghir', en: 'Taxis — Ksar Sghir', es: 'Taxis — Alcazarseguer' } },
-      { icon: '⛴️', phone: '', name: { ar: 'ميناء طنجة المتوسط — المسافرين', fr: 'Port Tanger Med — passagers', en: 'Tanger Med port — passengers', es: 'Puerto Tánger Med — pasajeros' } } ] },
+      { icon: '⛴️', phone: '0801 00 50 60', name: { ar: 'ميناء طنجة المتوسط — المسافرين', fr: 'Port Tanger Med — passagers', en: 'Tanger Med port — passengers', es: 'Puerto Tánger Med — pasajeros' }, note: { ar: 'مجاني من المغرب', fr: 'Gratuit depuis le Maroc', en: 'Free from Morocco', es: 'Gratuito desde Marruecos' } },
+      { icon: '🌍', phone: '+212 5 39 33 71 55', name: { ar: 'ميناء طنجة المتوسط — من الخارج', fr: 'Port Tanger Med — depuis l’étranger', en: 'Tanger Med port — from abroad', es: 'Puerto Tánger Med — desde el extranjero' }, note: { ar: 'خط المعلومات للمسافرين', fr: 'Infoline passagers', en: 'Passenger infoline', es: 'Línea de información al pasajero' } } ] },
     { id: 'admin', icon: '🏛️', name: { ar: 'الإدارات', fr: 'Administrations', en: 'Public offices', es: 'Administraciones' }, items: [
       { icon: '🏛️', phone: '', name: { ar: 'جماعة القصر الصغير', fr: 'Commune de Ksar Sghir', en: 'Ksar Sghir municipality', es: 'Ayuntamiento de Alcazarseguer' } } ] }
   ] };
