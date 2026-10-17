@@ -256,10 +256,17 @@ async function commit(files,deletes,message){
     var have={};(existing.tree||[]).forEach(function(e){have[e.path]=1;});
     deletes.forEach(function(p){if(have[p])tree.push({path:p,mode:'100644',type:'blob',sha:null});});
   }
-  var nt=await gh('/git/trees',{method:'POST',body:{base_tree:c.tree.sha,tree:tree}});
-  var nc=await gh('/git/commits',{method:'POST',body:{message:message,tree:nt.sha,parents:[head]}});
-  await gh('/git/refs/heads/'+S.branch,{method:'PATCH',body:{sha:nc.sha}});
-  return nc.sha;
+  for(var t=0;;t++){
+    var nt=await gh('/git/trees',{method:'POST',body:{base_tree:c.tree.sha,tree:tree}});
+    var nc=await gh('/git/commits',{method:'POST',body:{message:message,tree:nt.sha,parents:[head]}});
+    try{await gh('/git/refs/heads/'+S.branch,{method:'PATCH',body:{sha:nc.sha}});return nc.sha;}
+    catch(x){
+      if(!(t<4&&/fast forward|Reference cannot be updated|422/i.test(x.message)))throw x;
+      await sleep(1500*(t+1));   /* another commit landed meanwhile (e.g. a photo upload): rebuild on the new head */
+      ref=await gh('/git/ref/heads/'+S.branch);head=ref.object.sha;c=await gh('/git/commits/'+head);
+      if(deletes&&deletes.length){var ex=await gh('/git/trees/'+c.tree.sha+'?recursive=1'),hv={};(ex.tree||[]).forEach(function(e){hv[e.path]=1;});tree=tree.filter(function(e){return e.sha!==null||hv[e.path];});}
+    }
+  }
 }
 
 /* ---------- login ---------- */
@@ -496,8 +503,8 @@ function smallCanvas(src){
    to: {repo,branch,patient} for the private vault; default = the site repo. */
 async function commitBlobs(entries,message,to){
   to=to||{};var br=to.branch||S.branch,O=function(x){x=x||{};x.repo=to.repo;x.patient=to.patient;return x;};
-  var ref=await gh('/git/ref/heads/'+br,O()),head=ref.object.sha,c=await gh('/git/commits/'+head,O()),tree=[],nb=0;
-  for(var i=0;i<entries.length;i++){
+  var tree=[],nb=0;
+  for(var i=0;i<entries.length;i++){   /* blobs first (slow part), they don't depend on the branch */
     var e=entries[i];
     if(e.del){tree.push({path:e.path,mode:'100644',type:'blob',sha:null});continue;}
     if(e.text!=null){tree.push({path:e.path,mode:'100644',type:'blob',content:e.text});continue;}
@@ -505,9 +512,14 @@ async function commitBlobs(entries,message,to){
     var b=await gh('/git/blobs',O({method:'POST',body:{content:e.b64,encoding:'base64'}}));
     tree.push({path:e.path,mode:'100644',type:'blob',sha:b.sha});
   }
-  var nt=await gh('/git/trees',O({method:'POST',body:{base_tree:c.tree.sha,tree:tree}}));
-  var nc=await gh('/git/commits',O({method:'POST',body:{message:message,tree:nt.sha,parents:[head]}}));
-  await gh('/git/refs/heads/'+br,O({method:'PATCH',body:{sha:nc.sha}}));
+  /* then attach to the CURRENT head; if something else committed meanwhile ("not a fast forward"), redo on the new head */
+  for(var t=0;;t++){
+    var ref=await gh('/git/ref/heads/'+br,O()),head=ref.object.sha,c=await gh('/git/commits/'+head,O());
+    var nt=await gh('/git/trees',O({method:'POST',body:{base_tree:c.tree.sha,tree:tree}}));
+    var nc=await gh('/git/commits',O({method:'POST',body:{message:message,tree:nt.sha,parents:[head]}}));
+    try{await gh('/git/refs/heads/'+br,O({method:'PATCH',body:{sha:nc.sha}}));return nc.sha;}
+    catch(x){if(t<4&&/fast forward|Reference cannot be updated|422/i.test(x.message)){await sleep(1500*(t+1));continue;}throw x;}
+  }
 }
 async function uploadImage(file,prefix){
   var r=await compress(file,{icon:prefix==='logo'||prefix==='favicon',kind:wmKind(prefix)});
