@@ -1593,6 +1593,7 @@ async function publish(message){
     var list=Object.keys(files).sort();
     var deletes=(S.manifest.files||[]).filter(function(p){return !files[p];});
     if(S.cssDirty){files['assets/style.css']=S.css;}
+    files['.nojekyll']='\n'; /* plain static site: tell GitHub Pages to skip Jekyll (faster, fewer failed builds) */
     files['data/site.json']=JSON.stringify(S.site,null,1);
     files['data/gallery.json']=JSON.stringify(S.gallery,null,1);
     files['data/articles.json']=JSON.stringify({articles:S.articles},null,1);
@@ -1610,6 +1611,7 @@ async function publish(message){
     setStatus('❌ ما تنشرش');toast('❌ '+e.message,true);return false;
   }finally{publishing=false;btn.disabled=false;}
 }
+window.publishAgain=function(){publish('🔁 إعادة النشر');};
 async function watchDeploy(sha){
   var t0=Date.now();
   setStatus('<span class="progress"><i></i></span> GitHub Pages كيحدّث الموقع…');
@@ -1618,7 +1620,7 @@ async function watchDeploy(sha){
     try{
       var b=await gh('/pages/builds/latest');
       if(b&&b.commit===sha&&b.status==='built'){setStatus('✅ الموقع محدّث · <a href="'+pagesUrl()+'" target="_blank" rel="noopener">عرض</a>');return;}
-      if(b&&b.commit===sha&&b.status==='errored'){setStatus('❌ GitHub Pages ما قدرش يبني الموقع');return;}
+      if(b&&b.commit===sha&&b.status==='errored'){var em=(b.error&&b.error.message)||'';setStatus('❌ GitHub Pages ما قدرش يبني الموقع'+(em?': <small>'+esc(em)+'</small>':'')+' · <button class="btn btn-s" onclick="this.disabled=true;publishAgain()">🔁 عاود النشر</button>');return;}
     }catch(e){break;}
   }
   setStatus('✅ تنشر · التحديث كياخد حتى دقيقتين');
