@@ -1106,12 +1106,12 @@ async function renderPub(photo,st,bmp){
 }
 async function vaultPublish(list,kind,st){
   var W=wmCfg(),out=[],entries=[],CH=8,failed=[];
-  st=st||pubSettings(kind);
-  var custom=st.style!==W[kind]||st.pos!==W.pos||st.size!==W.size;
+  var all=Array.isArray(st)?st:list.map(function(){return st||pubSettings(kind);});
   for(var i=0;i<list.length;i++){
     setStatus('<span class="progress"><i></i></span> 📤 كننشر '+(i+1)+' / '+list.length+'…');
     try{
-      var p=list[i],c=await renderPub(p,st),o=enc(c,0.82);
+      var st=all[i],custom=st.style!==W[kind]||st.pos!==W.pos||st.size!==W.size;
+      var p=list[i],c=await renderPub(p,st,st._bmp),o=enc(c,0.82);
       var path='assets/img/'+(slugify(p.name)||'photo')+(st.style!=='none'?'-wm2':'')+'-'+Date.now().toString(36)+i.toString(36)+'.'+o.ext;
       entries.push({path:path,b64:o.d.split(',')[1]},{path:B.smallOf(path),b64:smallCanvas(c).split(',')[1]});
       S.imgCache[path]=o.d;
@@ -1130,35 +1130,56 @@ async function vaultPublish(list,kind,st){
   if(failed.length)alert('❌ ما تنشروش:\n\n'+failed.slice(0,20).join('\n'));
   return out;
 }
-/* preview + per-photo settings for ONE photo */
-function publishDialog(photo,kind){
+/* preview + per-photo settings, for one photo or several (◀ ▶ between them) */
+function publishDialog(list,kind){
+  if(!Array.isArray(list))list=[list];
   return new Promise(async function(res){
-    var st=pubSettings(kind),bmp=null,m=document.createElement('div');m.className='modal';
-    var opts=function(obj,cur){return Object.keys(obj).map(function(x){return '<option value="'+x+'"'+(x===cur?' selected':'')+'>'+obj[x]+'</option>';}).join('');};
-    m.innerHTML='<div class="mh"><b>📤 نشر: '+esc(photo.name)+'</b><span style="flex:1"></span><button class="btn btn-s btn-p" data-go>📤 انشر</button><button class="btn btn-s" data-close>إلغاء</button></div>'+
+    var cur=0,sts=list.map(function(){return pubSettings(kind);}),m=document.createElement('div');m.className='modal';
+    var opts=function(obj,v){return Object.keys(obj).map(function(x){return '<option value="'+x+'"'+(x===v?' selected':'')+'>'+obj[x]+'</option>';}).join('');};
+    var many=list.length>1;
+    m.innerHTML='<div class="mh"><b>📤 نشر</b>'+(many?'<button class="btn btn-s" data-prev>▶</button><b id="pn"></b><button class="btn btn-s" data-next>◀</button>':'')+'<span id="pt" class="muted" style="font-size:13px;direction:ltr"></span><span style="flex:1"></span><button class="btn btn-s btn-p" data-go>📤 انشر'+(many?' الكل ('+list.length+')':'')+'</button><button class="btn btn-s" data-close>إلغاء</button></div>'+
       '<div style="background:#fff;border-radius:0 0 12px 12px;overflow:auto;padding:14px;display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:14px;align-items:start">'+
-      '<div><canvas id="pv" style="width:100%;height:auto;border-radius:10px;background:var(--seaS)"></canvas><p class="hint" id="pv-h">كنجيب الأصل…</p></div>'+
+      '<div><canvas id="pv" style="width:100%;height:auto;border-radius:10px;background:var(--seaS)"></canvas><p class="hint" id="pv-h"></p>'+
+      (many?'<div id="strip" style="display:flex;gap:6px;overflow-x:auto;padding-top:6px">'+list.map(function(p,k){return '<img data-k="'+k+'" src="'+(V.thumbs[p.id]||'')+'" style="height:56px;border-radius:6px;cursor:pointer;border:3px solid transparent">';}).join('')+'</div>':'')+'</div>'+
       '<div>'+field('النوع','<select id="pk">'+opts({article:'صورة موضوع',gallery:'صورة المعرض'},kind)+'</select>')+
-      field('شكل العلامة','<select id="ps">'+opts(WM_STYLES,st.style)+'</select>')+
+      field('شكل العلامة','<select id="ps"></select>')+
       '<label>البلاصة</label><div id="pp" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;direction:ltr">'+['tl','tc','tr','ml','mc','mr','bl','bc','br'].map(function(x){return '<button class="btn btn-s" data-pos="'+x+'" title="'+WM_POS[x]+'" style="justify-content:center">'+({t:'↑',m:'•',b:'↓'})[x[0]]+({l:'←',c:'',r:'→'})[x[1]]+'</button>';}).join('')+'</div>'+
-      field('الحجم','<select id="pz">'+opts(WM_SIZE,st.size)+'</select>')+
-      '<p class="hint">العامة: '+esc(WM_STYLES[wmCfg()[kind]])+' · '+esc(WM_POS[wmCfg().pos])+' · '+esc(WM_SIZE[wmCfg().size])+'</p><button class="btn btn-s" data-reset>↺ رجع للعامة</button></div></div>';
+      field('الحجم','<select id="pz"></select>')+
+      '<p class="hint">العامة: <span id="pg"></span></p><div class="row" style="gap:6px;flex-wrap:wrap"><button class="btn btn-s" data-reset>↺ رجع للعامة</button>'+(many?'<button class="btn btn-s" data-all>📋 طبق هاد الإعدادات على الكل</button>':'')+'</div></div></div>';
     document.body.appendChild(m);
-    var cv=m.querySelector('#pv');
-    function marks(){m.querySelectorAll('[data-pos]').forEach(function(b){b.classList.toggle('btn-p',b.dataset.pos===st.pos);b.disabled=st.style!=='center';});}
-    function draw(){if(!bmp)return;var c=fitCanvas(bmp,1600);drawWatermark(c,st.style,{pos:st.pos,size:st.size});cv.width=c.width;cv.height=c.height;cv.getContext('2d').drawImage(c,0,0);marks();}
-    marks();
-    try{bmp=await vaultImg(photo.path);m.querySelector('#pv-h').textContent='هادي هي الصورة كيف غادي تبان فالموقع.';draw();}catch(e){m.querySelector('#pv-h').textContent='❌ '+e.message;}
+    var cv=m.querySelector('#pv'),seq=0;
+    function ui(){
+      var st=sts[cur];
+      m.querySelector('#ps').innerHTML=opts(WM_STYLES,st.style);m.querySelector('#pz').innerHTML=opts(WM_SIZE,st.size);
+      m.querySelector('#pg').textContent=WM_STYLES[wmCfg()[kind]]+' · '+WM_POS[wmCfg().pos]+' · '+WM_SIZE[wmCfg().size];
+      m.querySelectorAll('[data-pos]').forEach(function(b){b.classList.toggle('btn-p',b.dataset.pos===st.pos);b.disabled=st.style!=='center';});
+      m.querySelector('#pt').textContent=list[cur].name;
+      if(many){m.querySelector('#pn').textContent=(cur+1)+' / '+list.length;m.querySelectorAll('#strip img').forEach(function(im){im.style.borderColor=+im.dataset.k===cur?'var(--sea)':'transparent';});}
+    }
+    async function draw(){
+      ui();var k=cur,my=++seq,st=sts[k];
+      if(!st._bmp){m.querySelector('#pv-h').textContent='كنجيب الأصل…';try{st._bmp=await vaultImg(list[k].path);}catch(e){m.querySelector('#pv-h').textContent='❌ '+e.message;return;}}
+      if(my!==seq)return;
+      var c=fitCanvas(st._bmp,1600);drawWatermark(c,st.style,{pos:st.pos,size:st.size});cv.width=c.width;cv.height=c.height;cv.getContext('2d').drawImage(c,0,0);
+      m.querySelector('#pv-h').textContent='هادي هي الصورة كيف غادي تبان فالموقع.'+(many?' بدل الإعدادات ديال كل صورة، ولا طبق نفس الإعدادات على الكل.':'');
+    }
+    draw();
     m.addEventListener('change',function(e){
-      if(e.target.id==='pk'){kind=e.target.value;st=pubSettings(kind);m.querySelector('#ps').value=st.style;m.querySelector('#pz').value=st.size;}
+      var st=sts[cur];
+      if(e.target.id==='pk'){kind=e.target.value;sts=sts.map(function(x){var n=pubSettings(kind);n._bmp=x._bmp;return n;});}
       if(e.target.id==='ps')st.style=e.target.value;if(e.target.id==='pz')st.size=e.target.value;draw();
     });
     m.addEventListener('click',async function(e){
+      var st=sts[cur];
       var b=e.target.closest('[data-pos]');if(b){st.pos=b.dataset.pos;draw();return;}
-      if(e.target.closest('[data-reset]')){st=pubSettings(kind);m.querySelector('#ps').value=st.style;m.querySelector('#pz').value=st.size;draw();return;}
+      var im=e.target.closest('[data-k]');if(im){cur=+im.dataset.k;draw();return;}
+      if(e.target.closest('[data-next]')){cur=(cur+1)%list.length;draw();return;}
+      if(e.target.closest('[data-prev]')){cur=(cur-1+list.length)%list.length;draw();return;}
+      if(e.target.closest('[data-all]')){sts.forEach(function(x){x.style=st.style;x.pos=st.pos;x.size=st.size;});toast('✅ نفس الإعدادات على '+list.length+' صور');return;}
+      if(e.target.closest('[data-reset]')){var n=pubSettings(kind);n._bmp=st._bmp;sts[cur]=n;draw();return;}
       if(e.target.closest('[data-close]')||e.target===m){m.remove();res(null);return;}
       if(e.target.closest('[data-go]')){var g=e.target.closest('[data-go]');g.disabled=true;g.textContent='كننشر…';
-        st.kind=kind;var r=await vaultPublish([photo],kind,st);m.remove();res(r.length?{path:r[0],kind:kind}:null);}
+        var r=await vaultPublish(list,kind,sts);m.remove();res(r.length?{paths:r,kind:kind}:null);}
     });
   });
 }
@@ -1177,7 +1198,7 @@ function chooseFromVault(kind,multi){
     try{
       await vaultLoad();
       if(V.err){m.querySelector('#cv-h').innerHTML='الخزانة ما واجداش. حل 🗄️ الخزانة فالقائمة باش تصاوبها.';}
-      else{m.querySelector('#cv-h').textContent=multi?'اختار صورة وحدة باش تشوف المعاينة وتبدل العلامة، ولا بزاف باش ينشرو بالإعدادات العامة.':'اختار صورة.';
+      else{m.querySelector('#cv-h').textContent=multi?'اختار الصور، ومن بعد "📤 نشر المختارة": غادي تشوف المعاينة ديال كل وحدة وتبدل العلامة ديالها.':'اختار صورة.';
         m.querySelector('#cv-a').innerHTML='<option value="*">كل الألبومات</option>'+V.data.albums.map(function(a){return '<option value="'+esc(a.id)+'">'+esc(a.name)+'</option>';}).join('')+'<option value="">بلا ألبوم</option>';grid();}
     }catch(e){m.querySelector('#cv-h').textContent='❌ '+e.message;}
     m.addEventListener('input',function(e){if(e.target.id==='cv-q'){q=e.target.value.trim().toLowerCase();grid();}});
@@ -1191,8 +1212,8 @@ function chooseFromVault(kind,multi){
     async function go(){
       var list=V.data.photos.filter(function(p){return sel.indexOf(p.id)>=0;});if(!list.length)return;
       m.remove();
-      if(list.length===1){var r=await publishDialog(list[0],kind);return res(r?[r.path]:[]);}
-      if(!confirm('غادي ينشرو '+list.length+' صور بالإعدادات العامة ('+WM_STYLES[wmCfg()[kind]]+').\nإلا بغيتي تبدل العلامة لشي صورة، اختارها بوحدها.'))return res([]);
+      if(list.length<=30){var r=await publishDialog(list,kind);return res(r?r.paths:[]);}
+      if(!confirm('غادي ينشرو '+list.length+' صور بالإعدادات العامة ('+WM_STYLES[wmCfg()[kind]]+').\nباش تبدل العلامة لكل صورة، اختار 30 ولا أقل.'))return res([]);
       res(await vaultPublish(list,kind));
     }
   });
@@ -1254,7 +1275,7 @@ async function viewVault(){
         (cur?'<span style="flex:1"></span><button class="btn btn-s" id="v-ren">✏️ بدل السمية</button><button class="btn btn-s btn-d" id="v-del">🗑️ حذف الألبوم</button>':'')+
       '</div><div class="row" style="margin-top:10px;gap:8px"><input id="v-q" placeholder="🔎 بحث بالسمية…" value="'+esc(V.q)+'" style="max-width:260px">'+
         (V.sel.length?'<b>'+V.sel.length+' مختارة</b><select id="v-mv"><option value="#">نقل لـ…</option>'+V.data.albums.map(function(a){return '<option value="'+esc(a.id)+'">'+esc(a.name)+'</option>';}).join('')+'<option value="">بلا ألبوم</option></select>'+
-        '<button class="btn btn-s" id="v-pa">📤 نشر فموضوع</button><button class="btn btn-s" id="v-pg">📤 نشر فالمعرض</button><button class="btn btn-s btn-d" id="v-rm">🗑️ حذف</button><button class="btn btn-s" id="v-none">✕ إلغاء</button>':'<span class="hint">ضغط على صورة باش تختارها. اختار وحدة باش تشوف المعاينة وتبدل البلاصة ديال العلامة.</span>')+
+        '<button class="btn btn-s" id="v-pa">📤 نشر فموضوع</button><button class="btn btn-s" id="v-pg">📤 نشر فالمعرض</button><button class="btn btn-s btn-d" id="v-rm">🗑️ حذف</button><button class="btn btn-s" id="v-none">✕ إلغاء</button>':'<span class="hint">ضغط على الصور باش تختارهم، ومن بعد نشر: كتشوف المعاينة ديال كل وحدة وتبدل العلامة ديالها.</span>')+
       '</div></div>'+
       '<div class="card"><div class="imgs" id="v-g">'+(L.slice(0,V.limit).map(function(p){var on=V.sel.indexOf(p.id)>=0;
         return '<div class="img" style="'+(on?'outline:3px solid var(--sea);outline-offset:-3px':'')+'"><img src="'+(V.thumbs[p.id]||'')+'" alt="" data-pick="'+p.id+'" style="cursor:pointer"><div class="name" title="'+esc(p.name)+'">'+(on?'✅ ':'')+esc(p.name)+'</div><div class="name">'+esc(albumName(p.album))+' · '+p.w+'×'+p.h+(p.pub.length?' · 📤 '+p.pub.length:'')+'</div></div>';}).join('')||'<p class="empty">ما كاين حتى صورة هنا. ضغط "⬆️ رفع للخزانة".</p>')+'</div>'+
@@ -1294,8 +1315,8 @@ async function viewVault(){
     var picked=V.data.photos.filter(function(p){return V.sel.indexOf(p.id)>=0;});
     if(b.id==='v-pa'||b.id==='v-pg'){
       var kind=b.id==='v-pg'?'gallery':'article',paths;
-      if(picked.length===1){var r=await publishDialog(picked[0],kind);paths=r?[r.path]:[];kind=r?r.kind:kind;}
-      else{if(!confirm(picked.length+' صور غادي ينشرو بالإعدادات العامة. نكملو؟'))return;paths=await vaultPublish(picked,kind);}
+      if(picked.length<=30){var r=await publishDialog(picked,kind);paths=r?r.paths:[];kind=r?r.kind:kind;}
+      else{if(!confirm(picked.length+' صور غادي ينشرو بالإعدادات العامة (باش تبدل لكل صورة، اختار 30 ولا أقل). نكملو؟'))return;paths=await vaultPublish(picked,kind);}
       if(paths.length){
         if(kind==='gallery'){var g=S.gallery;g.photos=g.photos||[];var cat=((g.categories||[])[0]||{}).id||'';paths.forEach(function(x){g.photos.unshift({src:x,cat:cat,alt:{},caption:{}});});markDirty();toast('✅ تزادو '+paths.length+' للمعرض. بدل التصنيف من 📷 المعرض، ومن بعد نشر.');}
         else{try{await navigator.clipboard.writeText(paths.join('\n'));}catch(x){}toast('✅ تنشرو '+paths.length+' فمكتبة الصور. المسار تنسخ: الصقو فالموضوع، ولا اختارها من "📁 من المكتبة".');}
