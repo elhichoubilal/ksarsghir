@@ -949,7 +949,8 @@ async function optimizeImages(){
 async function wmOriginal(path){
   var list=await gh('/commits?path='+encodeURIComponent(path)+'&sha='+encodeURIComponent(S.branch)+'&per_page=30'),hit=null;
   (list||[]).forEach(function(c){if(/^💧/.test(c.commit&&c.commit.message||''))hit=c;}); /* oldest 💧 commit for this file */
-  if(!hit||!hit.parents||!hit.parents[0])throw new Error('ما لقيناش الأصل فالتاريخ');
+  /* no 💧 commit = the first version never really wrote this file (its commit failed), so the current file is still the original */
+  if(!hit||!hit.parents||!hit.parents[0])return fetchImg(path);
   return fetchImg(path,hit.parents[0].sha);
 }
 async function fetchImg(path,ref){
@@ -991,10 +992,11 @@ async function watermarkOld(){
         }catch(e){skipped.push(t.path.split('/').pop()+' ('+e.message+')');console.warn('wm skip',t.path,e);}
       }
       if(!entries.length)continue;
-      W.done2=W.done2.concat(ok);
+      var prev=W.done2;W.done2=W.done2.concat(ok);   /* recorded only if the commit goes through */
       entries.push({path:'data/site.json',b64:btoa(unescape(encodeURIComponent(JSON.stringify(S.site,null,1))))});
       say('<span class="progress"><i></i></span> كنرفع '+ok.length+' صورة…');
-      await commitBlobs(entries,'🖼️ علامة مائية v2 ('+ok.length+')');done+=ok.length;
+      try{await commitBlobs(entries,'🖼️ علامة مائية v2 ('+ok.length+')');done+=ok.length;}
+      catch(e){W.done2=prev;skipped=skipped.concat(ok.map(function(p){return p.split('/').pop()+' ('+e.message+')';}));}
     }
     say('✅ تطبقات العلامة على '+done+' صورة'+(skipped.length?'<br>❌ ما قدرناش على '+skipped.length+': <small>'+skipped.slice(0,30).map(esc).join(' · ')+'</small>':'')+bakedNote+'<br><br>دابا كنعاود نبني الموقع…');
     await publish('🖼️ العلامة المائية على الصور');
