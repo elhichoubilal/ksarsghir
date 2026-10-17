@@ -1141,27 +1141,42 @@ async function vaultPublish(list,kind,st){
   if(failed.length)alert('❌ ما تنشروش:\n\n'+failed.slice(0,20).join('\n'));
   return out;
 }
+/* social media export: crop (center) + watermark, JPEG, longest side 2048 */
+var CROPS={orig:'الصورة كاملة','1:1':'مربعة 1:1 (Instagram)','4:5':'عمودية 4:5 (Instagram)','9:16':'ستوري 9:16','16:9':'عريضة 16:9 (Facebook / YouTube)'};
+function cropCanvas(bmp,crop,max){
+  var W=bmp.width,H=bmp.height,sx=0,sy=0,sw=W,sh=H;
+  if(crop&&crop!=='orig'){var r=crop.split(':'),t=(+r[0])/(+r[1]);if(W/H>t){sw=Math.round(H*t);sx=Math.round((W-sw)/2);}else{sh=Math.round(W/t);sy=Math.round((H-sh)/2);}}
+  var k=Math.min(1,max/Math.max(sw,sh)),c=document.createElement('canvas');c.width=Math.round(sw*k);c.height=Math.round(sh*k);
+  c.getContext('2d').drawImage(bmp,sx,sy,sw,sh,0,0,c.width,c.height);return c;
+}
+async function socialFile(photo,st){
+  await wmFontReady(st.font);var bmp=st._bmp||(st._bmp=await vaultImg(photo.path));
+  var c=cropCanvas(bmp,st.crop,2048);drawWatermark(c,st.style,{pos:st.pos,size:st.size,font:st.font});
+  return new Promise(function(r){c.toBlob(function(b){r(b);},'image/jpeg',0.92);});
+}
+function saveBlob(blob,name){var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1500);}
+function socialName(p,st){return (slugify(p.name)||'photo')+(st.crop&&st.crop!=='orig'?'-'+st.crop.replace(':','x'):'')+'-ksarsghir.jpg';}
 /* preview + per-photo settings, for one photo or several (◀ ▶ between them) */
 function publishDialog(list,kind){
   if(!Array.isArray(list))list=[list];
   return new Promise(async function(res){
-    var cur=0,sts=list.map(function(){return pubSettings(kind);}),m=document.createElement('div');m.className='modal';
+    var cur=0,sts=list.map(function(){var x=pubSettings(kind);x.crop='orig';return x;}),m=document.createElement('div');m.className='modal';
     var opts=function(obj,v){return Object.keys(obj).map(function(x){return '<option value="'+x+'"'+(x===v?' selected':'')+'>'+obj[x]+'</option>';}).join('');};
     var many=list.length>1;
-    m.innerHTML='<div class="mh"><b>📤 نشر</b>'+(many?'<button class="btn btn-s" data-prev>▶</button><b id="pn"></b><button class="btn btn-s" data-next>◀</button>':'')+'<span id="pt" class="muted" style="font-size:13px;direction:ltr"></span><span style="flex:1"></span><button class="btn btn-s btn-p" data-go>📤 انشر'+(many?' الكل ('+list.length+')':'')+'</button><button class="btn btn-s" data-close>إلغاء</button></div>'+
+    m.innerHTML='<div class="mh"><b>📤 نشر</b>'+(many?'<button class="btn btn-s" data-prev>▶</button><b id="pn"></b><button class="btn btn-s" data-next>◀</button>':'')+'<span id="pt" class="muted" style="font-size:13px;direction:ltr"></span><span style="flex:1"></span><button class="btn btn-s" data-dl>⬇️ تحميل للتواصل'+(many?' (هادي)':'')+'</button>'+(many?'<button class="btn btn-s" data-dlall>⬇️ تحميل الكل ('+list.length+')</button>':'')+'<button class="btn btn-s btn-p" data-go>📤 انشر فالموقع'+(many?' ('+list.length+')':'')+'</button><button class="btn btn-s" data-close>إلغاء</button></div>'+
       '<div style="background:#fff;border-radius:0 0 12px 12px;overflow:auto;padding:14px;display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:14px;align-items:start">'+
-      '<div><canvas id="pv" style="width:100%;height:auto;border-radius:10px;background:var(--seaS)"></canvas><p class="hint" id="pv-h"></p>'+
+      '<div><canvas id="pv" style="display:block;margin:0 auto;max-width:100%;max-height:72vh;width:auto;height:auto;border-radius:10px;background:var(--seaS)"></canvas><p class="hint" id="pv-h"></p>'+
       (many?'<div id="strip" style="display:flex;gap:6px;overflow-x:auto;padding-top:6px">'+list.map(function(p,k){return '<img data-k="'+k+'" src="'+(V.thumbs[p.id]||'')+'" style="height:56px;border-radius:6px;cursor:pointer;border:3px solid transparent">';}).join('')+'</div>':'')+'</div>'+
       '<div>'+field('النوع','<select id="pk">'+opts({article:'صورة موضوع',gallery:'صورة المعرض'},kind)+'</select>')+
       field('شكل العلامة','<select id="ps"></select>')+
       '<label>البلاصة</label><div id="pp" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;direction:ltr">'+['tl','tc','tr','ml','mc','mr','bl','bc','br'].map(function(x){return '<button class="btn btn-s" data-pos="'+x+'" title="'+WM_POS[x]+'" style="justify-content:center">'+({t:'↑',m:'•',b:'↓'})[x[0]]+({l:'←',c:'',r:'→'})[x[1]]+'</button>';}).join('')+'</div>'+
-      field('الحجم','<select id="pz"></select>')+field('الخط','<select id="pf"></select>')+
+      field('الحجم','<select id="pz"></select>')+field('الخط','<select id="pf"></select>')+field('القياس (للتحميل)','<select id="pc"></select>','الموقع كياخذ الصورة كاملة')+
       '<p class="hint">العامة: <span id="pg"></span></p><div class="row" style="gap:6px;flex-wrap:wrap"><button class="btn btn-s" data-reset>↺ رجع للعامة</button>'+(many?'<button class="btn btn-s" data-all>📋 طبق هاد الإعدادات على الكل</button>':'')+'</div></div></div>';
     document.body.appendChild(m);
     var cv=m.querySelector('#pv'),seq=0;
     function ui(){
       var st=sts[cur];
-      m.querySelector('#ps').innerHTML=opts(WM_STYLES,st.style);m.querySelector('#pz').innerHTML=opts(WM_SIZE,st.size);m.querySelector('#pf').innerHTML=Object.keys(WM_FONTS).map(function(x){return '<option value="'+x+'"'+(x===st.font?' selected':'')+' style="font-family:'+WM_FONTS[x][1].replace(/"/g,"'")+'">'+WM_FONTS[x][0]+'</option>';}).join('');
+      m.querySelector('#ps').innerHTML=opts(WM_STYLES,st.style);m.querySelector('#pz').innerHTML=opts(WM_SIZE,st.size);m.querySelector('#pc').innerHTML=opts(CROPS,st.crop);m.querySelector('#pf').innerHTML=Object.keys(WM_FONTS).map(function(x){return '<option value="'+x+'"'+(x===st.font?' selected':'')+' style="font-family:'+WM_FONTS[x][1].replace(/"/g,"'")+'">'+WM_FONTS[x][0]+'</option>';}).join('');
       m.querySelector('#pg').textContent=WM_STYLES[wmCfg()[kind]]+' · '+WM_POS[wmCfg().pos]+' · '+WM_SIZE[wmCfg().size]+' · '+WM_FONTS[wmCfg().font][0];
       m.querySelectorAll('[data-pos]').forEach(function(b){b.classList.toggle('btn-p',b.dataset.pos===st.pos);b.disabled=st.style!=='center';});
       m.querySelector('#pt').textContent=list[cur].name;
@@ -1171,14 +1186,14 @@ function publishDialog(list,kind){
       ui();var k=cur,my=++seq,st=sts[k];
       if(!st._bmp){m.querySelector('#pv-h').textContent='كنجيب الأصل…';try{st._bmp=await vaultImg(list[k].path);}catch(e){m.querySelector('#pv-h').textContent='❌ '+e.message;return;}}
       await wmFontReady(st.font);if(my!==seq)return;
-      var c=fitCanvas(st._bmp,1600);drawWatermark(c,st.style,{pos:st.pos,size:st.size,font:st.font});cv.width=c.width;cv.height=c.height;cv.getContext('2d').drawImage(c,0,0);
+      var c=cropCanvas(st._bmp,st.crop,1600);drawWatermark(c,st.style,{pos:st.pos,size:st.size,font:st.font});cv.width=c.width;cv.height=c.height;cv.getContext('2d').drawImage(c,0,0);
       m.querySelector('#pv-h').textContent='هادي هي الصورة كيف غادي تبان فالموقع.'+(many?' بدل الإعدادات ديال كل صورة، ولا طبق نفس الإعدادات على الكل.':'');
     }
     draw();
     m.addEventListener('change',function(e){
       var st=sts[cur];
-      if(e.target.id==='pk'){kind=e.target.value;sts=sts.map(function(x){var n=pubSettings(kind);n._bmp=x._bmp;return n;});}
-      if(e.target.id==='ps')st.style=e.target.value;if(e.target.id==='pz')st.size=e.target.value;if(e.target.id==='pf')st.font=e.target.value;draw();
+      if(e.target.id==='pk'){kind=e.target.value;sts=sts.map(function(x){var n=pubSettings(kind);n._bmp=x._bmp;n.crop=x.crop;return n;});}
+      if(e.target.id==='ps')st.style=e.target.value;if(e.target.id==='pz')st.size=e.target.value;if(e.target.id==='pf')st.font=e.target.value;if(e.target.id==='pc')st.crop=e.target.value;draw();
     });
     m.addEventListener('click',async function(e){
       var st=sts[cur];
@@ -1186,8 +1201,12 @@ function publishDialog(list,kind){
       var im=e.target.closest('[data-k]');if(im){cur=+im.dataset.k;draw();return;}
       if(e.target.closest('[data-next]')){cur=(cur+1)%list.length;draw();return;}
       if(e.target.closest('[data-prev]')){cur=(cur-1+list.length)%list.length;draw();return;}
-      if(e.target.closest('[data-all]')){sts.forEach(function(x){x.style=st.style;x.pos=st.pos;x.size=st.size;x.font=st.font;});toast('✅ نفس الإعدادات على '+list.length+' صور');return;}
-      if(e.target.closest('[data-reset]')){var n=pubSettings(kind);n._bmp=st._bmp;sts[cur]=n;draw();return;}
+      if(e.target.closest('[data-all]')){sts.forEach(function(x){x.style=st.style;x.pos=st.pos;x.size=st.size;x.font=st.font;x.crop=st.crop;});toast('✅ نفس الإعدادات على '+list.length+' صور');return;}
+      if(e.target.closest('[data-reset]')){var n=pubSettings(kind);n._bmp=st._bmp;n.crop=st.crop;sts[cur]=n;draw();return;}
+      if(e.target.closest('[data-dl]')){var d=e.target.closest('[data-dl]');d.disabled=true;try{saveBlob(await socialFile(list[cur],st),socialName(list[cur],st));toast('⬇️ تحملات');}catch(x){toast('❌ '+x.message,true);}d.disabled=false;return;}
+      if(e.target.closest('[data-dlall]')){var d2=e.target.closest('[data-dlall]');d2.disabled=true;
+        for(var q=0;q<list.length;q++){d2.textContent='⬇️ '+(q+1)+' / '+list.length+'…';try{saveBlob(await socialFile(list[q],sts[q]),socialName(list[q],sts[q]));}catch(x){toast('❌ '+list[q].name+': '+x.message,true);}await sleep(600);}
+        d2.textContent='⬇️ تحميل الكل ('+list.length+')';d2.disabled=false;toast('⬇️ تحملو '+list.length+' صور. إلا المتصفح سول "تحميل ملفات متعددة"، قبل.');return;}
       if(e.target.closest('[data-close]')||e.target===m){m.remove();res(null);return;}
       if(e.target.closest('[data-go]')){var g=e.target.closest('[data-go]');g.disabled=true;g.textContent='كننشر…';
         var r=await vaultPublish(list,kind,sts);m.remove();res(r.length?{paths:r,kind:kind}:null);}
@@ -1286,7 +1305,7 @@ async function viewVault(){
         (cur?'<span style="flex:1"></span><button class="btn btn-s" id="v-ren">✏️ بدل السمية</button><button class="btn btn-s btn-d" id="v-del">🗑️ حذف الألبوم</button>':'')+
       '</div><div class="row" style="margin-top:10px;gap:8px"><input id="v-q" placeholder="🔎 بحث بالسمية…" value="'+esc(V.q)+'" style="max-width:260px">'+
         (V.sel.length?'<b>'+V.sel.length+' مختارة</b><select id="v-mv"><option value="#">نقل لـ…</option>'+V.data.albums.map(function(a){return '<option value="'+esc(a.id)+'">'+esc(a.name)+'</option>';}).join('')+'<option value="">بلا ألبوم</option></select>'+
-        '<button class="btn btn-s" id="v-pa">📤 نشر فموضوع</button><button class="btn btn-s" id="v-pg">📤 نشر فالمعرض</button><button class="btn btn-s btn-d" id="v-rm">🗑️ حذف</button><button class="btn btn-s" id="v-none">✕ إلغاء</button>':'<span class="hint">ضغط على الصور باش تختارهم، ومن بعد نشر: كتشوف المعاينة ديال كل وحدة وتبدل العلامة ديالها.</span>')+
+        '<button class="btn btn-s" id="v-dl">⬇️ تحميل للتواصل</button><button class="btn btn-s" id="v-pa">📤 نشر فموضوع</button><button class="btn btn-s" id="v-pg">📤 نشر فالمعرض</button><button class="btn btn-s btn-d" id="v-rm">🗑️ حذف</button><button class="btn btn-s" id="v-none">✕ إلغاء</button>':'<span class="hint">ضغط على الصور باش تختارهم، ومن بعد نشر: كتشوف المعاينة ديال كل وحدة وتبدل العلامة ديالها.</span>')+
       '</div></div>'+
       '<div class="card"><div class="imgs" id="v-g">'+(L.slice(0,V.limit).map(function(p){var on=V.sel.indexOf(p.id)>=0;
         return '<div class="img" style="'+(on?'outline:3px solid var(--sea);outline-offset:-3px':'')+'"><img src="'+(V.thumbs[p.id]||'')+'" alt="" data-pick="'+p.id+'" style="cursor:pointer"><div class="name" title="'+esc(p.name)+'">'+(on?'✅ ':'')+esc(p.name)+'</div><div class="name">'+esc(albumName(p.album))+' · '+p.w+'×'+p.h+(p.pub.length?' · 📤 '+p.pub.length:'')+'</div></div>';}).join('')||'<p class="empty">ما كاين حتى صورة هنا. ضغط "⬆️ رفع للخزانة".</p>')+'</div>'+
@@ -1324,6 +1343,12 @@ async function viewVault(){
       V.data.photos.forEach(function(p){if(p.album===a2.id)p.album='';});V.data.albums=V.data.albums.filter(function(x){return x!==a2;});
       try{await vaultSave('🗄️ حذف ألبوم');V.album='*';}catch(x){toast('❌ '+x.message,true);V.ready=false;await vaultLoad();}render();return;}
     var picked=V.data.photos.filter(function(p){return V.sel.indexOf(p.id)>=0;});
+    if(b.id==='v-dl'){
+      if(picked.length>30){toast('اختار 30 صورة ولا أقل',true);return;}
+      var rr=await publishDialog(picked,'article');
+      if(rr&&rr.paths.length){toast('✅ تنشرو '+rr.paths.length+' فمكتبة الصور.');}
+      V.sel=[];render();return;
+    }
     if(b.id==='v-pa'||b.id==='v-pg'){
       var kind=b.id==='v-pg'?'gallery':'article',paths;
       if(picked.length<=30){var r=await publishDialog(picked,kind);paths=r?r.paths:[];kind=r?r.kind:kind;}
