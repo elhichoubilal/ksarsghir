@@ -1,5 +1,5 @@
 {
- "version": "mvczc6m3",
+ "version": "mvczh48o",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -52,13 +52,48 @@
    "assets/img/favicon-mujqt9vq.webp",
    "assets/img/tanger-med-muk681ck.webp",
    "assets/img/20073-mujr4ueq.webp"
+  ],
+  "quick": [
+   {
+    "icon": "🌊",
+    "label": {
+     "ar": "البحر اليوم",
+     "fr": "La mer aujourd’hui",
+     "en": "Sea today",
+     "es": "El mar hoy"
+    },
+    "url": "mer/",
+    "i18n": true
+   },
+   {
+    "icon": "⛴️",
+    "label": {
+     "ar": "مواعيد البواخر",
+     "fr": "Horaires des ferries",
+     "en": "Ferry times",
+     "es": "Horarios de ferris"
+    },
+    "url": "guide/bateaux-tanger-med/",
+    "i18n": true
+   },
+   {
+    "icon": "📞",
+    "label": {
+     "ar": "الأرقام المهمة",
+     "fr": "Numéros utiles",
+     "en": "Useful numbers",
+     "es": "Teléfonos útiles"
+    },
+    "url": "numeros-utiles/",
+    "i18n": true
+   }
   ]
  },
  "intro": {
-  "ar": "<h2>مرحباً بك في القصر الصغير</h2><p><strong>القصر الصغير</strong> مدينة ساحلية صغيرة في إقليم الفحص أنجرة، على بعد حوالي 35 كيلومتراً شرق طنجة، مطلة مباشرة على مضيق جبل طارق. من شاطئها ترى الساحل الإسباني في الأيام الصافية، وحولها شواطئ هادئة مثل الدالية وواد اليان وسيدي قنقوش، إضافة إلى ميناء طنجة المتوسط وقرية بليونش تحت جبل موسى.</p><p>في هذا الدليل نجمع لك كل ما تحتاجه لزيارة القصر الصغير: وصف كل شاطئ وميناء وموقع تاريخي، أفضل وقت للزيارة، الخدمات المتوفرة، ونصائح من ابن المنطقة.</p>",
-  "fr": "<h2>Bienvenue à Ksar Sghir</h2><p><strong>Ksar Sghir</strong> (aussi écrit Ksar es-Seghir ou Ksar Seghir) est une petite ville côtière de la province de Fahs-Anjra, à environ 35 km à l’est de Tanger, face au détroit de Gibraltar. Par temps clair, on voit la côte espagnole depuis sa plage. Autour : des plages calmes comme Dalia, Oued Alian ou Sidi Kankouch, le port de Tanger Med et le village de Belyounech au pied du Jebel Moussa.</p><p>Ce guide réunit tout ce qu’il faut savoir pour visiter Ksar Sghir : chaque plage, port et site historique, la meilleure période, les services sur place et les conseils d’un habitant.</p>",
-  "en": "<h2>Welcome to Ksar Sghir</h2><p><strong>Ksar Sghir</strong> (also spelled Ksar es-Seghir or Ksar Seghir) is a small coastal town in Fahs-Anjra province, about 35 km east of Tangier, right on the Strait of Gibraltar. On clear days you can see the Spanish coast from its beach. Nearby are quiet beaches such as Dalia, Oued Alian and Sidi Kankouch, the Tanger Med port and the village of Belyounech below Jebel Musa.</p><p>This guide covers everything you need to visit Ksar Sghir, Morocco: every beach, port and historic site, the best time to go, local services and tips from someone who lives here.</p>",
-  "es": "<h2>Bienvenido a Alcazarseguer</h2><p><strong>Alcazarseguer</strong> (Ksar Sghir o Ksar es-Seghir) es un pequeño pueblo costero de la provincia de Fahs-Anjra, a unos 35 km al este de Tánger, frente al estrecho de Gibraltar. En días despejados se ve la costa española desde su playa. Alrededor hay playas tranquilas como Dalia, Oued Alian o Sidi Kankouch, el puerto de Tánger Med y el pueblo de Belyounech, al pie del Yebel Musa.</p><p>Esta guía reúne todo lo necesario para visitar Alcazarseguer: cada playa, puerto y lugar histórico, la mejor época, los servicios disponibles y los consejos de un vecino.</p>"
+  "ar": "<h2>مرحباً بك في القصر الصغير</h2><p><strong>القصر الصغير</strong> بلدة ساحلية في إقليم الفحص أنجرة، على بعد حوالي 35 كيلومتراً شرق طنجة، مطلة مباشرة على مضيق جبل طارق. من شاطئها ترى الساحل الإسباني في الأيام الصافية، والبواخر تعبر المضيق طوال اليوم.</p><p>حولها شواطئ لكل ذوق: <a href=\"~/tourisme/dalia/\">الدالية</a> باللواء الأزرق، و<a href=\"~/tourisme/sidi-kankouch-1/\">سيدي قنقوش</a> بخدماته وأنشطته، وخلجان هادئة للعائلات مثل <a href=\"~/tourisme/dahdaha/\">الدهداه</a> و<a href=\"~/tourisme/zrara/\">زرارع</a> و<a href=\"~/tourisme/oued-marsa/\">واد المرسى</a>. وعلى بعد دقائق <a href=\"~/tourisme/tanger-med/\">ميناء طنجة المتوسط</a>، و<a href=\"~/tourisme/site-archeologique/\">الموقع الأثري</a> في قلب البلدة، وقرية <a href=\"~/tourisme/belyounech/\">بليونش</a> تحت جبل موسى.</p><p>في هذا الدليل نجمع لك ما تحتاجه لزيارة القصر الصغير: وصف كل شاطئ وميناء وموقع تاريخي، وحالة البحر يومياً، ومواعيد البواخر، والأرقام المهمة، بصور ومعلومات من ابن المنطقة.</p>",
+  "fr": "<h2>Bienvenue à Ksar Sghir</h2><p><strong>Ksar Sghir</strong> (aussi écrit Ksar es-Seghir ou Ksar Seghir) est une petite ville côtière de la province de Fahs-Anjra, à environ 35 km à l’est de Tanger, face au détroit de Gibraltar. Par temps clair, on voit la côte espagnole depuis sa plage, et les navires traversent le détroit toute la journée.</p><p>Autour, des plages pour tous les goûts : <a href=\"~/tourisme/dalia/\">Dalia</a> et son Pavillon Bleu, <a href=\"~/tourisme/sidi-kankouch-1/\">Sidi Kankouch</a> avec ses services et activités, et des criques calmes pour les familles comme <a href=\"~/tourisme/dahdaha/\">Dahdaha</a>, <a href=\"~/tourisme/zrara/\">Zrara</a> ou <a href=\"~/tourisme/oued-marsa/\">Oued Marsa</a>. À quelques minutes : <a href=\"~/tourisme/tanger-med/\">le port Tanger Med</a>, <a href=\"~/tourisme/site-archeologique/\">le site archéologique</a> au cœur de la ville et le village de <a href=\"~/tourisme/belyounech/\">Belyounech</a> au pied du Jebel Moussa.</p><p>Ce guide réunit l’essentiel pour visiter Ksar Sghir : chaque plage, port et site historique, l’état de la mer au jour le jour, les horaires des ferries et les numéros utiles, avec les photos et les conseils d’un habitant.</p>",
+  "en": "<h2>Welcome to Ksar Sghir</h2><p><strong>Ksar Sghir</strong> (also spelled Ksar es-Seghir or Ksar Seghir) is a small coastal town in Fahs-Anjra province, about 35 km east of Tangier, right on the Strait of Gibraltar. On clear days you can see the Spanish coast from its beach, and ships cross the Strait all day long.</p><p>Around it are beaches for every taste: Blue Flag <a href=\"~/tourisme/dalia/\">Dalia</a>, <a href=\"~/tourisme/sidi-kankouch-1/\">Sidi Kankouch</a> with its services and activities, and calm family coves such as <a href=\"~/tourisme/dahdaha/\">Dahdaha</a>, <a href=\"~/tourisme/zrara/\">Zrara</a> and <a href=\"~/tourisme/oued-marsa/\">Oued Marsa</a>. A few minutes away are <a href=\"~/tourisme/tanger-med/\">Tanger Med port</a>, <a href=\"~/tourisme/site-archeologique/\">the archaeological site</a> in the heart of town and the village of <a href=\"~/tourisme/belyounech/\">Belyounech</a> below Jebel Musa.</p><p>This guide covers what you need to visit Ksar Sghir, Morocco: every beach, port and historic site, daily sea conditions, ferry times and useful numbers, with photos and tips from someone who lives here.</p>",
+  "es": "<h2>Bienvenido a Alcazarseguer</h2><p><strong>Alcazarseguer</strong> (Ksar Sghir o Ksar es-Seghir) es un pequeño pueblo costero de la provincia de Fahs-Anjra, a unos 35 km al este de Tánger, frente al estrecho de Gibraltar. En días despejados se ve la costa española desde su playa, y los barcos cruzan el Estrecho todo el día.</p><p>Alrededor hay playas para todos los gustos: <a href=\"~/tourisme/dalia/\">Dalia</a>, con Bandera Azul; <a href=\"~/tourisme/sidi-kankouch-1/\">Sidi Kankouch</a>, con servicios y actividades; y calas tranquilas para familias como <a href=\"~/tourisme/dahdaha/\">Dahdaha</a>, <a href=\"~/tourisme/zrara/\">Zrara</a> u <a href=\"~/tourisme/oued-marsa/\">Oued Marsa</a>. A pocos minutos están <a href=\"~/tourisme/tanger-med/\">el puerto de Tánger Med</a>, <a href=\"~/tourisme/site-archeologique/\">el yacimiento arqueológico</a> en el centro del pueblo y el pueblo de <a href=\"~/tourisme/belyounech/\">Belyounech</a>, al pie del Yebel Musa.</p><p>Esta guía reúne lo necesario para visitar Alcazarseguer: cada playa, puerto y lugar histórico, el estado del mar día a día, los horarios de ferris y los teléfonos útiles, con fotos y consejos de un vecino.</p>"
  },
  "featured": "plage",
  "categories": [
@@ -525,22 +560,6 @@
    "i18n": true
   },
   {
-   "icon": "🖼️",
-   "title": {
-    "ar": "متجر الصور",
-    "fr": "Boutique photos",
-    "en": "Photo shop",
-    "es": "Tienda de fotos"
-   },
-   "text": {
-    "ar": "اقتن صوراً احترافية للقصر الصغير",
-    "fr": "Photos professionnelles de Ksar Sghir",
-    "en": "Professional photos of Ksar Sghir",
-    "es": "Fotos profesionales de Alcazarseguer"
-   },
-   "url": "https://store.ksarsghir.com"
-  },
-  {
    "icon": "📢",
    "title": {
     "ar": "أعلن معنا",
@@ -645,7 +664,8 @@
   "v7",
   "v8",
   "v9",
-  "v10"
+  "v10",
+  "v11"
  ],
  "whatsapp": {
   "float": true,

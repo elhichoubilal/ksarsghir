@@ -23,7 +23,7 @@
       "es": "Gendarmería Real"
      },
      "note": {
-      "ar": "خارج المدن والطرقان",
+      "ar": "خارج المدن وعلى الطرق",
       "fr": "Hors villes et routes",
       "en": "Outside cities, roads",
       "es": "Fuera de ciudades, carreteras"
@@ -74,7 +74,7 @@
       "es": "Número de emergencia"
      },
      "note": {
-      "ar": "من التيليفون المحمول",
+      "ar": "من الهاتف المحمول",
       "fr": "Depuis un mobile",
       "en": "From a mobile",
       "es": "Desde un móvil"
@@ -102,7 +102,7 @@
       "es": "SAMU — urgencias médicas"
      },
      "note": {
-      "ar": "متوفر غالباً فالمدن الكبرى، وإلا عيط على 15",
+      "ar": "متوفر خاصة في المدن الكبرى، وإلا اتصل بـ15",
       "fr": "Surtout dans les grandes villes, sinon le 15",
       "en": "Mainly in large cities, otherwise call 15",
       "es": "Sobre todo en grandes ciudades; si no, el 15"
@@ -200,12 +200,34 @@
     },
     {
      "icon": "⛴️",
-     "phone": "",
+     "phone": "0801 00 50 60",
      "name": {
       "ar": "ميناء طنجة المتوسط — المسافرين",
       "fr": "Port Tanger Med — passagers",
       "en": "Tanger Med port — passengers",
       "es": "Puerto Tánger Med — pasajeros"
+     },
+     "note": {
+      "ar": "مجاني من المغرب",
+      "fr": "Gratuit depuis le Maroc",
+      "en": "Free from Morocco",
+      "es": "Gratuito desde Marruecos"
+     }
+    },
+    {
+     "icon": "🌍",
+     "phone": "+212 5 39 33 71 55",
+     "name": {
+      "ar": "ميناء طنجة المتوسط — من الخارج",
+      "fr": "Port Tanger Med — depuis l’étranger",
+      "en": "Tanger Med port — from abroad",
+      "es": "Puerto Tánger Med — desde el extranjero"
+     },
+     "note": {
+      "ar": "خط المعلومات للمسافرين",
+      "fr": "Infoline passagers",
+      "en": "Passenger infoline",
+      "es": "Línea de información al pasajero"
      }
     }
    ]
