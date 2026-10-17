@@ -1,5 +1,5 @@
 {
- "version": "mvct4qme",
+ "version": "mvcucjsb",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -736,6 +736,11 @@
    "assets/img/oued-alian-muk6t40e.webp",
    "assets/img/oued-alian-muk6rszm.webp",
    "assets/img/ghojin-srama-muk6iyas.webp"
-  ]
+  ],
+  "pos": "mc",
+  "size": "m"
+ },
+ "vault": {
+  "repo": "elhichoubilal/ksarsghir-photos"
  }
 }
