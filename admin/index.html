@@ -182,6 +182,7 @@ main{padding:24px clamp(14px,3vw,36px) 120px;min-width:0}
     <button data-view="numbers">📞 الأرقام المهمة</button>
     <button data-view="prayer">🕌 مواقيت الحبوس</button>
     <button data-view="gallery">📷 المعرض</button>
+    <button data-view="vault">🗄️ الخزانة</button>
     <button data-view="images">🗂️ مكتبة الصور</button>
     <button data-view="settings">⚙️ الإعدادات</button>
     <div class="spacer"></div>
@@ -220,14 +221,14 @@ async function gh(path,o){
   var h={'Authorization':'Bearer '+S.token,'Accept':o.accept||'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
   if(o.body)h['Content-Type']='application/json';
   for(var attempt=0;;attempt++){
-    var r=await fetch('https://api.github.com/repos/'+S.repo+path,{method:o.method||'GET',headers:h,body:o.body?JSON.stringify(o.body):undefined,cache:'no-store'});
+    var r=await fetch('https://api.github.com/repos/'+(o.repo||S.repo)+path,{method:o.method||'GET',headers:h,body:o.body?JSON.stringify(o.body):undefined,cache:'no-store'});
     if(r.status===404&&o.allow404)return null;
     if(r.ok){if(o.raw)return r.text();return r.status===204?null:r.json();}
     var j=await r.json().catch(function(){return{};}),m=j.message||'';
     /* GitHub limits writes (~80/min). Wait and retry instead of failing. */
     var limited=r.status===429||(r.status===403&&(/rate limit/i.test(m)||r.headers.get('retry-after')||r.headers.get('x-ratelimit-remaining')==='0'));
-    if(limited&&attempt<8){
-      var ra=+r.headers.get('retry-after'),reset=+r.headers.get('x-ratelimit-reset'),wait=ra?ra*1000:(reset&&r.headers.get('x-ratelimit-remaining')==='0'?Math.max(5000,reset*1000-Date.now()+1000):Math.min(60000*(attempt+1),180000));
+    if(limited&&attempt<(o.patient?240:8)){
+      var ra=+r.headers.get('retry-after'),reset=+r.headers.get('x-ratelimit-reset'),wait=ra?ra*1000:(reset&&r.headers.get('x-ratelimit-remaining')==='0'?Math.max(5000,reset*1000-Date.now()+1000):Math.min(60000*(attempt+1),o.patient?300000:180000));
       var t0=Date.now();
       while(Date.now()-t0<wait){setStatus('⏳ GitHub طلب نتسناو شوية (حد الرفع). كنكملو بوحدنا بعد '+Math.ceil((wait-(Date.now()-t0))/1000)+' ث…');await sleep(1000);}
       continue;
@@ -372,7 +373,7 @@ function go(v,arg){
   S.view=v;
   var ov=$('#view'),nv=ov.cloneNode(false);ov.replaceWith(nv);
   $$('.side [data-view]').forEach(function(b){b.toggleAttribute('aria-current',b.dataset.view===v||(v==='edit'&&b.dataset.view==='articles'));if(b.hasAttribute('aria-current'))b.setAttribute('aria-current','page');});
-  var views={lodging:viewLodging,numbers:viewNumbers,prayer:viewPrayer,gallery:viewGallery,articles:viewArticles,edit:viewEdit,home:viewHome,design:viewDesign,links:viewLinks,images:viewImages,settings:viewSettings};
+  var views={lodging:viewLodging,numbers:viewNumbers,prayer:viewPrayer,gallery:viewGallery,articles:viewArticles,edit:viewEdit,home:viewHome,design:viewDesign,links:viewLinks,images:viewImages,vault:viewVault,settings:viewSettings};
   views[v](arg);
   window.scrollTo(0,0);
 }
@@ -426,28 +427,30 @@ function cleanContent(html){
 /* ---------- watermark (baked into the uploaded image) ----------
    two styles: 'center' (www.ksarsghir.com + © name, in the middle) and 'light' (repeated, faint); 'none' = no mark.
    one setting for article images, one for gallery images. */
-var WM_DEFAULT='© Bilal El Hichou · ksarsghir.com',WM_STYLES={center:'فالوسط (www.ksarsghir.com + © الاسم)',light:'مكررة خفيفة',none:'بلا علامة'};
+var WM_DEFAULT='© Bilal El Hichou · ksarsghir.com',WM_STYLES={center:'نص واحد (www.ksarsghir.com + © الاسم)',light:'مكررة خفيفة',none:'بلا علامة'},
+    WM_POS={tr:'فوق · يمين',tc:'فوق · وسط',tl:'فوق · يسار',mr:'وسط · يمين',mc:'الوسط',ml:'وسط · يسار',br:'تحت · يمين',bc:'تحت · وسط',bl:'تحت · يسار'},WM_SIZE={s:'صغيرة',m:'متوسطة',l:'كبيرة'};
 function wmCfg(){
   var w=S.site.watermark||(S.site.watermark={});
   if(!w.article){var off=w.on===false;w.article=off?'none':'center';w.gallery=off?'none':'light';}
   if(!w.text)w.text=WM_DEFAULT;if(!w.centerText)w.centerText='www.ksarsghir.com';if(w.centerSub==null)w.centerSub='© Bilal El Hichou';
-  w.done=w.done||[];w.done2=w.done2||[];return w;
+  if(!w.pos)w.pos='mc';if(!w.size)w.size='m';w.done=w.done||[];w.done2=w.done2||[];return w;
 }
 function wmKind(prefixOrPath){var n=String(prefixOrPath||'').split('/').pop();return /^gallery/i.test(n)?'gallery':'article';}
-function drawWatermark(c,style){
-  var W=wmCfg(),g=c.getContext('2d'),w=c.width,h=c.height;
+function drawWatermark(c,style,o){
+  var W=wmCfg(),g=c.getContext('2d'),w=c.width,h=c.height;o=o||{};var pos=o.pos||W.pos||'mc',k={s:0.72,m:1,l:1.4}[o.size||W.size||'m']||1;
   if(style==='center'){
-    var f1=Math.max(14,Math.round(Math.min(w*0.048,h*0.08))),f2=Math.max(10,Math.round(f1*0.5)),gap=Math.round(f1*0.35);
+    var f1=Math.max(12,Math.round(Math.min(w*0.048,h*0.08)*k)),f2=Math.max(9,Math.round(f1*0.5)),gap=Math.round(f1*0.35),mg=Math.round(Math.min(w,h)*0.04+f1*0.3);
     /* same transparency as the light (repeated) style: white .30 over a .18 dark offset */
-    var y1=W.centerSub?h/2-(f2+gap)/2:h/2,y2=y1+f1/2+gap+f2/2,o=Math.max(1,Math.round(f1/40));
-    g.save();g.textAlign='center';g.textBaseline='middle';
-    var line=function(txt,font,y){g.font=font;g.fillStyle='rgba(0,0,0,.18)';g.fillText(txt,w/2+o,y+o);g.fillStyle='rgba(255,255,255,.30)';g.fillText(txt,w/2,y);};
+    var bh=W.centerSub?f1+gap+f2:f1,top=pos[0]==='t'?mg:pos[0]==='b'?h-mg-bh:(h-bh)/2,y1=top+f1/2,y2=y1+f1/2+gap+f2/2,sh=Math.max(1,Math.round(f1/40));
+    var al=pos[1]==='l'?'left':pos[1]==='r'?'right':'center',x=al==='left'?mg:al==='right'?w-mg:w/2;
+    g.save();g.textAlign=al;g.textBaseline='middle';
+    var line=function(txt,font,y){g.font=font;g.fillStyle='rgba(0,0,0,.18)';g.fillText(txt,x+sh,y+sh);g.fillStyle='rgba(255,255,255,.30)';g.fillText(txt,x,y);};
     line(W.centerText,'700 '+f1+'px "Helvetica Neue",Arial,sans-serif',y1);
     if(W.centerSub)line(W.centerSub,'600 '+f2+'px "Helvetica Neue",Arial,sans-serif',y2);
     g.restore();return;
   }
   if(style!=='light')return;
-  var text=W.text,fs=Math.max(12,Math.round(Math.min(w,h)/24));
+  var text=W.text,fs=Math.max(10,Math.round(Math.min(w,h)/24*k));
   g.save();g.font='600 '+fs+'px "Helvetica Neue",Arial,sans-serif';g.textAlign='center';g.textBaseline='middle';
   var tw=g.measureText(text).width,sx=tw+fs*3,sy=fs*5,R=Math.sqrt(w*w+h*h)/2+sx;
   g.translate(w/2,h/2);g.rotate(-Math.PI/7);
@@ -489,16 +492,22 @@ function smallCanvas(src){
   var d=c.toDataURL('image/webp',0.78);if(d.indexOf('data:image/webp')!==0)d=c.toDataURL('image/jpeg',0.8);
   return d;
 }
-async function commitBlobs(entries,message){
-  var ref=await gh('/git/ref/heads/'+S.branch),head=ref.object.sha,c=await gh('/git/commits/'+head),tree=[];
+/* entries: {path,b64} = binary blob · {path,text} = text file (no extra request) · {path,del:true} = delete.
+   to: {repo,branch,patient} for the private vault; default = the site repo. */
+async function commitBlobs(entries,message,to){
+  to=to||{};var br=to.branch||S.branch,O=function(x){x=x||{};x.repo=to.repo;x.patient=to.patient;return x;};
+  var ref=await gh('/git/ref/heads/'+br,O()),head=ref.object.sha,c=await gh('/git/commits/'+head,O()),tree=[],nb=0;
   for(var i=0;i<entries.length;i++){
-    if(entries.length>2&&i)await sleep(700); /* stay under GitHub's write limit */
-    var b=await gh('/git/blobs',{method:'POST',body:{content:entries[i].b64,encoding:'base64'}});
-    tree.push({path:entries[i].path,mode:'100644',type:'blob',sha:b.sha});
+    var e=entries[i];
+    if(e.del){tree.push({path:e.path,mode:'100644',type:'blob',sha:null});continue;}
+    if(e.text!=null){tree.push({path:e.path,mode:'100644',type:'blob',content:e.text});continue;}
+    if(nb++)await sleep(700); /* stay under GitHub's write limit */
+    var b=await gh('/git/blobs',O({method:'POST',body:{content:e.b64,encoding:'base64'}}));
+    tree.push({path:e.path,mode:'100644',type:'blob',sha:b.sha});
   }
-  var nt=await gh('/git/trees',{method:'POST',body:{base_tree:c.tree.sha,tree:tree}});
-  var nc=await gh('/git/commits',{method:'POST',body:{message:message,tree:nt.sha,parents:[head]}});
-  await gh('/git/refs/heads/'+S.branch,{method:'PATCH',body:{sha:nc.sha}});
+  var nt=await gh('/git/trees',O({method:'POST',body:{base_tree:c.tree.sha,tree:tree}}));
+  var nc=await gh('/git/commits',O({method:'POST',body:{message:message,tree:nt.sha,parents:[head]}}));
+  await gh('/git/refs/heads/'+br,O({method:'PATCH',body:{sha:nc.sha}}));
 }
 async function uploadImage(file,prefix){
   var r=await compress(file,{icon:prefix==='logo'||prefix==='favicon',kind:wmKind(prefix)});
@@ -623,10 +632,10 @@ function viewEdit(slug){
       '<label style="display:flex;gap:8px;align-items:center;font-weight:500" title="الصفحة كتبقى خدامة للزوار، ولكن ما كتبانش فنتائج Google وكتحيد من الـ sitemap"><input type="checkbox" id="e-noindex"'+(a.noindex?' checked':'')+'> 🚫 لا تؤرشف فـ Google</label>'+
     '</div>'+
     '<div class="card"><h2>🖼️ الصورة الرئيسية</h2><div class="cover-prev" id="cover-prev"></div>'+
-      '<div class="row" style="margin-top:8px"><button class="btn btn-s" id="cover-up">⬆️ رفع صورة</button><button class="btn btn-s" id="cover-lib">📁 من المكتبة</button><button class="btn btn-s btn-d" id="cover-rm">حذف</button></div>'+
+      '<div class="row" style="margin-top:8px"><button class="btn btn-s" id="cover-up">⬆️ رفع صورة</button><button class="btn btn-s" id="cover-lib">📁 من المكتبة</button><button class="btn btn-s" id="cover-vault">🗄️ من الخزانة</button><button class="btn btn-s btn-d" id="cover-rm">حذف</button></div>'+
       field('أو رابط صورة','<input type="url" id="e-cover" class="ltr" value="'+esc(a.cover)+'" placeholder="https://…">')+
     '</div>'+
-    '<div class="card"><h2>📸 معرض الصور</h2><div class="imgs" id="gal"></div><div class="row" style="margin-top:8px"><button class="btn btn-s" id="gal-up">⬆️ رفع صور</button><button class="btn btn-s" id="gal-lib">📁 من المكتبة</button></div></div>'+
+    '<div class="card"><h2>📸 معرض الصور</h2><div class="imgs" id="gal"></div><div class="row" style="margin-top:8px"><button class="btn btn-s" id="gal-up">⬆️ رفع صور</button><button class="btn btn-s" id="gal-lib">📁 من المكتبة</button><button class="btn btn-s" id="gal-vault">🗄️ من الخزانة</button></div></div>'+
     '<div class="card"><h2>🎬 فيديو YouTube</h2>'+field('رابط الفيديو','<input type="url" id="e-video" class="ltr" value="'+esc(a.video||'')+'" placeholder="https://www.youtube.com/watch?v=…">','الصق الرابط العادي من YouTube (ولا youtu.be ولا Shorts)')+
       '<div id="v-prev" style="margin-top:8px"></div><button class="btn btn-s btn-d" id="v-rm" style="margin-top:8px">حذف الفيديو</button></div>'+
     '<div class="card"><h2>📍 الموقع على الخريطة</h2><p class="hint">ضغط على البلاصة الصحيحة فالخريطة، ولا جر الدبوس. كتستعمل فخريطة الوجهات، فالخريطة ديال الموضوع، فـ Google، وفاختيار المواضيع القريبة.</p>'+
@@ -653,7 +662,7 @@ function viewEdit(slug){
       '<div class="toolbar">'+
         '<button class="btn" data-ins="h2">عنوان H2</button><button class="btn" data-ins="p">فقرة</button><button class="btn" data-ins="features">مميزات</button>'+
         '<button class="btn" data-ins="seasons">مواسم</button><button class="btn" data-ins="info">معلومات</button><button class="btn" data-ins="tips">نصائح</button>'+
-        '<button class="btn" data-ins="highlight">ملاحظة</button><button class="btn" data-ins="warn">تنبيه</button><button class="btn" data-ins="img">🖼️ صور (واحدة ولا بزاف)</button><button class="btn" data-ins="imglib">📁 صور من المكتبة</button>'+
+        '<button class="btn" data-ins="highlight">ملاحظة</button><button class="btn" data-ins="warn">تنبيه</button><button class="btn" data-ins="img">🖼️ صور (واحدة ولا بزاف)</button><button class="btn" data-ins="imglib">📁 صور من المكتبة</button><button class="btn" data-ins="imgvault">🗄️ صور من الخزانة</button>'+
         '<button class="btn" data-ins="quick">⚡ جواب سريع</button><button class="btn" data-ins="facts">🔢 أرقام بارزة</button><button class="btn" data-ins="chips">🏷️ شارات</button><button class="btn" data-ins="pick">🥇 اختيار مع صورة</button><button class="btn" data-ins="table">📊 جدول مقارنة</button><button class="btn" data-ins="faq">❓ سؤال وجواب</button>'+
         '<button class="btn" data-ins="blk-tm">⛴️ جدول البواخر المباشر</button><button class="btn" data-ins="blk-fmap">🛰️ خريطة البواخر</button>'+
         (a.section==='page'?'<button class="btn" data-ins="blk-contact">📞 بطاقات التواصل</button><button class="btn" data-ins="blk-packages">💰 باقات الإعلان</button>':'')+
@@ -709,8 +718,8 @@ function viewEdit(slug){
       faq:'<details><summary>السؤال؟</summary><p>الجواب…</p></details>\n',
       'blk-tm':'<div data-block="tm-live"></div>\n','blk-fmap':'<div data-block="ferry-map"></div>\n'
     };
-    if(kind==='img'||kind==='imglib'){
-      (kind==='img'?pickImages(true,a.slug||'img'):chooseFromLibrary(true)).then(function(p){if(!p.length)return;
+    if(kind==='img'||kind==='imglib'||kind==='imgvault'){
+      (kind==='img'?pickImages(true,a.slug||'img'):kind==='imgvault'?chooseFromVault('article',true):chooseFromLibrary(true)).then(function(p){if(!p.length)return;
         var alt=a.i18n[S.editLang].alt||a.i18n[S.editLang].title||'';
         var fig=function(src,i){return '<figure><img src="'+src+'" alt="'+esc(alt+(p.length>1?' '+(i+1):''))+'" loading="lazy"><figcaption>'+(S.editLang==='ar'?'وصف الصورة':'Légende')+'</figcaption></figure>';};
         put(p.length===1?fig(p[0],0)+'\n':'<div class="photos">\n'+p.map(fig).join('\n')+'\n</div>\n');
@@ -752,10 +761,12 @@ function viewEdit(slug){
   $('#e-slug').addEventListener('blur',function(){$('#e-slug').value=slugify($('#e-slug').value);syncMeta();});
   $('#cover-up').addEventListener('click',function(){pickImages(false,a.slug||'cover').then(function(p){if(p.length){$('#e-cover').value=p[0];syncMeta();}});});
   $('#cover-lib').addEventListener('click',function(){chooseFromLibrary(false).then(function(p){if(p.length){$('#e-cover').value=p[0];syncMeta();}});});
+  $('#cover-vault').addEventListener('click',function(){chooseFromVault('article',false).then(function(p){if(p.length){$('#e-cover').value=p[0];syncMeta();}});});
   $('#cover-rm').addEventListener('click',function(){$('#e-cover').value='';syncMeta();});
   $('#v-rm').addEventListener('click',function(){$('#e-video').value='';syncMeta();});
   $('#gal-up').addEventListener('click',function(){pickImages(true,a.slug||'gal').then(function(p){p.forEach(function(x){a.gallery.push({src:x});});gallery();});});
   $('#gal-lib').addEventListener('click',function(){chooseFromLibrary(true).then(function(p){p.forEach(function(x){a.gallery.push({src:x});});gallery();});});
+  $('#gal-vault').addEventListener('click',function(){chooseFromVault('article',true).then(function(p){p.forEach(function(x){a.gallery.push({src:x});});gallery();});});
   $('#gal').addEventListener('click',function(e){
     var c=e.target.closest('[data-gc]'),d=e.target.closest('[data-gd]');
     if(c){$('#e-cover').value=a.gallery[+c.dataset.gc].src;syncMeta();toast('تبدلات الصورة الرئيسية');}
@@ -1002,6 +1013,297 @@ async function watermarkOld(){
     await publish('🖼️ العلامة المائية على الصور');
   }catch(e){say('❌ '+esc(e.message));}
 }
+/* ================= 🗄️ photo vault: originals without watermark, in a PRIVATE repo =================
+   <owner>/ksarsghir-photos
+     albums.json        {v, seq, albums:[{id,name}], photos:[{id,name,album,path,w,h,kb,added,tf,pub:[{path,kind,style,pos,size,custom,at}]}]}
+     photos/<id>.webp   original, longest side 3000px, no watermark
+     thumbs/NNNN.json   {id: dataURL} small previews, 100 per file (text = no extra API request)
+   Publishing makes a 1600px copy WITH the watermark in the public site repo (assets/img/…-wm2-….webp). */
+var V={ready:false,err:null,data:null,thumbs:{},tfiles:{},album:'*',q:'',sel:[],limit:200};
+function vaultCfg(){var v=S.site.vault||(S.site.vault={});if(!v.repo)v.repo=S.repo.split('/')[0]+'/ksarsghir-photos';return v;}
+function vTo(){return {repo:vaultCfg().repo,branch:V.branch||'main',patient:true};}
+function vget(path,raw){return gh(path,{repo:vaultCfg().repo,accept:raw?'application/vnd.github.raw+json':undefined,raw:!!raw,allow404:true});}
+function vid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function pad4(n){return ('000'+n).slice(-4);}
+async function vaultLoad(force){
+  if(V.ready&&!force)return;
+  V.err=null;
+  var info=await gh('',{repo:vaultCfg().repo,allow404:true});
+  if(!info){V.err='norepo';return;}
+  V.branch=info.default_branch||'main';
+  try{await gh('/git/ref/heads/'+V.branch,{repo:vaultCfg().repo});}catch(e){V.err='empty';return;}
+  var txt=await vget('/contents/albums.json?ref='+encodeURIComponent(V.branch),true);
+  V.data=txt?JSON.parse(txt):{v:1,seq:0,albums:[{id:'beaches',name:'الشواطئ'},{id:'sunset',name:'الغروب'},{id:'port',name:'الميناء'},{id:'town',name:'المدينة'},{id:'nature',name:'الطبيعة'}],photos:[]};
+  V.data.photos.forEach(function(p){p.pub=p.pub||[];});
+  var files={};V.data.photos.forEach(function(p){if(p.tf)files[p.tf]=1;});
+  await Promise.all(Object.keys(files).map(async function(f){
+    var t=await vget('/contents/'+encPath(f)+'?ref='+encodeURIComponent(V.branch),true);
+    V.tfiles[f]=t?JSON.parse(t):{};Object.keys(V.tfiles[f]).forEach(function(id){V.thumbs[id]=V.tfiles[f][id];});
+  }));
+  V.ready=true;
+}
+function vaultJSON(){return {path:'albums.json',text:JSON.stringify(V.data)};}
+async function vaultSave(msg){await commitBlobs([vaultJSON()],msg||'🗄️ تحديث الخزانة',vTo());}
+function albumName(id){var a=V.data.albums.filter(function(x){return x.id===id;})[0];return a?a.name:'بلا ألبوم';}
+async function vaultImg(path){
+  var r=await fetch('https://api.github.com/repos/'+vaultCfg().repo+'/contents/'+encPath(path)+'?ref='+encodeURIComponent(V.branch),{headers:{'Authorization':'Bearer '+S.token,'Accept':'application/vnd.github.raw'},cache:'no-store'});
+  if(!r.ok)throw new Error('ما قدرناش نجيبو الأصل ('+r.status+')');
+  return createImageBitmap(await r.blob());
+}
+function fitCanvas(src,max){
+  var w=src.width,h=src.height,k=Math.min(1,max/Math.max(w,h)),c=document.createElement('canvas');
+  c.width=Math.round(w*k);c.height=Math.round(h*k);c.getContext('2d').drawImage(src,0,0,c.width,c.height);return c;
+}
+function enc(c,q){var d=c.toDataURL('image/webp',q);return d.indexOf('data:image/webp')===0?{d:d,ext:'webp'}:{d:c.toDataURL('image/jpeg',q),ext:'jpg'};}
+
+/* ---- upload originals to the vault: 20 per commit, waits on GitHub limits ---- */
+async function vaultUpload(files,album){
+  var N=files.length,done=0,failed=[],CH=20;
+  for(var i=0;i<N;i+=CH){
+    var part=files.slice(i,i+CH),entries=[],recs=[],touched={};
+    for(var j=0;j<part.length;j++){
+      setStatus('<span class="progress"><i></i></span> 🗄️ كنجهز '+(i+j+1)+' / '+N+'…');
+      try{
+        var f=part[j],bmp=await createImageBitmap(f),big=fitCanvas(bmp,3000),o=enc(big,0.9),th=enc(fitCanvas(bmp,360),0.7);
+        var id=vid(),tf='thumbs/'+pad4(Math.floor((V.data.seq+recs.length)/100))+'.json',path='photos/'+id+'.'+o.ext;
+        entries.push({path:path,b64:o.d.split(',')[1]});
+        (V.tfiles[tf]=V.tfiles[tf]||{})[id]=th.d;V.thumbs[id]=th.d;touched[tf]=1;
+        recs.push({id:id,name:f.name.replace(/\.[^.]+$/,''),album:album||'',path:path,w:big.width,h:big.height,kb:Math.round(o.d.length*0.75/1024),added:new Date().toISOString().slice(0,10),tf:tf,pub:[]});
+      }catch(e){failed.push(part[j].name+' ('+(e.message||'ما قدرناش نقراو الصورة')+')');}
+    }
+    if(!recs.length)continue;
+    var before=V.data.photos.length,seq=V.data.seq;
+    V.data.photos=recs.concat(V.data.photos);V.data.seq+=recs.length;
+    Object.keys(touched).forEach(function(tf){entries.push({path:tf,text:JSON.stringify(V.tfiles[tf])});});
+    entries.push(vaultJSON());
+    setStatus('<span class="progress"><i></i></span> 🗄️ كنرفع '+recs.length+' صورة للخزانة ('+(done+recs.length)+' / '+N+')…');
+    try{await commitBlobs(entries,'🗄️ '+recs.length+' صورة',vTo());done+=recs.length;}
+    catch(e){V.data.photos=V.data.photos.slice(recs.length);V.data.seq=seq;recs.forEach(function(r){delete V.thumbs[r.id];delete V.tfiles[r.tf][r.id];});failed=failed.concat(recs.map(function(r){return r.name+' ('+e.message+')';}));}
+  }
+  setStatus(S.dirty?'⚠️ عندك تغييرات ما تنشراتش':'جاهز');
+  if(failed.length)alert('❌ ما ترفعوش '+failed.length+' صورة:\n\n'+failed.slice(0,30).join('\n'));
+  if(done)toast('✅ تزادو '+done+' صورة للخزانة');
+  return done;
+}
+
+/* ---- publish from the vault: watermarked 1600px copy in the site ---- */
+function pubSettings(kind,o){var W=wmCfg();o=o||{};return {kind:kind,style:o.style||W[kind],pos:o.pos||W.pos,size:o.size||W.size};}
+async function renderPub(photo,st,bmp){
+  bmp=bmp||await vaultImg(photo.path);
+  var c=fitCanvas(bmp,1600);drawWatermark(c,st.style,{pos:st.pos,size:st.size});return c;
+}
+async function vaultPublish(list,kind,st){
+  var W=wmCfg(),out=[],entries=[],CH=8,failed=[];
+  st=st||pubSettings(kind);
+  var custom=st.style!==W[kind]||st.pos!==W.pos||st.size!==W.size;
+  for(var i=0;i<list.length;i++){
+    setStatus('<span class="progress"><i></i></span> 📤 كننشر '+(i+1)+' / '+list.length+'…');
+    try{
+      var p=list[i],c=await renderPub(p,st),o=enc(c,0.82);
+      var path='assets/img/'+(slugify(p.name)||'photo')+(st.style!=='none'?'-wm2':'')+'-'+Date.now().toString(36)+i.toString(36)+'.'+o.ext;
+      entries.push({path:path,b64:o.d.split(',')[1]},{path:B.smallOf(path),b64:smallCanvas(c).split(',')[1]});
+      S.imgCache[path]=o.d;
+      p.pub.push({path:path,kind:kind,style:st.style,pos:st.pos,size:st.size,custom:custom,at:new Date().toISOString().slice(0,10)});
+      out.push(path);
+    }catch(e){failed.push(list[i].name+' ('+e.message+')');}
+    if(entries.length>=CH*2||(i===list.length-1&&entries.length)){
+      try{await commitBlobs(entries,'📤 من الخزانة ('+entries.length/2+')',{patient:true});}
+      catch(e){var bad=entries.filter(function(x,k){return k%2===0;}).map(function(x){return x.path;});
+        out=out.filter(function(x){return bad.indexOf(x)<0;});list.forEach(function(p){p.pub=p.pub.filter(function(x){return bad.indexOf(x.path)<0;});});failed.push(e.message);}
+      entries=[];
+    }
+  }
+  if(out.length){try{await vaultSave('🗄️ نشر '+out.length+' صورة');}catch(e){toast('⚠️ الصور تنشرو، ولكن ما تسجلوش فالخزانة: '+e.message,true);}}
+  setStatus(S.dirty?'⚠️ عندك تغييرات ما تنشراتش':'جاهز');
+  if(failed.length)alert('❌ ما تنشروش:\n\n'+failed.slice(0,20).join('\n'));
+  return out;
+}
+/* preview + per-photo settings for ONE photo */
+function publishDialog(photo,kind){
+  return new Promise(async function(res){
+    var st=pubSettings(kind),bmp=null,m=document.createElement('div');m.className='modal';
+    var opts=function(obj,cur){return Object.keys(obj).map(function(x){return '<option value="'+x+'"'+(x===cur?' selected':'')+'>'+obj[x]+'</option>';}).join('');};
+    m.innerHTML='<div class="mh"><b>📤 نشر: '+esc(photo.name)+'</b><span style="flex:1"></span><button class="btn btn-s btn-p" data-go>📤 انشر</button><button class="btn btn-s" data-close>إلغاء</button></div>'+
+      '<div style="background:#fff;border-radius:0 0 12px 12px;overflow:auto;padding:14px;display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:14px;align-items:start">'+
+      '<div><canvas id="pv" style="width:100%;height:auto;border-radius:10px;background:var(--seaS)"></canvas><p class="hint" id="pv-h">كنجيب الأصل…</p></div>'+
+      '<div>'+field('النوع','<select id="pk">'+opts({article:'صورة موضوع',gallery:'صورة المعرض'},kind)+'</select>')+
+      field('شكل العلامة','<select id="ps">'+opts(WM_STYLES,st.style)+'</select>')+
+      '<label>البلاصة</label><div id="pp" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;direction:ltr">'+['tl','tc','tr','ml','mc','mr','bl','bc','br'].map(function(x){return '<button class="btn btn-s" data-pos="'+x+'" title="'+WM_POS[x]+'" style="justify-content:center">'+({t:'↑',m:'•',b:'↓'})[x[0]]+({l:'←',c:'',r:'→'})[x[1]]+'</button>';}).join('')+'</div>'+
+      field('الحجم','<select id="pz">'+opts(WM_SIZE,st.size)+'</select>')+
+      '<p class="hint">العامة: '+esc(WM_STYLES[wmCfg()[kind]])+' · '+esc(WM_POS[wmCfg().pos])+' · '+esc(WM_SIZE[wmCfg().size])+'</p><button class="btn btn-s" data-reset>↺ رجع للعامة</button></div></div>';
+    document.body.appendChild(m);
+    var cv=m.querySelector('#pv');
+    function marks(){m.querySelectorAll('[data-pos]').forEach(function(b){b.classList.toggle('btn-p',b.dataset.pos===st.pos);b.disabled=st.style!=='center';});}
+    function draw(){if(!bmp)return;var c=fitCanvas(bmp,1600);drawWatermark(c,st.style,{pos:st.pos,size:st.size});cv.width=c.width;cv.height=c.height;cv.getContext('2d').drawImage(c,0,0);marks();}
+    marks();
+    try{bmp=await vaultImg(photo.path);m.querySelector('#pv-h').textContent='هادي هي الصورة كيف غادي تبان فالموقع.';draw();}catch(e){m.querySelector('#pv-h').textContent='❌ '+e.message;}
+    m.addEventListener('change',function(e){
+      if(e.target.id==='pk'){kind=e.target.value;st=pubSettings(kind);m.querySelector('#ps').value=st.style;m.querySelector('#pz').value=st.size;}
+      if(e.target.id==='ps')st.style=e.target.value;if(e.target.id==='pz')st.size=e.target.value;draw();
+    });
+    m.addEventListener('click',async function(e){
+      var b=e.target.closest('[data-pos]');if(b){st.pos=b.dataset.pos;draw();return;}
+      if(e.target.closest('[data-reset]')){st=pubSettings(kind);m.querySelector('#ps').value=st.style;m.querySelector('#pz').value=st.size;draw();return;}
+      if(e.target.closest('[data-close]')||e.target===m){m.remove();res(null);return;}
+      if(e.target.closest('[data-go]')){var g=e.target.closest('[data-go]');g.disabled=true;g.textContent='كننشر…';
+        st.kind=kind;var r=await vaultPublish([photo],kind,st);m.remove();res(r.length?{path:r[0],kind:kind}:null);}
+    });
+  });
+}
+/* pick photos from the vault (articles / gallery) → published paths */
+function chooseFromVault(kind,multi){
+  return new Promise(async function(res){
+    var m=document.createElement('div');m.className='modal';
+    m.innerHTML='<div class="mh"><b>🗄️ الخزانة</b><select id="cv-a" style="max-width:200px"></select><input id="cv-q" placeholder="بحث…" style="max-width:180px"><span style="flex:1"></span>'+(multi?'<button class="btn btn-s btn-p" data-ok>📤 نشر المختارة</button>':'')+'<button class="btn btn-s" data-close>إغلاق</button></div>'+
+      '<div style="background:#fff;border-radius:0 0 12px 12px;overflow:auto;padding:14px"><p class="hint" id="cv-h">كنحمل الخزانة…</p><div class="imgs" id="cv-g"></div></div>';
+    document.body.appendChild(m);
+    var sel=[],al='*',q='';
+    function grid(){
+      var list=V.data.photos.filter(function(p){return (al==='*'||p.album===al)&&(!q||p.name.toLowerCase().indexOf(q)>=0);}).slice(0,300);
+      m.querySelector('#cv-g').innerHTML=list.map(function(p){return '<button class="img" data-vp="'+p.id+'" style="all:unset;cursor:pointer;display:block;border:2px solid '+(sel.indexOf(p.id)>=0?'var(--sea)':'var(--line)')+';border-radius:10px;overflow:hidden"><img src="'+(V.thumbs[p.id]||'')+'" alt="" style="width:100%;aspect-ratio:4/3;object-fit:cover;display:block"><div class="name">'+esc(p.name)+(p.pub.length?' · 📤'+p.pub.length:'')+'</div></button>';}).join('')||'<p class="empty">ما كاين حتى صورة.</p>';
+    }
+    try{
+      await vaultLoad();
+      if(V.err){m.querySelector('#cv-h').innerHTML='الخزانة ما واجداش. حل 🗄️ الخزانة فالقائمة باش تصاوبها.';}
+      else{m.querySelector('#cv-h').textContent=multi?'اختار صورة وحدة باش تشوف المعاينة وتبدل العلامة، ولا بزاف باش ينشرو بالإعدادات العامة.':'اختار صورة.';
+        m.querySelector('#cv-a').innerHTML='<option value="*">كل الألبومات</option>'+V.data.albums.map(function(a){return '<option value="'+esc(a.id)+'">'+esc(a.name)+'</option>';}).join('')+'<option value="">بلا ألبوم</option>';grid();}
+    }catch(e){m.querySelector('#cv-h').textContent='❌ '+e.message;}
+    m.addEventListener('input',function(e){if(e.target.id==='cv-q'){q=e.target.value.trim().toLowerCase();grid();}});
+    m.addEventListener('change',function(e){if(e.target.id==='cv-a'){al=e.target.value;grid();}});
+    m.addEventListener('click',async function(e){
+      var p=e.target.closest('[data-vp]');
+      if(p){var id=p.dataset.vp;if(!multi){sel=[id];go();return;}var i=sel.indexOf(id);if(i>=0)sel.splice(i,1);else sel.push(id);grid();return;}
+      if(e.target.closest('[data-ok]'))go();
+      if(e.target.closest('[data-close]')||e.target===m){m.remove();res([]);}
+    });
+    async function go(){
+      var list=V.data.photos.filter(function(p){return sel.indexOf(p.id)>=0;});if(!list.length)return;
+      m.remove();
+      if(list.length===1){var r=await publishDialog(list[0],kind);return res(r?[r.path]:[]);}
+      if(!confirm('غادي ينشرو '+list.length+' صور بالإعدادات العامة ('+WM_STYLES[wmCfg()[kind]]+').\nإلا بغيتي تبدل العلامة لشي صورة، اختارها بوحدها.'))return res([]);
+      res(await vaultPublish(list,kind));
+    }
+  });
+}
+/* rebuild every published copy from its original (after changing the global watermark) */
+async function vaultRegenerate(){
+  var W=wmCfg(),jobs=[];
+  V.data.photos.forEach(function(p){p.pub.forEach(function(x){jobs.push({p:p,x:x});});});
+  if(!jobs.length){toast('ما كاين حتى صورة منشورة من الخزانة.');return;}
+  var nc=jobs.filter(function(j){return !j.x.custom;}).length;
+  if(!confirm('غادي نعاودو نولدو '+jobs.length+' صورة منشورة من الأصل.\n• '+nc+' بالإعدادات العامة الحالية\n• '+(jobs.length-nc)+' كيحتفظو بالإعدادات الخاصة ديالهم\n\nنكملو؟'))return;
+  var entries=[],done=0,failed=[];
+  for(var i=0;i<jobs.length;i++){
+    var j=jobs[i],st=j.x.custom?{style:j.x.style,pos:j.x.pos,size:j.x.size}:pubSettings(j.x.kind);
+    setStatus('<span class="progress"><i></i></span> 🔁 كنعاود نولد '+(i+1)+' / '+jobs.length+'…');
+    try{var c=await renderPub(j.p,st),jpg=/\.jpe?g$/i.test(j.x.path),d=jpg?c.toDataURL('image/jpeg',0.84):c.toDataURL('image/webp',0.82);
+      entries.push({path:j.x.path,b64:d.split(',')[1]},{path:B.smallOf(j.x.path),b64:smallCanvas(c).split(',')[1]});S.imgCache[j.x.path]=d;
+      if(!j.x.custom){j.x.style=st.style;j.x.pos=st.pos;j.x.size=st.size;}}
+    catch(e){failed.push(j.p.name+' ('+e.message+')');}
+    if(entries.length>=16||(i===jobs.length-1&&entries.length)){
+      try{await commitBlobs(entries,'🔁 علامة من الخزانة ('+entries.length/2+')',{patient:true});done+=entries.length/2;}catch(e){failed.push(e.message);}
+      entries=[];
+    }
+  }
+  try{await vaultSave('🔁 تحديث الإعدادات');}catch(e){}
+  if(failed.length)alert('❌ مشاكل:\n\n'+failed.slice(0,20).join('\n'));
+  toast('✅ تولدو '+done+' صورة من جديد');
+  await publish('🔁 العلامة الجديدة على الصور المنشورة');
+}
+
+/* ---- the vault page ---- */
+async function viewVault(){
+  var v=$('#view');
+  v.innerHTML='<div class="head"><h1>🗄️ الخزانة</h1></div><div class="card"><p><span class="progress"><i></i></span> كنحمل الخزانة…</p></div>';
+  try{await vaultLoad();}catch(e){v.innerHTML='<div class="head"><h1>🗄️ الخزانة</h1></div><div class="card"><p>❌ '+esc(e.message)+'</p></div>';return;}
+  if(V.err){
+    var rn=vaultCfg().repo;
+    v.innerHTML='<div class="head"><h1>🗄️ الخزانة</h1></div><div class="card"><h2>'+(V.err==='empty'?'المستودع خاوي':'صاوب الخزانة (مرة وحدة)')+'</h2>'+
+      '<p>الخزانة هي مستودع <b>خاص (Private)</b> فـ GitHub، فيه الصور الأصلية بلا علامة. حتى واحد ما كيشوفو من غيرك.</p><ol>'+
+      '<li>حل <a href="https://github.com/new" target="_blank" rel="noopener">github.com/new</a></li>'+
+      '<li>Repository name: <b class="ltr">'+esc(rn.split('/')[1])+'</b> · اختار <b>Private</b> · علّم <b>Add a README file</b> · Create repository.</li>'+
+      '<li>الـ Token ديالك خاصو يوصل حتى لهاد المستودع: إلا كان Fine-grained، زيد <b class="ltr">'+esc(rn)+'</b> فـ Repository access، مع Contents: Read and write.</li>'+
+      '<li>رجع هنا وضغط "عاود جرب".</li></ol>'+
+      field('المستودع','<input id="vr" class="ltr" value="'+esc(rn)+'">')+'<div class="row" style="margin-top:8px"><button class="btn btn-p" id="vr-go">🔁 عاود جرب</button></div></div>';
+    $('#vr-go').onclick=function(){var x=$('#vr').value.trim();if(x&&x!==rn){vaultCfg().repo=x;markDirty();}V.ready=false;viewVault();};
+    return;
+  }
+  function counts(){var c={'*':V.data.photos.length,'':0};V.data.albums.forEach(function(a){c[a.id]=0;});V.data.photos.forEach(function(p){c[p.album]=(c[p.album]||0)+1;});return c;}
+  function list(){return V.data.photos.filter(function(p){return (V.album==='*'||p.album===V.album)&&(!V.q||p.name.toLowerCase().indexOf(V.q)>=0);});}
+  function render(){
+    var c=counts(),L=list(),cur=V.data.albums.filter(function(a){return a.id===V.album;})[0];
+    var mb=V.data.photos.reduce(function(s,p){return s+(p.kb||0);},0)/1024;
+    v.innerHTML='<div class="head"><h1>🗄️ الخزانة <span class="muted" style="font-size:16px">('+V.data.photos.length+' صورة · '+mb.toFixed(0)+' MB)</span></h1><div class="row"><button class="btn" id="v-regen">🔁 عاود ولد المنشورة</button><button class="btn btn-p" id="v-up">⬆️ رفع للخزانة</button></div></div>'+
+      '<div class="card"><div class="row" style="flex-wrap:wrap;gap:6px">'+
+        '<button class="btn btn-s'+(V.album==='*'?' btn-p':'')+'" data-al="*">الكل ('+c['*']+')</button>'+
+        V.data.albums.map(function(a){return '<button class="btn btn-s'+(V.album===a.id?' btn-p':'')+'" data-al="'+esc(a.id)+'">'+esc(a.name)+' ('+(c[a.id]||0)+')</button>';}).join('')+
+        (c['']?'<button class="btn btn-s'+(V.album===''?' btn-p':'')+'" data-al="">بلا ألبوم ('+c['']+')</button>':'')+
+        '<button class="btn btn-s" id="v-add">＋ ألبوم</button>'+
+        (cur?'<span style="flex:1"></span><button class="btn btn-s" id="v-ren">✏️ بدل السمية</button><button class="btn btn-s btn-d" id="v-del">🗑️ حذف الألبوم</button>':'')+
+      '</div><div class="row" style="margin-top:10px;gap:8px"><input id="v-q" placeholder="🔎 بحث بالسمية…" value="'+esc(V.q)+'" style="max-width:260px">'+
+        (V.sel.length?'<b>'+V.sel.length+' مختارة</b><select id="v-mv"><option value="#">نقل لـ…</option>'+V.data.albums.map(function(a){return '<option value="'+esc(a.id)+'">'+esc(a.name)+'</option>';}).join('')+'<option value="">بلا ألبوم</option></select>'+
+        '<button class="btn btn-s" id="v-pa">📤 نشر فموضوع</button><button class="btn btn-s" id="v-pg">📤 نشر فالمعرض</button><button class="btn btn-s btn-d" id="v-rm">🗑️ حذف</button><button class="btn btn-s" id="v-none">✕ إلغاء</button>':'<span class="hint">ضغط على صورة باش تختارها. اختار وحدة باش تشوف المعاينة وتبدل البلاصة ديال العلامة.</span>')+
+      '</div></div>'+
+      '<div class="card"><div class="imgs" id="v-g">'+(L.slice(0,V.limit).map(function(p){var on=V.sel.indexOf(p.id)>=0;
+        return '<div class="img" style="'+(on?'outline:3px solid var(--sea);outline-offset:-3px':'')+'"><img src="'+(V.thumbs[p.id]||'')+'" alt="" data-pick="'+p.id+'" style="cursor:pointer"><div class="name" title="'+esc(p.name)+'">'+(on?'✅ ':'')+esc(p.name)+'</div><div class="name">'+esc(albumName(p.album))+' · '+p.w+'×'+p.h+(p.pub.length?' · 📤 '+p.pub.length:'')+'</div></div>';}).join('')||'<p class="empty">ما كاين حتى صورة هنا. ضغط "⬆️ رفع للخزانة".</p>')+'</div>'+
+        (L.length>V.limit?'<div class="row" style="margin-top:10px"><button class="btn" id="v-more">عرض المزيد ('+(L.length-V.limit)+')</button></div>':'')+'</div>';
+  }
+  render();
+  v.oninput=function(e){if(e.target.id==='v-q'){V.q=e.target.value.trim().toLowerCase();var pos=e.target.selectionStart;render();var q=$('#v-q');q.focus();q.setSelectionRange(pos,pos);}};
+  v.onchange=async function(e){
+    if(e.target.id!=='v-mv'||e.target.value==='#')return;
+    var to=e.target.value;V.data.photos.forEach(function(p){if(V.sel.indexOf(p.id)>=0)p.album=to;});
+    try{await vaultSave('🗄️ نقل '+V.sel.length+' صورة');toast('✅ تنقلو لـ '+albumName(to));V.sel=[];}catch(x){toast('❌ '+x.message,true);V.ready=false;await vaultLoad();}
+    render();
+  };
+  v.onclick=async function(e){
+    var t=e.target,b=t.closest('button');
+    var pk=t.closest('[data-pick]');if(pk){var id=pk.dataset.pick,i=V.sel.indexOf(id);if(i>=0)V.sel.splice(i,1);else V.sel.push(id);render();return;}
+    if(!b)return;
+    if(b.dataset.al!=null){V.album=b.dataset.al;V.sel=[];V.limit=200;render();return;}
+    if(b.id==='v-more'){V.limit+=200;render();return;}
+    if(b.id==='v-none'){V.sel=[];render();return;}
+    if(b.id==='v-up'){
+      var inp=$('#file-pick');inp.multiple=true;inp.value='';
+      inp.onchange=async function(){var fs=Array.prototype.slice.call(inp.files||[]);if(!fs.length)return;
+        if(fs.length>60&&!confirm(fs.length+' صورة: GitHub كيسمح بتقريباً 400 صورة فالساعة، يعني هادشي غادي ياخذ تقريباً '+Math.ceil(fs.length/400*60)+' دقيقة. خلي الصفحة محلولة. نكملو؟'))return;
+        await vaultUpload(fs,V.album==='*'?'':V.album);render();};
+      inp.click();return;
+    }
+    if(b.id==='v-regen'){await vaultRegenerate();render();return;}
+    if(b.id==='v-add'){var n=prompt('سمية الألبوم الجديد:');if(!n||!n.trim())return;var id=slugify(n)||vid();if(V.data.albums.some(function(a){return a.id===id;}))id+='-'+vid().slice(-3);
+      V.data.albums.push({id:id,name:n.trim()});try{await vaultSave('🗄️ ألبوم: '+n);V.album=id;}catch(x){toast('❌ '+x.message,true);V.data.albums.pop();}render();return;}
+    if(b.id==='v-ren'){var a=V.data.albums.filter(function(x){return x.id===V.album;})[0],n2=prompt('السمية الجديدة:',a.name);if(!n2||!n2.trim())return;var old=a.name;a.name=n2.trim();
+      try{await vaultSave('🗄️ سمية الألبوم');}catch(x){a.name=old;toast('❌ '+x.message,true);}render();return;}
+    if(b.id==='v-del'){var a2=V.data.albums.filter(function(x){return x.id===V.album;})[0],k=counts()[a2.id]||0;
+      if(!confirm('حذف الألبوم "'+a2.name+'"؟'+(k?'\nالصور ديالو ('+k+') ما كيتحذفوش، كيمشيو لـ "بلا ألبوم".':'')))return;
+      V.data.photos.forEach(function(p){if(p.album===a2.id)p.album='';});V.data.albums=V.data.albums.filter(function(x){return x!==a2;});
+      try{await vaultSave('🗄️ حذف ألبوم');V.album='*';}catch(x){toast('❌ '+x.message,true);V.ready=false;await vaultLoad();}render();return;}
+    var picked=V.data.photos.filter(function(p){return V.sel.indexOf(p.id)>=0;});
+    if(b.id==='v-pa'||b.id==='v-pg'){
+      var kind=b.id==='v-pg'?'gallery':'article',paths;
+      if(picked.length===1){var r=await publishDialog(picked[0],kind);paths=r?[r.path]:[];kind=r?r.kind:kind;}
+      else{if(!confirm(picked.length+' صور غادي ينشرو بالإعدادات العامة. نكملو؟'))return;paths=await vaultPublish(picked,kind);}
+      if(paths.length){
+        if(kind==='gallery'){var g=S.gallery;g.photos=g.photos||[];var cat=((g.categories||[])[0]||{}).id||'';paths.forEach(function(x){g.photos.unshift({src:x,cat:cat,alt:{},caption:{}});});markDirty();toast('✅ تزادو '+paths.length+' للمعرض. بدل التصنيف من 📷 المعرض، ومن بعد نشر.');}
+        else{try{await navigator.clipboard.writeText(paths.join('\n'));}catch(x){}toast('✅ تنشرو '+paths.length+' فمكتبة الصور. المسار تنسخ: الصقو فالموضوع، ولا اختارها من "📁 من المكتبة".');}
+        V.sel=[];
+      }
+      render();return;
+    }
+    if(b.id==='v-rm'){
+      var np=picked.filter(function(p){return p.pub.length;}).length;
+      if(!confirm('حذف '+picked.length+' صورة من الخزانة نهائياً؟'+(np?'\n\n⚠️ '+np+' منهم منشورين: النسخ لي فالموقع كيبقاو، ولكن ما بقاش تقدر تعاود تولدهم.':'')))return;
+      var ents=[],touched={};
+      picked.forEach(function(p){ents.push({path:p.path,del:true});if(p.tf&&V.tfiles[p.tf]){delete V.tfiles[p.tf][p.id];touched[p.tf]=1;}delete V.thumbs[p.id];});
+      var keep=V.data.photos;V.data.photos=V.data.photos.filter(function(p){return V.sel.indexOf(p.id)<0;});
+      Object.keys(touched).forEach(function(tf){ents.push({path:tf,text:JSON.stringify(V.tfiles[tf])});});ents.push(vaultJSON());
+      try{await commitBlobs(ents,'🗑️ حذف '+picked.length+' صورة من الخزانة',vTo());V.sel=[];toast('تحذفو');}
+      catch(x){V.data.photos=keep;toast('❌ '+x.message,true);V.ready=false;await vaultLoad(true);}
+      render();
+    }
+  };
+}
 async function viewImages(){
   var v=$('#view');
   v.innerHTML='<div class="head"><h1>مكتبة الصور</h1><div class="row"><button class="btn" id="opt">⚡ تخفيف الصور</button><button class="btn btn-p" id="up">⬆️ رفع صور</button></div></div>'+
@@ -1009,6 +1311,7 @@ async function viewImages(){
     '<div class="card"><h2>💧 العلامة المائية</h2><p class="hint">كتزاد مباشرة فالصورة ملي كترفعها. أي واحد حمل الصورة من الموقع كتجيه بالعلامة.</p>'+
       '<div class="two">'+field('صور المواضيع (الغلاف، المقالات، المكتبة)','<select id="wm-art">'+Object.keys(WM_STYLES).map(function(x){return '<option value="'+x+'"'+(wmCfg().article===x?' selected':'')+'>'+WM_STYLES[x]+'</option>';}).join('')+'</select>')+field('صور المعرض','<select id="wm-gal">'+Object.keys(WM_STYLES).map(function(x){return '<option value="'+x+'"'+(wmCfg().gallery===x?' selected':'')+'>'+WM_STYLES[x]+'</option>';}).join('')+'</select>')+'</div>'+
       '<div class="two">'+field('نص الوسط (كبير)','<input id="wm-ct" value="'+esc(wmCfg().centerText)+'">')+field('السطر الصغير تحتو','<input id="wm-cs" value="'+esc(wmCfg().centerSub)+'">','خليه خاوي إلا ما بغيتيهش')+'</div>'+
+      '<div class="two">'+field('البلاصة (للنص الواحد)','<select id="wm-pos">'+Object.keys(WM_POS).map(function(x){return '<option value="'+x+'"'+(wmCfg().pos===x?' selected':'')+'>'+WM_POS[x]+'</option>';}).join('')+'</select>','عامة، وتقدر تبدلها لكل صورة من الخزانة')+field('الحجم','<select id="wm-size">'+Object.keys(WM_SIZE).map(function(x){return '<option value="'+x+'"'+(wmCfg().size===x?' selected':'')+'>'+WM_SIZE[x]+'</option>';}).join('')+'</select>')+'</div>'+
       field('نص المكررة الخفيفة','<input id="wm-text" value="'+esc(wmCfg().text)+'">')+
       '<div class="row" style="margin-top:8px"><button class="btn" id="wm-old">💧 طبق الشكل المختار على الصور القديمة</button></div></div>'+
     '<div class="card"><div class="drop" id="drop">اسحب الصور هنا ولا ضغط على "رفع صور". كتصغر أوتوماتيكياً (أقصى عرض 1600px، WebP) باش يبقى الموقع سريع.</div></div>'+
@@ -1024,6 +1327,8 @@ async function viewImages(){
   $('#opt').addEventListener('click',optimizeImages);
   $('#wm-old').addEventListener('click',function(){watermarkOld().then(load);});
   $('#wm-art').addEventListener('change',function(){wmCfg().article=this.value;markDirty();});
+  $('#wm-pos').addEventListener('change',function(){wmCfg().pos=this.value;markDirty();});
+  $('#wm-size').addEventListener('change',function(){wmCfg().size=this.value;markDirty();});
   $('#wm-gal').addEventListener('change',function(){wmCfg().gallery=this.value;markDirty();});
   $('#wm-ct').addEventListener('change',function(){wmCfg().centerText=this.value.trim()||'www.ksarsghir.com';this.value=wmCfg().centerText;markDirty();});
   $('#wm-cs').addEventListener('change',function(){wmCfg().centerSub=this.value.trim();markDirty();});
@@ -1061,7 +1366,7 @@ function viewGallery(){
     v.innerHTML='<div class="head"><h1>المعرض <span class="muted" style="font-size:16px">('+g.photos.length+' صورة)</span></h1><div class="row"><a class="btn" target="_blank" rel="noopener" href="'+pagesUrl()+'gallery/">↗ عرض</a></div></div>'+
       '<div class="card"><h2>العنوان والتعريف</h2>'+field('العنوان',l4(g.title,'g-t'))+field('نص التعريف',l4(g.intro,'g-i',true))+'</div>'+
       '<div class="card"><h2>التصنيفات</h2><div id="gcats">'+g.categories.map(function(c,i){return '<div class="rep" data-gc="'+i+'"><div class="rep-h" style="gap:8px"><input type="text" class="ltr" data-gcid value="'+esc(c.id)+'" style="max-width:160px"><span class="hint">'+g.photos.filter(function(p){return p.cat===c.id;}).length+' صورة</span><button class="btn btn-s btn-d" data-gcx="'+i+'">✕</button></div>'+l4(c.name,'gcn')+'</div>';}).join('')+'</div><button class="btn btn-s" id="gc-add">+ زيد تصنيف</button></div>'+
-      '<div class="card"><h2>الصور</h2><div class="row" style="margin-bottom:12px"><label style="margin:0">زيد فـ</label><span id="up-cat">'+catSel(g._upcat||(g.categories[0]||{}).id,'id="g-upcat"')+'</span><button class="btn btn-s btn-p" id="g-up">⬆️ رفع صور</button><button class="btn btn-s" id="g-lib">📁 من المكتبة</button><span style="flex:1"></span>'+
+      '<div class="card"><h2>الصور</h2><div class="row" style="margin-bottom:12px"><label style="margin:0">زيد فـ</label><span id="up-cat">'+catSel(g._upcat||(g.categories[0]||{}).id,'id="g-upcat"')+'</span><button class="btn btn-s" id="g-vault">🗄️ من الخزانة</button><button class="btn btn-s btn-p" id="g-up">⬆️ رفع صور</button><button class="btn btn-s" id="g-lib">📁 من المكتبة</button><span style="flex:1"></span>'+
         '<select id="g-filter"><option value="">كل التصنيفات</option>'+g.categories.map(function(c){return '<option value="'+esc(c.id)+'"'+(c.id===filter?' selected':'')+'>'+esc(c.name.ar||c.id)+'</option>';}).join('')+'</select></div>'+
         '<p class="hint">ضغط "✏️ وصف" تحت الصورة باش تكتب وصف قصير. الوصف كيبان ملي تتحل الصورة كبيرة، وكيعاون فـ Google Images.</p>'+
         '<div class="imgs" id="gp">'+list.map(function(x){var p=x.p,has=!!(p.caption&&(p.caption.ar||p.caption.fr));return '<div class="img" data-pi="'+x.i+'"><img src="'+esc(imgSrc(B.sized(p.src,400)))+'" alt="" loading="lazy">'+
@@ -1082,6 +1387,7 @@ function viewGallery(){
     var cat=($('#g-upcat')||{}).value||'';
     if(b.id==='g-up')pickImages(true,'gallery').then(function(p){p.forEach(function(x){g.photos.unshift({src:x,cat:cat,alt:{},caption:{}});});if(p.length){render();markDirty();}});
     if(b.id==='g-lib')chooseFromLibrary(true).then(function(p){p.forEach(function(x){g.photos.unshift({src:x,cat:cat,alt:{},caption:{}});});if(p.length){render();markDirty();}});
+    if(b.id==='g-vault')chooseFromVault('gallery',true).then(function(p){p.forEach(function(x){g.photos.unshift({src:x,cat:cat,alt:{},caption:{}});});if(p.length){render();markDirty();}});
     if(b.id==='gc-add'){g.categories.push({id:'cat'+(g.categories.length+1),name:{}});render();markDirty();}
     if(b.dataset.gcx!=null){var id=g.categories[+b.dataset.gcx].id;if(g.photos.some(function(p){return p.cat===id;}))return toast('❌ نقل الصور لتصنيف آخر قبل ما تحذف هاد التصنيف',true);g.categories.splice(+b.dataset.gcx,1);render();markDirty();}
     if(b.dataset.pe!=null){open=open===+b.dataset.pe?-1:+b.dataset.pe;render();}
