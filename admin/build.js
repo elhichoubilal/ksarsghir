@@ -160,7 +160,7 @@
   function blocks(site, file, lang, html) {
     return html.replace(/<div data-block="([a-z-]+)"[^>]*><\/div>/g, function (m, name) {
       if (name === 'tm-live') {
-        var TM = { ar: ['جدول الوصول المباشر — ميناء طنجة المتوسط', 'مباشر', 'إلا ما بانش الجدول:', 'الموقع الرسمي Tanger Med Passagers ↗', 'المعلومات معروضة كما هي من لوحة الرحلات ديال الميناء.'],
+        var TM = { ar: ['جدول الوصول المباشر — ميناء طنجة المتوسط', 'مباشر', 'إذا لم يظهر الجدول:', 'الموقع الرسمي Tanger Med Passagers ↗', 'المعلومات معروضة كما هي من لوحة الرحلات في الميناء.'],
           fr: ['Arrivées en direct — port de Tanger Med', 'En direct', 'Si le tableau ne s’affiche pas :', 'Site officiel Tanger Med Passagers ↗', 'Données affichées telles quelles depuis le tableau du port.'],
           en: ['Live arrivals — Tanger Med port', 'Live', 'If the board does not show:', 'Official Tanger Med Passagers site ↗', 'Shown as-is from the port’s live board.'],
           es: ['Llegadas en directo — puerto de Tánger Med', 'Directo', 'Si no aparece el panel:', 'Web oficial Tanger Med Passagers ↗', 'Datos mostrados tal cual desde el panel del puerto.'] }[lang];
