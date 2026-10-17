@@ -214,22 +214,29 @@ function markDirty(){S.dirty=true;setStatus('⚠️ عندك تغييرات ما
 window.addEventListener('beforeunload',function(e){if(S.dirty){e.preventDefault();e.returnValue='';}});
 
 /* ---------- GitHub API ---------- */
-function gh(path,o){
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+async function gh(path,o){
   o=o||{};
   var h={'Authorization':'Bearer '+S.token,'Accept':o.accept||'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
   if(o.body)h['Content-Type']='application/json';
-  return fetch('https://api.github.com/repos/'+S.repo+path,{method:o.method||'GET',headers:h,body:o.body?JSON.stringify(o.body):undefined,cache:'no-store'})
-    .then(function(r){
-      if(r.status===404&&o.allow404)return null;
-      if(!r.ok)return r.json().catch(function(){return{};}).then(function(j){
-        var m=j.message||'';
-        if(r.status===401)m='الـ Token غالط ولا سالا (401)';
-        else if(r.status===403)m='ما عندكش الصلاحية (403). تأكد أن الـ Token فيه صلاحية repo / Contents: write. '+m;
-        else if(r.status===404)m='ما لقيناش: '+path+' (404)';
-        throw new Error(m||('HTTP '+r.status));});
-      if(o.raw)return r.text();
-      return r.status===204?null:r.json();
-    });
+  for(var attempt=0;;attempt++){
+    var r=await fetch('https://api.github.com/repos/'+S.repo+path,{method:o.method||'GET',headers:h,body:o.body?JSON.stringify(o.body):undefined,cache:'no-store'});
+    if(r.status===404&&o.allow404)return null;
+    if(r.ok){if(o.raw)return r.text();return r.status===204?null:r.json();}
+    var j=await r.json().catch(function(){return{};}),m=j.message||'';
+    /* GitHub limits writes (~80/min). Wait and retry instead of failing. */
+    var limited=r.status===429||(r.status===403&&(/rate limit/i.test(m)||r.headers.get('retry-after')||r.headers.get('x-ratelimit-remaining')==='0'));
+    if(limited&&attempt<8){
+      var ra=+r.headers.get('retry-after'),reset=+r.headers.get('x-ratelimit-reset'),wait=ra?ra*1000:(reset&&r.headers.get('x-ratelimit-remaining')==='0'?Math.max(5000,reset*1000-Date.now()+1000):Math.min(60000*(attempt+1),180000));
+      var t0=Date.now();
+      while(Date.now()-t0<wait){setStatus('⏳ GitHub طلب نتسناو شوية (حد الرفع). كنكملو بوحدنا بعد '+Math.ceil((wait-(Date.now()-t0))/1000)+' ث…');await sleep(1000);}
+      continue;
+    }
+    if(r.status===401)m='الـ Token غالط ولا سالا (401)';
+    else if(r.status===403)m='ما عندكش الصلاحية (403). تأكد أن الـ Token فيه صلاحية repo / Contents: write. '+m;
+    else if(r.status===404)m='ما لقيناش: '+path+' (404)';
+    throw new Error(m||('HTTP '+r.status));
+  }
 }
 function encPath(p){return p.split('/').map(encodeURIComponent).join('/');}
 function readFile(p){return gh('/contents/'+encPath(p)+'?ref='+encodeURIComponent(S.branch),{accept:'application/vnd.github.raw+json',raw:true,allow404:true});}
@@ -416,11 +423,31 @@ function cleanContent(html){
   return html.trim();
 }
 
-/* ---------- watermark (baked into the uploaded image) ---------- */
-var WM_DEFAULT='© Bilal El Hichou · ksarsghir.com';
-function wmCfg(){var w=S.site.watermark||(S.site.watermark={});if(w.on==null)w.on=true;if(!w.text)w.text=WM_DEFAULT;w.done=w.done||[];return w;}
-function drawWatermark(c,text){
-  var g=c.getContext('2d'),w=c.width,h=c.height,fs=Math.max(12,Math.round(Math.min(w,h)/24));
+/* ---------- watermark (baked into the uploaded image) ----------
+   two styles: 'center' (www.ksarsghir.com + © name, in the middle) and 'light' (repeated, faint); 'none' = no mark.
+   one setting for article images, one for gallery images. */
+var WM_DEFAULT='© Bilal El Hichou · ksarsghir.com',WM_STYLES={center:'فالوسط (www.ksarsghir.com + © الاسم)',light:'مكررة خفيفة',none:'بلا علامة'};
+function wmCfg(){
+  var w=S.site.watermark||(S.site.watermark={});
+  if(!w.article){var off=w.on===false;w.article=off?'none':'center';w.gallery=off?'none':'light';}
+  if(!w.text)w.text=WM_DEFAULT;if(!w.centerText)w.centerText='www.ksarsghir.com';if(w.centerSub==null)w.centerSub='© Bilal El Hichou';
+  w.done=w.done||[];w.done2=w.done2||[];return w;
+}
+function wmKind(prefixOrPath){var n=String(prefixOrPath||'').split('/').pop();return /^gallery/i.test(n)?'gallery':'article';}
+function drawWatermark(c,style){
+  var W=wmCfg(),g=c.getContext('2d'),w=c.width,h=c.height;
+  if(style==='center'){
+    var f1=Math.max(14,Math.round(Math.min(w*0.048,h*0.08))),f2=Math.max(10,Math.round(f1*0.5)),gap=Math.round(f1*0.35);
+    /* same transparency as the light (repeated) style: white .30 over a .18 dark offset */
+    var y1=W.centerSub?h/2-(f2+gap)/2:h/2,y2=y1+f1/2+gap+f2/2,o=Math.max(1,Math.round(f1/40));
+    g.save();g.textAlign='center';g.textBaseline='middle';
+    var line=function(txt,font,y){g.font=font;g.fillStyle='rgba(0,0,0,.18)';g.fillText(txt,w/2+o,y+o);g.fillStyle='rgba(255,255,255,.30)';g.fillText(txt,w/2,y);};
+    line(W.centerText,'700 '+f1+'px "Helvetica Neue",Arial,sans-serif',y1);
+    if(W.centerSub)line(W.centerSub,'600 '+f2+'px "Helvetica Neue",Arial,sans-serif',y2);
+    g.restore();return;
+  }
+  if(style!=='light')return;
+  var text=W.text,fs=Math.max(12,Math.round(Math.min(w,h)/24));
   g.save();g.font='600 '+fs+'px "Helvetica Neue",Arial,sans-serif';g.textAlign='center';g.textBaseline='middle';
   var tw=g.measureText(text).width,sx=tw+fs*3,sy=fs*5,R=Math.sqrt(w*w+h*h)/2+sx;
   g.translate(w/2,h/2);g.rotate(-Math.PI/7);
@@ -430,7 +457,8 @@ function drawWatermark(c,text){
   g.restore();
 }
 function isWmTarget(path){var n=path.split('/').pop();return /\.(webp|jpe?g)$/i.test(n)&&!/-sm\.webp$/i.test(n)&&!/^(logo|favicon|icon)/i.test(n);}
-function isWmDone(path){return /-wm-[a-z0-9]+\.(webp|jpe?g)$/i.test(path)||wmCfg().done.indexOf(path)>=0;}
+function isWmNew(path){return /-wm2-[a-z0-9]+\.(webp|jpe?g)$/i.test(path)||wmCfg().done2.indexOf(path)>=0;}   /* already in the new style */
+function isWmBaked(path){return /-wm-[a-z0-9]+\.(webp|jpe?g)$/i.test(path);}                                    /* old style baked at upload: no original kept */
 /* ---------- image upload ---------- */
 function compress(file,opt){
   opt=opt||{};
@@ -443,7 +471,7 @@ function compress(file,opt){
       if(opt.icon){var sz=Math.min(w,h);c.width=c.height=Math.min(512,sz);g.drawImage(img,(w-sz)/2,(h-sz)/2,sz,sz,0,0,c.width,c.height);}
       else{if(w>max){h=Math.round(h*max/w);w=max;}c.width=w;c.height=h;g.drawImage(img,0,0,w,h);}
       URL.revokeObjectURL(url);
-      var wm=false;if(!opt.icon){var W=wmCfg();if(W.on){drawWatermark(c,W.text);wm=true;}}
+      var wm=false;if(!opt.icon){var st=wmCfg()[opt.kind||'article'];if(st&&st!=='none'){drawWatermark(c,st);wm=true;}}
       var d,ext;
       if(opt.icon){d=c.toDataURL('image/png');ext='png';}
       else{d=c.toDataURL('image/webp',0.82);ext='webp';if(d.indexOf('data:image/webp')!==0){d=c.toDataURL('image/jpeg',0.85);ext='jpg';}}
@@ -464,6 +492,7 @@ function smallCanvas(src){
 async function commitBlobs(entries,message){
   var ref=await gh('/git/ref/heads/'+S.branch),head=ref.object.sha,c=await gh('/git/commits/'+head),tree=[];
   for(var i=0;i<entries.length;i++){
+    if(entries.length>2&&i)await sleep(700); /* stay under GitHub's write limit */
     var b=await gh('/git/blobs',{method:'POST',body:{content:entries[i].b64,encoding:'base64'}});
     tree.push({path:entries[i].path,mode:'100644',type:'blob',sha:b.sha});
   }
@@ -472,24 +501,49 @@ async function commitBlobs(entries,message){
   await gh('/git/refs/heads/'+S.branch,{method:'PATCH',body:{sha:nc.sha}});
 }
 async function uploadImage(file,prefix){
-  var r=await compress(file,{icon:prefix==='logo'||prefix==='favicon'});
+  var r=await compress(file,{icon:prefix==='logo'||prefix==='favicon',kind:wmKind(prefix)});
   var base=slugify(prefix||file.name.replace(/\.[^.]+$/,''))||'img';
-  var path='assets/img/'+base+(r.wm?'-wm':'')+'-'+Date.now().toString(36)+'.'+r.ext;
+  var path='assets/img/'+base+(r.wm?'-wm2':'')+'-'+Date.now().toString(36)+'.'+r.ext;
   var entries=[{path:path,b64:r.data.split(',')[1]}];
   if(r.small)entries.push({path:B.smallOf(path),b64:r.small.split(',')[1]});
   await commitBlobs(entries,'🖼️ رفع صورة: '+path);
   S.imgCache[path]=r.data;if(r.small)S.imgCache[B.smallOf(path)]=r.small;
   return path;
 }
+/* many images: compress each, then one commit per 8 images (instead of one commit per image) */
+async function uploadImages(files,prefix){
+  var out=[],failed=[],batch=[],paths=[],N=files.length;
+  async function flush(){
+    if(!batch.length)return;
+    setStatus('<span class="progress"><i></i></span> كنرفع '+paths.length+' صورة لـ GitHub ('+(out.length+paths.length)+' / '+N+')…');
+    try{await commitBlobs(batch,'🖼️ رفع '+paths.length+' صورة');out=out.concat(paths);}
+    catch(e){failed=failed.concat(paths.map(function(p){return p.split('/').pop()+' ('+e.message+')';}));}
+    batch=[];paths=[];
+  }
+  for(var i=0;i<N;i++){
+    setStatus('<span class="progress"><i></i></span> كنجهز الصورة '+(i+1)+' / '+N+'…');
+    try{
+      var f=files[i],r=await compress(f,{icon:prefix==='logo'||prefix==='favicon',kind:wmKind(prefix)});
+      var base=slugify(prefix||f.name.replace(/\.[^.]+$/,''))||'img';
+      var path='assets/img/'+base+(r.wm?'-wm2':'')+'-'+Date.now().toString(36)+i.toString(36)+'.'+r.ext;
+      batch.push({path:path,b64:r.data.split(',')[1]});
+      if(r.small)batch.push({path:B.smallOf(path),b64:r.small.split(',')[1]});
+      S.imgCache[path]=r.data;if(r.small)S.imgCache[B.smallOf(path)]=r.small;
+      paths.push(path);
+    }catch(e){failed.push(files[i].name+' ('+e.message+')');}
+    if(paths.length>=8)await flush();
+  }
+  await flush();
+  if(failed.length)alert('❌ ما ترفعوش '+failed.length+' صورة:\n\n'+failed.slice(0,30).join('\n')+'\n\nعاود رفعهم بوحدهم.');
+  return out;
+}
 function pickImages(multi,prefix){
   return new Promise(function(res){
     var inp=$('#file-pick');inp.multiple=!!multi;inp.value='';
     inp.onchange=async function(){
       var files=Array.prototype.slice.call(inp.files||[]),out=[];
-      for(var i=0;i<files.length;i++){
-        setStatus('<span class="progress"><i></i></span> كنرفع الصورة '+(i+1)+' / '+files.length+'…');
-        try{out.push(await uploadImage(files[i],prefix));}catch(e){toast('❌ '+e.message,true);}
-      }
+      if(files.length>1)out=await uploadImages(files,prefix);
+      else if(files.length){try{out.push(await uploadImage(files[0],prefix));}catch(e){toast('❌ '+e.message,true);}}
       setStatus(S.dirty?'⚠️ عندك تغييرات ما تنشراتش':'جاهز');
       if(out.length)toast('✅ ترفعات '+out.length+' صورة');
       res(out);
@@ -890,50 +944,71 @@ async function optimizeImages(){
   }catch(e){say('❌ '+esc(e.message));}
   btn.disabled=false;
 }
-/* add the watermark to images uploaded before this feature (same paths, so articles keep working) */
+/* apply the chosen style to images already on the site (same paths, so articles keep working).
+   images marked by the first version (strong, repeated) are restored from GitHub history first. */
+async function wmOriginal(path){
+  var list=await gh('/commits?path='+encodeURIComponent(path)+'&sha='+encodeURIComponent(S.branch)+'&per_page=30'),hit=null;
+  (list||[]).forEach(function(c){if(/^💧/.test(c.commit&&c.commit.message||''))hit=c;}); /* oldest 💧 commit for this file */
+  if(!hit||!hit.parents||!hit.parents[0])throw new Error('ما لقيناش الأصل فالتاريخ');
+  return fetchImg(path,hit.parents[0].sha);
+}
+async function fetchImg(path,ref){
+  var resp=await fetch('https://api.github.com/repos/'+S.repo+'/contents/'+encPath(path)+'?ref='+encodeURIComponent(ref||S.branch),{headers:{'Authorization':'Bearer '+S.token,'Accept':'application/vnd.github.raw'},cache:'no-store'});
+  if(!resp.ok)throw new Error(resp.status);
+  return createImageBitmap(await resp.blob());
+}
 async function watermarkOld(){
   var box=$('#opt-box'),W=wmCfg();box.hidden=false;
   var say=function(h){box.innerHTML='<h2>💧 العلامة المائية للصور القديمة</h2><p>'+h+'</p>';};
   try{
     say('<span class="progress"><i></i></span> كنقلب على الصور…');
-    var all=await listImages(true),todo=all.filter(function(f){return isWmTarget(f.path)&&!isWmDone(f.path);});
-    if(!todo.length){say('✅ جميع الصور فيهم العلامة المائية.');return;}
-    if(!confirm('غادي نزيدو العلامة "'+W.text+'" لـ '+todo.length+' صورة.\n\nالصور غادي تتبدل فالموقع (النسخ الأصلية كتبقى فالتاريخ ديال GitHub).\n\nنكملو؟')){box.hidden=true;return;}
-    var done=0,skipped=0,CH=6;
+    var all=await listImages(true),baked=[],todo=[];
+    all.forEach(function(f){
+      if(!isWmTarget(f.path)||isWmNew(f.path))return;
+      if(isWmBaked(f.path)){baked.push(f.path.split('/').pop());return;}
+      var st=W[wmKind(f.path)],old=W.done.indexOf(f.path)>=0;
+      if(st==='none'&&!old)return;           /* nothing to add, nothing to remove */
+      todo.push({path:f.path,style:st,restore:old});
+    });
+    var bakedNote=baked.length?'<br><br>⚠️ <b>'+baked.length+'</b> صورة ترفعات بالعلامة القديمة وما عندهاش أصل فالموقع. هادو خاصك تعاود ترفعهم من الحاسوب:<br><small>'+baked.slice(0,60).map(esc).join(' · ')+(baked.length>60?' …':'')+'</small>':'';
+    if(!todo.length){say('✅ جميع الصور بالشكل المختار.'+bakedNote);return;}
+    var nA=todo.filter(function(t){return wmKind(t.path)==='article';}).length,nG=todo.length-nA,nR=todo.filter(function(t){return t.restore;}).length;
+    if(!confirm('غادي نطبقو العلامة على '+todo.length+' صورة:\n• صور المواضيع ('+nA+'): '+WM_STYLES[W.article]+'\n• صور المعرض ('+nG+'): '+WM_STYLES[W.gallery]+'\n\n'+(nR?nR+' منهم فيهم العلامة القديمة: غادي نرجعو الأصل ديالهم من التاريخ ديال GitHub قبل.\n\n':'')+'نكملو؟')){box.hidden=true;return;}
+    var done=0,skipped=[],CH=6;
     for(var i=0;i<todo.length;i+=CH){
       var part=todo.slice(i,i+CH),entries=[],ok=[];
       for(var j=0;j<part.length;j++){
-        say('<span class="progress"><i></i></span> كنزيد العلامة للصورة '+(i+j+1)+' / '+todo.length+'…');
+        var t=part[j];
+        say('<span class="progress"><i></i></span> '+(t.restore?'كنرجع الأصل و':'')+'كنطبق العلامة '+(i+j+1)+' / '+todo.length+'…');
         try{
-          var resp=await fetch('https://api.github.com/repos/'+S.repo+'/contents/'+encPath(part[j].path)+'?ref='+encodeURIComponent(S.branch),{headers:{'Authorization':'Bearer '+S.token,'Accept':'application/vnd.github.raw'},cache:'no-store'});
-          if(!resp.ok)throw new Error(resp.status);
-          var bmp=await createImageBitmap(await resp.blob()),c=document.createElement('canvas');c.width=bmp.width;c.height=bmp.height;c.getContext('2d').drawImage(bmp,0,0);
-          drawWatermark(c,W.text);
-          var jpg=/\.jpe?g$/i.test(part[j].path),d=jpg?c.toDataURL('image/jpeg',0.86):c.toDataURL('image/webp',0.85);
+          var bmp=t.restore?await wmOriginal(t.path):await fetchImg(t.path),c=document.createElement('canvas');c.width=bmp.width;c.height=bmp.height;c.getContext('2d').drawImage(bmp,0,0);
+          drawWatermark(c,t.style);
+          var jpg=/\.jpe?g$/i.test(t.path),d=jpg?c.toDataURL('image/jpeg',0.86):c.toDataURL('image/webp',0.85);
           if(!jpg&&d.indexOf('data:image/webp')!==0)throw new Error('webp');
-          entries.push({path:part[j].path,b64:d.split(',')[1]});
-          entries.push({path:B.smallOf(part[j].path),b64:smallCanvas(c).split(',')[1]});
-          S.imgCache[part[j].path]=d;ok.push(part[j].path);
-        }catch(e){skipped++;console.warn('wm skip',part[j].path,e);}
+          entries.push({path:t.path,b64:d.split(',')[1]});
+          entries.push({path:B.smallOf(t.path),b64:smallCanvas(c).split(',')[1]});
+          S.imgCache[t.path]=d;ok.push(t.path);
+        }catch(e){skipped.push(t.path.split('/').pop()+' ('+e.message+')');console.warn('wm skip',t.path,e);}
       }
       if(!entries.length)continue;
-      W.done=W.done.concat(ok);
+      W.done2=W.done2.concat(ok);
       entries.push({path:'data/site.json',b64:btoa(unescape(encodeURIComponent(JSON.stringify(S.site,null,1))))});
       say('<span class="progress"><i></i></span> كنرفع '+ok.length+' صورة…');
-      await commitBlobs(entries,'💧 علامة مائية ('+ok.length+')');done+=ok.length;
+      await commitBlobs(entries,'🖼️ علامة مائية v2 ('+ok.length+')');done+=ok.length;
     }
-    say('✅ تزادت العلامة لـ '+done+' صورة'+(skipped?' · ما قدرناش على '+skipped:'')+'. دابا كنعاود نبني الموقع…');
-    await publish('💧 العلامة المائية على الصور');
+    say('✅ تطبقات العلامة على '+done+' صورة'+(skipped.length?'<br>❌ ما قدرناش على '+skipped.length+': <small>'+skipped.slice(0,30).map(esc).join(' · ')+'</small>':'')+bakedNote+'<br><br>دابا كنعاود نبني الموقع…');
+    await publish('🖼️ العلامة المائية على الصور');
   }catch(e){say('❌ '+esc(e.message));}
 }
 async function viewImages(){
   var v=$('#view');
   v.innerHTML='<div class="head"><h1>مكتبة الصور</h1><div class="row"><button class="btn" id="opt">⚡ تخفيف الصور</button><button class="btn btn-p" id="up">⬆️ رفع صور</button></div></div>'+
     '<div class="card" id="opt-box" hidden></div>'+
-    '<div class="card"><h2>💧 العلامة المائية</h2><p class="hint">كتزاد مباشرة فالصورة ملي كترفعها (مكررة فالصورة كاملة). أي واحد حمل الصورة من الموقع كتجيه بالعلامة.</p>'+
-      '<label class="row" style="gap:8px;align-items:center"><input type="checkbox" id="wm-on"'+(wmCfg().on?' checked':'')+' style="width:auto"> زيد العلامة للصور الجديدة</label>'+
-      field('النص','<input id="wm-text" value="'+esc(wmCfg().text)+'">')+
-      '<div class="row" style="margin-top:8px"><button class="btn" id="wm-old">💧 زيد العلامة للصور القديمة</button></div></div>'+
+    '<div class="card"><h2>💧 العلامة المائية</h2><p class="hint">كتزاد مباشرة فالصورة ملي كترفعها. أي واحد حمل الصورة من الموقع كتجيه بالعلامة.</p>'+
+      '<div class="two">'+field('صور المواضيع (الغلاف، المقالات، المكتبة)','<select id="wm-art">'+Object.keys(WM_STYLES).map(function(x){return '<option value="'+x+'"'+(wmCfg().article===x?' selected':'')+'>'+WM_STYLES[x]+'</option>';}).join('')+'</select>')+field('صور المعرض','<select id="wm-gal">'+Object.keys(WM_STYLES).map(function(x){return '<option value="'+x+'"'+(wmCfg().gallery===x?' selected':'')+'>'+WM_STYLES[x]+'</option>';}).join('')+'</select>')+'</div>'+
+      '<div class="two">'+field('نص الوسط (كبير)','<input id="wm-ct" value="'+esc(wmCfg().centerText)+'">')+field('السطر الصغير تحتو','<input id="wm-cs" value="'+esc(wmCfg().centerSub)+'">','خليه خاوي إلا ما بغيتيهش')+'</div>'+
+      field('نص المكررة الخفيفة','<input id="wm-text" value="'+esc(wmCfg().text)+'">')+
+      '<div class="row" style="margin-top:8px"><button class="btn" id="wm-old">💧 طبق الشكل المختار على الصور القديمة</button></div></div>'+
     '<div class="card"><div class="drop" id="drop">اسحب الصور هنا ولا ضغط على "رفع صور". كتصغر أوتوماتيكياً (أقصى عرض 1600px، WebP) باش يبقى الموقع سريع.</div></div>'+
     '<div class="card"><div class="imgs" id="imgs">كنحمل…</div></div>';
   async function load(){
@@ -946,7 +1021,10 @@ async function viewImages(){
   $('#up').addEventListener('click',function(){pickImages(true).then(load);});
   $('#opt').addEventListener('click',optimizeImages);
   $('#wm-old').addEventListener('click',function(){watermarkOld().then(load);});
-  $('#wm-on').addEventListener('change',function(){wmCfg().on=this.checked;markDirty();});
+  $('#wm-art').addEventListener('change',function(){wmCfg().article=this.value;markDirty();});
+  $('#wm-gal').addEventListener('change',function(){wmCfg().gallery=this.value;markDirty();});
+  $('#wm-ct').addEventListener('change',function(){wmCfg().centerText=this.value.trim()||'www.ksarsghir.com';this.value=wmCfg().centerText;markDirty();});
+  $('#wm-cs').addEventListener('change',function(){wmCfg().centerSub=this.value.trim();markDirty();});
   $('#wm-text').addEventListener('change',function(){wmCfg().text=this.value.trim()||WM_DEFAULT;this.value=wmCfg().text;markDirty();});
   var d=$('#drop');
   d.addEventListener('click',function(){pickImages(true).then(load);});
@@ -954,7 +1032,7 @@ async function viewImages(){
   d.addEventListener('dragleave',function(){d.classList.remove('over');});
   d.addEventListener('drop',async function(e){e.preventDefault();d.classList.remove('over');
     var fs=Array.prototype.slice.call(e.dataTransfer.files||[]);
-    for(var i=0;i<fs.length;i++){setStatus('<span class="progress"><i></i></span> كنرفع '+(i+1)+' / '+fs.length+'…');try{await uploadImage(fs[i]);}catch(x){toast('❌ '+x.message,true);}}
+    var up=await uploadImages(fs);if(up.length)toast('✅ ترفعات '+up.length+' صورة');
     setStatus('جاهز');load();});
   $('#imgs').addEventListener('click',async function(e){
     var c=e.target.closest('[data-cp]'),r=e.target.closest('[data-rm]');
