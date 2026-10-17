@@ -1,5 +1,5 @@
 {
- "version": "mvcss9ny",
+ "version": "mvcsspi9",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -701,7 +701,7 @@
    "assets/img/20073-mujr4ueq.webp"
   ],
   "article": "center",
-  "gallery": "center",
+  "gallery": "light",
   "centerText": "www.ksarsghir.com",
   "centerSub": "© Bilal El Hichou",
   "done2": [
