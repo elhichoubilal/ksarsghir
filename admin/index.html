@@ -616,7 +616,7 @@ function pickImages(multi,prefix){
 function viewArticles(){
   var v=$('#view');
   v.innerHTML='<div class="head"><h1>المواضيع <span class="muted" style="font-size:16px">('+S.articles.length+')</span></h1>'+
-    '<div class="row"><input type="text" class="search" id="q" placeholder="بحث…" aria-label="بحث"><button class="btn btn-p" id="new-art">+ موضوع جديد</button></div></div>'+
+    '<div class="row"><input type="text" class="search" id="q" placeholder="بحث…" aria-label="بحث"><button class="btn" id="bulk-imp" title="اختار بزاف ديال ملفات HTML مرة وحدة. كل ملف كيمشي للموضوع اللي عندو نفس الاسم (slug)">📥 استيراد عدة مواضيع</button><button class="btn btn-p" id="new-art">+ موضوع جديد</button></div></div>'+
     '<div class="tabs" id="sec-tabs" style="margin:0 0 12px">'+SECS.map(function(x){var n=S.articles.filter(function(a){return (a.section||'tourisme')===x[0];}).length;return '<button data-sec="'+x[0]+'" aria-selected="'+((S.listSec||'tourisme')===x[0])+'">'+x[1]+' <small>('+n+')</small></button>';}).join('')+'</div>'+
     '<div class="list" id="list"></div>';
   $('#sec-tabs').addEventListener('click',function(e){var b=e.target.closest('[data-sec]');if(!b)return;S.listSec=b.dataset.sec;$$('#sec-tabs button').forEach(function(x){x.setAttribute('aria-selected',x===b);});render();});
@@ -639,6 +639,34 @@ function viewArticles(){
   render();
   $('#q').addEventListener('input',render);
   $('#new-art').addEventListener('click',function(){go('edit','__new:'+(S.listSec||'tourisme'));});
+  $('#bulk-imp').addEventListener('click',function(){
+    var inp=document.createElement('input');inp.type='file';inp.accept='.html,.htm,text/html';inp.multiple=true;
+    inp.onchange=async function(){
+      var files=[].slice.call(inp.files||[]);if(!files.length)return;
+      var plan=[],miss=[];
+      for(var i=0;i<files.length;i++){
+        var f=files[i],text=await f.text();
+        var slug=f.name.replace(/\.[^.]+$/,'').replace(/\s*\(\d+\)$/,'').trim().toLowerCase();
+        var a=S.articles.filter(function(x){return x.slug===slug;})[0];
+        if(!a){var m=text.match(/ksarsghir\.com\s+—\s+([a-z0-9-]+)\s+\(/);if(m)a=S.articles.filter(function(x){return x.slug===m[1];})[0];}
+        if(!a){miss.push(f.name);continue;}
+        var res=parseImport(text,'ar'),langs=LANGS.filter(function(l){return res[l]&&res[l].content;});
+        if(!langs.length){miss.push(f.name);continue;}
+        plan.push({a:a,res:res,langs:langs});
+      }
+      if(!plan.length){alert('ما تلقى حتى موضوع مطابق.\n'+miss.join('\n'));return;}
+      var msg='غادي يتبدّل المحتوى ديال '+plan.length+' مواضيع:\n'+plan.map(function(p){return '• '+((p.a.i18n.ar&&p.a.i18n.ar.title)||p.a.slug)+' ('+p.langs.map(function(l){return l.toUpperCase();}).join(' ')+')';}).join('\n')+(miss.length?'\n\nما تلقاوش (ما غاديش يتبدلو):\n'+miss.join('\n'):'')+'\n\nالصور والخريطة كيبقاو كيف ما هوما. نكمل؟';
+      if(!confirm(msg))return;
+      plan.forEach(function(p){
+        p.langs.forEach(function(l){var r=p.res[l],t=p.a.i18n[l]=p.a.i18n[l]||{title:'',seoTitle:'',description:'',keyword:'',alt:'',content:''};
+          ['title','seoTitle','description','keyword','alt','content'].forEach(function(k){if(r[k])t[k]=r[k];});});
+        p.a.updated=today();
+      });
+      markDirty();render();
+      toast('✅ تبدلو '+plan.length+' مواضيع. ضغط "نشر التغييرات" باش يبانو فالموقع.');
+    };
+    inp.click();
+  });
   $('#list').addEventListener('click',async function(e){
     var ed=e.target.closest('[data-edit]'),dl=e.target.closest('[data-del]'),dw=e.target.closest('[data-dl]');
     if(ed)go('edit',ed.dataset.edit);
