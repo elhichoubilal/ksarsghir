@@ -1,5 +1,5 @@
 {
- "version": "mvdw93lw",
+ "version": "mvdw9ibw",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -665,7 +665,8 @@
   "v8",
   "v9",
   "v10",
-  "v11"
+  "v11",
+  "v12"
  ],
  "whatsapp": {
   "float": true,
