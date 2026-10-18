@@ -1121,13 +1121,17 @@
    "slug": "meilleures-plages-familles",
    "section": "guide",
    "category": "beach",
-   "cover": "assets/img/zrara-muk6usi1.webp",
-   "gallery": [],
+   "cover": "assets/img/meilleures-plages-familles-wm2-mvdz8v9w.webp",
+   "gallery": [
+    {
+     "src": "assets/img/meilleures-plages-familles-wm2-mvdz8v9w.webp"
+    }
+   ],
    "map": "",
    "lat": null,
    "lng": null,
    "date": "2026-10-09",
-   "updated": "2026-10-17",
+   "updated": "2026-10-18",
    "draft": false,
    "featured": false,
    "related": [
