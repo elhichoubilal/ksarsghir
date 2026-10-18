@@ -642,6 +642,9 @@ html.js .ph-bg img.is-loaded{opacity:1}
 .tm-dot{font-size:13px;font-weight:800;color:#d93a3a;display:inline-flex;align-items:center;gap:6px}
 .tm-dot::before{content:"";width:8px;height:8px;border-radius:50%;background:#d93a3a;animation:tmPulse 1.4s infinite}
 @keyframes tmPulse{50%{opacity:.25}}
+.tm-tabs{display:flex;gap:6px;padding:10px 16px 0;border-bottom:1px solid var(--line)}
+.tm-tabs button{font:inherit;font-weight:700;font-size:15px;padding:9px 16px;border:1px solid var(--line);border-bottom:0;border-radius:10px 10px 0 0;background:transparent;color:var(--ink-2,inherit);cursor:pointer;margin-bottom:-1px}
+.tm-tabs button[aria-selected="true"]{background:var(--sea-soft);color:var(--sea-deep);border-color:var(--line)}
 .tm-frame{height:70vh;min-height:460px;max-height:760px;background:#fff}
 .prose .tm-frame iframe,.tm-frame iframe{width:100%;height:100%;aspect-ratio:auto;border:0;border-radius:0;display:block}
 .tm-below{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 16px;font-size:15px}

@@ -329,6 +329,13 @@
       }).catch(function () { b.innerHTML = '<small class="live-note">' + U.error + '</small>'; });
     });
   });
+  /* live ferry board: departures / arrivals tabs */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('.tm-tabs [data-tm]'); if (!b) return;
+    var box = b.closest('.tm-live'), f = box && box.querySelector('iframe'); if (!f) return;
+    box.querySelectorAll('.tm-tabs [data-tm]').forEach(function (x) { x.setAttribute('aria-selected', x === b ? 'true' : 'false'); });
+    if (f.getAttribute('src') !== b.dataset.tm) f.setAttribute('src', b.dataset.tm);
+  });
   function windTxt(deg, lg) {
     if (deg == null) return '';
     var d = ((deg % 360) + 360) % 360, e = d >= 45 && d <= 135, w = d >= 225 && d <= 315;

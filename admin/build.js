@@ -160,15 +160,17 @@
   function blocks(site, file, lang, html) {
     return html.replace(/<div data-block="([a-z-]+)"[^>]*><\/div>/g, function (m, name) {
       if (name === 'tm-live') {
-        var TM = { ar: ['جدول الوصول المباشر — ميناء طنجة المتوسط', 'مباشر', 'إذا لم يظهر الجدول:', 'الموقع الرسمي Tanger Med Passagers ↗', 'المعلومات معروضة كما هي من لوحة الرحلات في الميناء.'],
-          fr: ['Arrivées en direct — port de Tanger Med', 'En direct', 'Si le tableau ne s’affiche pas :', 'Site officiel Tanger Med Passagers ↗', 'Données affichées telles quelles depuis le tableau du port.'],
-          en: ['Live arrivals — Tanger Med port', 'Live', 'If the board does not show:', 'Official Tanger Med Passagers site ↗', 'Shown as-is from the port’s live board.'],
-          es: ['Llegadas en directo — puerto de Tánger Med', 'Directo', 'Si no aparece el panel:', 'Web oficial Tanger Med Passagers ↗', 'Datos mostrados tal cual desde el panel del puerto.'] }[lang];
+        var TM = { ar: ['اللوحة المباشرة — ميناء طنجة المتوسط', 'مباشر', '🛳️ المغادرة', '⚓ الوصول', 'إذا لم يظهر الجدول:', 'الموقع الرسمي Tanger Med Passagers ↗', 'المعلومات معروضة كما هي من لوحة الرحلات في الميناء: «FERMÉ» يعني أن التسجيل أُغلق، و«OUVERT» أنه مفتوح.'],
+          fr: ['Tableau en direct — port de Tanger Med', 'En direct', '🛳️ Départs', '⚓ Arrivées', 'Si le tableau ne s’affiche pas :', 'Site officiel Tanger Med Passagers ↗', 'Données affichées telles quelles depuis le tableau du port : « FERMÉ » = enregistrement clos, « OUVERT » = enregistrement ouvert.'],
+          en: ['Live board — Tanger Med port', 'Live', '🛳️ Departures', '⚓ Arrivals', 'If the board does not show:', 'Official Tanger Med Passagers site ↗', 'Shown as-is from the port’s live board: “FERMÉ” means check-in is closed, “OUVERT” that it is open.'],
+          es: ['Panel en directo — puerto de Tánger Med', 'Directo', '🛳️ Salidas', '⚓ Llegadas', 'Si no aparece el panel:', 'Web oficial Tanger Med Passagers ↗', 'Datos mostrados tal cual desde el panel del puerto: «FERMÉ» = facturación cerrada, «OUVERT» = facturación abierta.'] }[lang];
         var off = { ar: 'ar', fr: 'fr', en: 'en', es: 'es' }[lang];
+        var DEP = 'https://panel1.tangermed.ma/live.aspx', ARR = 'https://panel1.tangermed.ma/arriv%C3%A9e-live.aspx';
         return '<div class="tm-live"><div class="tm-head"><b>' + esc(TM[0]) + '</b><span class="tm-dot">' + esc(TM[1]) + '</span></div>' +
-          '<div class="tm-frame"><iframe title="' + esc(TM[0]) + '" loading="lazy" src="https://panel1.tangermed.ma/arriv%C3%A9e-live.aspx"></iframe></div>' +
-          '<div class="tm-below"><span>' + esc(TM[2]) + '</span><a class="btn" href="https://www.tangermed-passagers.com/' + off + '/" target="_blank" rel="noopener">' + esc(TM[3]) + '</a></div>' +
-          '<p class="tm-note">' + esc(TM[4]) + '</p></div>';
+          '<div class="tm-tabs" role="tablist"><button type="button" role="tab" aria-selected="true" data-tm="' + DEP + '">' + esc(TM[2]) + '</button><button type="button" role="tab" aria-selected="false" data-tm="' + ARR + '">' + esc(TM[3]) + '</button></div>' +
+          '<div class="tm-frame"><iframe title="' + esc(TM[0]) + '" loading="lazy" src="' + DEP + '"></iframe></div>' +
+          '<div class="tm-below"><span>' + esc(TM[4]) + '</span><a class="btn" href="https://www.tangermed-passagers.com/' + off + '/" target="_blank" rel="noopener">' + esc(TM[5]) + '</a></div>' +
+          '<p class="tm-note">' + esc(TM[6]) + '</p></div>';
       }
       if (name === 'ferry-map') {
         var FM = { ar: ['المضيق', 'كل الخطوط', 'ميناء طنجة المتوسط', 'الجزيرة الخضراء', 'القصر الصغير', 'ميناء طنجة المدينة', 'طريفة', 'برشلونة', 'جنوة', 'طنجة المتوسط ⇄ الجزيرة الخضراء', 'خطوط نحو أوروبا', 'طنجة المدينة ⇄ طريفة', 'المسارات تقريبية'],

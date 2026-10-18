@@ -389,6 +389,12 @@ function migrate(){
     s.migrations.push('v11');
     setTimeout(function(){markDirty();toast('✨ تحدثو: اتصل بنا، أعلن معنا، الخصوصية، الشروط، مقدمة الرئيسية، الأزرار السريعة، والأرقام المهمة. ضغط "نشر التغييرات".');},2000);
   }
+  if(s.migrations.indexOf('v12')<0){
+    var fa=S.articles.filter(function(x){return x.slug==='bateaux-tanger-med';})[0];
+    if(fa){var RP={ar:[['جدول الوصول المباشر','مواعيد المغادرة والوصول المباشرة']],fr:[['Arrivées en direct','Départs et arrivées en direct']],en:[['Live arrivals','Live departures and arrivals']],es:[['Llegadas en directo','Salidas y llegadas en directo']]};
+      LANGS.forEach(function(l){var x=fa.i18n[l];if(!x||!x.content)return;RP[l].forEach(function(r){x.content=x.content.split(r[0]).join(r[1]);});});}
+    s.migrations.push('v12');setTimeout(markDirty,2100);
+  }
   if(s.migrations.indexOf('v7')>=0)return;
   var fix=function(it){if(!it||!it.url)return;
     if(/gallery\.ksarsghir\.com/.test(it.url)){it.url='gallery/';it.i18n=true;}
