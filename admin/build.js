@@ -880,7 +880,7 @@
   function pg(site, key) { return (site.pages || {})[key] !== false; }
 
   /* mini weather card inside beach / port articles (filled by site.js) */
-  var MINI = { ar: ['الجو والبحر دابا', 'تفاصيل البحر', 'الموج', 'الماء', 'الرياح', 'السباحة'], fr: ['Météo et mer maintenant', 'Détails de la mer', 'Vagues', 'Eau', 'Vent', 'Baignade'],
+  var MINI = { ar: ['الطقس والبحر الآن', 'تفاصيل البحر', 'الموج', 'الماء', 'الرياح', 'السباحة'], fr: ['Météo et mer maintenant', 'Détails de la mer', 'Vagues', 'Eau', 'Vent', 'Baignade'],
     en: ['Weather and sea now', 'Sea details', 'Waves', 'Water', 'Wind', 'Swimming'], es: ['Tiempo y mar ahora', 'Detalles del mar', 'Olas', 'Agua', 'Viento', 'Baño'] };
   function wxMini(site, a, lang) {
     var mode = a.wx || 'auto';
@@ -894,13 +894,13 @@
 
   /* ---------- accommodation: Booking + local rentals (data/rentals.json) ---------- */
   var HUI = {
-    ar: { h1: 'الإقامة في القصر الصغير', lead: 'فنادق قريبة عبر Booking، وديور وشقق للكراء من عند ناس المنطقة مباشرة عبر واتساب.', name: 'الإقامة',
-      bookTitle: 'فنادق وشقق على Booking', bookText: 'قارن الأثمنة والتقييمات واحجز بأمان. الحجز كيتم فموقع Booking مباشرة.', bookBtn: 'شوف الأثمنة على Booking ↗',
-      sponsored: 'رابط شراكة: إلا حجزتي عبره كناخدو عمولة صغيرة بلا ما يزيد عليك حتى درهم، وكتعاونا نخليو الموقع مجاني.',
-      rentTitle: 'ديور وشقق للكراء', rentIntro: 'إعلانات من عند ملاكين فالمنطقة. التواصل مباشرة مع المالك عبر واتساب.', persons: 'أشخاص', rooms: 'بيوت', from: 'ابتداءً من', ask: 'السلام عليكم، شفت الإعلان ديالكم فموقع القصر الصغير: ', ask2: '. واش باقي متوفر؟',
-      wa: 'تواصل عبر واتساب', busy: 'محجوز حالياً', featured: 'مميز', none: 'ما كاين حتى إعلان دابا. رجع قريباً.', photos: 'صور',
-      ctaTitle: 'عندك دار ولا شقة للكراء؟', ctaText: 'زيد الإعلان ديالك فهاد الصفحة. صيفط لينا الصور والمعلومات فواتساب.', ctaBtn: 'زيد الإعلان ديالي', ctaMsg: 'السلام عليكم، بغيت نزيد إعلان كراء فموقع القصر الصغير.',
-      warn: '⚠️ ما تصيفط حتى شي عربون قبل ما تشوف المكان ولا تتأكد من المالك. الموقع كيعرض الإعلانات فقط وماشي طرف فالكراء.' },
+    ar: { h1: 'الإقامة في القصر الصغير', lead: 'فنادق قريبة عبر Booking، ومنازل وشقق للكراء من سكان المنطقة مباشرة عبر واتساب.', name: 'الإقامة',
+      bookTitle: 'فنادق وشقق على Booking', bookText: 'قارن الأسعار والتقييمات واحجز بأمان. يتم الحجز مباشرة في موقع Booking.', bookBtn: 'اطلع على الأسعار في Booking ↗',
+      sponsored: 'رابط شراكة: إذا حجزت عبره نحصل على عمولة صغيرة دون أي تكلفة إضافية عليك، وهذا يساعدنا على إبقاء الموقع مجانياً.',
+      rentTitle: 'منازل وشقق للكراء', rentIntro: 'إعلانات من ملاك في المنطقة. التواصل مباشرة مع المالك عبر واتساب.', persons: 'أشخاص', rooms: 'غرف', from: 'ابتداءً من', ask: 'السلام عليكم، رأيت إعلانكم في موقع القصر الصغير: ', ask2: '. هل ما زال متوفراً؟',
+      wa: 'تواصل عبر واتساب', busy: 'محجوز حالياً', featured: 'مميز', none: 'لا توجد إعلانات حالياً. عد قريباً.', photos: 'صور',
+      ctaTitle: 'عندك منزل أو شقة للكراء؟', ctaText: 'أضف إعلانك في هذه الصفحة. أرسل لنا الصور والمعلومات عبر واتساب.', ctaBtn: 'أضف إعلاني', ctaMsg: 'السلام عليكم، أريد إضافة إعلان كراء في موقع القصر الصغير.',
+      warn: '⚠️ لا ترسل أي عربون قبل أن ترى المكان وتتأكد من المالك. الموقع يعرض الإعلانات وليس طرفاً في الكراء.' },
     fr: { h1: 'Où dormir à Ksar Sghir', lead: 'Hôtels proches via Booking, et maisons ou appartements à louer directement auprès des habitants via WhatsApp.', name: 'Hébergement',
       bookTitle: 'Hôtels et appartements sur Booking', bookText: 'Comparez prix et avis, réservez en sécurité. La réservation se fait directement sur Booking.', bookBtn: 'Voir les prix sur Booking ↗',
       sponsored: 'Lien partenaire : si vous réservez via ce lien, nous touchons une petite commission sans aucun surcoût pour vous. Cela aide à garder le site gratuit.',
@@ -1056,12 +1056,12 @@
 
   /* ---------- sea today (filled by tools.js) ---------- */
   var SUI = {
-    ar: { h1: 'البحر اليوم في القصر الصغير', name: 'البحر اليوم', lead: 'واش البحر مزيان اليوم؟ الرياح (شرقي ولا غربي)، علو الموج، السباحة والصيد والخروج بالفلوكة، مع توقعات كل 3 ساعات لـ5 أيام.',
-      verdict: 'الخلاصة دابا', today: 'اليوم', tomorrow: 'غداً', morning: 'الصباح', afternoon: 'العشية', evening: 'الليل', table: 'التوقعات كل 3 ساعات', hour: 'الساعة', wind: 'الرياح', gust: 'الهبات', dir: 'الاتجاه', wave: 'الموج', period: 'الفترة', water: 'الماء', swim: 'السباحة', fish: 'الصيد', boat: 'الفلوكة',
-      east: 'شرقي', west: 'غربي', north: 'شمالي', south: 'جنوبي', calm: 'هادئ', light: 'خفيف', moderate: 'متوسط', strong: 'قوي', vstrong: 'قوي بزاف', good: 'مزيان', fair: 'بحذر', bad: 'ماشي مناسب', kn: 'عقدة', kmh: 'كم/س', unit: 'الوحدة',
+    ar: { h1: 'البحر اليوم في القصر الصغير', name: 'البحر اليوم', lead: 'كيف هو البحر اليوم؟ الرياح (شرقي أو غربي)، علو الموج، السباحة والصيد والخروج بالقارب، مع توقعات كل 3 ساعات لـ5 أيام.',
+      verdict: 'الخلاصة الآن', today: 'اليوم', tomorrow: 'غداً', morning: 'الصباح', afternoon: 'بعد الظهر', evening: 'الليل', table: 'التوقعات كل 3 ساعات', hour: 'الساعة', wind: 'الرياح', gust: 'الهبات', dir: 'الاتجاه', wave: 'الموج', period: 'الفترة', water: 'الماء', swim: 'السباحة', fish: 'الصيد', boat: 'القارب',
+      east: 'شرقي', west: 'غربي', north: 'شمالي', south: 'جنوبي', calm: 'هادئ', light: 'خفيف', moderate: 'متوسط', strong: 'قوي', vstrong: 'قوي جداً', good: 'مناسب', fair: 'بحذر', bad: 'غير مناسب', kn: 'عقدة', kmh: 'كم/س', unit: 'الوحدة',
       seaStates: ['هادئ', 'خفيف', 'متوسط', 'هائج'], loading: 'جاري التحميل…', error: 'تعذر تحميل البيانات حالياً.', weather: 'صفحة الطقس الكاملة',
-      safety: 'هاد المؤشرات تقديرية من نماذج الطقس (Open-Meteo) وماشي رسمية. البحر كيتبدل بسرعة: احترم ديما الرايات وتعليمات المنقذين والسلطات المينائية.',
-      about: '<h2>كيفاش تقرا البحر فالقصر الصغير؟</h2><p>القصر الصغير فوسط مضيق جبل طارق، والرياح هي اللي كتحكم: مع <b>الشرقي</b> (Levante) كيبقى الموج عادي على الشط، ومع <b>الغربي</b> (Poniente) كيكبر الموج وخاص الانتباه أكثر، خصوصاً مع الدراري. وفالشتا البحر كيكون قوي فكاع الشواطئ. ملي كتكون الرياح فوق 20 عقدة، البحر كيولي صعيب للسباحة والفلوكات الصغيرة.</p>' },
+      safety: 'هذه المؤشرات تقديرية من نماذج الطقس (Open-Meteo) وليست رسمية. البحر يتغير بسرعة: احترم دائماً الرايات وتعليمات المنقذين والسلطات المينائية.',
+      about: '<h2>كيف تقرأ البحر في القصر الصغير؟</h2><p>يقع القصر الصغير في قلب مضيق جبل طارق، حيث تتحكم الرياح في حالة البحر: مع <b>الشرقي</b> (Levante) تبقى الأمواج عادية على الشاطئ، ومع <b>الغربي</b> (Poniente) تكبر الأمواج ويجب الانتباه أكثر، خاصة مع الأطفال. وفي الشتاء يكون البحر قوياً على كل الشواطئ. وعندما تتجاوز الرياح 20 عقدة، يصبح البحر صعباً للسباحة وللقوارب الصغيرة.</p>' },
     fr: { h1: 'La mer aujourd’hui à Ksar Sghir', name: 'La mer aujourd’hui', lead: 'La mer est-elle bonne aujourd’hui ? Vent (Levante ou Poniente), vagues, baignade, pêche et sortie en barque, avec prévisions toutes les 3 heures sur 5 jours.',
       verdict: 'En bref maintenant', today: 'Aujourd’hui', tomorrow: 'Demain', morning: 'Matin', afternoon: 'Après-midi', evening: 'Soir', table: 'Prévisions toutes les 3 heures', hour: 'Heure', wind: 'Vent', gust: 'Rafales', dir: 'Direction', wave: 'Vagues', period: 'Période', water: 'Eau', swim: 'Baignade', fish: 'Pêche', boat: 'Barque',
       east: 'Levante', west: 'Poniente', north: 'Nord', south: 'Sud', calm: 'Calme', light: 'Faible', moderate: 'Modéré', strong: 'Fort', vstrong: 'Très fort', good: 'Bon', fair: 'Prudence', bad: 'Déconseillé', kn: 'nœuds', kmh: 'km/h', unit: 'Unité',
