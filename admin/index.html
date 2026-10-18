@@ -197,7 +197,7 @@ main{padding:24px clamp(14px,3vw,36px) 120px;min-width:0}
 </div>
 <input type="file" id="file-pick" accept="image/*" multiple hidden>
 
-<script src="build.js?v=25"></script>
+<script src="build.js?v=26"></script>
 <script src="seed-v10.js?v=13"></script>
 <script src="content-v11.js?v=1"></script>
 <script>
@@ -394,6 +394,11 @@ function migrate(){
     if(fa){var RP={ar:[['جدول الوصول المباشر','مواعيد المغادرة والوصول المباشرة']],fr:[['Arrivées en direct','Départs et arrivées en direct']],en:[['Live arrivals','Live departures and arrivals']],es:[['Llegadas en directo','Salidas y llegadas en directo']]};
       LANGS.forEach(function(l){var x=fa.i18n[l];if(!x||!x.content)return;RP[l].forEach(function(r){x.content=x.content.split(r[0]).join(r[1]);});});}
     s.migrations.push('v12');setTimeout(markDirty,2100);
+  }
+  if(s.migrations.indexOf('v13')<0){
+    var ta=S.articles.filter(function(x){return x.slug==='tanger-med';})[0],RT={"ar": [["في حوالي ساعة ونصف.", "في ساعة ونصف إلى ساعتين ونصف."], ["مدة العبور حوالي <strong>ساعة ونصف</strong>، وتتراوح بين ساعة وساعتين ونصف حسب الشركة والباخرة.", "مدة العبور بين <strong>ساعة ونصف وساعتين ونصف</strong> حسب الشركة والباخرة."], ["حوالي ساعة ونصف، وتتراوح بين ساعة وساعتين ونصف حسب الشركة والباخرة.", "بين ساعة ونصف وساعتين ونصف حسب الشركة والباخرة."], ["≈ 1س30", "1س30 – 2س30"], ["تشتغل على هذا الخط أربع شركات", "تشتغل على هذا الخط عدة شركات"], ["إلى حوالي <strong>40 رحلة يومياً</strong>", "إلى حوالي <strong>30 إلى 40 رحلة يومياً</strong>"], ["ويمكنك متابعة الوصول المباشر من لوحة الميناء", "ويمكنك متابعة المغادرة والوصول مباشرة من لوحة الميناء"]], "fr": [["en 1 h 30 environ.", "en 1 h 30 à 2 h 30."], ["≈ 1 h 30", "1 h 30 – 2 h 30"], ["La traversée dure environ <strong>1 h 30</strong>, entre 1 h et 2 h 30 selon", "La traversée dure de <strong>1 h 30 à 2 h 30</strong> selon"], ["Environ 1 h 30, entre 1 h et 2 h 30 selon", "De 1 h 30 à 2 h 30 selon"], ["Quatre compagnies opèrent", "Plusieurs compagnies opèrent"], ["jusqu’à environ <strong>40 traversées par jour</strong>", "jusqu’à environ <strong>30 à 40 traversées par jour</strong>"], ["suivre les arrivées en direct", "suivre les départs et arrivées en direct"]], "en": [["in about 1 h 30.", "in 1 h 30 to 2 h 30."], ["≈ 1 h 30", "1 h 30 – 2 h 30"], ["The crossing takes about <strong>1 h 30</strong>, between 1 h and 2 h 30 depending", "The crossing takes <strong>1 h 30 to 2 h 30</strong> depending"], ["About 1 h 30, between 1 h and 2 h 30 depending", "1 h 30 to 2 h 30, depending"], ["Four companies run", "Several companies run"], ["up to about <strong>40 crossings a day</strong>", "up to about <strong>30–40 crossings a day</strong>"], ["follow live arrivals", "follow live departures and arrivals"]], "es": [["en 1 h 30 aproximadamente.", "en 1 h 30 a 2 h 30."], ["≈ 1 h 30", "1 h 30 – 2 h 30"], ["La travesía dura unos <strong>1 h 30</strong>, entre 1 h y 2 h 30 según", "La travesía dura entre <strong>1 h 30 y 2 h 30</strong> según"], ["Unos 1 h 30, entre 1 h y 2 h 30 según", "Entre 1 h 30 y 2 h 30, según"], ["Cuatro compañías operan", "Varias compañías operan"], ["hasta unas <strong>40 travesías diarias</strong>", "hasta unas <strong>30 a 40 travesías diarias</strong>"], ["seguir las llegadas en directo", "seguir las salidas y llegadas en directo"]]},hit=0;
+    if(ta){LANGS.forEach(function(l){var x=ta.i18n[l];if(!x||!x.content)return;(RT[l]||[]).forEach(function(r){if(x.content.indexOf(r[0])>=0){x.content=x.content.split(r[0]).join(r[1]);hit++;}});});if(hit)ta.updated=today();}
+    s.migrations.push('v13');setTimeout(function(){markDirty();if(hit)toast('✨ تصحح مقال طنجة المتوسط: مدة العبور 1:30 – 2:30. ضغط "نشر التغييرات".');},2200);
   }
   if(s.migrations.indexOf('v7')>=0)return;
   var fix=function(it){if(!it||!it.url)return;
