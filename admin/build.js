@@ -513,7 +513,7 @@
   }
   function ratingSection(site, file, lang) {
     var r = site.rating || {}; if (r.enabled === false) return '';
-    var T = { ar: ['قيّم الموقع', 'رأيك كيعاونا نحسنو الدليل.', 'شكراً على التقييم!', 'شارك رأيك على Google', 'شارك رأيك على Facebook', 'نجمة', 'نجوم'],
+    var T = { ar: ['قيّم الموقع', 'رأيك يساعدنا على تحسين الدليل.', 'شكراً على التقييم!', 'شارك رأيك على Google', 'شارك رأيك على Facebook', 'نجمة', 'نجوم'],
       fr: ['Notez le site', 'Votre avis nous aide à améliorer ce guide.', 'Merci pour votre note !', 'Laisser un avis sur Google', 'Laisser un avis sur Facebook', 'étoile', 'étoiles'],
       en: ['Rate this site', 'Your feedback helps us improve this guide.', 'Thanks for your rating!', 'Leave a review on Google', 'Leave a review on Facebook', 'star', 'stars'],
       es: ['Valora el sitio', 'Tu opinión nos ayuda a mejorar esta guía.', '¡Gracias por tu valoración!', 'Deja una reseña en Google', 'Deja una reseña en Facebook', 'estrella', 'estrellas'] }[lang];

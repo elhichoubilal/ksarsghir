@@ -197,7 +197,7 @@ main{padding:24px clamp(14px,3vw,36px) 120px;min-width:0}
 </div>
 <input type="file" id="file-pick" accept="image/*" multiple hidden>
 
-<script src="build.js?v=27"></script>
+<script src="build.js?v=28"></script>
 <script src="seed-v10.js?v=13"></script>
 <script src="content-v11.js?v=1"></script>
 <script>
@@ -404,6 +404,10 @@ function migrate(){
     var R14={"meilleures-plages-familles": [["طاكسي خاص أو سيارة · باركينغ مؤدى", "سيارة أجرة خاصة أو سيارة · موقف بالأداء"], ["بالطاكسي الخاص أو بالسيارة، والباركينغ مؤدى.", "بسيارة أجرة خاصة أو بالسيارة، والموقف بالأداء."]], "site-archeologique": [["بالطاكسي الكبير عبر الطريق", "بسيارة الأجرة الكبيرة عبر الطريق"]], "port-peche": [["بالطاكسي الكبير عبر الطريق", "بسيارة الأجرة الكبيرة عبر الطريق"]]};
     Object.keys(R14).forEach(function(sl){var x=S.articles.filter(function(a){return a.slug===sl;})[0];if(!x||!x.i18n.ar)return;R14[sl].forEach(function(r){x.i18n.ar.content=x.i18n.ar.content.split(r[0]).join(r[1]);});});
     s.migrations.push('v14');setTimeout(markDirty,2300);
+  }
+  if(s.migrations.indexOf('v15')<0){
+    (s.services||[]).forEach(function(x){if(x.text&&x.text.ar==='وصل إلى 77K متابع في المنطقة')x.text.ar='إعلانك يصل إلى 77K متابع في المنطقة';});
+    s.migrations.push('v15');setTimeout(markDirty,2400);
   }
   if(s.migrations.indexOf('v7')>=0)return;
   var fix=function(it){if(!it||!it.url)return;
