@@ -1,5 +1,5 @@
 {
- "version": "mvdzabvr",
+ "version": "mvqyai97",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -568,7 +568,7 @@
     "es": "Publicidad"
    },
    "text": {
-    "ar": "وصل إلى 77K متابع في المنطقة",
+    "ar": "إعلانك يصل إلى 77K متابع في المنطقة",
     "fr": "Touchez 77K abonnés dans la région",
     "en": "Reach 77K followers in the region",
     "es": "Llega a 77K seguidores en la región"
@@ -667,7 +667,9 @@
   "v10",
   "v11",
   "v12",
-  "v13"
+  "v13",
+  "v14",
+  "v15"
  ],
  "whatsapp": {
   "float": true,
