@@ -1,5 +1,5 @@
 {
- "version": "mvqz01eb",
+ "version": "mvqzgap9",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -431,7 +431,7 @@
  ],
  "tourismPage": {},
  "ads": {
-  "top": "",
+  "top": "<script async src=\"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8985281135812571\"\n     crossorigin=\"anonymous\"></script>",
   "bottom": ""
  },
  "verification": {
@@ -768,5 +768,6 @@
  },
  "vault": {
   "repo": "elhichoubilal/ksarsghir-photos"
- }
+ },
+ "adsense": ""
 }
