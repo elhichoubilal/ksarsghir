@@ -42,6 +42,7 @@
   }
   function strip(html) { return String(html || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); }
   function t(obj, lang) { if (!obj) return ''; if (typeof obj === 'string') return obj; return obj[lang] || obj.ar || ''; }
+  function adsClient(site) { var m = String((site && site.adsense) || '').match(/(?:ca-)?pub-(\d{10,20})/); return m ? 'ca-pub-' + m[1] : ''; }
   function isAbs(u) { return /^(https?:)?\/\//.test(u || '') || /^(mailto:|tel:|#)/.test(u || ''); }
   function prefix(lang) { return lang === 'ar' ? '' : lang + '/'; }
 
@@ -388,6 +389,7 @@
       (img ? '<meta property="og:image" content="' + esc(img) + '">\n<meta name="twitter:image" content="' + esc(img) + '">\n' : '') +
       '<meta name="twitter:card" content="summary_large_image">\n' +
       (site.verification && site.verification.google ? '<meta name="google-site-verification" content="' + esc(site.verification.google) + '">\n' : '') +
+      (adsClient(site) ? '<meta name="google-adsense-account" content="' + adsClient(site) + '">\n<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + adsClient(site) + '" crossorigin="anonymous"></script>\n' : '') +
       '<meta name="theme-color" content="#0b1e2d">\n' +
       iconLinks(site, file) +
       '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n' +
@@ -1126,6 +1128,7 @@
       published(articles).forEach(function (a) { if (hasLang(a, lang)) files[articleFile(a, lang)] = articlePage(site, articles, a, lang); });
     });
     files['sitemap.xml'] = sitemap(site, articles, files);
+    if (adsClient(site)) files['ads.txt'] = 'google.com, ' + adsClient(site).replace('ca-', '') + ', DIRECT, f08c47fec0942fa0\n';
     files['robots.txt'] = 'User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ' + absUrl(site, 'sitemap.xml') + '\n';
     return files;
   }
