@@ -297,11 +297,36 @@
     return '<div class="ticker" data-speed="' + esc(k.speed || 'normal') + '">' + (label ? '<span class="tk-label">' + esc(label) + '</span>' : '') +
       '<div class="tk-track"><div class="tk-move"><div class="tk-set">' + one + '<span class="tk-sep" aria-hidden="true">•</span></div><div class="tk-set" aria-hidden="true">' + one + '<span class="tk-sep">•</span></div></div></div></div>';
   }
+  var PLACE_LINE = { ar: 'القصر الصغير، إقليم الفحص أنجرة، المغرب', fr: 'Ksar Sghir, province de Fahs-Anjra, Maroc', en: 'Ksar Sghir, Fahs-Anjra province, Morocco', es: 'Alcazarseguer, provincia de Fahs-Anjra, Marruecos' };
+  var FOLLOW_TOP = { ar: 'تابعنا', fr: 'Suivez-nous', en: 'Follow us', es: 'Síguenos' };
+  var ICO = {
+    cal: '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3.5 9.5h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+    pin: '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true"><path d="M12 21s-6.5-6.1-6.5-11.2A6.5 6.5 0 0 1 18.5 9.8C18.5 14.9 12 21 12 21z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9.8" r="2.4" fill="currentColor"/></svg>',
+    home: '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>',
+    peaks: '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M2.5 19.5 9 8l4 6.5 2.5-3.5 6 8z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>',
+    waves: '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M2.5 9c2.4-2 4.6-2 7 0s4.6 2 7 0 4.6-2 5 0M2.5 14c2.4-2 4.6-2 7 0s4.6 2 7 0 4.6-2 5 0M2.5 19c2.4-2 4.6-2 7 0s4.6 2 7 0 4.6-2 5 0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>',
+    mosque: '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 3.5c0 1.4 3.8 3 3.8 6.2H8.2c0-3.2 3.8-4.8 3.8-6.2zM6 20.5v-9h12v9M3.5 20.5h17M10 20.5v-4.2a2 2 0 0 1 4 0v4.2M4.5 20.5V9.5M19.5 20.5V9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></svg>',
+    more: '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><circle cx="5.5" cy="12" r="1.9" fill="currentColor"/><circle cx="12" cy="12" r="1.9" fill="currentColor"/><circle cx="18.5" cy="12" r="1.9" fill="currentColor"/></svg>'
+  };
   function topbar(site, file, lang) {
     var tb = site.topbar || {};
     var tk = ticker(site, file, lang), so = tb.social !== false ? socialIcons(site, 'top-soc') : '';
-    if (!tk && !so) return '';
-    return '<div class="topbar' + (tk ? ' has-ticker' : '') + '"><div class="wrap topbar-in">' + (tk || '<span></span>') + so + '</div></div>\n';
+    var info = tb.info === false ? '' : '<span class="tb-info"><span class="tb-date">' + ICO.cal + '<span data-today></span></span><span class="tb-loc">' + ICO.pin + esc(PLACE_LINE[lang]) + '</span></span>';
+    if (!tk && !so && !info) return '';
+    return '<div class="topbar' + (tk ? ' has-ticker' : '') + '"><div class="wrap topbar-in">' + info + (tk || '<span class="tb-gap"></span>') +
+      (so ? '<span class="tb-follow">' + esc(FOLLOW_TOP[lang]) + '</span>' + so : '') + '</div></div>\n';
+  }
+  var TABS = { ar: ['الرئيسية', 'الوجهات', 'البحر', 'الصلاة', 'المزيد'], fr: ['Accueil', 'Destinations', 'La mer', 'Prière', 'Plus'],
+    en: ['Home', 'Places', 'Sea', 'Prayer', 'More'], es: ['Inicio', 'Destinos', 'El mar', 'Oración', 'Más'] };
+  function tabbar(site, o) {
+    var lang = o.lang, file = o.file, cur = o.current || '', L = TABS[lang], p = prefix(lang);
+    var item = function (url, ico, label, on) {
+      return '<a href="' + rel(file, p + url) + '"' + (on ? ' aria-current="page" class="is-on"' : '') + '>' + ICO[ico] + '<span>' + esc(label) + '</span></a>';
+    };
+    return '<nav class="tabbar" aria-label="' + esc(UI[lang].menu) + '">' +
+      item('', 'home', L[0], cur === '') + item('tourisme/', 'peaks', L[1], cur === 'tourisme/') + item('mer/', 'waves', L[2], cur === 'mer/') +
+      item('salat/', 'mosque', L[3], cur === 'salat/') +
+      '<button type="button" data-menu-more aria-controls="nav">' + ICO.more + '<span>' + esc(L[4]) + '</span></button></nav>\n';
   }
 
   /* ---------- images ---------- */
@@ -406,7 +431,7 @@
       '<a class="skip" href="#main">' + (lang === 'ar' ? 'انتقل إلى المحتوى' : lang === 'fr' ? 'Aller au contenu' : lang === 'es' ? 'Ir al contenido' : 'Skip to content') + '</a>\n' +
       topbar(site, file, lang) + '<header class="top"><div class="wrap top-in">' +
       '<a class="brand" href="' + rel(file, prefix(lang)) + '">' + brandMark(site, file) +
-      '<span class="brand-txt"><b>' + esc(t(site.name, lang)) + '</b><small>' + esc(lang === 'ar' ? 'Ksar Sghir' : 'القصر الصغير') + '</small></span></a>' +
+      '<span class="brand-txt"><b>' + esc(t(site.name, lang)) + '</b><small>' + esc({ ar: 'دليل سياحي محلي', fr: 'Guide touristique local', en: 'Local travel guide', es: 'Guía turística local' }[lang]) + '</small></span></a>' +
       '<nav class="nav" id="nav" aria-label="' + esc(UI[lang].menu) + '">' + navHtml(site, file, lang, o.current) + '</nav>' +
       '<div class="tools"><div class="langs" role="group" aria-label="' + UI[lang].lang + '">' + langLinks(site, file, lang, o.alternates) + '</div>' +
       '<button class="icon-btn" type="button" data-theme-toggle aria-label="' + esc(UI[lang].theme) + '">' + moonSvg() + '</button>' +
@@ -426,7 +451,7 @@
       '<div class="f-grid"><div class="f-about"><a class="brand" href="' + rel(file, prefix(lang)) + '">' + brandMark(site, file) + '<span class="brand-txt"><b>' + esc(t(site.name, lang)) + '</b></span></a>' +
       '<p>' + esc(t(site.tagline, lang)) + '</p>' + (social ? '<div class="social" aria-label="' + esc(UI[lang].follow) + '"><span>' + esc(UI[lang].follow) + '</span>' + social + '</div>' : '') + '</div>' + cols + '</div>' +
       '<p class="copy">© ' + new Date().getFullYear() + ' ' + esc(t(site.name, lang)) + ' · ' + esc(site.owner || '') + ' · ' + esc(UI[lang].rights) + '</p>' +
-      '</div></footer>\n' + waFloat(site, lang) + '<script src="' + rel(file, 'assets/site.js') + '?v=' + (site.version || 1) + '" defer></script>\n</body>\n</html>\n';
+      '</div><svg class="foot-wave" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 22c160-18 320-18 480 0s320 18 480 0 320-18 480 0" fill="none" stroke="currentColor" stroke-width="2"/></svg></footer>\n' + tabbar(site, o) + waFloat(site, lang) + '<script src="' + rel(file, 'assets/site.js') + '?v=' + (site.version || 1) + '" defer></script>\n</body>\n</html>\n';
   }
 
   function waFloat(site, lang) {
@@ -484,13 +509,13 @@
     var w = site.live || {}, L = LIVE_UI[lang];
     var parts = [];
     var link = function (key) { var u = w[key + 'Url']; return u ? '<a class="live-more" href="' + esc(linkHref(site, file, lang, { url: u, i18n: !isAbs(u) })) + '">' + esc(L.more) + '</a>' : ''; };
-    if (w.weather !== false) parts.push('<div class="live-card" data-live="weather"><div class="live-h"><h3>' + esc(L.weather) + '</h3>' + link('weather') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
-    if (w.sea !== false) parts.push('<div class="live-card" data-live="sea"><div class="live-h"><h3>' + esc(L.sea) + '</h3>' + link('sea') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
-    if (w.prayer !== false) parts.push('<div class="live-card" data-live="prayer"><div class="live-h"><h3>' + esc(L.prayer) + '</h3>' + link('prayer') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
+    if (w.weather !== false) parts.push('<div class="live-card" data-live="weather"><div class="live-h"><h3><i aria-hidden="true">⛅</i>' + esc(L.weather) + '</h3>' + link('weather') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
+    if (w.sea !== false) parts.push('<div class="live-card" data-live="sea"><div class="live-h"><h3><i aria-hidden="true">🌊</i>' + esc(L.sea) + '</h3>' + link('sea') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
+    if (w.prayer !== false) parts.push('<div class="live-card" data-live="prayer"><div class="live-h"><h3><i aria-hidden="true">🕌</i>' + esc(L.prayer) + '</h3>' + link('prayer') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
     if (!parts.length) return '';
     var cfg = { off: +w.utcOffset || 0, lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, seaLat: w.seaLat || 35.87, seaLng: w.seaLng || -5.55, method: w.method || 21, tune: w.tune || '', ui: L };
     if (OFFICIAL) cfg.official = rel(file, 'data/prayer.json') + '?v=' + (site.version || 1);
-    return '<section class="wrap block live" aria-labelledby="live-t"><h2 class="block-title" id="live-t">' + esc(L.title) + '</h2><div class="live-grid">' + parts.join('') + '</div>' +
+    return '<section class="wrap block live on-hero" aria-labelledby="live-t"><h2 class="block-title sr-only" id="live-t">' + esc(L.title) + '</h2><div class="live-grid">' + parts.join('') + '</div>' +
       '<script type="application/json" id="ks-live">' + JSON.stringify(cfg).replace(/</g, '\\u003c') + '</script></section>';
   }
   function servicesSection(site, file, lang) {
@@ -584,7 +609,7 @@
         }).join('') + '</div>' : '';
         return '<section class="hero' + (slides ? ' has-slides' : '') + '"' + style + '>' + slides + '<div class="wrap hero-in">';
       })() +
-      '<h1>' + esc(t(h.title, lang) || t(site.name, lang)) + '</h1>' +
+      '<h1>' + esc(t(h.title, lang) || t(site.name, lang)) + '</h1><span class="hero-bar" aria-hidden="true"></span>' +
       '<p class="hero-sub">' + esc(t(h.subtitle, lang)) + '</p>' +
       '<a class="btn" href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(t(h.cta, lang) || UI[lang].explore) + '</a>' +
       (function () {
@@ -599,18 +624,46 @@
       (show(site, 'live') ? liveSection(site, file, lang) : '') +
       (show(site, 'news') ? secBlock(site, file, lang, 'news', recentNews(site, articles, lang), 3) : '') +
       adSlot(site, 'top', lang) +
-      (show(site, 'intro') && t(site.intro, lang) ? '<section class="wrap intro prose">' + fixContentPaths(file, t(site.intro, lang), lang) + '</section>' : '') +
+      (function () {
+        var intro = show(site, 'intro') && t(site.intro, lang) ? '<div class="duo-intro prose" data-clamp>' + fixContentPaths(file, t(site.intro, lang), lang) +
+          '<button type="button" class="btn-outline" data-unclamp>' + esc({ ar: 'اكتشف المزيد عن المدينة', fr: 'En savoir plus sur la ville', en: 'More about the town', es: 'Más sobre el pueblo' }[lang]) + '</button></div>' : '';
+        var fb = '';
+        if (show(site, 'featured') && feat) {
+          var fx = feat.i18n[lang];
+          fb = '<a class="feat-banner" href="' + esc(rel(file, articleDir(feat, lang))) + '">' +
+            (feat.cover ? '<img src="' + esc(asset(file, sized(feat.cover, 1200))) + '" alt="' + esc(fx.alt || fx.title) + '" loading="lazy" decoding="async" width="1200" height="700">' : '') +
+            '<span class="fb-txt"><small>' + esc(UI[lang].featured) + '</small><b>' + esc(fx.title) + '</b><span class="fb-desc">' + esc(fx.description) + '</span>' +
+            '<span class="btn">' + esc(UI[lang].read) + '</span></span></a>';
+        }
+        if (!intro && !fb) return '';
+        return '<section class="wrap block home-duo' + (intro && fb ? '' : ' is-single') + '">' + intro + fb + '</section>';
+      })() +
       (show(site, 'video') ? homeVideo(site, lang) : '') +
-      (show(site, 'featured') && feat ? '<section class="wrap block"><h2 class="block-title">' + esc(UI[lang].featured) + '</h2>' + card(site, file, feat, lang, true) + '</section>' : '') +
-      (show(site, 'latest') && rest.length ? '<section class="wrap block"><div class="block-head"><h2 class="block-title">' + esc(UI[lang].latest) + '</h2><a href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(UI[lang].allTourism) + '</a></div>' +
-        '<div class="grid">' + rest.map(function (a) { return card(site, file, a, lang); }).join('') + '</div></section>' : '') +
+      (show(site, 'latest') && rest.length ? (function () {
+        var tiles = show(site, 'categories') ? cats.map(function (c) {
+          var a = list.filter(function (x) { return x.category === c.id && x.cover; })[0];
+          return '<a class="cat-tile" href="' + rel(file, prefix(lang) + 'tourisme/') + '#' + esc(c.id) + '">' +
+            (a ? '<img src="' + esc(asset(file, sized(a.cover, 640))) + '" alt="" loading="lazy" decoding="async" width="300" height="300">' : '') +
+            '<span><i aria-hidden="true">' + esc(c.icon || '') + '</i>' + esc(t(c.name, lang)) + '</span></a>';
+        }).join('') : '';
+        var rows = rest.slice(0, 3).map(function (a) {
+          var x = a.i18n[lang];
+          return '<article class="row-card"><a href="' + esc(rel(file, articleDir(a, lang))) + '">' +
+            '<span class="rc-img ph-bg">' + (a.cover ? '<img src="' + esc(asset(file, sized(a.cover, 640))) + '" alt="' + esc(x.alt || x.title) + '" loading="lazy" decoding="async" width="400" height="300">' : '') + '</span>' +
+            '<span class="rc-body"><span class="cat">' + esc(catLabel(site, a.category, lang)) + '</span><b>' + esc(x.title) + '</b>' +
+            (a.updated || a.date ? '<time datetime="' + esc(a.updated || a.date) + '">' + ICO.cal + ' ' + esc(fmtDate(a.updated || a.date, lang)) + '</time>' : '') + '</span></a></article>';
+        }).join('');
+        return '<section class="wrap block latest"><div class="block-head"><h2 class="block-title ico-latest">' + esc(UI[lang].latest) + '</h2><a class="pill-link" href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(UI[lang].allTourism) + '</a></div>' +
+          '<div class="latest-row">' + (tiles ? '<div class="cat-tiles">' + tiles + '</div>' : '') + '<div class="row-cards">' + rows + '</div></div>' +
+          '</section>';
+      })() : '') +
       (show(site, 'guide') ? secBlock(site, file, lang, 'guide', inSection(articles, 'guide', lang), 3) : '') +
-      (show(site, 'map') ? mapSection(site, articles, file, lang) : '') +
-      (show(site, 'gallery') ? gallerySection(site, file, lang) : '') +
+      (function () {
+        var m = show(site, 'map') ? mapSection(site, articles, file, lang) : '', g = show(site, 'gallery') ? gallerySection(site, file, lang) : '';
+        if (!m && !g) return '';
+        return '<div class="wrap duo-mg' + (m && g ? '' : ' is-single') + '">' + m + g + '</div>';
+      })() +
       (show(site, 'services') ? servicesSection(site, file, lang) : '') +
-      (show(site, 'categories') && cats.length ? '<section class="wrap block"><div class="chips">' + cats.map(function (c) {
-        return '<a class="chip" href="' + rel(file, prefix(lang) + 'tourisme/') + '#' + esc(c.id) + '">' + esc((c.icon || '') + ' ' + t(c.name, lang)) + '</a>';
-      }).join('') + '</div></section>' : '') +
       (show(site, 'stats') && stats ? '<section class="stats"><div class="wrap stats-in">' + stats + '</div></section>' : '') +
       (show(site, 'rating') ? ratingSection(site, file, lang) : '') +
       '</main>\n' + footer(site, o);

@@ -13,6 +13,21 @@
     menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
 
+  var more = document.querySelector('[data-menu-more]');
+  if (more && menuBtn && nav) more.addEventListener('click', function () {
+    if (!nav.classList.contains('is-open')) menuBtn.click();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    var first = nav.querySelector('a'); if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 350);
+  });
+  var unc = document.querySelector('[data-unclamp]');
+  if (unc) unc.addEventListener('click', function () { var w = unc.closest('[data-clamp]'); if (w) w.classList.add('is-open'); unc.remove(); });
+  var today = document.querySelector('[data-today]');
+  if (today) try {
+    var hl = root.lang || 'ar';
+    today.textContent = new Intl.DateTimeFormat({ ar: 'ar-MA', fr: 'fr-FR', en: 'en-GB', es: 'es-ES' }[hl] || 'ar-MA',
+      { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', timeZone: 'Africa/Casablanca' }).format(new Date());
+  } catch (e) {}
+
   var filter = document.querySelector('[data-filter]'), grid = document.querySelector('[data-grid]');
   function apply(cat) {
     if (!filter || !grid) return;
@@ -82,7 +97,7 @@
           return '<div><span class="d-t">' + new Intl.DateTimeFormat(loc, { weekday: 'short' }).format(dd) + '</span><span class="d-ico">' + wi[0] + '</span><span><b>' + num(d.daily.temperature_2m_max[i]) + '°</b> ' + num(d.daily.temperature_2m_min[i]) + '°</span></div>';
         }).join('');
         box('weather').innerHTML = '<div class="live-now"><span class="live-ico" aria-hidden="true">' + w[0] + '</span><div><div class="live-big">' + num(c.temperature_2m) + '°</div><div class="live-desc">' + U.codes[w[1]] + '</div></div></div>' +
-          '<ul class="live-facts"><li>' + U.wind + ': <b>' + num(c.wind_speed_10m) + ' km/h ' + windArrow(c.wind_direction_10m) + ' ' + windName(c.wind_direction_10m, lang) + '</b></li><li>' + U.humidity + ': <b>' + num(c.relative_humidity_2m) + '%</b></li></ul>' +
+          '<ul class="live-facts"><li>' + U.wind + ': <b><span dir="ltr">' + num(c.wind_speed_10m) + ' km/h</span> ' + windArrow(c.wind_direction_10m) + ' ' + windName(c.wind_direction_10m, lang) + '</b></li><li>' + U.humidity + ': <b>' + num(c.relative_humidity_2m) + '%</b></li></ul>' +
           '<div class="days">' + days + '</div>';
       }).catch(function () { fail('weather'); });
 
@@ -92,11 +107,11 @@
     ]).then(function (r) {
       var m = r[0].current, w = r[1].current, h = m.wave_height;
       var st = h == null ? -1 : h < 0.5 ? 0 : h < 1.25 ? 1 : h < 2.5 ? 2 : 3;
-      box('sea').innerHTML = '<div class="live-now"><span class="live-ico" aria-hidden="true">🌊</span><div><div class="live-big">' + (h == null ? '–' : num(h, 1) + ' m') + '</div>' +
+      box('sea').innerHTML = '<div class="live-now"><span class="live-ico" aria-hidden="true">🌊</span><div><div class="live-big">' + (h == null ? '–' : '<span dir="ltr">' + num(h, 1) + ' m</span>') + '</div>' +
         (st >= 0 ? '<span class="sea-state sea-' + st + '">' + U.seaStates[st] + '</span>' : '') + '</div></div>' +
         '<ul class="live-facts">' + (m.sea_surface_temperature != null ? '<li>' + U.water + ': <b>' + num(m.sea_surface_temperature) + '°</b></li>' : '') +
         (m.wave_period != null ? '<li>' + U.period + ': <b>' + num(m.wave_period) + ' s</b></li>' : '') +
-        '<li>' + U.wind + ': <b>' + num(w.wind_speed_10m) + ' km/h ' + windArrow(w.wind_direction_10m) + ' ' + windName(w.wind_direction_10m, lang) + '</b></li></ul>';
+        '<li>' + U.wind + ': <b><span dir="ltr">' + num(w.wind_speed_10m) + ' km/h</span> ' + windArrow(w.wind_direction_10m) + ' ' + windName(w.wind_direction_10m, lang) + '</b></li></ul>';
     }).catch(function () { fail('sea'); });
 
     if (box('prayer')) {
