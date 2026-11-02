@@ -316,17 +316,42 @@
     return '<div class="topbar' + (tk ? ' has-ticker' : '') + '"><div class="wrap topbar-in">' + info + (tk || '<span class="tb-gap"></span>') +
       (so ? '<span class="tb-follow">' + esc(FOLLOW_TOP[lang]) + '</span>' + so : '') + '</div></div>\n';
   }
-  var TABS = { ar: ['الرئيسية', 'الوجهات', 'البحر', 'الصلاة', 'المزيد'], fr: ['Accueil', 'Destinations', 'La mer', 'Prière', 'Plus'],
-    en: ['Home', 'Places', 'Sea', 'Prayer', 'More'], es: ['Inicio', 'Destinos', 'El mar', 'Oración', 'Más'] };
+  ICO.search = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  ICO.close = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+  ICO.photo = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="9" cy="10" r="1.8" fill="currentColor"/><path d="m4 17.5 5-5 4 4 2.5-2.5 4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>';
+  ICO.doc = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M6.5 3h7.5l4.5 4.5V20a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/><path d="M9 11h6M9 14.5h6M9 18h4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>';
+  ICO.list = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M8.5 6.5h12M8.5 12h12M8.5 17.5h12" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle cx="4.2" cy="6.5" r="1.3" fill="currentColor"/><circle cx="4.2" cy="12" r="1.3" fill="currentColor"/><circle cx="4.2" cy="17.5" r="1.3" fill="currentColor"/></svg>';
+  var SRCH = {
+    ar: { open: 'بحث', close: 'إغلاق', ph: 'ابحث عن شاطئ، ميناء، خدمة…', none: 'لا توجد نتائج.', svc: 'الخدمات' },
+    fr: { open: 'Rechercher', close: 'Fermer', ph: 'Plage, port, service…', none: 'Aucun résultat.', svc: 'Services' },
+    en: { open: 'Search', close: 'Close', ph: 'Beach, port, service…', none: 'No results.', svc: 'Services' },
+    es: { open: 'Buscar', close: 'Cerrar', ph: 'Playa, puerto, servicio…', none: 'Sin resultados.', svc: 'Servicios' } };
+  var SVC_LINKS = [
+    ['🌤️', 'meteo/', { ar: 'الطقس', fr: 'Météo', en: 'Weather', es: 'Tiempo' }],
+    ['🌊', 'mer/', { ar: 'البحر اليوم', fr: 'La mer aujourd’hui', en: 'Sea today', es: 'El mar hoy' }],
+    ['🕌', 'salat/', { ar: 'مواقيت الصلاة', fr: 'Horaires de prière', en: 'Prayer times', es: 'Horarios de oración' }],
+    ['⛴️', 'guide/bateaux-tanger-med/', { ar: 'مواعيد البواخر', fr: 'Horaires des ferries', en: 'Ferry times', es: 'Horarios de ferris' }],
+    ['📞', 'numeros-utiles/', { ar: 'الأرقام المهمة', fr: 'Numéros utiles', en: 'Useful numbers', es: 'Teléfonos útiles' }],
+    ['🏠', 'hebergement/', { ar: 'الإقامة', fr: 'Hébergement', en: 'Where to stay', es: 'Alojamiento' }],
+    ['📢', 'advertise/', { ar: 'أعلن معنا', fr: 'Publicité', en: 'Advertise', es: 'Publicidad' }]
+  ];
+  var TABS = { ar: ['الرئيسية', 'الوجهات', 'الصور', 'الأخبار', 'الدليل', 'الخدمات'], fr: ['Accueil', 'Destinations', 'Photos', 'Actualités', 'Guide', 'Services'],
+    en: ['Home', 'Places', 'Photos', 'News', 'Guide', 'Services'], es: ['Inicio', 'Destinos', 'Fotos', 'Noticias', 'Guía', 'Servicios'] };
   function tabbar(site, o) {
     var lang = o.lang, file = o.file, cur = o.current || '', L = TABS[lang], p = prefix(lang);
+    var hasNews = ARTS.some(function (a) { return a.section === 'news' && !a.draft; });
     var item = function (url, ico, label, on) {
       return '<a href="' + rel(file, p + url) + '"' + (on ? ' aria-current="page" class="is-on"' : '') + '>' + ICO[ico] + '<span>' + esc(label) + '</span></a>';
     };
+    var svcOn = /^(meteo|mer|salat|numeros-utiles|hebergement|advertise)\/$/.test(cur);
+    var sheet = '<div class="svc-sheet" id="svc-sheet" hidden><div class="svc-sheet-in" role="dialog" aria-label="' + esc(SRCH[lang].svc) + '"><div class="drawer-h"><b>' + esc(SRCH[lang].svc) + '</b><button class="icon-btn" type="button" data-sheet-close aria-label="' + esc(SRCH[lang].close) + '">' + ICO.close + '</button></div><div class="svc-sheet-grid">' +
+      SVC_LINKS.filter(function (x) { return !(x[1] === 'mer/' && !pg(site, 'mer')) && !(x[1] === 'hebergement/' && !pg(site, 'hebergement')) && !(x[1] === 'numeros-utiles/' && !pg(site, 'numeros')); }).map(function (x) {
+        return '<a href="' + rel(file, p + x[1]) + '"' + (cur === x[1] ? ' aria-current="page"' : '') + '><span aria-hidden="true">' + x[0] + '</span>' + esc(t(x[2], lang)) + '</a>';
+      }).join('') + '</div></div></div>';
     return '<nav class="tabbar" aria-label="' + esc(UI[lang].menu) + '">' +
-      item('', 'home', L[0], cur === '') + item('tourisme/', 'peaks', L[1], cur === 'tourisme/') + item('mer/', 'waves', L[2], cur === 'mer/') +
-      item('salat/', 'mosque', L[3], cur === 'salat/') +
-      '<button type="button" data-menu-more aria-controls="nav">' + ICO.more + '<span>' + esc(L[4]) + '</span></button></nav>\n';
+      item('', 'home', L[0], cur === '') + item('tourisme/', 'peaks', L[1], cur === 'tourisme/') + item('gallery/', 'photo', L[2], cur === 'gallery/') +
+      (hasNews ? item('news/', 'doc', L[3], cur === 'news/') : item('guide/', 'doc', L[4], cur === 'guide/')) +
+      '<button type="button" data-sheet-open aria-controls="svc-sheet"' + (svcOn ? ' class="is-on"' : '') + '>' + ICO.list + '<span>' + esc(L[5]) + '</span></button></nav>\n' + sheet + '\n';
   }
 
   /* ---------- images ---------- */
@@ -337,6 +362,9 @@
     if (/blogger\.googleusercontent\.com/.test(src || '')) return String(src).replace(/\/(s\d+|w\d+-h\d+[^/]*)\//, '/s' + w + '/');
     if (w <= 900 && src && THUMBS[String(src).replace(/^\//, '')]) return smallOf(src);
     return src;
+  }
+  function pageHeroImg(site) {
+    var l = heroImages(site); return l.filter(function (x) { return !/blogger\.googleusercontent/.test(x); })[0] || l[0] || '';
   }
   function heroImages(site) {
     var h = site.hero || {}, list = (h.images || []).filter(Boolean);
@@ -432,11 +460,13 @@
       topbar(site, file, lang) + '<header class="top"><div class="wrap top-in">' +
       '<a class="brand" href="' + rel(file, prefix(lang)) + '">' + brandMark(site, file) +
       '<span class="brand-txt"><b>' + esc(t(site.name, lang)) + '</b><small>' + esc({ ar: 'دليل سياحي محلي', fr: 'Guide touristique local', en: 'Local travel guide', es: 'Guía turística local' }[lang]) + '</small></span></a>' +
-      '<nav class="nav" id="nav" aria-label="' + esc(UI[lang].menu) + '">' + navHtml(site, file, lang, o.current) + '</nav>' +
-      '<div class="tools"><div class="langs" role="group" aria-label="' + UI[lang].lang + '">' + langLinks(site, file, lang, o.alternates) + '</div>' +
+      '<nav class="nav" id="nav" aria-label="' + esc(UI[lang].menu) + '"><div class="drawer-h"><b>' + esc(t(site.name, lang)) + '</b><button class="icon-btn" type="button" data-menu-close aria-label="' + esc(SRCH[lang].close) + '">' + ICO.close + '</button></div>' + navHtml(site, file, lang, o.current) +
+      '<div class="nav-extra"><div class="langs" role="group" aria-label="' + UI[lang].lang + '">' + langLinks(site, file, lang, o.alternates) + '</div>' +
+      '<button class="icon-btn" type="button" data-theme-toggle aria-label="' + esc(UI[lang].theme) + '">' + moonSvg() + '</button></div></nav>' +
+      '<div class="tools"><button class="icon-btn search-btn" type="button" data-search="' + esc(rel(file, prefix(lang) + 'search.json')) + '?v=' + (site.version || 1) + '" aria-label="' + esc(SRCH[lang].open) + '">' + ICO.search + '</button><div class="langs" role="group" aria-label="' + UI[lang].lang + '">' + langLinks(site, file, lang, o.alternates) + '</div>' +
       '<button class="icon-btn" type="button" data-theme-toggle aria-label="' + esc(UI[lang].theme) + '">' + moonSvg() + '</button>' +
       '<button class="icon-btn menu-btn" type="button" data-menu aria-controls="nav" aria-expanded="false" aria-label="' + esc(UI[lang].menu) + '">' + menuSvg() + '</button>' +
-      '</div></div></header>\n';
+      '</div></div></header>\n<div class="nav-backdrop" data-menu-close hidden></div>\n';
   }
 
   function footer(site, o) {
@@ -533,9 +563,9 @@
     var more = g.url ? '<a class="btn btn-ghost" href="' + esc(linkHref(site, file, lang, { url: g.url, i18n: g.i18n })) + '"' + (isAbs(g.url) ? ' rel="noopener"' : '') + '>' + esc(t(g.cta, lang) || { ar: 'عرض كل الصور', fr: 'Voir toutes les photos', en: 'See all photos', es: 'Ver todas las fotos' }[lang]) + '</a>' : '';
     return '<section class="wrap block gal-home"><div class="block-head"><div><h2 class="block-title">' + esc(t(g.title, lang) || UI[lang].gallery) + '</h2>' +
       (t(g.subtitle, lang) ? '<p class="muted-p">' + esc(t(g.subtitle, lang)) + '</p>' : '') + '</div>' + more + '</div>' +
-      '<div class="gal-row">' + imgs.slice(0, 6).map(function (i) {
+      '<div class="gal-row" data-lb-group>' + imgs.slice(0, 6).map(function (i) {
         var alt = t(i.alt, lang) || t(site.name, lang);
-        return '<figure class="ph-bg"><img src="' + esc(asset(file, sized(i.src, 800))) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async"></figure>';
+        return '<figure class="ph-bg"><a href="' + esc(asset(file, sized(i.src, 2048))) + '" data-lb><img src="' + esc(asset(file, sized(i.src, 800))) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async"></a></figure>';
       }).join('') + '</div></section>';
   }
   function ratingSection(site, file, lang) {
@@ -817,9 +847,12 @@
     var dir = prefix(lang) + dirNoLang, file = dir + 'index.html';
     var alternates = {}; LANGS.forEach(function (l) { alternates[l] = prefix(l) + dirNoLang; });
     var o = { lang: lang, file: file, dir: dir, alternates: alternates, current: dirNoLang, title: o2.title, description: o2.description, image: o2.image, schema: o2.schema, bodyClass: o2.bodyClass };
-    return head(site, o) + header(site, o) + '<main id="main" class="page ' + (o2.mainClass || '') + '"><div class="wrap">' +
-      crumbs(site, file, lang, [[UI[lang].home, prefix(lang)], [o2.h1]]) + '<h1 class="page-title">' + esc(o2.h1) + '</h1>' +
-      (o2.lead ? '<p class="lead">' + esc(o2.lead) + '</p>' : '') + '</div>' + o2.body(file) + '</main>\n' +
+    var top = o2.hero ? '<section class="page-hero" style="--hero:url(\'' + esc(asset(file, sized(o2.hero, 1600))) + '\')"><div class="wrap">' +
+        crumbs(site, file, lang, [[UI[lang].home, prefix(lang)], [o2.h1]]) + '<h1 class="page-title">' + (o2.icon ? '<span class="ph-ico" aria-hidden="true">' + o2.icon + '</span>' : '') + esc(o2.h1) + '</h1>' +
+        (o2.lead ? '<p class="lead">' + esc(o2.lead) + '</p>' : '') + '</div></section>'
+      : '<div class="wrap">' + crumbs(site, file, lang, [[UI[lang].home, prefix(lang)], [o2.h1]]) + '<h1 class="page-title">' + esc(o2.h1) + '</h1>' +
+        (o2.lead ? '<p class="lead">' + esc(o2.lead) + '</p>' : '') + '</div>';
+    return head(site, o) + header(site, o) + '<main id="main" class="page ' + (o2.mainClass || '') + (o2.hero ? ' has-phero' : '') + '">' + top + o2.body(file) + '</main>\n' +
       (o2.scripts ? o2.scripts(file) : '') + footer(site, o);
   }
 
@@ -916,15 +949,15 @@
   };
   function prayerPage(site, lang) {
     var U = PUI[lang], w = site.live || {}, L = LIVE_UI[lang];
-    var cfg = { off: +w.utcOffset || 0, tool: 'prayer', lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, method: w.method || 21, tune: w.tune || '', hijriAdj: w.hijriAdj || 0, ui: U, prayers: L.prayers, place: t(site.name, lang) };
+    var cfg = { ui2: PR2[lang], off: +w.utcOffset || 0, tool: 'prayer', lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, method: w.method || 21, tune: w.tune || '', hijriAdj: w.hijriAdj || 0, ui: U, prayers: L.prayers, place: t(site.name, lang) };
     if (OFFICIAL) cfg.officialNote = t(w.officialNote, lang) || { ar: 'المواقيت حسب الجدول الرسمي لوزارة الأوقاف والشؤون الإسلامية.', fr: 'Horaires selon le calendrier officiel du ministère des Habous et des Affaires islamiques.', en: 'Times from the official timetable of the Ministry of Habous and Islamic Affairs.', es: 'Horarios según el calendario oficial del Ministerio de Habices y Asuntos Islámicos.' }[lang];
     return simplePage(site, lang, 'salat/', {
-      h1: U.h1, title: U.h1 + ' | ' + t(site.name, lang), description: U.lead, lead: U.lead, mainClass: 'tool-page',
+      h1: U.h1, title: U.h1 + ' | ' + t(site.name, lang), description: U.lead, lead: U.lead, mainClass: 'tool-page', hero: pageHeroImg(site), icon: '🕌',
       schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: U.h1, description: U.lead },
       body: function () {
         return '<div class="wrap tool" data-tool="prayer">' +
           '<section class="pr-today" data-slot="today"><div class="live-skel"></div></section>' +
-          '<section class="wx-sec pr-month"><div class="pr-mhead"><h2 data-slot="mtitle">' + esc(U.month) + '</h2><div class="pr-nav"><button class="btn-ico" type="button" data-m="-1" aria-label="' + esc(U.prev) + '">‹</button><button class="btn-ico" type="button" data-m="1" aria-label="' + esc(U.nextM) + '">›</button><button class="btn" type="button" data-print>' + esc(U.print) + '</button></div></div>' +
+          '<section class="wx-sec pr-month"><div class="pr-mhead"><h2 data-slot="mtitle">' + esc(U.month) + '</h2><div class="pr-nav"><button class="btn-ico" type="button" data-m="-1" aria-label="' + esc(U.prev) + '">' + (lang === 'ar' ? '›' : '‹') + '</button><button class="chip pr-now" type="button" data-m-now>' + esc(PR2[lang].now) + '</button><button class="btn-ico" type="button" data-m="1" aria-label="' + esc(U.nextM) + '">' + (lang === 'ar' ? '‹' : '›') + '</button><button class="btn" type="button" data-print>⬇ ' + esc(PR2[lang].pdf) + '</button></div></div>' +
           '<div class="pr-table" data-slot="month"><div class="live-skel"></div></div></section>' +
           '<p class="live-note">' + esc(U.note) + '</p><div class="prose wx-about">' + U.about + '</div></div>';
       },
@@ -1138,16 +1171,35 @@
       safety: 'Indicadores estimados con modelos (Open-Meteo), no oficiales. El mar cambia rápido: respeta siempre banderas, socorristas y autoridades portuarias.',
       about: '<h2>Cómo leer el mar en Alcazarseguer</h2><p>Alcazarseguer está en pleno estrecho de Gibraltar, donde manda el viento: con <b>Levante</b> las olas en la playa son normales; con <b>Poniente</b> crecen y hay que prestar más atención, sobre todo con los niños. En invierno el mar está fuerte en todas las playas. Por encima de 20 nudos el mar se complica para el baño y las barcas pequeñas.</p>' }
   };
+  var SEA2 = {
+    ar: { state: 'حالة البحر', wave: 'ارتفاع الموج', speed: 'سرعة الرياح', dir: 'اتجاه الرياح', swim: 'حالة السباحة', summary: 'ملخص الحالة اليوم', daily: 'التوقعات اليومية', wx: 'الطقس', vis: 'الرؤية', act: 'ملاءمة السباحة',
+      visL: ['ضعيفة', 'متوسطة', 'جيدة', 'ممتازة'], swimTxt: ['مناسبة للسباحة', 'تتطلب الحذر عند السباحة', 'غير مناسبة للسباحة'],
+      sum: 'البحر اليوم في القصر الصغير {state}، بارتفاع موج يصل إلى {wave} م، مع رياح {dir} بسرعة {speed}. الظروف {swim}.', fishing: 'الصيد', boat: 'القارب' },
+    fr: { state: 'État de la mer', wave: 'Hauteur des vagues', speed: 'Vitesse du vent', dir: 'Direction du vent', swim: 'Baignade', summary: 'Résumé du jour', daily: 'Prévisions du jour', wx: 'Météo', vis: 'Visibilité', act: 'Baignade',
+      visL: ['Faible', 'Moyenne', 'Bonne', 'Excellente'], swimTxt: ['favorables à la baignade', 'à la baignade avec prudence', 'défavorables à la baignade'],
+      sum: 'Aujourd’hui à Ksar Sghir, la mer est {state}, avec des vagues jusqu’à {wave} m et un vent de {dir} à {speed}. Conditions {swim}.', fishing: 'Pêche', boat: 'Barque' },
+    en: { state: 'Sea state', wave: 'Wave height', speed: 'Wind speed', dir: 'Wind direction', swim: 'Swimming', summary: 'Today’s summary', daily: 'Daily forecast', wx: 'Weather', vis: 'Visibility', act: 'Swimming',
+      visL: ['Poor', 'Moderate', 'Good', 'Excellent'], swimTxt: ['good for swimming', 'for careful swimming only', 'not suitable for swimming'],
+      sum: 'Today in Ksar Sghir the sea is {state}, with waves up to {wave} m and a {dir} wind at {speed}. Conditions are {swim}.', fishing: 'Fishing', boat: 'Boat' },
+    es: { state: 'Estado del mar', wave: 'Altura de las olas', speed: 'Velocidad del viento', dir: 'Dirección del viento', swim: 'Baño', summary: 'Resumen de hoy', daily: 'Previsión diaria', wx: 'Tiempo', vis: 'Visibilidad', act: 'Baño',
+      visL: ['Mala', 'Regular', 'Buena', 'Excelente'], swimTxt: ['buenas para el baño', 'de baño con precaución', 'no aptas para el baño'],
+      sum: 'Hoy en Alcazarseguer el mar está {state}, con olas de hasta {wave} m y viento de {dir} a {speed}. Condiciones {swim}.', fishing: 'Pesca', boat: 'Barca' } };
+  var PR2 = {
+    ar: { now: 'الشهر الحالي', table: 'جدول مواقيت الصلاة', pdf: 'تحميل PDF', left: 'الوقت المتبقي', h: 'ساعة', m: 'دقيقة', s: 'ثانية', srcOff: 'مواقيت الصلاة في القصر الصغير حسب الجدول الرسمي لوزارة الأوقاف والشؤون الإسلامية بالمملكة المغربية.', srcCalc: 'المواقيت محسوبة فلكياً بطريقة المغرب، وقد تختلف بدقيقة أو اثنتين عن جدول وزارة الأوقاف والشؤون الإسلامية.' },
+    fr: { now: 'Mois en cours', table: 'Horaires de prière', pdf: 'Télécharger PDF', left: 'Temps restant', h: 'h', m: 'min', s: 's', srcOff: 'Horaires selon le calendrier officiel du ministère des Habous et des Affaires islamiques.', srcCalc: 'Horaires calculés selon la méthode marocaine ; ils peuvent différer d’une ou deux minutes du calendrier officiel.' },
+    en: { now: 'This month', table: 'Prayer timetable', pdf: 'Download PDF', left: 'Time left', h: 'h', m: 'min', s: 's', srcOff: 'Times from the official timetable of Morocco’s Ministry of Habous and Islamic Affairs.', srcCalc: 'Times calculated with the Moroccan method; they may differ by a minute or two from the official timetable.' },
+    es: { now: 'Mes actual', table: 'Horarios de oración', pdf: 'Descargar PDF', left: 'Tiempo restante', h: 'h', m: 'min', s: 's', srcOff: 'Horarios según el calendario oficial del Ministerio de Habices y Asuntos Islámicos.', srcCalc: 'Horarios calculados con el método marroquí; pueden diferir uno o dos minutos del calendario oficial.' } };
   function seaPage(site, lang) {
     var U = SUI[lang], w = site.live || {};
-    var cfg = { off: +w.utcOffset || 0, tool: 'sea', lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, seaLat: w.seaLat || 35.87, seaLng: w.seaLng || -5.55, ui: U };
+    var cfg = { off: +w.utcOffset || 0, tool: 'sea', lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, seaLat: w.seaLat || 35.87, seaLng: w.seaLng || -5.55, ui: U, ui2: SEA2[lang], codes: LIVE_UI[lang].codes };
     return simplePage(site, lang, 'mer/', {
-      h1: U.h1, title: U.h1 + ' | ' + t(site.name, lang), description: U.lead, lead: U.lead, mainClass: 'tool-page',
+      h1: U.h1, title: U.h1 + ' | ' + t(site.name, lang), description: U.lead, lead: U.lead, mainClass: 'tool-page', hero: pageHeroImg(site), icon: '🌊',
       schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: U.h1, description: U.lead },
       body: function (file) {
         return '<div class="wrap tool" data-tool="sea">' +
           '<section class="sea-verdict" data-slot="verdict"><div class="live-skel"></div></section>' +
-          '<section class="wx-sec"><h2>' + esc(U.today + ' / ' + U.tomorrow) + '</h2><div class="sea-periods" data-slot="periods"><div class="live-skel"></div></div></section>' +
+          '<div class="sea-duo"><section class="sea-sum"><div class="sea-sum-img" style="--hero:url(\'' + esc(asset(file, sized(pageHeroImg(site), 800))) + '\')"></div><div class="sea-sum-txt"><h2>ⓘ ' + esc(SEA2[lang].summary) + '</h2><p data-slot="summary"><span class="live-skel"></span></p></div></section>' +
+          '<section class="wx-sec sea-daily"><h2>📅 ' + esc(SEA2[lang].daily) + '</h2><div class="sea-periods" data-slot="periods"><div class="live-skel"></div></div></section></div>' +
           '<section class="wx-sec"><div class="pr-mhead"><h2>' + esc(U.table) + '</h2><div class="pr-nav" role="group" aria-label="' + esc(U.unit) + '"><button class="chip is-on" type="button" data-unit="kn">' + esc(U.kn) + '</button><button class="chip" type="button" data-unit="kmh">' + esc(U.kmh) + '</button></div></div>' +
           '<div class="sea-table" data-slot="table"><div class="live-skel"></div></div></section>' +
           '<p class="live-note">' + esc(U.safety) + '</p>' +
@@ -1182,6 +1234,13 @@
     });
     files['sitemap.xml'] = sitemap(site, articles, files);
     if (adsClient(site)) files['ads.txt'] = 'google.com, ' + adsClient(site).replace('ca-', '') + ', DIRECT, f08c47fec0942fa0\n';
+    LANGS.forEach(function (l) {
+      var idx = articles.filter(function (a) { return !a.draft && hasLang(a, l); }).map(function (a) {
+        var x = a.i18n[l]; return { t: x.title, d: x.description || '', u: articleDir(a, l), c: (secOf(a) === 'tourisme' ? catLabel(site, a.category, l) : (SECTIONS[secOf(a)] ? SECTIONS[secOf(a)].icon + ' ' + secText(site, secOf(a), 'name', l) : '')) };
+      });
+      SVC_LINKS.forEach(function (x) { idx.push({ t: t(x[2], l), d: '', u: prefix(l) + x[1], c: x[0] }); });
+      files[prefix(l) + 'search.json'] = JSON.stringify(idx);
+    });
     files['robots.txt'] = 'User-agent: *\nAllow: /\nDisallow: /admin/\n\nSitemap: ' + absUrl(site, 'sitemap.xml') + '\n';
     return files;
   }

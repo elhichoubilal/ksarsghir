@@ -191,10 +191,14 @@
         var next = KEYS.filter(function (k) { return k !== 'Sunrise' && mins(T[k]) > cur; })[0] || 'Fajr';
         var left = (mins(T[next]) - cur + 1440) % 1440 * 60 - sec; if (left < 0) left += 86400;
         var hh = Math.floor(left / 3600), mm = Math.floor(left % 3600 / 60), ss = left % 60;
+        var P2 = C.ui2 || {}, PI = { Fajr: '🕌', Sunrise: '🌅', Dhuhr: '☀️', Asr: '⛅', Maghrib: '🌇', Isha: '🌙' };
+        var pad = function (x) { return ('0' + x).slice(-2); };
         slot('today').innerHTML =
-          '<div class="pr-head"><div><p class="pr-hijri">' + (hj ? esc(hijriTxt(hj)) : '') + '</p><p class="pr-greg">' + new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(n) + ' · ' + esc(C.place) + '</p></div>' +
-          '<div class="pr-next"><small>' + esc(U.next) + '</small><b>' + esc(C.prayers[next]) + ' ' + t5(T[next]) + '</b><span class="pr-count" dir="ltr">' + hh + ':' + ('0' + mm).slice(-2) + ':' + ('0' + ss).slice(-2) + '</span></div></div>' +
-          '<ul class="pr-grid">' + KEYS.map(function (k) { return '<li' + (k === next ? ' class="is-next"' : '') + '><span>' + esc(C.prayers[k]) + '</span><b>' + t5(T[k]) + '</b></li>'; }).join('') + '</ul>' +
+          '<div class="pd-top"><div class="pd-date"><span aria-hidden="true">📅</span><div><b>' + esc(new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(n)) + '</b></div></div>' +
+          (hj ? '<div class="pd-date"><span aria-hidden="true">🌙</span><div><b>' + esc(hijriTxt(hj)) + '</b></div></div>' : '') + '</div>' +
+          '<div class="pd-mid"><div class="pd-next"><small>' + esc(U.next) + '</small><b><span aria-hidden="true">' + PI[next] + '</span> ' + esc(C.prayers[next]) + '</b><span class="pd-time">' + t5(T[next]) + '</span></div>' +
+          '<div class="pd-count"><small>' + esc(P2.left || U.remaining) + '</small><div class="pd-digits" dir="ltr"><span><b>' + pad(hh) + '</b><i>' + esc(P2.h || 'h') + '</i></span>:<span><b>' + pad(mm) + '</b><i>' + esc(P2.m || 'min') + '</i></span>:<span><b>' + pad(ss) + '</b><i>' + esc(P2.s || 's') + '</i></span></div></div></div>' +
+          '<ul class="pr-grid">' + KEYS.map(function (k) { return '<li' + (k === next ? ' class="is-next"' : '') + '><i aria-hidden="true">' + PI[k] + '</i><span>' + esc(C.prayers[k]) + '</span><b>' + t5(T[k]) + '</b></li>'; }).join('') + '</ul>' +
           '<p class="pr-qibla">🧭 ' + esc(U.qibla) + ': <b>' + qibla.toFixed(1) + '°</b> ' + esc(U.qiblaTxt) + '</p>';
       };
       render(); timer = setInterval(render, 1000);
@@ -228,6 +232,7 @@
     document.addEventListener('click', function (e) {
       var b = e.target.closest('[data-m]');
       if (b) { mo += +b.dataset.m; if (mo < 1) { mo = 12; y--; } if (mo > 12) { mo = 1; y++; } loadMonth(); }
+      if (e.target.closest('[data-m-now]')) { var nn = mnow(); y = nn.getUTCFullYear(); mo = nn.getUTCMonth() + 1; loadMonth(); }
       if (e.target.closest('[data-print]')) window.print();
     });
   }
@@ -250,7 +255,7 @@
     var uLbl = function () { return unit === 'kn' ? U.kn : U.kmh; };
     var dayName2 = function (iso) { return new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(iso + 'T12:00:00Z')); };
     var F2 = 'https://api.open-meteo.com/v1/forecast?latitude=' + C.seaLat + '&longitude=' + C.seaLng +
-      '&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,temperature_2m&hourly=wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,temperature_2m' +
+      '&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,temperature_2m&hourly=wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,temperature_2m,visibility' +
       '&timezone=' + encodeURIComponent(TZN) + '&forecast_days=5';
     var M2 = 'https://marine-api.open-meteo.com/v1/marine?latitude=' + C.seaLat + '&longitude=' + C.seaLng +
       '&current=wave_height,wave_period,sea_surface_temperature&hourly=wave_height,wave_period,sea_surface_temperature&timezone=' + encodeURIComponent(TZN) + '&forecast_days=5';
@@ -259,11 +264,32 @@
       var f = DATA.f, m = DATA.m, h = f.hourly, mh = m && m.hourly ? m.hourly : null, c = f.current, mc = m && m.current ? m.current : {};
       var wave = function (i) { return mh && mh.wave_height[i] != null ? mh.wave_height[i] : null; };
       var nowL = wLevel(c.wind_speed_10m), dk = dirKey(c.wind_direction_10m), wh = mc.wave_height, st = seaSt(wh);
-      slot('verdict').innerHTML = '<div class="sv-main"><div class="sv-wind sv-w' + nowL + '"><span class="sv-ico">' + windArrow(c.wind_direction_10m) + '</span><div><b>' + esc(U[dk]) + ' · ' + esc(U[wNames[nowL]]) + '</b>' +
-        '<span>' + spd(c.wind_speed_10m) + ' ' + esc(uLbl()) + ' · ' + esc(U.gust) + ' ' + spd(c.wind_gusts_10m) + '</span></div></div>' +
-        '<div class="sv-sea"><span class="sv-ico">🌊</span><div><b>' + (wh == null ? '–' : num(wh, 1) + ' m') + '</b>' + (st >= 0 ? '<span class="sea-state sea-' + st + '">' + esc(U.seaStates[st]) + '</span>' : '') +
+      var U2 = C.ui2 || {}, CD = C.codes || {};
+      var sw = swimL(wh, c.wind_gusts_10m);
+      var todayIso = c.time.slice(0, 10), wvToday = [];
+      h.time.forEach(function (tm, i) { if (tm.slice(0, 10) === todayIso && tm.slice(0, 13) >= c.time.slice(0, 13)) { var v = wave(i); if (v != null) wvToday.push(v); } });
+      var wmax = wvToday.length ? Math.max.apply(null, wvToday) : wh;
+      slot('verdict').innerHTML =
+        '<div class="sd-top"><div class="sd-state"><span class="sd-ok sd-l' + (sw < 0 ? 1 : sw) + '" aria-hidden="true">' + (sw === 2 ? '!' : '✓') + '</span><div><small>' + esc(U2.state) + '</small><b>' + (st >= 0 ? esc(U.seaStates[st]) : '–') + '</b>' +
+        (sw >= 0 ? '<span>' + esc(U2.swimTxt[sw]) + '</span>' : '') + '</div></div>' +
+        '<div class="sd-wave"><span class="sd-ico" aria-hidden="true">🌊</span><div><small>' + esc(U2.wave) + '</small><b dir="ltr">' + (wh == null ? '–' : num(wh, 1) + ' m') + '</b>' +
         (mc.sea_surface_temperature != null ? '<span>' + esc(U.water) + ' ' + num(mc.sea_surface_temperature) + '°</span>' : '') + '</div></div></div>' +
-        '<div class="sv-idx"><div><span>🏊 ' + esc(U.swim) + '</span>' + badge(swimL(wh, c.wind_gusts_10m)) + '</div><div><span>🎣 ' + esc(U.fish) + '</span>' + badge(fishL(wh, c.wind_speed_10m)) + '</div><div><span>🚤 ' + esc(U.boat) + '</span>' + badge(boatL(wh, c.wind_speed_10m, c.wind_gusts_10m)) + '</div></div>';
+        '<div class="sd-row">' +
+        '<div class="sv-w' + nowL + '"><span class="sd-ico" aria-hidden="true">💨</span><small>' + esc(U2.speed) + '</small><b dir="ltr">' + spd(c.wind_speed_10m) + ' ' + esc(uLbl()) + '</b><span>' + esc(U.gust) + ' ' + spd(c.wind_gusts_10m) + '</span></div>' +
+        '<div><span class="sd-ico">' + windArrow(c.wind_direction_10m) + '</span><small>' + esc(U2.dir) + '</small><b>' + esc(U[dk]) + '</b><span>' + esc(windName(c.wind_direction_10m, lang)) + '</span></div>' +
+        '<div><span class="sd-ico" aria-hidden="true">🏊</span><small>' + esc(U.swim) + '</small>' + badge(sw) + '</div>' +
+        '<div><span class="sd-ico" aria-hidden="true">🎣</span><small>' + esc(U.fish) + '</small>' + badge(fishL(wh, c.wind_speed_10m)) + '</div>' +
+        '<div><span class="sd-ico" aria-hidden="true">🚤</span><small>' + esc(U.boat) + '</small>' + badge(boatL(wh, c.wind_speed_10m, c.wind_gusts_10m)) + '</div></div>';
+      var sumEl = slot('summary');
+      if (sumEl) sumEl.textContent = st < 0 || sw < 0 ? '' : String(U2.sum || '').replace('{state}', U.seaStates[st]).replace('{wave}', num(wmax, 1))
+        .replace('{dir}', windName(c.wind_direction_10m, lang)).replace('{speed}', spd(c.wind_speed_10m) + ' ' + uLbl()).replace('{swim}', U2.swimTxt[sw]);
+      var wx2 = function (code, night) {
+        if (code == null) return ['', ''];
+        if (code === 0) return [night ? '🌙' : '☀️', 'clear']; if (code <= 2) return [night ? '☁️' : '🌤️', 'partly']; if (code === 3) return ['☁️', 'cloudy'];
+        if (code === 45 || code === 48) return ['🌫️', 'fog']; if (code <= 57) return ['🌦️', 'drizzle']; if (code <= 67) return ['🌧️', 'rain'];
+        if (code <= 77) return ['❄️', 'snow']; if (code <= 82) return ['🌦️', 'showers']; return ['⛈️', 'storm'];
+      };
+      var visTxt = function (v) { if (v == null) return '–'; var L = U2.visL || []; return v < 1000 ? L[0] : v < 4000 ? L[1] : v < 10000 ? L[2] : L[3]; };
       /* periods today / tomorrow */
       var days = []; h.time.forEach(function (tm) { var d = tm.slice(0, 10); if (days.indexOf(d) < 0) days.push(d); });
       var per = [[6, 12, U.morning], [12, 18, U.afternoon], [18, 24, U.evening]];
@@ -275,8 +301,9 @@
           var mw = Math.max.apply(null, idx.map(function (i) { return h.wind_speed_10m[i]; })), mg = Math.max.apply(null, idx.map(function (i) { return h.wind_gusts_10m[i]; }));
           var wv = idx.map(wave).filter(function (v) { return v != null; }), mx = wv.length ? Math.max.apply(null, wv) : null;
           var mid = idx[Math.floor(idx.length / 2)], l = wLevel(mw);
-          return '<div class="sp-p"><b>' + esc(p[2]) + '</b><span class="sv-w' + l + ' sp-w">' + windArrow(h.wind_direction_10m[mid]) + ' ' + esc(U[dirKey(h.wind_direction_10m[mid])]) + ' ' + spd(mw) + '</span>' +
-            '<span>🌊 ' + (mx == null ? '–' : num(mx, 1) + ' m') + '</span><span>🏊 ' + badge(swimL(mx, mg)) + '</span></div>';
+          var wq = wx2(h.weather_code ? h.weather_code[mid] : null, p[0] >= 18);
+          return '<div class="sp-p"><b>' + esc(p[2]) + '</b><span class="sp-ico" title="' + esc(CD[wq[1]] || '') + '">' + wq[0] + '</span><span class="sv-w' + l + ' sp-w">' + windArrow(h.wind_direction_10m[mid]) + ' ' + esc(U[dirKey(h.wind_direction_10m[mid])]) + ' ' + spd(mw) + '</span>' +
+            '<span>🌊 ' + (mx == null ? '–' : '<span dir="ltr">' + num(mx, 1) + ' m</span>') + '</span><span>🏊 ' + badge(swimL(mx, mg)) + '</span></div>';
         }).join('') + '</div></div>';
       }).join('');
       /* 3-hourly table */
@@ -284,16 +311,17 @@
       h.time.forEach(function (tm, i) {
         if (+tm.slice(11, 13) % 3 !== 0 || tm.slice(0, 13) < curH.slice(0, 11) + ('0' + (Math.floor(+curH.slice(11, 13) / 3) * 3)).slice(-2)) return;
         var d = tm.slice(0, 10);
-        if (d !== lastDay) { rows += '<tr class="st-day"><th colspan="7">' + esc(dayName2(d)) + '</th></tr>'; lastDay = d; }
-        var l = wLevel(h.wind_speed_10m[i]), wv = wave(i);
-        rows += '<tr><td>' + tm.slice(11, 16) + '</td><td class="sv-w' + l + '"><b>' + spd(h.wind_speed_10m[i]) + '</b></td><td class="sv-w' + wLevel(h.wind_gusts_10m[i]) + '">' + spd(h.wind_gusts_10m[i]) + '</td>' +
-          '<td>' + windArrow(h.wind_direction_10m[i]) + ' ' + esc(U[dirKey(h.wind_direction_10m[i])]) + '</td><td>' + (wv == null ? '–' : num(wv, 1)) + '</td><td>' + (mh && mh.wave_period[i] != null ? num(mh.wave_period[i]) : '–') + '</td><td>' + badge(swimL(wv, h.wind_gusts_10m[i])) + '</td></tr>';
+        if (d !== lastDay) { rows += '<tr class="st-day"><th colspan="8">' + esc(dayName2(d)) + '</th></tr>'; lastDay = d; }
+        var l = wLevel(h.wind_speed_10m[i]), wv = wave(i), hr = +tm.slice(11, 13), ws = seaSt(wv), wq = wx2(h.weather_code ? h.weather_code[i] : null, hr < 7 || hr >= 19);
+        rows += '<tr><td class="st-h"><span>' + wq[0] + '</span> ' + tm.slice(11, 16) + '</td><td>' + (ws < 0 ? '–' : '<span class="sea-state sea-' + ws + '">' + esc(U.seaStates[ws]) + '</span>') + '</td><td><b>' + (wv == null ? '–' : num(wv, 1) + ' m') + '</b></td>' +
+          '<td class="sv-w' + l + '"><b>' + spd(h.wind_speed_10m[i]) + '</b> <small>(' + spd(h.wind_gusts_10m[i]) + ')</small></td>' +
+          '<td>' + windArrow(h.wind_direction_10m[i]) + ' ' + esc(U[dirKey(h.wind_direction_10m[i])]) + '</td><td>' + esc(CD[wq[1]] || '–') + '</td><td>' + esc(visTxt(h.visibility ? h.visibility[i] : null)) + '</td><td>' + badge(swimL(wv, h.wind_gusts_10m[i])) + '</td></tr>';
       });
-      slot('table').innerHTML = '<div class="tbl-scroll"><table class="sea-tbl"><thead><tr><th>' + esc(U.hour) + '</th><th>' + esc(U.wind) + '<small>' + esc(uLbl()) + '</small></th><th>' + esc(U.gust) + '</th><th>' + esc(U.dir) + '</th><th>' + esc(U.wave) + '<small>m</small></th><th>' + esc(U.period) + '<small>s</small></th><th>' + esc(U.swim) + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+      slot('table').innerHTML = '<div class="tbl-scroll"><table class="sea-tbl"><thead><tr><th>' + esc(U.hour) + '</th><th>' + esc(U2.state) + '</th><th>' + esc(U.wave) + '</th><th>' + esc(U.wind) + '<small>' + esc(uLbl()) + ' (' + esc(U.gust) + ')</small></th><th>' + esc(U.dir) + '</th><th>' + esc(U2.wx) + '</th><th>' + esc(U2.vis) + '</th><th>' + esc(U2.act) + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
       document.querySelectorAll('[data-unit]').forEach(function (b) { b.classList.toggle('is-on', b.dataset.unit === unit); });
     };
     Promise.all([get(F2), get(M2).catch(function () { return null; })]).then(function (r) { DATA = { f: r[0], m: r[1] }; render(); })
-      .catch(function () { ['verdict', 'periods', 'table'].forEach(fail); });
+      .catch(function () { ['verdict', 'summary', 'periods', 'table'].forEach(fail); });
     document.addEventListener('click', function (e) {
       var b = e.target.closest('[data-unit]'); if (!b || !DATA) return;
       unit = b.dataset.unit; try { localStorage.setItem('ks-unit', unit); } catch (x) {} render();

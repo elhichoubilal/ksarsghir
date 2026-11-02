@@ -1,16 +1,58 @@
 (function () {
   var root = document.documentElement;
-  var themeBtn = document.querySelector('[data-theme-toggle]');
-  if (themeBtn) themeBtn.addEventListener('click', function () {
+  document.querySelectorAll('[data-theme-toggle]').forEach(function (themeBtn) { themeBtn.addEventListener('click', function () {
     var dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
     root.dataset.theme = dark ? 'light' : 'dark';
     try { localStorage.setItem('ks-theme', root.dataset.theme); } catch (e) {}
-  });
+  }); });
 
-  var menuBtn = document.querySelector('[data-menu]'), nav = document.getElementById('nav');
-  if (menuBtn && nav) menuBtn.addEventListener('click', function () {
-    var open = nav.classList.toggle('is-open');
-    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  var menuBtn = document.querySelector('[data-menu]'), nav = document.getElementById('nav'), backdrop = document.querySelector('.nav-backdrop');
+  function setNav(open) {
+    if (!nav) return;
+    nav.classList.toggle('is-open', open); document.body.classList.toggle('nav-open', open);
+    if (backdrop) backdrop.hidden = !open;
+    if (menuBtn) menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  if (menuBtn && nav) menuBtn.addEventListener('click', function () { setNav(!nav.classList.contains('is-open')); });
+  document.querySelectorAll('[data-menu-close]').forEach(function (b) { b.addEventListener('click', function () { setNav(false); if (menuBtn) menuBtn.focus(); }); });
+
+  /* services sheet (mobile tab bar) */
+  var sheet = document.getElementById('svc-sheet');
+  function setSheet(open) { if (!sheet) return; sheet.hidden = !open; document.body.classList.toggle('sheet-open', open); if (open) { var f = sheet.querySelector('a'); if (f) f.focus(); } }
+  document.querySelectorAll('[data-sheet-open]').forEach(function (b) { b.addEventListener('click', function () { setNav(false); setSheet(true); }); });
+  document.querySelectorAll('[data-sheet-close]').forEach(function (b) { b.addEventListener('click', function () { setSheet(false); }); });
+  if (sheet) sheet.addEventListener('click', function (e) { if (e.target === sheet) setSheet(false); });
+
+  /* search */
+  var sBtn = document.querySelector('[data-search]'), sBox = null, sData = null;
+  function sNorm(x) { return String(x || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f\u064b-\u065f\u0670]/g, '').replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي'); }
+  function sRender(q) {
+    var out = sBox.querySelector('.s-res'), L = sBox.dataset;
+    if (!sData) { out.innerHTML = '<p class="s-none">…</p>'; return; }
+    var n = sNorm(q).trim(), list = !n ? sData.slice(0, 8) : sData.filter(function (x) { return sNorm(x.t + ' ' + x.d + ' ' + x.c).indexOf(n) >= 0; }).slice(0, 12);
+    var base = sBtn.dataset.search.replace(/search\.json.*$/, ''), up = base.replace(/[^/]+\/$/, '');
+    out.innerHTML = list.length ? list.map(function (x) {
+      var rel = base + x.u.replace(/^(fr|en|es)\//, '');
+      return '<a href="' + rel + '"><b>' + x.t.replace(/</g, '&lt;') + '</b><small>' + (x.c || '').replace(/</g, '&lt;') + '</small></a>';
+    }).join('') : '<p class="s-none">' + L.none + '</p>';
+  }
+  if (sBtn) sBtn.addEventListener('click', function () {
+    var lg = root.lang || 'ar', T = { ar: ['ابحث عن شاطئ، ميناء، خدمة…', 'لا توجد نتائج.', 'إغلاق'], fr: ['Plage, port, service…', 'Aucun résultat.', 'Fermer'], en: ['Beach, port, service…', 'No results.', 'Close'], es: ['Playa, puerto, servicio…', 'Sin resultados.', 'Cerrar'] }[lg] || ['', '', ''];
+    if (!sBox) {
+      sBox = document.createElement('div'); sBox.className = 's-box'; sBox.dataset.none = T[1];
+      sBox.innerHTML = '<div class="s-in" role="dialog" aria-modal="true"><div class="s-head"><input type="search" placeholder="' + T[0] + '" aria-label="' + T[0] + '"><button type="button" class="icon-btn" aria-label="' + T[2] + '">✕</button></div><div class="s-res"></div></div>';
+      document.body.appendChild(sBox);
+      var inp = sBox.querySelector('input');
+      inp.addEventListener('input', function () { sRender(inp.value); });
+      sBox.querySelector('.s-head button').addEventListener('click', function () { sBox.hidden = true; sBtn.focus(); });
+      sBox.addEventListener('click', function (e) { if (e.target === sBox) sBox.hidden = true; });
+      fetch(sBtn.dataset.search).then(function (r) { return r.json(); }).then(function (d) { sData = d; sRender(inp.value); }).catch(function () { sData = []; sRender(''); });
+    }
+    sBox.hidden = false; sRender(sBox.querySelector('input').value); setTimeout(function () { sBox.querySelector('input').focus(); }, 30);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    if (sBox && !sBox.hidden) sBox.hidden = true; else if (sheet && !sheet.hidden) setSheet(false); else if (nav && nav.classList.contains('is-open')) setNav(false);
   });
 
   var more = document.querySelector('[data-menu-more]');
@@ -207,39 +249,39 @@
   /* ---------- lightbox ---------- */
   var groups = document.querySelectorAll('[data-lb-group]');
   if (groups.length) {
-    var box = document.createElement('div'), items = [], idx = 0, lastFocus = null, sx = null;
-    box.className = 'lb'; box.hidden = true; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true');
-    box.innerHTML = '<button class="lb-x" type="button" aria-label="×">×</button><button class="lb-p" type="button" aria-label="‹">‹</button>' +
+    var lbBox = document.createElement('div'), items = [], idx = 0, lastFocus = null, sx = null;
+    lbBox.className = 'lb'; lbBox.hidden = true; lbBox.setAttribute('role', 'dialog'); lbBox.setAttribute('aria-modal', 'true');
+    lbBox.innerHTML = '<button class="lb-x" type="button" aria-label="×">×</button><button class="lb-p" type="button" aria-label="‹">‹</button>' +
       '<figure><img alt=""><figcaption></figcaption></figure><button class="lb-n" type="button" aria-label="›">›</button><span class="lb-c"></span>';
-    document.body.appendChild(box);
-    var img = box.querySelector('img'), cap = box.querySelector('figcaption'), cnt = box.querySelector('.lb-c');
+    document.body.appendChild(lbBox);
+    var img = lbBox.querySelector('img'), cap = lbBox.querySelector('figcaption'), cnt = lbBox.querySelector('.lb-c');
     var show = function (i) {
       idx = (i + items.length) % items.length; var a = items[idx], th = a.querySelector('img');
       img.src = a.getAttribute('href'); img.alt = th ? th.alt : '';
       cap.textContent = a.dataset.caption || (th ? th.alt : ''); cnt.textContent = (idx + 1) + ' / ' + items.length;
     };
-    var close = function () { box.hidden = true; document.documentElement.style.overflow = ''; img.src = ''; if (lastFocus) lastFocus.focus(); };
+    var close = function () { lbBox.hidden = true; document.documentElement.style.overflow = ''; img.src = ''; if (lastFocus) lastFocus.focus(); };
     groups.forEach(function (g) {
       g.addEventListener('click', function (e) {
         var a = e.target.closest('[data-lb]'); if (!a) return; e.preventDefault();
         items = Array.prototype.filter.call(g.querySelectorAll('[data-lb]'), function (x) { return !x.hidden || g.hasAttribute('data-lb-all'); });
-        lastFocus = a; box.hidden = false; document.documentElement.style.overflow = 'hidden'; show(items.indexOf(a)); box.querySelector('.lb-x').focus();
+        lastFocus = a; lbBox.hidden = false; document.documentElement.style.overflow = 'hidden'; show(items.indexOf(a)); lbBox.querySelector('.lb-x').focus();
       });
     });
-    box.addEventListener('click', function (e) {
-      if (e.target.closest('.lb-x') || e.target === box) close();
+    lbBox.addEventListener('click', function (e) {
+      if (e.target.closest('.lb-x') || e.target === lbBox) close();
       else if (e.target.closest('.lb-p')) show(idx - 1);
       else if (e.target.closest('.lb-n')) show(idx + 1);
     });
     var rtl = document.documentElement.dir === 'rtl';
     document.addEventListener('keydown', function (e) {
-      if (box.hidden) return;
+      if (lbBox.hidden) return;
       if (e.key === 'Escape') close();
       if (e.key === 'ArrowRight') show(idx + (rtl ? -1 : 1));
       if (e.key === 'ArrowLeft') show(idx + (rtl ? 1 : -1));
     });
-    box.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
-    box.addEventListener('touchend', function (e) { if (sx == null) return; var dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) show(idx + ((dx < 0) !== rtl ? 1 : -1)); sx = null; });
+    lbBox.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
+    lbBox.addEventListener('touchend', function (e) { if (sx == null) return; var dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 50) show(idx + ((dx < 0) !== rtl ? 1 : -1)); sx = null; });
   }
 
   /* ---------- destinations map (Leaflet loaded on demand) ---------- */
