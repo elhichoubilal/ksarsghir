@@ -30,7 +30,7 @@
   var slot = function (n) { return $('[data-slot="' + n + '"]'); };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var num = function (v, d) { return v == null || isNaN(v) ? '–' : new Intl.NumberFormat(loc, { maximumFractionDigits: d || 0, minimumFractionDigits: d || 0 }).format(v); };
-  var get = function (u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
+  var get = function (u) { var one = function (x) { return fetch(x).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }; return one(u).catch(function () { return new Promise(function (ok) { setTimeout(ok, 1500); }).then(function () { return one(u.replace(/timezone=[^&]*/, 'timezone=auto')); }); }); };
   var fail = function (n) { var s = slot(n); if (s) s.innerHTML = '<p class="live-note">' + esc(U.error) + '</p>'; };
   var fmtTime = function (d) { return new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit', timeZone: TZN }).format(d); };
   var hhmm = function (iso) { return String(iso).slice(11, 16); };
@@ -151,7 +151,7 @@
         (dl ? fact('☀️', lang === 'ar' ? 'طول النهار' : lang === 'fr' ? 'Durée du jour' : lang === 'es' ? 'Duración del día' : 'Day length', Math.floor(dl / 3600) + 'h ' + ('0' + Math.round(dl % 3600 / 60)).slice(-2)) : '') +
         fact('🌙', U.moonrise, mt.rise ? fmtTime(mt.rise) : '—') + fact('🌘', U.moonset, mt.set ? fmtTime(mt.set) : '—') +
         fact(em, U.phase, esc(U.phases[ph])) + fact('💡', U.illum, num(il.fraction * 100) + '%') + '</div>';
-    }).catch(function () { ['now', 'hours', 'week', 'sea', 'sun', 'tide'].forEach(fail); });
+    }).catch(function (e) { if (window.console) console.warn('weather', e); ['now', 'hours', 'week', 'sea', 'sun', 'tide'].forEach(fail); });
   }
 
   /* ================= PRAYER ================= */

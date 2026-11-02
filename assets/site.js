@@ -128,7 +128,7 @@
       if (c <= 77) return ['❄️', 'snow']; if (c <= 82) return ['🌦️', 'showers']; return ['⛈️', 'storm'];
     };
     var dir = function (d) { var a = lang === 'ar' ? ['ش', 'ش ق', 'ق', 'ج ق', 'ج', 'ج غ', 'غ', 'ش غ'] : lang === 'fr' ? ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'] : lang === 'es' ? ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'] : ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']; return a[Math.round(((d % 360) / 45)) % 8]; };
-    var get = function (u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
+    var get = function (u) { var one = function (x) { return fetch(x).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }; return one(u).catch(function () { return new Promise(function (ok) { setTimeout(ok, 1500); }).then(function () { return one(u.replace(/timezone=[^&]*/, 'timezone=auto')); }); }); };
 
     if (box('weather')) get('https://api.open-meteo.com/v1/forecast?latitude=' + C.lat + '&longitude=' + C.lng +
       '&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=' + encodeURIComponent(TZN) + '&forecast_days=5')
@@ -369,7 +369,7 @@
     var c = JSON.parse(el.dataset.wx), U = c.ui, b = el.querySelector('.wx-mini-b'), lg = c.lang;
     var loc2 = lg === 'ar' ? 'ar-MA' : lg, nf = function (v, d) { return new Intl.NumberFormat(loc2, { maximumFractionDigits: d || 0 }).format(v); };
     var code = function (x) { return x === 0 ? ['☀️', 'clear'] : x <= 2 ? ['🌤️', 'partly'] : x === 3 ? ['☁️', 'cloudy'] : (x === 45 || x === 48) ? ['🌫️', 'fog'] : x <= 57 ? ['🌦️', 'drizzle'] : x <= 67 ? ['🌧️', 'rain'] : x <= 77 ? ['❄️', 'snow'] : x <= 82 ? ['🌦️', 'showers'] : ['⛈️', 'storm']; };
-    var g = function (u) { return fetch(u).then(function (r) { if (!r.ok) throw 0; return r.json(); }); };
+    var g = function (u) { var one = function (x) { return fetch(x).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }; return one(u).catch(function () { return new Promise(function (ok) { setTimeout(ok, 1500); }).then(function () { return one(u.replace(/timezone=[^&]*/, 'timezone=auto')); }); }); };
     whenVisible(el, function () {
       Promise.all([
         g('https://api.open-meteo.com/v1/forecast?latitude=' + c.lat + '&longitude=' + c.lng + '&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m&timezone=UTC'),

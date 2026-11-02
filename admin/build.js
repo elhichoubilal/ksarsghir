@@ -463,7 +463,9 @@
       '<nav class="nav" id="nav" aria-label="' + esc(UI[lang].menu) + '"><div class="drawer-h"><b>' + esc(t(site.name, lang)) + '</b><button class="icon-btn" type="button" data-menu-close aria-label="' + esc(SRCH[lang].close) + '">' + ICO.close + '</button></div>' + navHtml(site, file, lang, o.current) +
       '<div class="nav-extra"><div class="langs" role="group" aria-label="' + UI[lang].lang + '">' + langLinks(site, file, lang, o.alternates) + '</div>' +
       '<button class="icon-btn" type="button" data-theme-toggle aria-label="' + esc(UI[lang].theme) + '">' + moonSvg() + '</button></div></nav>' +
-      '<div class="tools"><button class="icon-btn search-btn" type="button" data-search="' + esc(rel(file, prefix(lang) + 'search.json')) + '?v=' + (site.version || 1) + '" aria-label="' + esc(SRCH[lang].open) + '">' + ICO.search + '</button><div class="langs" role="group" aria-label="' + UI[lang].lang + '">' + langLinks(site, file, lang, o.alternates) + '</div>' +
+      '<div class="tools"><button class="icon-btn search-btn" type="button" data-search="' + esc(rel(file, prefix(lang) + 'search.json')) + '?v=' + (site.version || 1) + '" aria-label="' + esc(SRCH[lang].open) + '">' + ICO.search + '</button>' +
+      '<details class="lang-dd"><summary aria-label="' + UI[lang].lang + '"><span aria-hidden="true">🌐</span> ' + lang.toUpperCase() + '</summary><div class="lang-dd-m">' + langLinks(site, file, lang, o.alternates) + '</div></details>' +
+      '<div class="langs" role="group" aria-label="' + UI[lang].lang + '">' + langLinks(site, file, lang, o.alternates) + '</div>' +
       '<button class="icon-btn" type="button" data-theme-toggle aria-label="' + esc(UI[lang].theme) + '">' + moonSvg() + '</button>' +
       '<button class="icon-btn menu-btn" type="button" data-menu aria-controls="nav" aria-expanded="false" aria-label="' + esc(UI[lang].menu) + '">' + menuSvg() + '</button>' +
       '</div></div></header>\n<div class="nav-backdrop" data-menu-close hidden></div>\n';
