@@ -128,7 +128,36 @@
       if (c <= 77) return ['❄️', 'snow']; if (c <= 82) return ['🌦️', 'showers']; return ['⛈️', 'storm'];
     };
     var dir = function (d) { var a = lang === 'ar' ? ['ش', 'ش ق', 'ق', 'ج ق', 'ج', 'ج غ', 'غ', 'ش غ'] : lang === 'fr' ? ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'] : lang === 'es' ? ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'] : ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']; return a[Math.round(((d % 360) / 45)) % 8]; };
-    var get = function (u) { var one = function (x) { return fetch(x).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }; return one(u).catch(function () { return new Promise(function (ok) { setTimeout(ok, 1500); }).then(function () { return one(u.replace(/timezone=[^&]*/, 'timezone=auto')); }); }); };
+    var get = function (u) {
+      /* 1) copy saved hourly by GitHub in data/live/ (same site, works on every network) 2) Open-Meteo directly 3) older saved copy */
+      var LB = (function () { var s = document.querySelector('script[src*="assets/site.js"],script[src*="assets/tools.js"]'); return s ? s.src.replace(/assets\/[^\/]*$/, '') + 'data/live/' : ''; })();
+      var near = function (a, b) { return Math.abs(+a - +b) < 1e-3; };
+      var saved = function (maxH) {
+        return Promise.resolve().then(function () {
+          if (!/open-meteo\.com/.test(u) || !LB) throw 0;
+          var q = new URL(u).searchParams, la = q.get('latitude'), lo = q.get('longitude'), name = '';
+          if (/marine-api/.test(u)) { if (near(la, C.seaLat) && near(lo, C.seaLng)) name = 'mar-sea'; }
+          else if (near(la, C.lat) && near(lo, C.lng)) name = 'fc-town';
+          else if (near(la, C.seaLat) && near(lo, C.seaLng)) name = 'fc-sea';
+          if (!name) throw 0;
+          return fetch(LB + name + '.json?h=' + Math.floor(Date.now() / 36e5), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
+            if (j._tz !== q.get('timezone') || !(Date.now() - Date.parse(j._fetched) < maxH * 36e5)) throw 0;
+            var n = +q.get('forecast_days') || 7;
+            ['current', 'hourly', 'daily'].forEach(function (k) {
+              var want = (q.get(k) || '').split(',').filter(Boolean);
+              if (!want.length) { delete j[k]; return; }
+              if (!j[k]) throw 0;
+              want.forEach(function (f) { if (!(f in j[k])) throw 0; });
+              if (k !== 'current') Object.keys(j[k]).forEach(function (f) { if (Array.isArray(j[k][f])) j[k][f] = j[k][f].slice(0, k === 'daily' ? n : n * 24); });
+            });
+            return j;
+          });
+        });
+      };
+      var one = function (x) { return fetch(x).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
+      var direct = function () { return one(u).catch(function () { return new Promise(function (ok) { setTimeout(ok, 1500); }).then(function () { return one(u.replace(/timezone=[^&]*/, 'timezone=auto')); }); }); };
+      return saved(3).catch(direct).catch(function (e) { return saved(48).catch(function () { throw e; }); });
+    };
 
     if (box('weather')) get('https://api.open-meteo.com/v1/forecast?latitude=' + C.lat + '&longitude=' + C.lng +
       '&current=temperature_2m,weather_code,wind_speed_10m,wind_direction_10m,relative_humidity_2m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=' + encodeURIComponent(TZN) + '&forecast_days=5')

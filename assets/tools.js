@@ -30,7 +30,36 @@
   var slot = function (n) { return $('[data-slot="' + n + '"]'); };
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var num = function (v, d) { return v == null || isNaN(v) ? '–' : new Intl.NumberFormat(loc, { maximumFractionDigits: d || 0, minimumFractionDigits: d || 0 }).format(v); };
-  var get = function (u) { var one = function (x) { return fetch(x).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }; return one(u).catch(function () { return new Promise(function (ok) { setTimeout(ok, 1500); }).then(function () { return one(u.replace(/timezone=[^&]*/, 'timezone=auto')); }); }); };
+  var get = function (u) {
+      /* 1) copy saved hourly by GitHub in data/live/ (same site, works on every network) 2) Open-Meteo directly 3) older saved copy */
+      var LB = (function () { var s = document.querySelector('script[src*="assets/site.js"],script[src*="assets/tools.js"]'); return s ? s.src.replace(/assets\/[^\/]*$/, '') + 'data/live/' : ''; })();
+      var near = function (a, b) { return Math.abs(+a - +b) < 1e-3; };
+      var saved = function (maxH) {
+        return Promise.resolve().then(function () {
+          if (!/open-meteo\.com/.test(u) || !LB) throw 0;
+          var q = new URL(u).searchParams, la = q.get('latitude'), lo = q.get('longitude'), name = '';
+          if (/marine-api/.test(u)) { if (near(la, C.seaLat) && near(lo, C.seaLng)) name = 'mar-sea'; }
+          else if (near(la, C.lat) && near(lo, C.lng)) name = 'fc-town';
+          else if (near(la, C.seaLat) && near(lo, C.seaLng)) name = 'fc-sea';
+          if (!name) throw 0;
+          return fetch(LB + name + '.json?h=' + Math.floor(Date.now() / 36e5), { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) {
+            if (j._tz !== q.get('timezone') || !(Date.now() - Date.parse(j._fetched) < maxH * 36e5)) throw 0;
+            var n = +q.get('forecast_days') || 7;
+            ['current', 'hourly', 'daily'].forEach(function (k) {
+              var want = (q.get(k) || '').split(',').filter(Boolean);
+              if (!want.length) { delete j[k]; return; }
+              if (!j[k]) throw 0;
+              want.forEach(function (f) { if (!(f in j[k])) throw 0; });
+              if (k !== 'current') Object.keys(j[k]).forEach(function (f) { if (Array.isArray(j[k][f])) j[k][f] = j[k][f].slice(0, k === 'daily' ? n : n * 24); });
+            });
+            return j;
+          });
+        });
+      };
+      var one = function (x) { return fetch(x).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
+      var direct = function () { return one(u).catch(function () { return new Promise(function (ok) { setTimeout(ok, 1500); }).then(function () { return one(u.replace(/timezone=[^&]*/, 'timezone=auto')); }); }); };
+      return saved(3).catch(direct).catch(function (e) { return saved(48).catch(function () { throw e; }); });
+    };
   var fail = function (n) { var s = slot(n); if (s) s.innerHTML = '<p class="live-note">' + esc(U.error) + '</p>'; };
   var fmtTime = function (d) { return new Intl.DateTimeFormat('fr-FR', { hour: '2-digit', minute: '2-digit', timeZone: TZN }).format(d); };
   var hhmm = function (iso) { return String(iso).slice(11, 16); };
