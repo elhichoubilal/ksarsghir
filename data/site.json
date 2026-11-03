@@ -1,5 +1,5 @@
 {
- "version": "mvzlyvky",
+ "version": "mw11y3u5",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -432,7 +432,7 @@
  "tourismPage": {},
  "ads": {
   "top": "<script async src=\"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8985281135812571\"\n     crossorigin=\"anonymous\"></script>",
-  "bottom": ""
+  "bottom": "<script async src=\"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8985281135812571\"\n     crossorigin=\"anonymous\"></script>"
  },
  "verification": {
   "google": ""
