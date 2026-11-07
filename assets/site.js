@@ -61,6 +61,15 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
     var first = nav.querySelector('a'); if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 350);
   });
+  document.querySelectorAll('[data-spot]').forEach(function (tr) {
+    var dots = tr.parentNode.querySelectorAll('.spot-dots i'), raf = 0;
+    tr.addEventListener('scroll', function () {
+      if (raf) return; raf = requestAnimationFrame(function () {
+        raf = 0; var c = tr.firstElementChild, step = c ? c.offsetWidth + 12 : 1, i = Math.round(Math.abs(tr.scrollLeft) / step);
+        dots.forEach(function (d, k) { d.classList.toggle('on', k === Math.min(i, dots.length - 1)); });
+      });
+    }, { passive: true });
+  });
   var unc = document.querySelector('[data-unclamp]');
   if (unc) unc.addEventListener('click', function () { var w = unc.closest('[data-clamp]'); if (w) w.classList.add('is-open'); unc.remove(); });
   var today = document.querySelector('[data-today]');
@@ -128,6 +137,7 @@
       if (c <= 77) return ['❄️', 'snow']; if (c <= 82) return ['🌦️', 'showers']; return ['⛈️', 'storm'];
     };
     var dir = function (d) { var a = lang === 'ar' ? ['ش', 'ش ق', 'ق', 'ج ق', 'ج', 'ج غ', 'غ', 'ش غ'] : lang === 'fr' ? ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'] : lang === 'es' ? ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'] : ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']; return a[Math.round(((d % 360) / 45)) % 8]; };
+    var KMH = lang === 'ar' ? 'كم/س' : 'km/h', MU = lang === 'ar' ? 'م' : 'm';
     var get = function (u) {
       /* 1) copy saved hourly by GitHub in data/live/ (same site, works on every network) 2) Open-Meteo directly 3) older saved copy */
       var LB = (function () { var s = document.querySelector('script[src*="assets/site.js"],script[src*="assets/tools.js"]'); return s ? s.src.replace(/assets\/[^\/]*$/, '') + 'data/live/' : ''; })();
@@ -167,8 +177,8 @@
           var dd = new Date(t + 'T12:00:00'), wi = wx(d.daily.weather_code[i]);
           return '<div><span class="d-t">' + new Intl.DateTimeFormat(loc, { weekday: 'short' }).format(dd) + '</span><span class="d-ico">' + wi[0] + '</span><span><b>' + num(d.daily.temperature_2m_max[i]) + '°</b> ' + num(d.daily.temperature_2m_min[i]) + '°</span></div>';
         }).join('');
-        box('weather').innerHTML = '<div class="live-now"><span class="live-ico" aria-hidden="true">' + w[0] + '</span><div><div class="live-big">' + num(c.temperature_2m) + '°</div><div class="live-desc">' + U.codes[w[1]] + '</div></div></div>' +
-          '<ul class="live-facts"><li>' + U.wind + ': <b><span dir="ltr">' + num(c.wind_speed_10m) + ' km/h</span> ' + windArrow(c.wind_direction_10m) + ' ' + windName(c.wind_direction_10m, lang) + '</b></li><li>' + U.humidity + ': <b>' + num(c.relative_humidity_2m) + '%</b></li></ul>' +
+        box('weather').innerHTML = '<div class="lv-now"><div class="lv-txt"><b class="lv-big" dir="ltr">' + num(c.temperature_2m) + '°C</b><span class="lv-desc">' + U.codes[w[1]] + '</span></div><span class="lv-ico" aria-hidden="true">' + w[0] + '</span></div>' +
+          '<ul class="lv-facts"><li>' + U.humidity + ': <b>' + num(c.relative_humidity_2m) + '%</b></li><li class="lv-x">' + U.wind + ': <b><span>' + num(c.wind_speed_10m) + ' ' + KMH + '</span> ' + windArrow(c.wind_direction_10m) + ' ' + windName(c.wind_direction_10m, lang) + '</b></li></ul>' +
           '<div class="days">' + days + '</div>';
       }).catch(function () { fail('weather'); });
 
@@ -178,11 +188,10 @@
     ]).then(function (r) {
       var m = r[0].current, w = r[1].current, h = m.wave_height;
       var st = h == null ? -1 : h < 0.5 ? 0 : h < 1.25 ? 1 : h < 2.5 ? 2 : 3;
-      box('sea').innerHTML = '<div class="live-now"><span class="live-ico" aria-hidden="true">🌊</span><div><div class="live-big">' + (h == null ? '–' : '<span dir="ltr">' + num(h, 1) + ' m</span>') + '</div>' +
-        (st >= 0 ? '<span class="sea-state sea-' + st + '">' + U.seaStates[st] + '</span>' : '') + '</div></div>' +
-        '<ul class="live-facts">' + (m.sea_surface_temperature != null ? '<li>' + U.water + ': <b>' + num(m.sea_surface_temperature) + '°</b></li>' : '') +
-        (m.wave_period != null ? '<li>' + U.period + ': <b>' + num(m.wave_period) + ' s</b></li>' : '') +
-        '<li>' + U.wind + ': <b><span dir="ltr">' + num(w.wind_speed_10m) + ' km/h</span> ' + windArrow(w.wind_direction_10m) + ' ' + windName(w.wind_direction_10m, lang) + '</b></li></ul>';
+      box('sea').innerHTML = '<div class="lv-now"><div class="lv-txt"><b class="lv-big">' + (h == null ? '–' : '<span dir="ltr">' + num(h, 1) + '</span> ' + MU) + '</b><span class="lv-desc">' + (U.waves || '') + '</span></div><span class="lv-ico" aria-hidden="true">🌊</span></div>' +
+        '<ul class="lv-facts"><li>' + U.wind + ': <b><span>' + num(w.wind_speed_10m) + ' ' + KMH + '</span></b></li>' +
+        (st >= 0 ? '<li>' + (U.state || '') + ': <b class="sea-txt sea-' + st + '">' + U.seaStates[st] + '</b></li>' : '') +
+        (m.sea_surface_temperature != null ? '<li class="lv-x">' + U.water + ': <b>' + num(m.sea_surface_temperature) + '°</b></li>' : '') + '</ul>';
     }).catch(function () { fail('sea'); });
 
     if (box('prayer')) {
@@ -204,9 +213,10 @@
           var cur = now.getUTCHours() * 60 + now.getUTCMinutes(), next = keys.filter(function (k) { return k !== 'Sunrise' && mins(T[k]) > cur; })[0] || 'Fajr';
           var hj = d.data.date.hijri, hijri = !hj ? '' : lang === 'ar' ? hj.day + ' ' + hj.month.ar + ' ' + hj.year + ' هـ' : hj.day + ' ' + hj.month.en + ' ' + hj.year + ' AH';
           var left = mins(T[next]) - cur; if (left < 0) left += 1440;
-          box('prayer').innerHTML = '<p class="next-p">' + U.next + ': <b>' + U.prayers[next] + ' ' + String(T[next]).slice(0, 5) + '</b> <span>(' + Math.floor(left / 60) + ':' + ('0' + left % 60).slice(-2) + ')</span></p>' +
+          box('prayer').innerHTML = '<div class="lv-next"><small>' + U.next + '</small><b>' + U.prayers[next] + ' <span dir="ltr">' + String(T[next]).slice(0, 5) + '</span></b><span class="lv-left">' + (U.inT || '') + ' <span dir="ltr">' + Math.floor(left / 60) + ':' + ('0' + left % 60).slice(-2) + '</span></span></div>' +
             '<ul class="prayers">' + keys.map(function (k) { return '<li' + (k === next ? ' class="is-next"' : '') + '><span>' + U.prayers[k] + '</span><b>' + String(T[k]).slice(0, 5) + '</b></li>'; }).join('') + '</ul>' +
-            '<p class="live-note">' + (hijri ? hijri + ' · ' : '') + (d.official ? (U.official || '✓ Habous') : U.approx) + '</p>';
+            '<p class="live-note">' + (hijri ? hijri + ' · ' : '') + (d.official ? (U.official || '✓ Habous') : U.approx) + '</p>' +
+            (U.fullUrl ? '<a class="lv-all" href="' + U.fullUrl + '">' + (U.full || U.more) + ' <span aria-hidden="true">' + (lang === 'ar' ? '←' : '→') + '</span></a>' : '');
         }).catch(function () { fail('prayer'); });
     }
   }

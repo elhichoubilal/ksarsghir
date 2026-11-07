@@ -524,16 +524,16 @@
 
   /* ---------- homepage extra sections ---------- */
   var LIVE_UI = {
-    ar: { title: 'القصر الصغير الآن', weather: 'الطقس', sea: 'حالة البحر', prayer: 'مواقيت الصلاة', waves: 'الموج', water: 'حرارة الماء', wind: 'الرياح', humidity: 'الرطوبة', period: 'فترة الموج', next: 'الصلاة القادمة', official: 'مواقيت وزارة الأوقاف الرسمية', approx: 'مواقيت تقريبية حسب موقع القصر الصغير', unavailable: 'غير متاح حالياً', more: 'التفاصيل',
+    ar: { title: 'القصر الصغير الآن', weather: 'الطقس', sea: 'حالة البحر', prayer: 'مواقيت الصلاة', waves: 'الموج', water: 'حرارة الماء', wind: 'الرياح', humidity: 'الرطوبة', period: 'فترة الموج', next: 'الصلاة القادمة', official: 'مواقيت وزارة الأوقاف الرسمية', approx: 'مواقيت تقريبية حسب موقع القصر الصغير', unavailable: 'غير متاح حالياً', more: 'التفاصيل', state: 'الحالة', inT: 'بعد', full: 'عرض الجدول الكامل',
       prayers: { Fajr: 'الفجر', Sunrise: 'الشروق', Dhuhr: 'الظهر', Asr: 'العصر', Maghrib: 'المغرب', Isha: 'العشاء' }, seaStates: ['هادئ', 'خفيف', 'متوسط', 'هائج'],
       codes: { clear: 'صافٍ', partly: 'غائم جزئياً', cloudy: 'غائم', fog: 'ضباب', drizzle: 'رذاذ', rain: 'ممطر', snow: 'ثلج', showers: 'زخات مطر', storm: 'عاصفة رعدية' } },
-    fr: { title: 'Ksar Sghir en direct', weather: 'Météo', sea: 'État de la mer', prayer: 'Horaires de prière', waves: 'Vagues', water: 'Eau', wind: 'Vent', humidity: 'Humidité', period: 'Période', next: 'Prochaine prière', official: 'Horaires officiels du ministère des Habous', approx: 'Horaires approximatifs pour Ksar Sghir', unavailable: 'Indisponible pour le moment', more: 'Détails',
+    fr: { title: 'Ksar Sghir en direct', weather: 'Météo', sea: 'État de la mer', prayer: 'Horaires de prière', waves: 'Vagues', water: 'Eau', wind: 'Vent', humidity: 'Humidité', period: 'Période', next: 'Prochaine prière', official: 'Horaires officiels du ministère des Habous', approx: 'Horaires approximatifs pour Ksar Sghir', unavailable: 'Indisponible pour le moment', more: 'Détails', state: 'État', inT: 'dans', full: 'Voir le tableau complet',
       prayers: { Fajr: 'Fajr', Sunrise: 'Chourouk', Dhuhr: 'Dohr', Asr: 'Asr', Maghrib: 'Maghrib', Isha: 'Icha' }, seaStates: ['Calme', 'Peu agitée', 'Agitée', 'Forte'],
       codes: { clear: 'Ensoleillé', partly: 'Partiellement nuageux', cloudy: 'Nuageux', fog: 'Brouillard', drizzle: 'Bruine', rain: 'Pluie', snow: 'Neige', showers: 'Averses', storm: 'Orage' } },
-    en: { title: 'Ksar Sghir right now', weather: 'Weather', sea: 'Sea conditions', prayer: 'Prayer times', waves: 'Waves', water: 'Water', wind: 'Wind', humidity: 'Humidity', period: 'Period', next: 'Next prayer', official: 'Official Ministry of Habous times', approx: 'Approximate times for Ksar Sghir', unavailable: 'Not available right now', more: 'Details',
+    en: { title: 'Ksar Sghir right now', weather: 'Weather', sea: 'Sea conditions', prayer: 'Prayer times', waves: 'Waves', water: 'Water', wind: 'Wind', humidity: 'Humidity', period: 'Period', next: 'Next prayer', official: 'Official Ministry of Habous times', approx: 'Approximate times for Ksar Sghir', unavailable: 'Not available right now', more: 'Details', state: 'State', inT: 'in', full: 'See the full timetable',
       prayers: { Fajr: 'Fajr', Sunrise: 'Sunrise', Dhuhr: 'Dhuhr', Asr: 'Asr', Maghrib: 'Maghrib', Isha: 'Isha' }, seaStates: ['Calm', 'Slight', 'Moderate', 'Rough'],
       codes: { clear: 'Clear', partly: 'Partly cloudy', cloudy: 'Cloudy', fog: 'Fog', drizzle: 'Drizzle', rain: 'Rain', snow: 'Snow', showers: 'Showers', storm: 'Thunderstorm' } },
-    es: { title: 'Alcazarseguer ahora', weather: 'Tiempo', sea: 'Estado del mar', prayer: 'Horarios de oración', waves: 'Olas', water: 'Agua', wind: 'Viento', humidity: 'Humedad', period: 'Periodo', next: 'Próxima oración', official: 'Horarios oficiales del Ministerio de Habices', approx: 'Horarios aproximados para Alcazarseguer', unavailable: 'No disponible ahora', more: 'Detalles',
+    es: { title: 'Alcazarseguer ahora', weather: 'Tiempo', sea: 'Estado del mar', prayer: 'Horarios de oración', waves: 'Olas', water: 'Agua', wind: 'Viento', humidity: 'Humedad', period: 'Periodo', next: 'Próxima oración', official: 'Horarios oficiales del Ministerio de Habices', approx: 'Horarios aproximados para Alcazarseguer', unavailable: 'No disponible ahora', more: 'Detalles', state: 'Estado', inT: 'en', full: 'Ver el horario completo',
       prayers: { Fajr: 'Fajr', Sunrise: 'Amanecer', Dhuhr: 'Dhuhr', Asr: 'Asr', Maghrib: 'Maghrib', Isha: 'Isha' }, seaStates: ['Calma', 'Marejadilla', 'Marejada', 'Fuerte'],
       codes: { clear: 'Despejado', partly: 'Parcialmente nublado', cloudy: 'Nublado', fog: 'Niebla', drizzle: 'Llovizna', rain: 'Lluvia', snow: 'Nieve', showers: 'Chubascos', storm: 'Tormenta' } }
   };
@@ -542,10 +542,12 @@
     var parts = [];
     var link = function (key) { var u = w[key + 'Url']; return u ? '<a class="live-more" href="' + esc(linkHref(site, file, lang, { url: u, i18n: !isAbs(u) })) + '">' + esc(L.more) + '</a>' : ''; };
     if (w.weather !== false) parts.push('<div class="live-card" data-live="weather"><div class="live-h"><h3><i aria-hidden="true">⛅</i>' + esc(L.weather) + '</h3>' + link('weather') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
-    if (w.sea !== false) parts.push('<div class="live-card" data-live="sea"><div class="live-h"><h3><i aria-hidden="true">🌊</i>' + esc(L.sea) + '</h3>' + link('sea') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
-    if (w.prayer !== false) parts.push('<div class="live-card" data-live="prayer"><div class="live-h"><h3><i aria-hidden="true">🕌</i>' + esc(L.prayer) + '</h3>' + link('prayer') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
+    if (w.sea !== false) parts.push('<div class="live-card" data-live="sea"><div class="live-h"><h3><i aria-hidden="true">🌊</i><span class="lv-l">' + esc(L.sea) + '</span><span class="lv-sh">' + esc({ ar: 'البحر', fr: 'Mer', en: 'Sea', es: 'Mar' }[lang]) + '</span></h3>' + link('sea') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
+    if (w.prayer !== false) parts.push('<div class="live-card" data-live="prayer"><div class="live-h"><h3><i aria-hidden="true">🕌</i><span class="lv-l">' + esc(L.prayer) + '</span><span class="lv-sh">' + esc({ ar: 'الصلاة', fr: 'Prière', en: 'Prayer', es: 'Oración' }[lang]) + '</span></h3>' + link('prayer') + '</div><div class="live-body" aria-live="polite"><div class="live-skel"></div></div></div>');
     if (!parts.length) return '';
-    var cfg = { off: +w.utcOffset || 0, lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, seaLat: w.seaLat || 35.87, seaLng: w.seaLng || -5.55, method: w.method || 21, tune: w.tune || '', ui: L };
+    var UI2 = {}; Object.keys(L).forEach(function (k) { UI2[k] = L[k]; });
+    if (w.prayerUrl) UI2.fullUrl = linkHref(site, file, lang, { url: w.prayerUrl, i18n: !isAbs(w.prayerUrl) });
+    var cfg = { off: +w.utcOffset || 0, lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, seaLat: w.seaLat || 35.87, seaLng: w.seaLng || -5.55, method: w.method || 21, tune: w.tune || '', ui: UI2 };
     if (OFFICIAL) cfg.official = rel(file, 'data/prayer.json') + '?v=' + (site.version || 1);
     return '<section class="wrap block live on-hero" aria-labelledby="live-t"><h2 class="block-title sr-only" id="live-t">' + esc(L.title) + '</h2><div class="live-grid">' + parts.join('') + '</div>' +
       '<script type="application/json" id="ks-live">' + JSON.stringify(cfg).replace(/</g, '\\u003c') + '</script></section>';
@@ -609,7 +611,7 @@
   function secBlock(site, file, lang, sec, list, n) {
     if (!list.length) return '';
     return '<section class="wrap block sec-' + sec + '"><div class="block-head"><h2 class="block-title">' + esc(SECTIONS[sec].icon + ' ' + secText(site, sec, 'block', lang)) + '</h2><a href="' + rel(file, prefix(lang) + sec + '/') + '">' + esc(secText(site, sec, 'all', lang)) + '</a></div>' +
-      '<div class="grid">' + list.slice(0, n || 3).map(function (a) { return card(site, file, a, lang); }).join('') + '</div></section>';
+      '<div class="grid n-' + Math.min(list.length, n || 3) + '">' + list.slice(0, n || 3).map(function (a) { return card(site, file, a, lang); }).join('') + '</div></section>';
   }
 
   /* ---------- pages ---------- */
@@ -643,7 +645,7 @@
       })() +
       '<h1>' + esc(t(h.title, lang) || t(site.name, lang)) + '</h1><span class="hero-bar" aria-hidden="true"></span>' +
       '<p class="hero-sub">' + esc(t(h.subtitle, lang)) + '</p>' +
-      '<a class="btn" href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(t(h.cta, lang) || UI[lang].explore) + '</a>' +
+      '<a class="btn hero-cta" href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(t(h.cta, lang) || UI[lang].explore) + '<i class="cta-arr" aria-hidden="true">' + (lang === 'ar' ? '←' : '→') + '</i></a>' +
       (function () {
         var q = (h.quick || []).filter(function (x) { return x && x.url && t(x.label, lang); });
         if (!q.length) return '';
@@ -657,37 +659,50 @@
       (show(site, 'news') ? secBlock(site, file, lang, 'news', recentNews(site, articles, lang), 3) : '') +
       adSlot(site, 'top', lang) +
       (function () {
-        var intro = show(site, 'intro') && t(site.intro, lang) ? '<div class="duo-intro prose" data-clamp>' + fixContentPaths(file, t(site.intro, lang), lang) +
+        /* mobile: swipeable spotlight (featured + latest), like the reference */
+        var sl = (show(site, 'featured') && feat ? [feat] : []).concat(show(site, 'latest') ? rest.slice(0, 3) : []).filter(function (a) { return a.cover; });
+        if (sl.length < 2) return '';
+        var go = { ar: 'تعرّف عليه', fr: 'Découvrir', en: 'Discover', es: 'Descubrir' }[lang];
+        return '<section class="spot" aria-label="' + esc(UI[lang].featured) + '"><div class="spot-track" data-spot>' + sl.map(function (a, i) {
+          var x = a.i18n[lang];
+          return '<a class="spot-card" href="' + esc(rel(file, articleDir(a, lang))) + '"><img src="' + esc(asset(file, sized(a.cover, 800))) + '" alt="' + esc(x.alt || x.title) + '"' + (i ? ' loading="lazy"' : '') + ' decoding="async" width="800" height="500">' +
+            '<span class="spot-txt"><b>' + esc(x.title) + '</b>' + (x.description ? '<span>' + esc(x.description) + '</span>' : '') + '<i class="spot-go">' + esc(go) + '</i></span></a>';
+        }).join('') + '</div><div class="spot-dots" aria-hidden="true">' + sl.map(function (a, i) { return '<i' + (i ? '' : ' class="on"') + '></i>'; }).join('') + '</div></section>';
+      })() +
+      (function () {
+        var ih = fixContentPaths(file, t(site.intro, lang) || '', lang), hm = ih.match(/^\s*<h2[^>]*>([\s\S]*?)<\/h2>/);
+        var intro = show(site, 'intro') && ih ? '<div class="duo-intro" data-clamp><h2 class="block-title">' + (hm ? hm[1] : esc({ ar: 'مرحباً بك في ', fr: 'Bienvenue à ', en: 'Welcome to ', es: 'Bienvenido a ' }[lang] + t(site.name, lang))) + '</h2><div class="prose">' + (hm ? ih.slice(hm[0].length) : ih) + '</div>' +
           '<button type="button" class="btn-outline" data-unclamp>' + esc({ ar: 'اكتشف المزيد عن المدينة', fr: 'En savoir plus sur la ville', en: 'More about the town', es: 'Más sobre el pueblo' }[lang]) + '</button></div>' : '';
         var fb = '';
         if (show(site, 'featured') && feat) {
           var fx = feat.i18n[lang];
-          fb = '<a class="feat-banner" href="' + esc(rel(file, articleDir(feat, lang))) + '">' +
-            (feat.cover ? '<img src="' + esc(asset(file, sized(feat.cover, 1200))) + '" alt="' + esc(fx.alt || fx.title) + '" loading="lazy" decoding="async" width="1200" height="700">' : '') +
-            '<span class="fb-txt"><small>' + esc(UI[lang].featured) + '</small><b>' + esc(fx.title) + '</b><span class="fb-desc">' + esc(fx.description) + '</span>' +
-            '<span class="btn">' + esc(UI[lang].read) + '</span></span></a>';
+          fb = '<a class="feat-photo" href="' + esc(rel(file, articleDir(feat, lang))) + '">' +
+            (feat.cover ? '<img src="' + esc(asset(file, sized(feat.cover, 1200))) + '" alt="' + esc(fx.alt || fx.title) + '" loading="lazy" decoding="async" width="1200" height="760">' : '') +
+            '<span class="fp-cap"><small>' + esc(UI[lang].featured) + '</small><b>' + esc(fx.title) + '</b><i aria-hidden="true">' + (lang === 'ar' ? '←' : '→') + '</i></span></a>';
         }
         if (!intro && !fb) return '';
         return '<section class="wrap block home-duo' + (intro && fb ? '' : ' is-single') + '">' + intro + fb + '</section>';
       })() +
       (show(site, 'video') ? homeVideo(site, lang) : '') +
       (show(site, 'latest') && rest.length ? (function () {
-        var tiles = show(site, 'categories') ? cats.map(function (c) {
-          var a = list.filter(function (x) { return x.category === c.id && x.cover; })[0];
-          return '<a class="cat-tile" href="' + rel(file, prefix(lang) + 'tourisme/') + '#' + esc(c.id) + '">' +
-            (a ? '<img src="' + esc(asset(file, sized(a.cover, 640))) + '" alt="" loading="lazy" decoding="async" width="300" height="300">' : '') +
-            '<span><i aria-hidden="true">' + esc(c.icon || '') + '</i>' + esc(t(c.name, lang)) + '</span></a>';
-        }).join('') : '';
-        var rows = rest.slice(0, 3).map(function (a) {
+        var cards = rest.slice(0, 3).map(function (a) {
           var x = a.i18n[lang];
-          return '<article class="row-card"><a href="' + esc(rel(file, articleDir(a, lang))) + '">' +
-            '<span class="rc-img ph-bg">' + (a.cover ? '<img src="' + esc(asset(file, sized(a.cover, 640))) + '" alt="' + esc(x.alt || x.title) + '" loading="lazy" decoding="async" width="400" height="300">' : '') + '</span>' +
-            '<span class="rc-body"><span class="cat">' + esc(catLabel(site, a.category, lang)) + '</span><b>' + esc(x.title) + '</b>' +
+          return '<article class="lt-card"><a href="' + esc(rel(file, articleDir(a, lang))) + '">' +
+            '<span class="lt-img ph-bg">' + (a.cover ? '<img src="' + esc(asset(file, sized(a.cover, 800))) + '" alt="' + esc(x.alt || x.title) + '" loading="lazy" decoding="async" width="800" height="520">' : '') + '<span class="cat">' + esc(catLabel(site, a.category, lang)) + '</span></span>' +
+            '<span class="lt-body"><b>' + esc(x.title) + '</b>' +
             (a.updated || a.date ? '<time datetime="' + esc(a.updated || a.date) + '">' + ICO.cal + ' ' + esc(fmtDate(a.updated || a.date, lang)) + '</time>' : '') + '</span></a></article>';
         }).join('');
-        return '<section class="wrap block latest"><div class="block-head"><h2 class="block-title ico-latest">' + esc(UI[lang].latest) + '</h2><a class="pill-link" href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc(UI[lang].allTourism) + '</a></div>' +
-          '<div class="latest-row">' + (tiles ? '<div class="cat-tiles">' + tiles + '</div>' : '') + '<div class="row-cards">' + rows + '</div></div>' +
-          '</section>';
+        return '<section class="wrap block latest"><div class="block-head"><h2 class="block-title ico-latest">' + esc(UI[lang].latest) + '</h2><a class="pill-link" href="' + rel(file, prefix(lang) + 'tourisme/') + '">' + esc({ ar: 'عرض جميع المواضيع', fr: 'Voir tous les articles', en: 'See all articles', es: 'Ver todos los artículos' }[lang]) + ' <span aria-hidden="true">' + (lang === 'ar' ? '←' : '→') + '</span></a></div>' +
+          '<div class="lt-grid">' + cards + '</div></section>';
+      })() : '') +
+      (show(site, 'categories') && cats.length > 1 ? (function () {
+        return '<section class="wrap block cat-sec"><div class="block-head"><h2 class="block-title">' + esc({ ar: 'اكتشف حسب نوع الوجهة', fr: 'Explorer par type de lieu', en: 'Explore by type of place', es: 'Explorar por tipo de lugar' }[lang]) + '</h2></div><div class="cat-tiles">' +
+          cats.map(function (c) {
+            var a = list.filter(function (x) { return x.category === c.id && x.cover; })[0];
+            return '<a class="cat-tile" href="' + rel(file, prefix(lang) + 'tourisme/') + '#' + esc(c.id) + '">' +
+              (a ? '<img src="' + esc(asset(file, sized(a.cover, 800))) + '" alt="" loading="lazy" decoding="async" width="400" height="300">' : '') +
+              '<span><i aria-hidden="true">' + esc(c.icon || '') + '</i>' + esc(t(c.name, lang)) + '</span></a>';
+          }).join('') + '</div></section>';
       })() : '') +
       (show(site, 'guide') ? secBlock(site, file, lang, 'guide', inSection(articles, 'guide', lang), 3) : '') +
       (function () {
@@ -954,7 +969,7 @@
     var cfg = { ui2: PR2[lang], off: +w.utcOffset || 0, tool: 'prayer', lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, method: w.method || 21, tune: w.tune || '', hijriAdj: w.hijriAdj || 0, ui: U, prayers: L.prayers, place: t(site.name, lang) };
     if (OFFICIAL) cfg.officialNote = t(w.officialNote, lang) || { ar: 'المواقيت حسب الجدول الرسمي لوزارة الأوقاف والشؤون الإسلامية.', fr: 'Horaires selon le calendrier officiel du ministère des Habous et des Affaires islamiques.', en: 'Times from the official timetable of the Ministry of Habous and Islamic Affairs.', es: 'Horarios según el calendario oficial del Ministerio de Habices y Asuntos Islámicos.' }[lang];
     return simplePage(site, lang, 'salat/', {
-      h1: U.h1, title: U.h1 + ' | ' + t(site.name, lang), description: U.lead, lead: U.lead, mainClass: 'tool-page', hero: pageHeroImg(site), icon: '🕌',
+      h1: U.h1, title: U.h1 + ' | ' + t(site.name, lang), description: U.lead, lead: PR2[lang].lead2 || U.lead, mainClass: 'tool-page pr-page', hero: pageHeroImg(site), icon: '🕌',
       schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: U.h1, description: U.lead },
       body: function () {
         return '<div class="wrap tool" data-tool="prayer">' +
@@ -1149,7 +1164,7 @@
   /* ---------- sea today (filled by tools.js) ---------- */
   var SUI = {
     ar: { h1: 'البحر اليوم في القصر الصغير', name: 'البحر اليوم', lead: 'كيف هو البحر اليوم؟ الرياح (شرقي أو غربي)، علو الموج، السباحة والصيد والخروج بالقارب، مع توقعات كل 3 ساعات لـ5 أيام.',
-      verdict: 'الخلاصة الآن', today: 'اليوم', tomorrow: 'غداً', morning: 'الصباح', afternoon: 'بعد الظهر', evening: 'الليل', table: 'التوقعات كل 3 ساعات', hour: 'الساعة', wind: 'الرياح', gust: 'الهبات', dir: 'الاتجاه', wave: 'الموج', period: 'الفترة', water: 'الماء', swim: 'السباحة', fish: 'الصيد', boat: 'القارب',
+      verdict: 'الخلاصة الآن', today: 'اليوم', tomorrow: 'غداً', morning: 'الصباح', afternoon: 'بعد الظهر', evening: 'المساء', table: 'التوقعات كل 3 ساعات', hour: 'الساعة', wind: 'الرياح', gust: 'الهبات', dir: 'الاتجاه', wave: 'الموج', period: 'الفترة', water: 'الماء', swim: 'السباحة', fish: 'الصيد', boat: 'القارب',
       east: 'شرقي', west: 'غربي', north: 'شمالي', south: 'جنوبي', calm: 'هادئ', light: 'خفيف', moderate: 'متوسط', strong: 'قوي', vstrong: 'قوي جداً', good: 'مناسب', fair: 'بحذر', bad: 'غير مناسب', kn: 'عقدة', kmh: 'كم/س', unit: 'الوحدة',
       seaStates: ['هادئ', 'خفيف', 'متوسط', 'هائج'], loading: 'جاري التحميل…', error: 'تعذر تحميل البيانات حالياً.', weather: 'صفحة الطقس الكاملة',
       safety: 'هذه المؤشرات تقديرية من نماذج الطقس (Open-Meteo) وليست رسمية. البحر يتغير بسرعة: احترم دائماً الرايات وتعليمات المنقذين والسلطات المينائية.',
@@ -1176,34 +1191,44 @@
   var SEA2 = {
     ar: { state: 'حالة البحر', wave: 'ارتفاع الموج', speed: 'سرعة الرياح', dir: 'اتجاه الرياح', swim: 'حالة السباحة', summary: 'ملخص الحالة اليوم', daily: 'التوقعات اليومية', wx: 'الطقس', vis: 'الرؤية', act: 'ملاءمة السباحة',
       visL: ['ضعيفة', 'متوسطة', 'جيدة', 'ممتازة'], swimTxt: ['مناسبة للسباحة', 'تتطلب الحذر عند السباحة', 'غير مناسبة للسباحة'],
-      sum: 'البحر اليوم في القصر الصغير {state}، بارتفاع موج يصل إلى {wave} م، مع رياح {dir} بسرعة {speed}. الظروف {swim}.', fishing: 'الصيد', boat: 'القارب' },
+      sum: 'البحر اليوم في القصر الصغير {state}، بارتفاع موج يصل إلى {wave} م، مع رياح {dir} بسرعة {speed}. الظروف {swim}.', fishing: 'الصيد', boat: 'القارب',
+      lead2: 'تعرّف على حالة البحر اليوم وتوقعات الأمواج والرياح لمساعدتك في متابعة الظروف البحرية.', tideN: 'المد العالي القادم', est: 'تقديري', upd: 'آخر تحديث', act2: 'ملاءمة الأنشطة', pick: 'اختر اليوم',
+      legend: 'كيف نحدد الملاءمة؟ <b class="sea-state sea-0">مناسب</b> موج أقل من 0.5 م وهبات أقل من 35 كم/س · <b class="sea-state sea-2">بحذر</b> موج أقل من 1 م وهبات أقل من 45 كم/س · <b class="sea-state sea-3">غير مناسب</b> ما فوق ذلك. من نونبر إلى مارس يبقى مؤشر السباحة «بحذر» على الأقل لأن الماء بارد والتيارات أقوى.' },
     fr: { state: 'État de la mer', wave: 'Hauteur des vagues', speed: 'Vitesse du vent', dir: 'Direction du vent', swim: 'Baignade', summary: 'Résumé du jour', daily: 'Prévisions du jour', wx: 'Météo', vis: 'Visibilité', act: 'Baignade',
       visL: ['Faible', 'Moyenne', 'Bonne', 'Excellente'], swimTxt: ['favorables à la baignade', 'à la baignade avec prudence', 'défavorables à la baignade'],
-      sum: 'Aujourd’hui à Ksar Sghir, la mer est {state}, avec des vagues jusqu’à {wave} m et un vent de {dir} à {speed}. Conditions {swim}.', fishing: 'Pêche', boat: 'Barque' },
+      sum: 'Aujourd’hui à Ksar Sghir, la mer est {state}, avec des vagues jusqu’à {wave} m et un vent de {dir} à {speed}. Conditions {swim}.', fishing: 'Pêche', boat: 'Barque',
+      lead2: 'Découvrez l’état de la mer aujourd’hui et les prévisions de vagues et de vent pour suivre les conditions marines.', tideN: 'Prochaine marée haute', est: 'estimée', upd: 'Mis à jour', act2: 'Activités', pick: 'Choisir le jour',
+      legend: 'Nos critères : <b class="sea-state sea-0">Favorable</b> vagues sous 0,5 m et rafales sous 35 km/h · <b class="sea-state sea-2">Prudence</b> vagues sous 1 m et rafales sous 45 km/h · <b class="sea-state sea-3">Déconseillé</b> au-delà. De novembre à mars, la baignade reste au moins en « Prudence » (eau froide, courants plus forts).' },
     en: { state: 'Sea state', wave: 'Wave height', speed: 'Wind speed', dir: 'Wind direction', swim: 'Swimming', summary: 'Today’s summary', daily: 'Daily forecast', wx: 'Weather', vis: 'Visibility', act: 'Swimming',
       visL: ['Poor', 'Moderate', 'Good', 'Excellent'], swimTxt: ['good for swimming', 'for careful swimming only', 'not suitable for swimming'],
-      sum: 'Today in Ksar Sghir the sea is {state}, with waves up to {wave} m and a {dir} wind at {speed}. Conditions are {swim}.', fishing: 'Fishing', boat: 'Boat' },
+      sum: 'Today in Ksar Sghir the sea is {state}, with waves up to {wave} m and a {dir} wind at {speed}. Conditions are {swim}.', fishing: 'Fishing', boat: 'Boat',
+      lead2: 'Check today’s sea conditions and the wave and wind forecast to follow conditions at sea.', tideN: 'Next high tide', est: 'estimated', upd: 'Updated', act2: 'Activities', pick: 'Pick a day',
+      legend: 'Our criteria: <b class="sea-state sea-0">Good</b> waves under 0.5 m and gusts under 35 km/h · <b class="sea-state sea-2">Use caution</b> waves under 1 m and gusts under 45 km/h · <b class="sea-state sea-3">Not advised</b> above that. From November to March swimming stays at least at “Use caution” (cold water, stronger currents).' },
     es: { state: 'Estado del mar', wave: 'Altura de las olas', speed: 'Velocidad del viento', dir: 'Dirección del viento', swim: 'Baño', summary: 'Resumen de hoy', daily: 'Previsión diaria', wx: 'Tiempo', vis: 'Visibilidad', act: 'Baño',
       visL: ['Mala', 'Regular', 'Buena', 'Excelente'], swimTxt: ['buenas para el baño', 'de baño con precaución', 'no aptas para el baño'],
-      sum: 'Hoy en Alcazarseguer el mar está {state}, con olas de hasta {wave} m y viento de {dir} a {speed}. Condiciones {swim}.', fishing: 'Pesca', boat: 'Barca' } };
+      sum: 'Hoy en Alcazarseguer el mar está {state}, con olas de hasta {wave} m y viento de {dir} a {speed}. Condiciones {swim}.', fishing: 'Pesca', boat: 'Barca',
+      lead2: 'Consulta el estado del mar hoy y la previsión de olas y viento para seguir las condiciones marinas.', tideN: 'Próxima pleamar', est: 'estimada', upd: 'Actualizado', act2: 'Actividades', pick: 'Elegir día',
+      legend: 'Nuestros criterios: <b class="sea-state sea-0">Favorable</b> olas de menos de 0,5 m y rachas de menos de 35 km/h · <b class="sea-state sea-2">Precaución</b> olas de menos de 1 m y rachas de menos de 45 km/h · <b class="sea-state sea-3">No recomendado</b> por encima. De noviembre a marzo el baño queda al menos en «Precaución» (agua fría, corrientes más fuertes).' } };
   var PR2 = {
-    ar: { now: 'الشهر الحالي', table: 'جدول مواقيت الصلاة', pdf: 'تحميل PDF', left: 'الوقت المتبقي', h: 'ساعة', m: 'دقيقة', s: 'ثانية', srcOff: 'مواقيت الصلاة في القصر الصغير حسب الجدول الرسمي لوزارة الأوقاف والشؤون الإسلامية بالمملكة المغربية.', srcCalc: 'المواقيت محسوبة فلكياً بطريقة المغرب، وقد تختلف بدقيقة أو اثنتين عن جدول وزارة الأوقاف والشؤون الإسلامية.' },
-    fr: { now: 'Mois en cours', table: 'Horaires de prière', pdf: 'Télécharger PDF', left: 'Temps restant', h: 'h', m: 'min', s: 's', srcOff: 'Horaires selon le calendrier officiel du ministère des Habous et des Affaires islamiques.', srcCalc: 'Horaires calculés selon la méthode marocaine ; ils peuvent différer d’une ou deux minutes du calendrier officiel.' },
-    en: { now: 'This month', table: 'Prayer timetable', pdf: 'Download PDF', left: 'Time left', h: 'h', m: 'min', s: 's', srcOff: 'Times from the official timetable of Morocco’s Ministry of Habous and Islamic Affairs.', srcCalc: 'Times calculated with the Moroccan method; they may differ by a minute or two from the official timetable.' },
-    es: { now: 'Mes actual', table: 'Horarios de oración', pdf: 'Descargar PDF', left: 'Tiempo restante', h: 'h', m: 'min', s: 's', srcOff: 'Horarios según el calendario oficial del Ministerio de Habices y Asuntos Islámicos.', srcCalc: 'Horarios calculados con el método marroquí; pueden diferir uno o dos minutos del calendario oficial.' } };
+    ar: { lead2: 'تعرّف على مواقيت الصلاة اليومية والشهرية لمدينة القصر الصغير.', now: 'الشهر الحالي', table: 'جدول مواقيت الصلاة', pdf: 'تحميل PDF', left: 'الوقت المتبقي', h: 'ساعة', m: 'دقيقة', s: 'ثانية', srcOff: 'مواقيت الصلاة في القصر الصغير حسب الجدول الرسمي لوزارة الأوقاف والشؤون الإسلامية بالمملكة المغربية.', srcCalc: 'المواقيت محسوبة فلكياً بطريقة المغرب، وقد تختلف بدقيقة أو اثنتين عن جدول وزارة الأوقاف والشؤون الإسلامية.' },
+    fr: { lead2: 'Consultez les horaires de prière du jour et du mois à Ksar Sghir.', now: 'Mois en cours', table: 'Horaires de prière', pdf: 'Télécharger PDF', left: 'Temps restant', h: 'h', m: 'min', s: 's', srcOff: 'Horaires selon le calendrier officiel du ministère des Habous et des Affaires islamiques.', srcCalc: 'Horaires calculés selon la méthode marocaine ; ils peuvent différer d’une ou deux minutes du calendrier officiel.' },
+    en: { lead2: 'Daily and monthly prayer times for Ksar Sghir.', now: 'This month', table: 'Prayer timetable', pdf: 'Download PDF', left: 'Time left', h: 'h', m: 'min', s: 's', srcOff: 'Times from the official timetable of Morocco’s Ministry of Habous and Islamic Affairs.', srcCalc: 'Times calculated with the Moroccan method; they may differ by a minute or two from the official timetable.' },
+    es: { lead2: 'Horarios de oración diarios y mensuales de Alcazarseguer.', now: 'Mes actual', table: 'Horarios de oración', pdf: 'Descargar PDF', left: 'Tiempo restante', h: 'h', m: 'min', s: 's', srcOff: 'Horarios según el calendario oficial del Ministerio de Habices y Asuntos Islámicos.', srcCalc: 'Horarios calculados con el método marroquí; pueden diferir uno o dos minutos del calendario oficial.' } };
   function seaPage(site, lang) {
     var U = SUI[lang], w = site.live || {};
     var cfg = { off: +w.utcOffset || 0, tool: 'sea', lang: lang, lat: w.lat || 35.8426, lng: w.lng || -5.5596, seaLat: w.seaLat || 35.87, seaLng: w.seaLng || -5.55, ui: U, ui2: SEA2[lang], codes: LIVE_UI[lang].codes };
     return simplePage(site, lang, 'mer/', {
-      h1: U.h1, title: U.h1 + ' | ' + t(site.name, lang), description: U.lead, lead: U.lead, mainClass: 'tool-page', hero: pageHeroImg(site), icon: '🌊',
+      h1: U.h1, title: U.h1 + ' | ' + t(site.name, lang), description: U.lead, lead: SEA2[lang].lead2 || U.lead, mainClass: 'tool-page sea-page', hero: pageHeroImg(site), icon: '🌊',
       schema: { '@context': 'https://schema.org', '@type': 'WebPage', name: U.h1, description: U.lead },
       body: function (file) {
         return '<div class="wrap tool" data-tool="sea">' +
           '<section class="sea-verdict" data-slot="verdict"><div class="live-skel"></div></section>' +
-          '<div class="sea-duo"><section class="sea-sum"><div class="sea-sum-img" style="--hero:url(\'' + esc(asset(file, sized(pageHeroImg(site), 800))) + '\')"></div><div class="sea-sum-txt"><h2>ⓘ ' + esc(SEA2[lang].summary) + '</h2><p data-slot="summary"><span class="live-skel"></span></p></div></section>' +
-          '<section class="wx-sec sea-daily"><h2>📅 ' + esc(SEA2[lang].daily) + '</h2><div class="sea-periods" data-slot="periods"><div class="live-skel"></div></div></section></div>' +
-          '<section class="wx-sec"><div class="pr-mhead"><h2>' + esc(U.table) + '</h2><div class="pr-nav" role="group" aria-label="' + esc(U.unit) + '"><button class="chip is-on" type="button" data-unit="kn">' + esc(U.kn) + '</button><button class="chip" type="button" data-unit="kmh">' + esc(U.kmh) + '</button></div></div>' +
-          '<div class="sea-table" data-slot="table"><div class="live-skel"></div></div></section>' +
+          '<section class="sea-extra" data-slot="extra" aria-live="polite"></section>' +
+          '<div class="sea-duo"><section class="wx-sec sea-daily"><h2>📅 ' + esc(SEA2[lang].daily) + '</h2><div class="sea-periods" data-slot="periods"><div class="live-skel"></div></div></section>' +
+          '<section class="sea-sum"><div class="sea-sum-txt"><h2>ⓘ ' + esc(SEA2[lang].summary) + '</h2><p data-slot="summary"><span class="live-skel"></span></p></div><div class="sea-sum-img" style="--hero:url(\'' + esc(asset(file, sized(pageHeroImg(site), 800))) + '\')"></div></section></div>' +
+          '<section class="wx-sec sea-3h"><div class="pr-mhead"><h2>🕒 ' + esc(U.table) + '</h2><div class="pr-nav" role="group" aria-label="' + esc(U.unit) + '"><button class="chip is-on" type="button" data-unit="kmh">' + esc(U.kmh) + '</button><button class="chip" type="button" data-unit="kn">' + esc(U.kn) + '</button></div></div>' +
+          '<div class="sea-days" data-slot="days" role="group" aria-label="' + esc(SEA2[lang].pick) + '"></div>' +
+          '<div class="sea-table" data-slot="table"><div class="live-skel"></div></div><p class="sea-legend">' + SEA2[lang].legend + '</p></section>' +
           '<p class="live-note">' + esc(U.safety) + '</p>' +
           (pg(site, 'meteo') ? '<p><a class="btn btn-ghost" href="' + esc(rel(file, prefix(lang) + 'meteo/')) + '">🌤️ ' + esc(U.weather) + '</a></p>' : '') +
           '<div class="prose wx-about">' + U.about + '</div></div>';

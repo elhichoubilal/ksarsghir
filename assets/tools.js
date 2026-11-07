@@ -252,7 +252,7 @@
           KEYS.map(function (k) { return '<th>' + esc(C.prayers[k]) + '</th>'; }).join('') + '</tr></thead><tbody>' +
           rows.map(function (d) {
             var g = d.date.gregorian, h = d.date.hijri, wd = U.days[new Date(+g.year, +g.month.number - 1, +g.day).getDay()];
-            return '<tr' + (g.date === todayKey ? ' class="is-today"' : '') + (new Date(+g.year, +g.month.number - 1, +g.day).getDay() === 5 ? ' data-fri' : '') + '><td>' + esc(wd) + '</td><td>' + (+g.day) + '/' + (+g.month.number) + '</td><td>' + (+h.day) + ' ' + esc(lang === 'ar' ? h.month.ar : h.month.en) + '</td>' +
+            return '<tr' + (g.date === todayKey ? ' class="is-today"' : '') + (new Date(+g.year, +g.month.number - 1, +g.day).getDay() === 5 ? ' data-fri' : '') + '><td>' + esc(wd) + '<small class="pr-dd"> ' + (+g.day) + '/' + (+g.month.number) + '</small></td><td>' + (+g.day) + '/' + (+g.month.number) + '</td><td>' + (+h.day) + ' ' + esc(lang === 'ar' ? h.month.ar : h.month.en) + '</td>' +
               KEYS.map(function (k) { return '<td>' + t5(d.timings[k]) + '</td>'; }).join('') + '</tr>';
           }).join('') + '</tbody></table></div>';
       }).catch(function () { fail('month'); });
@@ -268,47 +268,62 @@
 
   /* ================= SEA TODAY ================= */
   if (C.tool === 'sea') {
-    var unit = 'kn';
-    try { unit = localStorage.getItem('ks-unit') || 'kn'; } catch (e) {}
+    var unit = 'kmh';
+    try { unit = localStorage.getItem('ks-unit2') || 'kmh'; } catch (e) {}
     var KN = 1.852;
     var dirKey = function (d) { d = ((d % 360) + 360) % 360; return d >= 45 && d <= 135 ? 'east' : d >= 225 && d <= 315 ? 'west' : (d > 135 && d < 225) ? 'south' : 'north'; };
     var wLevel = function (kmh) { var k = kmh / KN; return k < 7 ? 0 : k < 12 ? 1 : k < 18 ? 2 : k < 25 ? 3 : 4; };
-    var wNames = ['calm', 'light', 'moderate', 'strong', 'vstrong'];
     var seaSt = function (h) { return h == null ? -1 : h < 0.5 ? 0 : h < 1.25 ? 1 : h < 2.5 ? 2 : 3; };
-    var swimL = function (h, g) { return h == null ? -1 : (h < 0.5 && g < 35) ? 0 : (h < 1 && g < 45) ? 1 : 2; };
+    /* swimming: waves + gusts; from November to March never better than "caution" (cold water, stronger currents) */
+    var winterOf = function (iso) { var m = +String(iso).slice(5, 7); return m >= 11 || m <= 3; };
+    var swimL = function (h, g, iso) { if (h == null) return -1; var l = (h < 0.5 && g < 35) ? 0 : (h < 1 && g < 45) ? 1 : 2; return winterOf(iso) ? Math.max(l, 1) : l; };
     var fishL = function (h, w) { return h == null ? -1 : (h < 1 && w < 25) ? 0 : (h < 1.75 && w < 35) ? 1 : 2; };
     var boatL = function (h, w, g) { return h == null ? -1 : (h < 0.6 && w < 20 && g < 30) ? 0 : (h < 1 && w < 30 && g < 40) ? 1 : 2; };
     var LV = [U.good, U.fair, U.bad], LC = ['sea-0', 'sea-2', 'sea-3'];
     var badge = function (l) { return l < 0 ? '–' : '<b class="sea-state ' + LC[l] + '">' + esc(LV[l]) + '</b>'; };
     var spd = function (kmh) { return unit === 'kn' ? num(kmh / KN) : num(kmh); };
     var uLbl = function () { return unit === 'kn' ? U.kn : U.kmh; };
+    var MU = lang === 'ar' ? 'م' : 'm';
+    var mtr = function (v) { return v == null ? '–' : '<span class="nb">' + num(v, 1) + ' ' + MU + '</span>'; };
     var dayName2 = function (iso) { return new Intl.DateTimeFormat(loc, { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(iso + 'T12:00:00Z')); };
+    var dayShort = function (iso) { return new Intl.DateTimeFormat(loc, { weekday: 'short', day: 'numeric', timeZone: 'UTC' }).format(new Date(iso + 'T12:00:00Z')); };
     var F2 = 'https://api.open-meteo.com/v1/forecast?latitude=' + C.seaLat + '&longitude=' + C.seaLng +
       '&current=wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,temperature_2m&hourly=wind_speed_10m,wind_direction_10m,wind_gusts_10m,weather_code,temperature_2m,visibility' +
       '&timezone=' + encodeURIComponent(TZN) + '&forecast_days=5';
     var M2 = 'https://marine-api.open-meteo.com/v1/marine?latitude=' + C.seaLat + '&longitude=' + C.seaLng +
-      '&current=wave_height,wave_period,sea_surface_temperature&hourly=wave_height,wave_period,sea_surface_temperature&timezone=' + encodeURIComponent(TZN) + '&forecast_days=5';
-    var DATA = null;
+      '&current=wave_height,wave_period,sea_surface_temperature&hourly=wave_height,wave_period,sea_surface_temperature,sea_level_height_msl&timezone=' + encodeURIComponent(TZN) + '&forecast_days=5';
+    var DATA = null, pickDay = 0, perDay = 0;
     var render = function () {
       var f = DATA.f, m = DATA.m, h = f.hourly, mh = m && m.hourly ? m.hourly : null, c = f.current, mc = m && m.current ? m.current : {};
       var wave = function (i) { return mh && mh.wave_height[i] != null ? mh.wave_height[i] : null; };
-      var nowL = wLevel(c.wind_speed_10m), dk = dirKey(c.wind_direction_10m), wh = mc.wave_height, st = seaSt(wh);
+      var dk = dirKey(c.wind_direction_10m), wh = mc.wave_height, st = seaSt(wh);
       var U2 = C.ui2 || {}, CD = C.codes || {};
-      var sw = swimL(wh, c.wind_gusts_10m);
-      var todayIso = c.time.slice(0, 10), wvToday = [];
-      h.time.forEach(function (tm, i) { if (tm.slice(0, 10) === todayIso && tm.slice(0, 13) >= c.time.slice(0, 13)) { var v = wave(i); if (v != null) wvToday.push(v); } });
+      var sw = swimL(wh, c.wind_gusts_10m, c.time);
+      var todayIso = c.time.slice(0, 10), curH = c.time.slice(0, 13), wvToday = [];
+      h.time.forEach(function (tm, i) { if (tm.slice(0, 10) === todayIso && tm.slice(0, 13) >= curH) { var v = wave(i); if (v != null) wvToday.push(v); } });
       var wmax = wvToday.length ? Math.max.apply(null, wvToday) : wh;
-      slot('verdict').innerHTML =
-        '<div class="sd-top"><div class="sd-state"><span class="sd-ok sd-l' + (sw < 0 ? 1 : sw) + '" aria-hidden="true">' + (sw === 2 ? '!' : '✓') + '</span><div><small>' + esc(U2.state) + '</small><b>' + (st >= 0 ? esc(U.seaStates[st]) : '–') + '</b>' +
-        (sw >= 0 ? '<span>' + esc(U2.swimTxt[sw]) + '</span>' : '') + '</div></div>' +
-        '<div class="sd-wave"><span class="sd-ico" aria-hidden="true">🌊</span><div><small>' + esc(U2.wave) + '</small><b dir="ltr">' + (wh == null ? '–' : num(wh, 1) + ' m') + '</b>' +
-        (mc.sea_surface_temperature != null ? '<span>' + esc(U.water) + ' ' + num(mc.sea_surface_temperature) + '°</span>' : '') + '</div></div></div>' +
-        '<div class="sd-row">' +
-        '<div class="sv-w' + nowL + '"><span class="sd-ico" aria-hidden="true">💨</span><small>' + esc(U2.speed) + '</small><b dir="ltr">' + spd(c.wind_speed_10m) + ' ' + esc(uLbl()) + '</b><span>' + esc(U.gust) + ' ' + spd(c.wind_gusts_10m) + '</span></div>' +
-        '<div><span class="sd-ico">' + windArrow(c.wind_direction_10m) + '</span><small>' + esc(U2.dir) + '</small><b>' + esc(U[dk]) + '</b><span>' + esc(windName(c.wind_direction_10m, lang)) + '</span></div>' +
-        '<div><span class="sd-ico" aria-hidden="true">🏊</span><small>' + esc(U.swim) + '</small>' + badge(sw) + '</div>' +
-        '<div><span class="sd-ico" aria-hidden="true">🎣</span><small>' + esc(U.fish) + '</small>' + badge(fishL(wh, c.wind_speed_10m)) + '</div>' +
-        '<div><span class="sd-ico" aria-hidden="true">🚤</span><small>' + esc(U.boat) + '</small>' + badge(boatL(wh, c.wind_speed_10m, c.wind_gusts_10m)) + '</div></div>';
+      var card = function (cls, ico, lbl, val, sub) { return '<div class="sk ' + cls + '"><span class="sk-ico" aria-hidden="true">' + ico + '</span><div class="sk-txt"><small>' + esc(lbl) + '</small><b>' + val + '</b>' + (sub ? '<span>' + sub + '</span>' : '') + '</div></div>'; };
+      slot('verdict').innerHTML = '<div class="sk-row">' +
+        card('sk-state sk-l' + (sw < 0 ? 1 : sw), '<i class="sk-ok">' + (sw === 2 ? '!' : '✓') + '</i>', U2.state, st >= 0 ? esc(U.seaStates[st]) : '–', '') +
+        card('sk-wave', '🌊', U2.wave, mtr(wh), '') +
+        card('sk-speed', '💨', U2.speed, '<span class="nb">' + spd(c.wind_speed_10m) + ' ' + esc(uLbl()) + '</span>', esc(U.gust) + ' ' + spd(c.wind_gusts_10m)) +
+        card('sk-dir', windArrow(c.wind_direction_10m), U2.dir, esc(U[dk]), esc(windName(c.wind_direction_10m, lang))) +
+        card('sk-swim', '🏊', U.swim, badge(sw), '') + '</div>';
+      /* extra facts actually provided by the forecast */
+      var ex = [];
+      if (mc.sea_surface_temperature != null) ex.push(['🌡️', U.water, num(mc.sea_surface_temperature) + '°C']);
+      if (mh && mh.sea_level_height_msl) {
+        var L = mh.sea_level_height_msl, hi = -1;
+        for (var i = 1; i < L.length - 1; i++) { if (h.time[i] && h.time[i].slice(0, 13) > curH && L[i] != null && L[i] > L[i - 1] && L[i] >= L[i + 1]) { hi = i; break; } }
+        if (hi >= 0) ex.push(['🌊', U2.tideN, h.time[hi].slice(11, 16) + (h.time[hi].slice(0, 10) !== todayIso ? ' · ' + dayShort(h.time[hi].slice(0, 10)) : '') + ' <small>(' + esc(U2.est) + ')</small>']);
+      }
+      var vi = h.time.indexOf(curH + ':00');
+      if (h.visibility && vi >= 0 && h.visibility[vi] != null) ex.push(['👁️', U2.vis, esc((U2.visL || [])[h.visibility[vi] < 1000 ? 0 : h.visibility[vi] < 4000 ? 1 : h.visibility[vi] < 10000 ? 2 : 3] || '')]);
+      ex.push(['🎣', U.fish, badge(fishL(wh, c.wind_speed_10m))]);
+      ex.push(['🚤', U.boat, badge(boatL(wh, c.wind_speed_10m, c.wind_gusts_10m))]);
+      ex.push(['🕒', U2.upd, c.time.slice(11, 16)]);
+      var exEl = slot('extra');
+      if (exEl) exEl.innerHTML = ex.map(function (x) { return '<span class="sx"><i aria-hidden="true">' + x[0] + '</i>' + esc(x[1]) + ': <b>' + x[2] + '</b></span>'; }).join('');
       var sumEl = slot('summary');
       if (sumEl) sumEl.textContent = st < 0 || sw < 0 ? '' : String(U2.sum || '').replace('{state}', U.seaStates[st]).replace('{wave}', num(wmax, 1))
         .replace('{dir}', windName(c.wind_direction_10m, lang)).replace('{speed}', spd(c.wind_speed_10m) + ' ' + uLbl()).replace('{swim}', U2.swimTxt[sw]);
@@ -318,42 +333,50 @@
         if (code === 45 || code === 48) return ['🌫️', 'fog']; if (code <= 57) return ['🌦️', 'drizzle']; if (code <= 67) return ['🌧️', 'rain'];
         if (code <= 77) return ['❄️', 'snow']; if (code <= 82) return ['🌦️', 'showers']; return ['⛈️', 'storm'];
       };
-      var visTxt = function (v) { if (v == null) return '–'; var L = U2.visL || []; return v < 1000 ? L[0] : v < 4000 ? L[1] : v < 10000 ? L[2] : L[3]; };
-      /* periods today / tomorrow */
+      var visTxt = function (v) { if (v == null) return '–'; var L2 = U2.visL || []; return v < 1000 ? L2[0] : v < 4000 ? L2[1] : v < 10000 ? L2[2] : L2[3]; };
+      /* periods today / tomorrow (tabs on phones) */
       var days = []; h.time.forEach(function (tm) { var d = tm.slice(0, 10); if (days.indexOf(d) < 0) days.push(d); });
       var per = [[6, 12, U.morning], [12, 18, U.afternoon], [18, 24, U.evening]];
-      var curH = c.time.slice(0, 13);
-      slot('periods').innerHTML = days.slice(0, 2).map(function (d, di) {
-        return '<div class="sp-day"><h3>' + esc(di ? U.tomorrow : U.today) + ' <small>' + esc(dayName2(d)) + '</small></h3><div class="sp-row">' + per.map(function (p) {
+      slot('periods').innerHTML = '<div class="sp-tabs" role="tablist">' + days.slice(0, 2).map(function (d, di) { return '<button type="button" role="tab" data-spd="' + di + '" aria-selected="' + (di === perDay) + '"' + (di === perDay ? ' class="is-on"' : '') + '>' + esc(di ? U.tomorrow : U.today) + '</button>'; }).join('') + '</div>' +
+        days.slice(0, 2).map(function (d, di) {
+        return '<div class="sp-day' + (di === perDay ? ' is-on' : '') + '"><h3>' + esc(di ? U.tomorrow : U.today) + ' <small>' + esc(dayName2(d)) + '</small></h3><div class="sp-row">' + per.map(function (p) {
           var idx = []; h.time.forEach(function (tm, i) { var hr = +tm.slice(11, 13); if (tm.slice(0, 10) === d && hr >= p[0] && hr < p[1] && (di || tm.slice(0, 13) >= curH)) idx.push(i); });
           if (!idx.length) return '<div class="sp-p is-past"><b>' + esc(p[2]) + '</b><span>—</span></div>';
           var mw = Math.max.apply(null, idx.map(function (i) { return h.wind_speed_10m[i]; })), mg = Math.max.apply(null, idx.map(function (i) { return h.wind_gusts_10m[i]; }));
           var wv = idx.map(wave).filter(function (v) { return v != null; }), mx = wv.length ? Math.max.apply(null, wv) : null;
           var mid = idx[Math.floor(idx.length / 2)], l = wLevel(mw);
           var wq = wx2(h.weather_code ? h.weather_code[mid] : null, p[0] >= 18);
-          return '<div class="sp-p"><b>' + esc(p[2]) + '</b><span class="sp-ico" title="' + esc(CD[wq[1]] || '') + '">' + wq[0] + '</span><span class="sv-w' + l + ' sp-w">' + windArrow(h.wind_direction_10m[mid]) + ' ' + esc(U[dirKey(h.wind_direction_10m[mid])]) + ' ' + spd(mw) + '</span>' +
-            '<span>🌊 ' + (mx == null ? '–' : '<span dir="ltr">' + num(mx, 1) + ' m</span>') + '</span><span>🏊 ' + badge(swimL(mx, mg)) + '</span></div>';
+          return '<div class="sp-p"><b>' + esc(p[2]) + '</b><span class="sp-ico" title="' + esc(CD[wq[1]] || '') + '">' + wq[0] + '</span><span class="sp-wv">' + mtr(mx) + '</span><span class="sv-w' + l + ' sp-w">' + windArrow(h.wind_direction_10m[mid]) + ' ' + esc(U[dirKey(h.wind_direction_10m[mid])]) + ' <span class="nb">' + spd(mw) + '</span></span>' +
+            '<span>' + badge(swimL(mx, mg, d)) + '</span></div>';
         }).join('') + '</div></div>';
       }).join('');
-      /* 3-hourly table */
-      var rows = '', lastDay = '';
+      /* day picker + 3-hourly table for the chosen day */
+      var avail = days.filter(function (d) { return h.time.some(function (tm) { return tm.slice(0, 10) === d && +tm.slice(11, 13) % 3 === 0 && (d !== todayIso || tm.slice(0, 13) >= curH.slice(0, 11) + ('0' + (Math.floor(+curH.slice(11, 13) / 3) * 3)).slice(-2)); }); });
+      if (pickDay >= avail.length) pickDay = 0;
+      var dEl = slot('days');
+      if (dEl) dEl.innerHTML = avail.map(function (d, i) { return '<button type="button" class="chip' + (i === pickDay ? ' is-on' : '') + '" data-sday="' + i + '" aria-pressed="' + (i === pickDay) + '">' + esc(i === 0 && d === todayIso ? U.today : i === 1 && avail[0] === todayIso ? U.tomorrow : dayShort(d)) + '</button>'; }).join('');
+      var cur = avail[pickDay], rows = '';
       h.time.forEach(function (tm, i) {
-        if (+tm.slice(11, 13) % 3 !== 0 || tm.slice(0, 13) < curH.slice(0, 11) + ('0' + (Math.floor(+curH.slice(11, 13) / 3) * 3)).slice(-2)) return;
-        var d = tm.slice(0, 10);
-        if (d !== lastDay) { rows += '<tr class="st-day"><th colspan="8">' + esc(dayName2(d)) + '</th></tr>'; lastDay = d; }
+        if (tm.slice(0, 10) !== cur || +tm.slice(11, 13) % 3 !== 0) return;
+        if (cur === todayIso && tm.slice(0, 13) < curH.slice(0, 11) + ('0' + (Math.floor(+curH.slice(11, 13) / 3) * 3)).slice(-2)) return;
         var l = wLevel(h.wind_speed_10m[i]), wv = wave(i), hr = +tm.slice(11, 13), ws = seaSt(wv), wq = wx2(h.weather_code ? h.weather_code[i] : null, hr < 7 || hr >= 19);
-        rows += '<tr><td class="st-h"><span>' + wq[0] + '</span> ' + tm.slice(11, 16) + '</td><td>' + (ws < 0 ? '–' : '<span class="sea-state sea-' + ws + '">' + esc(U.seaStates[ws]) + '</span>') + '</td><td><b>' + (wv == null ? '–' : num(wv, 1) + ' m') + '</b></td>' +
+        rows += '<tr><td class="st-h">' + tm.slice(11, 16) + '</td><td>' + (ws < 0 ? '–' : '<span class="sea-state sea-' + ws + '">' + esc(U.seaStates[ws]) + '</span>') + '</td><td><b>' + mtr(wv) + '</b></td>' +
           '<td class="sv-w' + l + '"><b>' + spd(h.wind_speed_10m[i]) + '</b> <small>(' + spd(h.wind_gusts_10m[i]) + ')</small></td>' +
-          '<td>' + windArrow(h.wind_direction_10m[i]) + ' ' + esc(U[dirKey(h.wind_direction_10m[i])]) + '</td><td>' + esc(CD[wq[1]] || '–') + '</td><td>' + esc(visTxt(h.visibility ? h.visibility[i] : null)) + '</td><td>' + badge(swimL(wv, h.wind_gusts_10m[i])) + '</td></tr>';
+          '<td>' + windArrow(h.wind_direction_10m[i]) + ' ' + esc(U[dirKey(h.wind_direction_10m[i])]) + '</td><td><span aria-hidden="true">' + wq[0] + '</span> ' + esc(CD[wq[1]] || '–') + '</td><td>' + esc(visTxt(h.visibility ? h.visibility[i] : null)) + '</td><td>' + badge(swimL(wv, h.wind_gusts_10m[i], tm)) + '</td></tr>';
       });
-      slot('table').innerHTML = '<div class="tbl-scroll"><table class="sea-tbl"><thead><tr><th>' + esc(U.hour) + '</th><th>' + esc(U2.state) + '</th><th>' + esc(U.wave) + '</th><th>' + esc(U.wind) + '<small>' + esc(uLbl()) + ' (' + esc(U.gust) + ')</small></th><th>' + esc(U.dir) + '</th><th>' + esc(U2.wx) + '</th><th>' + esc(U2.vis) + '</th><th>' + esc(U2.act) + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+      slot('table').innerHTML = '<div class="tbl-scroll"><table class="sea-tbl"><caption class="sr-only">' + esc(dayName2(cur)) + '</caption><thead><tr><th>' + esc(U.hour) + '</th><th>' + esc(U2.state) + '</th><th>' + esc(U.wave) + '</th><th>' + esc(U.wind) + '<small>' + esc(uLbl()) + ' (' + esc(U.gust) + ')</small></th><th>' + esc(U.dir) + '</th><th>' + esc(U2.wx) + '</th><th>' + esc(U2.vis) + '</th><th>' + esc(U2.act) + '</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
       document.querySelectorAll('[data-unit]').forEach(function (b) { b.classList.toggle('is-on', b.dataset.unit === unit); });
     };
     Promise.all([get(F2), get(M2).catch(function () { return null; })]).then(function (r) { DATA = { f: r[0], m: r[1] }; render(); })
-      .catch(function () { ['verdict', 'summary', 'periods', 'table'].forEach(fail); });
+      .catch(function (e) { if (window.console) console.warn('sea', e); ['verdict', 'extra', 'summary', 'periods', 'table'].forEach(fail); });
     document.addEventListener('click', function (e) {
-      var b = e.target.closest('[data-unit]'); if (!b || !DATA) return;
-      unit = b.dataset.unit; try { localStorage.setItem('ks-unit', unit); } catch (x) {} render();
+      if (!DATA) return;
+      var b = e.target.closest('[data-unit]');
+      if (b) { unit = b.dataset.unit; try { localStorage.setItem('ks-unit2', unit); } catch (x) {} render(); return; }
+      var d = e.target.closest('[data-sday]');
+      if (d) { pickDay = +d.dataset.sday; render(); return; }
+      var t = e.target.closest('[data-spd]');
+      if (t) { perDay = +t.dataset.spd; render(); }
     });
   }
 
