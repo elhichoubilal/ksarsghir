@@ -1,5 +1,5 @@
 {
- "version": "mwig5l4z",
+ "version": "mwiggat7",
  "baseUrl": "https://www.ksarsghir.com",
  "owner": "Bilal El Hichou",
  "name": {
@@ -725,8 +725,8 @@
    "assets/img/belyounech-muk645jy.webp",
    "assets/img/20073-mujr4ueq.webp"
   ],
-  "article": "center",
-  "gallery": "light",
+  "article": "none",
+  "gallery": "none",
   "centerText": "www.ksarsghir.com",
   "centerSub": "© Bilal El Hichou",
   "done2": [
@@ -762,8 +762,8 @@
    "assets/img/oued-alian-muk6rszm.webp",
    "assets/img/ghojin-srama-muk6iyas.webp"
   ],
-  "pos": "mc",
-  "size": "m",
+  "pos": "bc",
+  "size": "s",
   "font": "sans"
  },
  "vault": {
